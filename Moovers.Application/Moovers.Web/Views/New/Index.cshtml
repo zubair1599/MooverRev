@@ -1,409 +1,223 @@
 ﻿@{
     ViewBag.Title = "Index";
-    Layout = null;
+    Layout = "~/Views/New/_Layout.cshtml";
+
+    
 }
 
-<!DOCTYPE html>
-<html ng-app="quoteApp">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title ng-bind="title + ' | Cube - Bootstrap Admin Template'">Cube - Bootstrap Admin Template</title>
-    @if (ViewBag.IsDevelopment)
-    {
-        foreach (string file in ViewBag.JavascriptFiles)
-        {
-            @Html.Javascript(file)
-        }
-        foreach (string file in ViewBag.ScreenCssFiles)
-        {
-            @Html.Stylesheet(file, "screen")
-        }
-        foreach (string file in ViewBag.PrintCssFiles)
-        {
-            @Html.Stylesheet(file, "print")
-        }
-    }
-    else
-    {
-        @Html.Stylesheet("~/static/compiled/print.css", "print")
-        @Html.Stylesheet("~/static/compiled/site.css", "screen")
-        @Html.Javascript("~/static/compiled/js.js")
-    }
-
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,300|Titillium+Web:200,300,400' rel='stylesheet' type='text/css'>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASm3CwaK9qtcZEWYa-iQwHaGi3gcosAJc&sensor=false"></script>
-    <!--[if lt IE 9]>
-        <script src="js/html5shiv.js"></script>
-        <script src="js/respond.min.js"></script>
-    <![endif]-->
+<div id="page-wrapper" ng-controller="quoteHome as qhome" class="container">
+    <div class="row">
 
 
-    <script type="text/javascript">
-
-        function OpenDialog(id) {
-            $('#' + id).modal('show');
-
-
-        };
-    </script>
-</head>
-<body class="pace-done theme-red">
-    <div id="theme-wrapper">
-        <header class="navbar" id="header-navbar">
-            <div class="container">
-                <a href="#/dasboard" id="logo" class="navbar-brand">
-                    
-                    <img src="~/static/img/logo1.png" style="width: 150px;height:25px" alt="" class="normal-logo logo-white" />
-                    <img src="img/logo-black.png" alt="" class="normal-logo logo-black" />
-                    <img src="img/logo-small.png" alt="" class="small-logo hidden-xs hidden-sm hidden" />
-                </a>
-
-                <div class="clearfix">
-                    <button class="navbar-toggle" data-target=".navbar-ex1-collapse" data-toggle="collapse" type="button">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="fa fa-bars"></span>
-                    </button>
-
-                    <div class="nav-no-collapse navbar-left pull-left hidden-sm hidden-xs">
-                        <ul class="nav navbar-nav pull-left">
-                            <li>
-                                <a class="btn" id="make-small-nav">
-                                    <i class="fa fa-bars"></i>
-                                </a>
-                            </li>
-                            <li class="dropdown hidden-xs">
-                                <a class="btn dropdown-toggle" data-toggle="dropdown">
-                                    <i class="fa fa-bell"></i>
-                                    <span class="count">8</span>
-                                </a>
-                                <ul class="dropdown-menu notifications-list">
-                                    <li class="pointer">
-                                        <div class="pointer-inner">
-                                            <div class="arrow"></div>
-                                        </div>
-                                    </li>
-                                    <li class="item-header">You have 6 new notifications</li>
-                                    <li class="item">
-                                        <a href="#">
-                                            <i class="fa fa-comment"></i>
-                                            <span class="content">New comment on ‘Awesome P...</span>
-                                            <span class="time"><i class="fa fa-clock-o"></i>13 min.</span>
-                                        </a>
-                                    </li>
-                                    <li class="item">
-                                        <a href="#">
-                                            <i class="fa fa-plus"></i>
-                                            <span class="content">New user registration</span>
-                                            <span class="time"><i class="fa fa-clock-o"></i>13 min.</span>
-                                        </a>
-                                    </li>
-                                    <li class="item">
-                                        <a href="#">
-                                            <i class="fa fa-envelope"></i>
-                                            <span class="content">New Message from George</span>
-                                            <span class="time"><i class="fa fa-clock-o"></i>13 min.</span>
-                                        </a>
-                                    </li>
-                                    <li class="item">
-                                        <a href="#">
-                                            <i class="fa fa-shopping-cart"></i>
-                                            <span class="content">New purchase</span>
-                                            <span class="time"><i class="fa fa-clock-o"></i>13 min.</span>
-                                        </a>
-                                    </li>
-                                    <li class="item">
-                                        <a href="#">
-                                            <i class="fa fa-eye"></i>
-                                            <span class="content">New order</span>
-                                            <span class="time"><i class="fa fa-clock-o"></i>13 min.</span>
-                                        </a>
-                                    </li>
-                                    <li class="item-footer">
-                                        <a href="#">
-                                            View all notifications
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="dropdown hidden-xs">
-                                <a class="btn dropdown-toggle" data-toggle="dropdown">
-                                    <i class="fa fa-envelope-o"></i>
-                                    <span class="count">16</span>
-                                </a>
-                                <ul class="dropdown-menu notifications-list messages-list">
-                                    <li class="pointer">
-                                        <div class="pointer-inner">
-                                            <div class="arrow"></div>
-                                        </div>
-                                    </li>
-                                    <li class="item first-item">
-                                        <a href="#">
-                                            <img src="img/samples/messages-photo-1.png" alt="" />
-                                            <span class="content">
-                                                <span class="content-headline">
-                                                    George Clooney
-                                                </span>
-                                                <span class="content-text">
-                                                    Look, just because I don't be givin' no man a foot massage don't make it
-                                                    right for Marsellus to throw...
-                                                </span>
-                                            </span>
-                                            <span class="time"><i class="fa fa-clock-o"></i>13 min.</span>
-                                        </a>
-                                    </li>
-                                    <li class="item">
-                                        <a href="#">
-                                            <img src="img/samples/messages-photo-2.png" alt="" />
-                                            <span class="content">
-                                                <span class="content-headline">
-                                                    Emma Watson
-                                                </span>
-                                                <span class="content-text">
-                                                    Look, just because I don't be givin' no man a foot massage don't make it
-                                                    right for Marsellus to throw...
-                                                </span>
-                                            </span>
-                                            <span class="time"><i class="fa fa-clock-o"></i>13 min.</span>
-                                        </a>
-                                    </li>
-                                    <li class="item">
-                                        <a href="#">
-                                            <img src="img/samples/messages-photo-3.png" alt="" />
-                                            <span class="content">
-                                                <span class="content-headline">
-                                                    Robert Downey Jr.
-                                                </span>
-                                                <span class="content-text">
-                                                    Look, just because I don't be givin' no man a foot massage don't make it
-                                                    right for Marsellus to throw...
-                                                </span>
-                                            </span>
-                                            <span class="time"><i class="fa fa-clock-o"></i>13 min.</span>
-                                        </a>
-                                    </li>
-                                    <li class="item-footer">
-                                        <a href="#">
-                                            View all messages
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="dropdown hidden-xs">
-                                <a class="btn dropdown-toggle" data-toggle="dropdown">
-                                    Goto
-                                    <i class="fa fa-caret-down"></i>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li class="item">
-                                        <a href="#">
-                                            <i class="fa fa-archive"></i>
-                                            Dashboards
-                                        </a>
-                                    </li>
-                                    <li class="item">
-                                        <a href="#">
-                                            <i class="fa fa-shopping-cart"></i>
-                                            Accounts
-                                        </a>
-                                    </li>
-                                    <li class="item">
-                                        <a href="#">
-                                            <i class="fa fa-sitemap"></i>
-                                            Quotes
-                                        </a>
-                                    </li>
-                                    <li class="item">
-                                        <a href="#">
-                                            <i class="fa fa-file-text"></i>
-                                            Leads
-                                        </a>
-                                    </li>
-                                    <li class="item">
-                                        <a href="#">
-                                            <i class="fa fa-file-text"></i>
-                                            Schedules
-                                        </a>
-                                    </li>
-                                    <li class="item">
-                                        <a href="#">
-                                            <i class="fa fa-file-text"></i>
-                                            Claims
-                                        </a>
-                                    </li>
-                                    <li class="item">
-                                        <a href="#">
-                                            <i class="fa fa-file-text"></i>
-                                            Storage
-                                        </a>
-                                    </li>
-                                    <li class="item">
-                                        <a href="#">
-                                            <i class="fa fa-file-text"></i>
-                                            Accounting
-                                        </a>
-                                    </li>
-                                    <li class="item">
-                                        <a href="#">
-                                            <i class="fa fa-file-text"></i>
-                                            Employees
-                                        </a>
-                                    </li>
-                                    <li class="item">
-                                        <a href="#">
-                                            <i class="fa fa-file-text"></i>
-                                            Vehicles
-                                        </a>
-                                    </li>
-                                    <li class="item">
-                                        <a href="#">
-                                            <i class="fa fa-file-text"></i>
-                                            Reports
-                                        </a>
-                                    </li>
-                                    <li class="item">
-                                        <a href="#">
-                                            <i class="fa fa-file-text"></i>
-                                            Admin
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="dropdown hidden-xs">
-                                <a class="btn dropdown-toggle" data-toggle="dropdown">
-                                    English
-                                    <i class="fa fa-caret-down"></i>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li class="item">
-                                        <a href="#">
-                                            Spanish
-                                        </a>
-                                    </li>
-                                    <li class="item">
-                                        <a href="#">
-                                            German
-                                        </a>
-                                    </li>
-                                    <li class="item">
-                                        <a href="#">
-                                            Italian
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="nav-no-collapse pull-right" id="header-nav">
-                        <ul class="nav navbar-nav pull-right">
-                            <li class="mobile-search">
-                                <a class="btn">
-                                    <i class="fa fa-search"></i>
-                                </a>
-
-                                <div class="drowdown-search">
-                                    <form role="search">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Search...">
-                                            <i class="fa fa-search nav-search-icon"></i>
-                                        </div>
-                                    </form>
-                                </div>
-
-                            </li>
-                            <li class="dropdown profile-dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown">
-                                    <img src="../../static/img/emily.jpg" alt="" />
-                                    <span class="hidden-xs">Scarlett Johansson</span> <b class="caret"></b>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#/pages/user-profile"><i class="fa fa-user"></i>Profile</a></li>
-                                    <li><a href="#"><i class="fa fa-cog"></i>Settings</a></li>
-                                    <li><a href="#"><i class="fa fa-envelope-o"></i>Messages</a></li>
-                                    <li><a href="#"><i class="fa fa-power-off"></i>Logout</a></li>
-                                </ul>
-                            </li>
-                            <li class="hidden-xxs">
-                                <a class="btn">
-                                    <i class="fa fa-power-off"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <div id="page-wrapper" ng-controller="quoteHome as qhome" class="container">
+        <div id="content-wrapper" style="margin-left: 0">
             <div class="row">
+                <div class="col-lg-12">
 
-                
-                <div id="content-wrapper" style="margin-left: 0">
-                    <div class="row">
-                        <div class="col-lg-12">
+                    <div ng-controller="home">
 
-                            <div class="slide-main-container">
-                                <div ng-view class="slide-main-animation"></div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div id="content-header" class="clearfix">
+                                    <div class="pull-left">
+                                        <ol class="breadcrumb">
+                                            <li><a href="#">Home</a></li>
+                                            <li class="active"><span>Dashboard</span></li>
+                                        </ol>
+
+                                        <h1>Dashboard</h1>
+                                    </div>
+
+                                    <div class="pull-right hidden-xs">
+                                        <div class="xs-graph pull-left">
+                                            <div class="graph-label">
+                                                <b><i class="fa fa-shopping-cart"></i> 838</b> Orders
+                                            </div>
+                                            <div class="graph-content spark-orders"><canvas width="125" height="25" style="display: inline-block; width: 125px; height: 25px; vertical-align: top;"></canvas></div>
+                                        </div>
+
+                                        <div class="xs-graph pull-left mrg-l-lg mrg-r-sm">
+                                            <div class="graph-label">
+                                                <b>$12.338</b> Revenues
+                                            </div>
+                                            <div class="graph-content spark-revenues"><canvas width="132" height="25" style="display: inline-block; width: 132px; height: 25px; vertical-align: top;"></canvas></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-3 col-sm-6 col-xs-12">
+                                <div class="main-box infographic-box">
+                                    <i class="fa fa-user red-bg"></i>
+                                    <span class="headline">Notifications</span>
+                                    <span class="value">
+
+                                        <span style="font-size: 13px">
+                                            {{LeadCount}} Leads / {{StorageCount}} Storage Bills
+
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-sm-6 col-xs-12">
+                                <div class="main-box infographic-box">
+                                    <i class="fa fa-shopping-cart emerald-bg"></i>
+                                    <span class="headline">Quotes</span>
+                                    <span class="value">
+                                        <!--<span style="font-size: 13px">
+                                {{QuotesStats.Open.Count}} Open <br />
+                                {{QuotesStats.Scheduled.Count}} Scheduled
+                            </span>-->
+                                        <span style="font-size: 13px">
+                                            {{QuotesStats.Open.Count}} Open / {{QuotesStats.Scheduled.Count}} Scheduled
+
+                                        </span>
+
+                                    </span>
+
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-sm-6 col-xs-12">
+                                <div class="main-box infographic-box">
+                                    <i class="fa fa-money green-bg"></i>
+                                    <span class="headline">Income</span>
+                                    <span class="value">
+                                        <span style="font-size: 13px">
+                                            {{QuotesStats.Won.Count}} Won / {{QuotesStats.Lost.Count}} Lost
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-sm-6 col-xs-12">
+                                <div class="main-box infographic-box">
+                                    <i class="fa fa-eye yellow-bg"></i>
+                                    <span class="headline">My Jobs ( This month )</span>
+                                    <span class="value">
+                                        <span style="font-size: 13px">
+                                            {{Jobs.Booked}} Booked / {{Jobs.Posted}} Posted
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="main-box clearfix">
+                                    <header class="main-box-header clearfix">
+                                        <h2 class="pull-left">Recent Quotes</h2>
+
+
+                                    </header>
+
+                                    <div class="main-box-body clearfix">
+                                        <div class="table-responsive clearfix">
+                                            <table class="table table-condensed">
+                                                <thead>
+                                                    <tr>
+                                                        <th><a href="#"><span>Lookup</span></a></th>
+                                                        <th><a href="#" class="desc"><span>Date</span></a></th>
+                                                        <th><a href="#" class="asc"><span>Customer</span></a></th>
+                                                        <th class="text-center"><span>Status</span></th>
+                                                        <!--<th class="text-right"><span></span></th>-->
+                                                        <th>&nbsp;</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="quote in RecentQuotes">
+                                                        <td>
+                                                            <a href="#" ng-bind="quote.Lookup"></a>
+                                                        </td>
+                                                        <td>
+                                                            {{quote.MoveDate}}
+                                                        </td>
+                                                        <td>
+                                                            <a href="#" ng-bind="quote.AccountName"></a>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <span class="label label-success" ng-bind="quote.Stage"></span>
+                                                        </td>
+
+
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="main-box clearfix">
+                                    <header class="main-box-header clearfix">
+                                        <h2 class="pull-left">Moving Today</h2>
+
+
+                                    </header>
+
+                                    <div class="main-box-body clearfix">
+                                        <div class="table-responsive clearfix">
+                                            <table class="table table-condensed">
+                                                <thead>
+                                                    <tr>
+                                                        <th><a href="#"><span>Lookup</span></a></th>
+                                                        <th><a href="#" class="desc"><span>Name</span></a></th>
+                                                        <th><a href="#" class="asc"><span>Time Span</span></a></th>
+                                                        <th><span>Price</span></th>
+                                                        <th class="text-right"><span></span></th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="quote in MovingToday">
+                                                        <td>
+                                                            <a href="#" ng-bind="quote.Lookup"></a>
+                                                        </td>
+                                                        <td>
+                                                            <a href="#" ng-bind="quote.AccountName"></a>
+                                                        </td>
+                                                        <td>
+                                                            <a href="#">{{quote.StartTime}} - {{quote.EndTime}}</a>
+                                                        </td>
+                                                        <td>
+                                                            <a href="#">${{quote.Price}}</a>
+                                                        </td>
+                                                        <td>
+                                                            <i class="fa fa-user"></i>
+                                                            <a href="#">{{quote.Movers}}</a>
+                                                        </td>
+
+
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
                     </div>
-
-                    <div ng-include='"views/common/footer.html"'></div>
                 </div>
             </div>
 
-
-
-
-
-            <div class="md-modal md-effect-15" id="modal-person">
-                <div class="md-content">
-                    <div class="modal-header">
-                        <button class="md-close close">&times;</button>
-                        <h4 class="modal-title">Modal title</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form role="form">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Email address</label>
-                                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputPassword1">Password</label>
-                                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleTextarea">Textarea</label>
-                                <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
-                            </div>
-
-                            <div class="form-inline form-inline-box">
-                                <div class="form-group">
-                                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                                </div>
-                                <div class="form-group">
-                                    <select class="form-control">
-                                        <option>Active</option>
-                                        <option>Inactive</option>
-                                    </select>
-                                </div>
-                                <button type="submit" class="btn btn-link"><i class="fa fa-eye"></i> Preview</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
-                </div>
-            </div>
-
-
+            <div ng-include='"views/common/footer.html"'></div>
         </div>
     </div>
 
 
 
-</body>
-</html>
+
+
+    
+
+
+</div>

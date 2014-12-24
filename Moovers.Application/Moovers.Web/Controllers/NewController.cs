@@ -18,7 +18,7 @@ namespace MooversCRM.Controllers
             return View();
         }
 
-        public ActionResult Login()
+        public ActionResult Quote()
         {
             return View();
 

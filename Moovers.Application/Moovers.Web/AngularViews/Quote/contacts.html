@@ -1,46 +1,162 @@
-﻿
+﻿<div class="row">
+    <div class="col-lg-12">
+        <ol class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li class="active"><span>Advanced tables</span></li>
+        </ol>
 
-            <div class="row">
-                <div class="col-lg-12">
-                    <ol class="breadcrumb">
-                        <li><a href="#">Home</a></li>
-                        <li class="active"><span>Modals</span></li>
-                    </ol>
+        <h1>Advanced tables</h1>
+    </div>
+</div>
 
-                    <h1>Modals</h1>
-                </div>
-            </div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="main-box clearfix">
+            <header class="main-box-header clearfix">
+                <h2 class="pull-left">Account Details</h2>
 
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="main-box clearfix">
-                        <header class="main-box-header clearfix">
-                            <h2>Nifty Modal with Effects</h2>
-                        </header>
 
-                        <div class="main-box-body clearfix">
-                            <p>
-                                Some inspiration for different modal window appearances. There are many possibilities for modal overlays to appear.
-                                Here are some modern ways of showing them using CSS transitions and animations.
-                            </p>
-                            <a data-toggle="modal" href="#myModal" class="btn btn-primary mrg-b-lg">Standard Boostrap Modal</a>
-                            <button class="md-trigger btn btn-primary mrg-b-lg" data-modal="modal-1">Fade in &amp; Scale</button>
-                            <button class="md-trigger btn btn-primary mrg-b-lg" data-modal="modal-2">Slide in (right)</button>
-                            <button class="md-trigger btn btn-primary mrg-b-lg" data-modal="modal-3">Slide in (bottom)</button>
-                            <button class="md-trigger btn btn-primary mrg-b-lg" data-modal="modal-4">Newspaper</button>
-                            <button class="md-trigger btn btn-primary mrg-b-lg" data-modal="modal-5">Fall</button>
-                            <button class="md-trigger btn btn-primary mrg-b-lg" data-modal="modal-6">Side Fall</button>
-                            <button class="md-trigger btn btn-primary mrg-b-lg" data-modal="modal-7">Sticky Up</button>
-                            <button class="md-trigger btn btn-primary mrg-b-lg" data-modal="modal-8">3D Flip (horizontal)</button>
-                            <button class="md-trigger btn btn-primary mrg-b-lg" data-modal="modal-9">3D Flip (vertical)</button>
-                            <button class="md-trigger btn btn-primary mrg-b-lg" data-modal="modal-10">3D Sign</button>
-                            <button class="md-trigger btn btn-primary mrg-b-lg" data-modal="modal-11">Super Scaled</button>
-                            <button class="md-trigger btn btn-primary mrg-b-lg" data-modal="modal-13">3D Slit</button>
-                            <button class="md-trigger btn btn-primary mrg-b-lg" data-modal="modal-14">3D Rotate Bottom</button>
-                            <button class="md-trigger btn btn-primary mrg-b-lg" data-modal="modal-15">3D Rotate In Left</button>
-                        </div>
+            </header>
+
+
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="main-box clearfix">
+            <header class="main-box-header clearfix">
+                <h2>Table with JS pagination, search, ordering, export to pdf and lots more.</h2>
+            </header>
+
+            <div class="main-box-body clearfix">
+                <div class="table-responsive">
+                    <div class="DTTT btn-group">
+
+                    </div>
+                    <div id="table-example_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        
+                        <div id="table-example_filter" class="dataTables_filter">
+                            <label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="table-example"></label>
+                        </div><div class="DTTT btn-group">
+    <div class="btn-group">
+
+        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+
+            <span>
+                <i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;&nbsp;
+                <i class="glyphicon glyphicon-user"></i><i class="fa fa-caret-down"></i>
+            </span>
+
+
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+        </ul>
+    </div>
+</div>
+                        <div class="clearfix"></div>
+                        <table id="table-example" class="table table-hover dataTable no-footer" role="grid">
+                            <thead>
+                                <tr role="row">
+                                    <th class="sorting_asc" tabindex="0" aria-controls="table-example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column ascending" style="width: 203px;">Name</th>
+                                    <th class="sorting" tabindex="0" aria-controls="table-example" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 251px;">Position</th>
+                                    <th class="sorting" tabindex="0" aria-controls="table-example" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 122px;">Office</th>
+                                    <th class="sorting" tabindex="0" aria-controls="table-example" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 63px;">Age</th>
+                                    <th class="sorting" tabindex="0" aria-controls="table-example" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 135px;">Start date</th>
+                                    <th class="sorting" tabindex="0" aria-controls="table-example" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 99px;">Salary</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr role="row" class="odd">
+                                    <td class="sorting_1">Airi Satou</td>
+                                    <td>Accountant</td>
+                                    <td>Tokyo</td>
+                                    <td>33</td>
+                                    <td>2008/11/28</td>
+                                    <td>$162,700</td>
+                                </tr>
+                                <tr role="row" class="even">
+                                    <td class="sorting_1">Angelica Ramos</td>
+                                    <td>Chief Executive Officer (CEO)</td>
+                                    <td>London</td>
+                                    <td>47</td>
+                                    <td>2009/10/09</td>
+                                    <td>$1,200,000</td>
+                                </tr>
+                                <tr role="row" class="odd">
+                                    <td class="sorting_1">Ashton Cox</td>
+                                    <td>Junior Technical Author</td>
+                                    <td>San Francisco</td>
+                                    <td>66</td>
+                                    <td>2009/01/12</td>
+                                    <td>$86,000</td>
+                                </tr>
+                                <tr role="row" class="even">
+                                    <td class="sorting_1">Bradley Greer</td>
+                                    <td>Software Engineer</td>
+                                    <td>London</td>
+                                    <td>41</td>
+                                    <td>2012/10/13</td>
+                                    <td>$132,000</td>
+                                </tr>
+                                <tr role="row" class="odd">
+                                    <td class="sorting_1">Brenden Wagner</td>
+                                    <td>Software Engineer</td>
+                                    <td>San Francisco</td>
+                                    <td>28</td>
+                                    <td>2011/06/07</td>
+                                    <td>$206,850</td>
+                                </tr>
+                                <tr role="row" class="even">
+                                    <td class="sorting_1">Brielle Williamson</td>
+                                    <td>Integration Specialist</td>
+                                    <td>New York</td>
+                                    <td>61</td>
+                                    <td>2012/12/02</td>
+                                    <td>$372,000</td>
+                                </tr>
+                                <tr role="row" class="odd">
+                                    <td class="sorting_1">Bruno Nash</td>
+                                    <td>Software Engineer</td>
+                                    <td>London</td>
+                                    <td>38</td>
+                                    <td>2011/05/03</td>
+                                    <td>$163,500</td>
+                                </tr>
+                                <tr role="row" class="even">
+                                    <td class="sorting_1">Caesar Vance</td>
+                                    <td>Pre-Sales Support</td>
+                                    <td>New York</td>
+                                    <td>21</td>
+                                    <td>2011/12/12</td>
+                                    <td>$106,450</td>
+                                </tr>
+                                <tr role="row" class="odd">
+                                    <td class="sorting_1">Cara Stevens</td>
+                                    <td>Sales Assistant</td>
+                                    <td>New York</td>
+                                    <td>46</td>
+                                    <td>2011/12/06</td>
+                                    <td>$145,600</td>
+                                </tr>
+                                <tr role="row" class="even">
+                                    <td class="sorting_1">Cedric Kelly</td>
+                                    <td>Senior Javascript Developer</td>
+                                    <td>Edinburgh</td>
+                                    <td>22</td>
+                                    <td>2012/03/29</td>
+                                    <td>$433,060</td>
+                                </tr>
+                            </tbody>
+                        </table><div class="dataTables_paginate paging_simple_numbers" id="table-example_paginate"><ul class="pagination pull-right"><li class="paginate_button previous disabled" aria-controls="table-example" tabindex="0" id="table-example_previous"><a href="#"><i class="fa fa-chevron-left"></i></a></li><li class="paginate_button active" aria-controls="table-example" tabindex="0"><a href="#">1</a></li><li class="paginate_button " aria-controls="table-example" tabindex="0"><a href="#">2</a></li><li class="paginate_button " aria-controls="table-example" tabindex="0"><a href="#">3</a></li><li class="paginate_button " aria-controls="table-example" tabindex="0"><a href="#">4</a></li><li class="paginate_button " aria-controls="table-example" tabindex="0"><a href="#">5</a></li><li class="paginate_button " aria-controls="table-example" tabindex="0"><a href="#">6</a></li><li class="paginate_button next" aria-controls="table-example" tabindex="0" id="table-example_next"><a href="#"><i class="fa fa-chevron-right"></i></a></li></ul></div>
                     </div>
                 </div>
             </div>
-
-    
+        </div>
+    </div>
+</div>

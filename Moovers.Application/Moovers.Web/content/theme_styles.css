@@ -2067,7 +2067,7 @@ blockquote.pull-right:before {
 
 /* line 195, /Applications/MAMP/htdocs/ikoma3/scss/theme/imports/tables */
 .dataTables_filter {
-  float: right;
+  float: left;
   margin-top: 10px;
   margin-bottom: 15px; }
   @media (max-width: 767px) {
@@ -2082,9 +2082,12 @@ blockquote.pull-right:before {
     display: none; } }
 /* line 213, /Applications/MAMP/htdocs/ikoma3/scss/theme/imports/tables */
 .DTTT.btn-group {
-  float: right;
+  float: left;
   margin-left: 10px;
-  margin-top: 10px; }
+  margin-top: 10px;
+    
+
+}
 /* line 218, /Applications/MAMP/htdocs/ikoma3/scss/theme/imports/tables */
 .DTTT.btn-group a.btn {
   height: 30px;

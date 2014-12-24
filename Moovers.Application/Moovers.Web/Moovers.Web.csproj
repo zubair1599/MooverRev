@@ -5324,6 +5324,8 @@
     <Content Include="static\js\newTemplate\ckeditor\skins\moono\readme.md" />
     <Content Include="Views\New\Index.cshtml" />
     <Content Include="Views\Shared\NewLogin.cshtml" />
+    <Content Include="Views\New\_Layout.cshtml" />
+    <Content Include="Views\New\Quote.cshtml" />
     <None Include="Web.Beta.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
