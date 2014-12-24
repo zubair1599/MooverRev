@@ -63,7 +63,22 @@ namespace MooversCRM.Controllers
             return Json(quotes, JsonRequestBehavior.AllowGet);
 
         }
+        [HttpGet]
+        public JsonResult SurveyTodayJson()
+        {
+            var surveyRepo = new QuoteSurveyRepository();
+            var surveys = surveyRepo.GetForDay(SessionFranchiseID, DateTime.Today);
+            return Json(surveys, JsonRequestBehavior.AllowGet);
 
+        }
+        [HttpGet]
+        public JsonResult MessagesJson()
+        {
+            var msgRepo = new FrontPageMessageRepository();
+            var msgs = msgRepo.GetLatest();
+            return Json(msgs.Select(m=>new{date = m.Date, user=m.aspnet_Users.UserName,text=m.Message }), JsonRequestBehavior.AllowGet);
+
+        }
         public ActionResult RemoveMsg(Guid id)
         {
             var repo = new FrontPageMessageRepository();

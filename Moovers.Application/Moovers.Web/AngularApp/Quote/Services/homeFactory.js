@@ -84,8 +84,42 @@ function homeFactory($rootScope, $http, $q) {
 
     };
 
+    serviceDefer.Surveys = function () {
 
+        var test = $q.defer();
+        $http.get(serviceDefer.URL + '/Home/SurveyTodayJson/').
+              success(function (data, status, headers, config) {
 
+                  //serviceDefer.servicePromise = $q.defer();
+                  test.resolve(data);
+                  //return serviceDefer.servicePromise.promise;
+
+              }).
+              error(function (data, status, headers, config) {
+                  test.reject(data);
+                  //return serviceDefer.servicePromise.promise;
+              });
+        return test.promise;
+
+    };
+    serviceDefer.Messages = function () {
+
+        var test = $q.defer();
+        $http.get(serviceDefer.URL + '/Home/MessagesJson/').
+              success(function (data, status, headers, config) {
+
+                  //serviceDefer.servicePromise = $q.defer();
+                  test.resolve(data);
+                  //return serviceDefer.servicePromise.promise;
+
+              }).
+              error(function (data, status, headers, config) {
+                  test.reject(data);
+                  //return serviceDefer.servicePromise.promise;
+              });
+        return test.promise;
+
+    };
     serviceDefer.GetQuoteStats = function (query) {
 
         var test = $q.defer();

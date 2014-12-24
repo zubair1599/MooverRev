@@ -4,6 +4,8 @@ function home(homeFactory, $timeout, $scope) {
 
 
     $scope.RecentQuotes = [];
+    $scope.Surveys = [];
+    $scope.Messages = [];
     $scope.MovingToday = [];
     $scope.QuotesStats = [];
     $scope.LeadCount = 0;
@@ -17,6 +19,26 @@ function home(homeFactory, $timeout, $scope) {
             $scope.RecentQuotes = data;
 
         }, function(err) { alert("er"); });
+
+
+    };
+    $scope.GetSurveys = function () {
+
+        homeFactory.Surveys().then(function (data) {
+
+            $scope.Surveys = data;
+
+        }, function (err) { alert("er"); });
+
+
+    };
+    $scope.GetMessages = function () {
+
+        homeFactory.Messages().then(function (data) {
+
+            $scope.Messages = data;
+
+        }, function (err) { alert("er"); });
 
 
     };
@@ -117,7 +139,8 @@ function home(homeFactory, $timeout, $scope) {
         $scope.SetLeadCount();
         $scope.GetStorageCount();
         $scope.GetJobsForUser();
-
+        $scope.GetSurveys();
+        $scope.GetMessages();
     };
 
     $scope.Init();
