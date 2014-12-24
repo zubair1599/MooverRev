@@ -1,0 +1,464 @@
+﻿@{
+  
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Template.cshtml";
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#search-contacts').hide();
+
+        $('.tab-icon-search').click(function () {
+            $('#account-contacts').hide();
+            $('#search-contacts').show();
+            $('.tab-icon').removeClass('active');
+            $(this).addClass('active');
+        });
+
+        $('.tab-icon-contact').click(function () {
+            $('#account-contacts').show();
+            $('#search-contacts').hide();
+            $('.tab-icon').removeClass('active');
+            $(this).addClass('active');
+        });
+
+        $('#contact-search').click(function () {
+            $('.contact-list-container').addClass('show');
+        });
+
+        $("select").selectBoxIt({
+            showFirstOption: false
+        });
+
+        $('.quote-actions').click(function (e) {
+            console.log(e);
+            console.log(e.target); //whatever is being clicked. where the event originated
+            console.log(this); //whatever the function was applied to. 'this' bubbles up. Refers to the element this handler is bound to.
+        });
+    });
+
+</script>
+
+<link href='//fonts.googleapis.com/css?family=Roboto:700,400,300' rel='stylesheet' type='text/css'>
+
+
+<div class="page-pane">
+    <div class="content-pane">
+        <div class="quote-actions">
+            <div class="container">
+                <button class="btn" type="button">Save & Close</button>
+                <div class="nav-btns">
+                    <button class="btn" type="button">Back</button>
+                    <button class="btn btn-primary" type="button">Next</button>
+                </div>
+            </div>
+        </div>
+        <div id="quote-wizard" class="container">
+            <div class="pane-container">
+                <div class="pane-left">
+
+                    <div class="container-white">
+                        <div class="primary-contact">
+                            Primary contact
+                        </div>
+                        <div id="shipper">
+                            <div class="title title3">Elaine Scott</div>
+                            <div id="shipper-address">
+                                <div>526 Harrison St</div>
+                                <div>Kansas City, MO 64106</div>
+                            </div>
+                            <div id="shipper-contact">
+                                <div>816-542-8121</div>
+                                <div>913-442-5671</div>
+                                <div><a href="#">peggy.sue@hotmail.com</a></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container-white">
+                        <div id="shipper">
+                            <div class="title title3">Peggy Sue</div>
+                            <div id="shipper-address">
+                                <div>526 Harrison St</div>
+                                <div>Kansas City, MO 64106</div>
+                            </div>
+                            <div id="shipper-contact">
+                                <div>816-542-8121</div>
+                                <div>913-442-5671</div>
+                                <div><a href="#">peggy.sue@hotmail.com</a></div>
+                            </div>
+                        </div>
+                        <ul id="quote-nav">
+                            <li>
+                                <a href="#" class="active">Contacts</a>
+                            </li>
+                            <li>
+                                <a href="#">Stops</a>
+                            </li>
+                            <li>
+                                <a href="#">Inventory</a>
+                            </li>
+                            <li>
+                                <a href="#">Packing</a>
+                            </li>
+                            <li>
+                                <a href="#">Pricing</a>
+                            </li>
+                            <li>
+                                <a href="#">Schedule</a>
+                            </li>
+                            <li>
+                                <a href="#">Overview</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="quote-stops" class="container-white">
+                        <div class="pane-left-title">Stops</div>
+                        <ul>
+                            <li><span class="street">4201 E 34th St</span>Kansas City, MO 64113</li>
+                            <li><span class="street">3808 S Marshall Ct</span>Independence, MO 64055</li>
+                            <li><span class="street">525 Main St</span>Overland Park, KS 66209</li>
+                        </ul>
+                    </div>
+                    <div id="quote-pricing" class="container-white">
+                        <div class="pane-left-title">Pricing</div>
+                        <ul>
+                            <li>Moving Services <span class="dollars">$642.00</span></li>
+                            <li>Packing Services <span class="dollars">$95.00/hr</span></li>
+                            <li>Packing Supplies <span class="dollars">based on use</span></li>
+                            <li id="promo">Valpak <span class="dollars">- $100.00</span></li>
+                            <li id="coverage">Min Coverage + Cash <span class="dollars">$79.00</span></li>
+                            <li id="total-price">Total <span class="dollars">$542.00</span></li>
+                        </ul>
+                    </div>
+                    <div id="quote-schedule" class="container-white">
+                        <div class="pane-left-title">Schedule</div>
+                        <ul>
+                            <li>Fri, Dec 23, 2013<span class="schedule-detail">Pack</span></li>
+                            <li>Sat, Dec 24, 2013<span class="schedule-detail">Pickup</span></li>
+                            <li>Sun, Dec 25, 2013<span class="schedule-detail">Deliver</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="pane-right">
+                    @*<div class="container-white">
+                        <div class="title title3">
+                            Complete your quote
+                        </div>
+                        <div class="pad-normal">
+                            Unfinished task goes here
+                        </div>
+                        <div class="area-focus">
+                            <div class="pad-all">
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-percent">
+                                        22%
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-bar-status" style="width:22%">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
+
+                    <div id="quote-shipper" class="container-transparent">
+                        <span class="title title2">
+                            Shipper <span class="subtitle">Whose goods are we moving?</span>
+                        </span>
+                        <div class="quote-contacts">
+                            <div class="contact">
+                                <div class="contact-placeholder">
+                                    <div class="contact-title">
+                                        Add a shipper
+                                    </div>
+                                    <div class="contact-subtitle">
+                                        The person or company who<br />owns the goods being shipped.
+                                    </div>
+                                    <a  href="#shipper-modal" role="button" class="btn btn-primary" data-toggle="modal" data-backdrop="static">Add shipper</a>
+                                </div>
+                            </div>
+
+                            @*<div class="contact">
+                                <div class="contact-details">
+                                    <div class="name">
+                                        Peggy Sue
+                                    </div>
+                                    <div class="pull-right">
+                                        <button class="btn btn-default" type="button">Make primary</button>
+                                    </div>
+                                    <div class="contact-title">
+                                        Address
+                                    </div>
+                                    <div class="contact-info">
+                                        <div>
+                                            <span class="heading">Mailing</span>526 Harrison St Kansas City, MO 64106
+                                        </div>
+                                        <div>
+                                            <span class="heading">Billing</span>401 NE 1st St Omaha, NE 68007
+                                        </div>
+                                    </div>
+                                    <div class="contact-title">
+                                        Contacts
+                                    </div>
+                                    <div class="contact-info">
+                                        <div>
+                                            <span class="heading">Home</span>816-442-8457
+                                        </div>
+                                        <div>
+                                            <span class="heading">Mobile</span>913-909-9500
+                                        </div>
+                                        <div>
+                                            <span class="heading">Email</span>peggy.sue@hotmail.com
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>*@
+
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div id="quote-coordinators" class="container-transparent">
+                        <span class="title title2">
+                            Coordinators <span class="subtitle">Who is coordinating the move?</span>
+                        </span>
+                        <div class="quote-contacts">
+                            <div class="contact">
+                                <div class="primary-contact">
+                                    Primary contact
+                                </div>
+                                <div class="contact-details">
+                                    <div class="name">
+                                        Elaine Scott
+                                    </div>
+                                    <div class="contact-title">
+                                        Address
+                                    </div>
+                                    <div class="contact-info">
+                                        <div>
+                                            <span class="heading">Mailing</span>526 Harrison St Kansas City, MO 64106
+                                        </div>
+                                        <div>
+                                            <span class="heading">Billing</span>401 NE 1st St Omaha, NE 68007
+                                        </div>
+                                    </div>
+                                    <div class="contact-title">
+                                        Contacts
+                                    </div>
+                                    <div class="contact-info">
+                                        <div>
+                                            <span class="heading">Home</span>816-442-8457
+                                        </div>
+                                        <div>
+                                            <span class="heading">Mobile</span>913-909-9500
+                                        </div>
+                                        <div>
+                                            <span class="heading">Email</span>escott@stratfordcommons.com
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+@*                    <div class="container-white">
+                        <div class="internal-title">
+                            Get Started
+                        </div>
+                        <div class="pad-all">
+                            <div class="internal-section clearfix">
+                                <div class="section-question">
+                                    <div class="question">
+                                        Whose goods are we moving?
+                                    </div>
+                                    <div class="question-helper">
+                                        The name of the person or company who owns the goods being shipped. <a href="#">Learn more</a>
+                                    </div>
+                                    <select class="area-select selectBoxIt">
+                                        <option>Select a shipper</option>
+                                        <option>Add new shipper</option>
+                                        <option>James Smith</option>
+                                        <option>Tina Smith</option>
+                                    </select>
+                                </div>
+                                <div id="quote-shipper" class="section-answer">
+                                    <div class="name">
+                                        David McBee
+                                    </div>
+                                    <div class="contacts">
+                                        <span class="detail">
+                                            (816) 442-8514
+                                        </span>
+                                        <span class="type">
+                                            Mobile
+                                        </span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="internal-section clearfix">
+                                <div class="section-question">
+                                    <div class="question">
+                                        Who is coordinating the move?
+                                    </div>
+                                    <div class="question-helper">
+                                        The primary contact and person(s) responsible for arranging and the move. <a href="#">Learn more</a>
+                                    </div>
+                                    <select class="area-select selectBoxIt">
+                                        <option>Select a coordinator</option>
+                                        <option>Add new coordinator</option>
+                                        <option>James Smith</option>
+                                        <option>Tina Smith</option>
+                                    </select>
+                                </div>
+                                <div class="section-answer">
+                                    Please add a coordinator...
+                                </div>
+                            </div>
+
+
+                            <div class="internal-section clearfix">
+                                <div class="section-question">
+                                    <div class="question">
+                                        How did you hear about us?
+                                    </div>
+                                    <div class="question-helper">
+                                        Enter a promo code or select an advertising campaign fron the dropdown. <a href="#">Learn more</a>
+                                    </div>
+                                    <input type="text" class="input" placeholder="Promo code" />
+                                </div>
+                                <div class="section-answer">
+                                    <div class="promo">
+                                        <div class="promo-title">
+                                            ValPak
+                                        </div>
+                                        <div class="promo-detail">
+                                            $100 off guaranteed moving services
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="internal-section last clearfix">
+                                <div class="section-question">
+                                    <div class="question">
+                                        When are you wanting to move?
+                                    </div>
+                                    <div class="question-helper">
+                                        A "best guess" date when you would like to schedule your goods for pickup. <a href="#">Learn more</a>
+                                    </div>
+                                    <input type="date" />
+                                </div>
+                                <div class="section-answer">
+                                    
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" type="button">Next</button>
+                        </div>
+                    </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--shipper-modal-->
+
+<div id="shipper-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <a type="button" class="close-modal" data-dismiss="modal" aria-hidden="true"></a>
+        <h3 id="myModalLabel">Add a shipper</h3>
+        <div class="tab-icons">
+            <span class="tab-icon tab-icon-contact active"></span>
+            <span class="tab-icon tab-icon-search"></span>
+        </div>
+    </div>
+    <div id="account-contacts" class="modal-body">
+        <div class="title title7">
+            Account contacts
+        </div>
+        <ul class="contact-list">
+            <li>
+                Elaine Scott
+                <button class="btn btn-default pull-right">Add</button>
+            </li>
+        </ul>
+    </div>
+    <div id="search-contacts">
+        <div class="modal-body">
+            <div class="title title7">
+                Search for a person or company
+            </div>
+            <div class="input-inline-container">
+                <div class="input-inline">
+                    <span class="input-name">Name</span>
+                    <span class="input-underline">
+                        <input type="text" class="" placeholder="person or company" />
+                    </span>
+                </div>
+                <div class="input-inline">
+                    <span class="input-name">Phone</span>
+                    <span class="input-underline">
+                        <input type="text" class="" placeholder="888-555-1234" />
+                    </span>
+                </div>
+                <div class="input-inline">
+                    <span class="input-name">Email</span>
+                    <span class="input-underline">
+                        <input type="text" class="" placeholder="you@example.com" />
+                    </span>
+                </div>
+            </div>
+            <div class="btn-container text-center">
+                <button id="contact-search" class="btn btn-default">Search</button>
+            </div>
+        </div>
+        <div id="contact-search-results" class="contact-list-container">
+            <ul class="contact-list">
+                <li>
+                    Ashley Smith
+                    <button class="btn btn-default pull-right">Add</button>
+                </li>
+                <li>
+                    Asher Smith
+                    <button class="btn btn-default pull-right">Add</button>
+                </li>
+                <li>
+                    Ashely Smithson
+                    <button class="btn btn-default pull-right">Add</button>
+                </li>
+                <li>
+                    Ashley Smith
+                    <button class="btn btn-default pull-right">Add</button>
+                </li>
+                <li>
+                    Asher Smith
+                    <button class="btn btn-default pull-right">Add</button>
+                </li>
+                <li>
+                    Ashely Smithson
+                    <button class="btn btn-default pull-right">Add</button>
+                </li>
+                <li>
+                    Ashley Smith
+                    <button class="btn btn-default pull-right">Add</button>
+                </li>
+                <li>
+                    Asher Smith
+                    <button class="btn btn-default pull-right">Add</button>
+                </li>
+                <li>
+                    Ashely Smithson
+                    <button class="btn btn-default pull-right">Add</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+

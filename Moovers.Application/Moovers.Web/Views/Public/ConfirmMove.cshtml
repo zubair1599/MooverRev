@@ -1,0 +1,303 @@
+﻿@model Business.Models.ScheduleConfirmation
+@{
+    ViewBag.Title = "Confirm Move ";
+    Layout = "~/Views/Shared/Public.cshtml";
+    ViewBag.BodyClass = "confirm-move";
+}
+
+<div id="confirm-container">
+    <div id="content-absolute-width" style="position: relative;">
+        <div class="left">
+            <h2>Confirm Move</h2>
+        </div>
+        <div class="right" style="margin-top: -22px; margin-bottom: -27px;">
+            <img src="~/static/img/pdf-logo-100x300.png" />
+        </div>
+        <br style="clear: left;" />
+
+        @if (!String.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <div class="alert alert-error">
+                @ViewBag.ErrorMessage
+            </div>
+        }
+
+        @if (Model == null)
+        {
+            using (Html.BeginForm("ConfirmMove", "Public", FormMethod.Get))
+            {
+            <label>Enter a Code:</label>
+            <input type="text" name="id" />
+            <input type="submit" />
+            }
+        }
+        else
+        {
+            var schedule = Model.Quote.GetSchedules().OrderBy(i => i.Date).FirstOrDefault();
+            var quicklook = Model.Quote.GetQuicklook();
+            var accountManager = Model.Quote.AccountManager.aspnet_Users_Profile.First();
+
+            if (schedule == null)
+            {
+                <br />
+                <div class="alert alert-error">
+                    Please call 1-800-MOOVERS to confirm your move!
+                </div>
+            }
+            else if (Model.Quote.GetSchedules().All(i => i.IsConfirmed))
+            {
+            <br />
+            <div class="alert alert-success">Move Confirmed! We'll see you @schedule.Date.DayOfWeek!</div>
+            <br />
+            <p>
+                Your move is confirmed! Be sure to save your 
+                    @Html.ActionLink("estimate", "ProposalView", new { Controller = "Public", id = Model.Key }),
+                    and if you have any questions, don't hesitate to contact @accountManager.FirstName at @accountManager.DisplayNumber().
+            </p>
+            }
+            else
+            {
+            @Model.Quote.Account.DisplayName<text>, </text>
+            <p>
+                To confirm your move, verify the following information and review your 
+                    @Html.ActionLink("estimate", "ProposalView", new { Controller = "Public", id = Model.Key })
+                . If everything accurately reflects your upcoming move, 
+                    please click the Confirm Move button. Should you have further questions or changes, please contact us at 1-800-MOOVERS and reference quote number <strong>@Model.Quote.Lookup</strong>.
+            </p>
+            }
+            <br style="clear: both;" />
+            
+            if (schedule != null)
+            {
+                using (Html.BeginForm("Confirm", "Public", FormMethod.Post))
+                {
+                    <input type="hidden" name="key" value="@ViewBag.Key" />
+                    <div class="clearfix ">
+                        <br />
+                    </div>
+                    <div class="section">
+                        <table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, Helvetica, sans-serif; border: solid 6px #f5f5f5; margin-bottom: 10px;">
+                            <tbody>
+                                <tr>
+                                    <td colspan="2" style="text-align: left; background-color: #f5f5f5; padding-left: 0; font-size: 12px; color: #444444;">
+                                        <h4 class="table-header" id="subtitle">Move overview</h4>
+                                    </td>
+                                    <td colspan="2" style="text-align: right; background-color: #f5f5f5; padding: 1px 5px 5px; font-size: 12px; color: #444444;">Your Quote Number: @Model.Quote.Lookup</td>
+                                </tr>
+                                <tr>
+                                </tr>
+                                <tr>
+                                    <td valign="top" style="border-right: solid 1px #e5e5e5;">
+                                        <span class="large">@schedule.Date.ToString("ddd. MMM d")</span>
+                                        <h4>Load Date</h4>
+                                    </td>
+                                    <td valign="top" style="border-right: solid 1px #e5e5e5; padding: 0 11px 3px 11px; color: #444444;">
+                                        <span class="large">@schedule.DisplayTime()</span>
+                                        <h4 style="text-transform: uppercase; font-size: 12px; color: #444444; margin-top: 0; margin-bottom: 8px;">Est. Arrival Time
+                                        </h4>
+                                    </td>
+                                    <td valign="top" style="border-right: solid 1px #e5e5e5; padding: 0 11px 3px 11px; color: #444444;">
+                                        <span class="large">@quicklook.Furniture</span>
+                                        <h4>Pieces</h4>
+                                    </td>
+                                    <td valign="top" style="padding: 0 11px 3px 11px; color: #444444;">
+                                        <span class="large">@quicklook.Boxes</span>
+                                        <h4>Boxes</h4>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" style="padding: 0 5px;">
+                                        <table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; border: solid 1px #00529B; background: #bde5f8;">
+                                            <tr>
+                                                <td valign="top" style="padding: 15px; border: solid 1px #00529B;">
+                                                    <h3 style="color: #00529B !important; font-size: 14px; margin-bottom: 5px; margin-top: 0;">Estimated Arrival Time</h3>
+                                                    The arrival time is an <strong>estimated</strong> range of time the movers are expected to arrive.
+                                                            For example, your arrival time is @schedule.DisplayTime(), so the movers could arrive as early 
+                                                            as @Business.Utility.Date.DisplayHour(schedule.StartTime)  or as late as @Business.Utility.Date.DisplayHour(schedule.EndTime).
+                                                            <strong>The movers will call you 30 minutes prior to arriving at your location.</strong>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" height="20"></td>
+                                </tr>
+                                     @{
+                                        var primary = Model.Quote.Account.GetPhone(Business.Models.PhoneNumberType.Primary);
+                                        var secondary = Model.Quote.Account.GetPhone(Business.Models.PhoneNumberType.Secondary);
+                                    }
+
+                                @if (primary != null || secondary != null)
+                                {
+                                <tr>
+                                    <td colspan="4" style="padding: 0 11px;">
+                                        <h4 style="margin-top: 0; margin-bottom: 3px; font-size: 14px;">Contact Information</h4>
+                                        <p style="font-size: 11px; color: #808080; margin-top: 0;">
+                                            Please verify the following information.
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="padding: 0 11px;">
+                                        <ul style="list-style-type: none; line-height: 1.4em; margin: 0; padding: 0; font-size: 12px; color: #333333;">
+                                            @if (primary != null)
+                                            {
+                                                <li style="margin-bottom: 3px; margin-left: 0; padding-left: 0;">
+                                                    Primary Phone: @primary.DisplayString()
+                                                </li>
+                                            }
+                                            @if (secondary != null)
+                                            {
+                                                <li style="margin-bottom: 3px; margin-left: 0; padding-left: 0;">
+                                                    Secondary Phone: @secondary.DisplayString()
+                                                </li>
+                                            }
+                                        </ul>
+                                    </td>
+                                </tr>
+                                }
+                                <tr>
+                                    <td colspan="4" height="10"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" style="padding: 0 11px;">
+                                        <h4 style="margin-top: 0; margin-bottom: 3px; font-size: 14px;">Stops
+                                        </h4>
+                                        <p style="font-size: 11px; color: #808080; margin-top: 0;">
+                                            Please verify the following addresses.
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="padding: 0 11px;">
+                                        <ul style="list-style-type: none; line-height: 1.4em; margin: 0; padding: 0; font-size: 12px; color: #333333;">
+                                            @foreach (var addr in Model.Quote.GetStops())
+                                            {
+                                                <li style="margin-bottom: 3px; margin-left: 0; padding-left: 0;">@addr.Address.DisplayString()</li>
+                                            }
+                                        </ul>
+                                    </td>
+                                    <td colspan="2">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td style="padding: 0 10px 0 30px; border-right: solid 1px #e5e5e5;">
+                                                        <span style="font-size: 25px; color: #444444;">@Model.Quote.GetStops().Count()
+                                                        </span>
+                                                        <h4 style="text-transform: uppercase; font-size: 12px; color: #444444; margin-top: 0; margin-bottom: 8px;">Stops
+                                                        </h4>
+                                                    </td>
+                                                    <td style="padding: 0 10px;">
+                                                        <span style="font-size: 25px; color: #444444;">@Math.Round(quicklook.MoveMiles)</span>
+                                                        <h4 style="text-transform: uppercase; font-size: 12px; color: #444444; margin-top: 0; margin-bottom: 8px;">Miles
+                                                        </h4>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" height="10"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" style="padding: 0 11px;">
+                                        <h4 style="margin-top: 0; margin-bottom: 3px; font-size: 14px;">Inventory</h4>
+                                        <p style="font-size: 11px; color: #808080; margin-top: 0;">
+                                            If you have inventory changes, please contact @accountManager.FirstName at
+                                            <tel>@accountManager.DisplayNumber()</tel>
+                                            .
+                                        </p>
+                                        <ul class="quarters">
+                                            @foreach (var i in Model.Quote.GetStops().SelectMany(s => s.GetItems()))
+                                            {
+                                                <li>@i.Count - @i.Item.Name</li>
+                                            }
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" height="10"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" style="padding: 0 11px;">
+                                        <h4 style="margin-top: 0; margin-bottom: 3px; font-size: 14px;">Payment</h4>
+                                        <p style="font-size: 11px; color: #808080; margin-top: 0;">
+                                            We accept Visa, Mastercard, Cashier's Checks, Discover, American Express and Cash.
+                                        </p>
+                                        <strong>No Personal Checks or American Express</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" height="10"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="section" style="padding-bottom: 10px;">
+                        <h3>Contact Us</h3>
+                        <p style="padding: 10px 0;">
+                            Call @accountManager.DisplayName() at @accountManager.DisplayNumber() if you have any questions or changes. Reference
+                                quote number <strong>@Model.Quote.Lookup</strong>.
+                        </p>
+                        @if (Model.Quote.GetSchedules().All(i => i.IsConfirmed))
+                        {
+                            <button type="button" class="btn btn-primary disabled" disabled>Move Confirmed!</button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-primary">Confirm Move</button>
+                        }
+                    </div>
+            
+                    <p class="legal">
+                        By confirming your move, 
+
+                    </p>
+            
+                }
+            }
+        }
+    </div>
+
+    <div id="footer_container">
+        <div id="footer">
+            <div class="footer_links">
+                <h3>
+                    <img src="~/static/img/phone_number_footer.png" alt="1-800-MOOVERS" style="margin-top: -11px;" /></h3>
+                <ul>
+                    <li><a href="http://1800moovers.com/moving/">Moving</a></li>
+                    <li><a href="http://1800moovers.com/storage/">Storage</a></li>
+                    <li><a href="http://1800moovers.com/locations.html">Locations</a></li>
+                    <li><a href="http://1800moovers.com/about.html">About</a></li>
+                    <li><a href="http://1800moovers.com/franchise.html">Franchise</a></li>
+                    <li><a href="http://1800moovers.com/about/contact-us.html">Contact Us</a></li>
+                </ul>
+                <div class="right_links">
+                    <ul>
+                        <li><a href="http://1800moovers.com/privacy-policy.html">Privacy&nbsp;policy</a></li>
+                        <li><a href="http://1800moovers.com/terms-and-conditons.html">Terms &amp; Conditons</a></li>
+                        <li class="last"><a href="http://1800moovers.com/sitemap.html">Sitemap</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="bottom">
+                <p>&copy;2001 Copyright MyMoovers .com. All Rights Reserved. Use of this site signifies your acceptance of the Legal Terms of Use.</p>
+                <div class="bottom_right">
+                    <span style="margin-left: -115px; margin-top: 0; position: absolute; z-index: 99;">Find us on</span>
+                    <a style="margin-top: -2px; position: absolute; z-index: 99;" href="http://www.twitter.com/moovers">
+                        <img src="~/static/img/tweeter.jpg" alt="Twitter">
+                    </a>
+                    <a style="margin-top: -2px; margin-left: -20px; position: absolute;" href="https://www.facebook.com/pages/MOOVERS-Moving-Storage/10150142234110529">
+                        <img src="~/static/img/facebook.jpg" border="0" alt="Facebook">
+                    </a>
+                    <div id="fb-root" style="display: none;"></div>
+                    <script src="http://connect.facebook.net/en_US/all.js#appId=249218421777583&amp;xfbml=1"></script>
+                    <fb:like href="1800moovers.com" send="false" layout="button_count" width="100" show_faces="true" action="like" font=""></fb:like>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

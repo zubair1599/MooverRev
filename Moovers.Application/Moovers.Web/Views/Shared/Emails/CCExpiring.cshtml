@@ -1,0 +1,139 @@
+﻿@model Business.Models.StorageWorkOrder
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   </head>
+   <body>
+      <div style="margin:0;padding:0">
+         <table width="100%" cellpadding="0" cellspacing="0" align="center" style="background:#bfe7fb">
+            <tbody>
+               <tr>
+                  <td align="center" width="600">
+                     <div align="center" style="max-width:600px;min-width:100px;text-align:left;padding-top:30px">
+                        <table style="text-align:left;width:600px;max-width:600px;min-width:200px;font-family:Arial,Helvetica,sans-serif;color:#333333;margin:0 auto;background:#ffffff" cellpadding="0" cellspacing="0">
+                           <tbody>
+                              <tr>
+                                 <td style="background-color:#ff9900;height:40px">
+                                    <h3 style="font-size:19px;font-weight:bold;color:#ffffff;line-height:40px;margin:0 0 0 30px">
+                                       Credit / Debit Card Expiring
+                                    </h3>
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td colspan="2" style="padding:30px 50px">
+                                    <p style="list-style-type:none;line-height:17px;margin:0 0 20px;padding:0;font-size:13px;color:#555555">
+                                       Dear <strong>@Model.Account.DisplayName</strong>,
+                                       <br><br>
+                                       You are receiving this alert because the credit/debit card associated with your automatic/recurring payment is going to expire next month.
+                                    </p>
+                                    <table cellspacing="0" cellpadding="0" width="500px" bgcolor="444444">
+                                       <tbody>
+                                          <tr>
+                                             <td style="color:#ffffff;font-weight:bold;font-size:13px;padding:5px 0 5px 20px">
+                                                Payment Details
+                                             </td>
+                                          </tr>
+                                       </tbody>
+                                    </table>
+                                    <table border="0" cellspacing="0" cellpadding="0" width="500" bgcolor="#f1f1f1" style="font-size:14px">
+                                       <tbody>
+                                          <tr>
+                                             <td width="150" align="right" bgcolor="dedede" style="font-size:14px;color:#444444;padding:10px;border-bottom:1px solid #ffffff;border-right:1px solid #ffffff;background-color:#dedede">
+                                                <b>Account Name:</b>
+                                             </td>
+                                             <td align="left" bgcolor="f1f1f1" style="font-size:14px;color:#444444;padding:10px;border-bottom:1px solid #ffffff;border-right:1px solid #f1f1f1;background-color:#f1f1f1">
+                                                @Model.Account_CreditCard.GetCardHolder()
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td width="150" align="right" bgcolor="dedede" style="font-size:14px;color:#444444;padding:10px;border-bottom:1px solid #ffffff;border-right:1px solid #ffffff;background-color:#dedede">
+                                                <b>Account Number:</b>
+                                             </td>
+                                             <td align="left" bgcolor="f1f1f1" style="font-size:14px;color:#444444;padding:10px;border-bottom:1px solid #ffffff;border-right:1px solid #f1f1f1;background-color:#f1f1f1">
+                                                @Model.Account.Lookup
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td width="150" align="right" bgcolor="dedede" style="font-size:14px;color:#444444;padding:10px;border-bottom:1px solid #ffffff;border-right:1px solid #ffffff;background-color:#dedede">
+                                                <b>Next Billing Date:</b>
+                                             </td>
+                                             <td align="left" bgcolor="f1f1f1" style="font-size:14px;color:#444444;padding:10px;border-bottom:1px solid #ffffff;border-right:1px solid #f1f1f1;background-color:#f1f1f1">
+                                                @Model.NextInvoiceDate.Value.ToShortDateString()
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td width="150" align="right" bgcolor="dedede" style="font-size:14px;color:#444444;padding:10px;border-bottom:1px solid #ffffff;border-right:1px solid #ffffff;background-color:#dedede">
+                                                <b>Amount:</b>
+                                             </td>
+                                             <td align="left" bgcolor="f1f1f1" style="font-size:14px;color:#444444;padding:10px;border-bottom:1px solid #ffffff;border-right:1px solid #f1f1f1;background-color:#f1f1f1">
+                                                @String.Format("{0:C}", Model.MonthlyPayment)
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td width="150" align="right" bgcolor="dedede" style="font-size:14px;color:#444444;padding:10px;border-bottom:1px solid #ffffff;border-right:1px solid #ffffff;background-color:#dedede">
+                                                <b>Credit / Debit Card:</b>
+                                             </td>
+                                             <td align="left" bgcolor="f1f1f1" style="font-size:14px;color:#444444;padding:10px;border-bottom:1px solid #ffffff;border-right:1px solid #f1f1f1;background-color:#f1f1f1">
+                                                 @Model.Account_CreditCard.GetCard() ending in @Model.Account_CreditCard.GetLast4()
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td width="150" align="right" bgcolor="dedede" style="font-size:14px;color:#444444;padding:10px;border-bottom:1px solid #ffffff;border-right:1px solid #ffffff;background-color:#dedede">
+                                                <b>Expiration Date:</b>
+                                             </td>
+                                             <td align="left" bgcolor="f1f1f1" style="font-size:14px;color:#444444;padding:10px;border-bottom:1px solid #ffffff;border-right:1px solid #f1f1f1;background-color:#f1f1f1">
+                                                @Model.Account_CreditCard.DisplayExpiration()
+                                             </td>
+                                          </tr>
+                                          <tr style="background-color:#ffffff">
+                                             <td colspan="2" width="500" style="color:#555555;font-weight:normal;font-size:13px;line-height:17px;margin:0;font-family:Arial,Helvetica,sans-serif">
+                                                <br>
+                                                <br>
+                                                <b style="color:#ff9900;font-size:18px">Immediate Action Required</b>
+                                                <ul>
+                                                   <li style="padding-bottom:10px">
+                                                      Your current credit/debit card on file will expire next month.
+                                                   </li>
+                                                   <li style="padding-bottom:10px">
+                                                      Please contact Customer Care to update your existing credit/debit card or provide an alternate payment method. 1-800-MOOVERS (1-800-666-8377), Monday - Friday, 8AM - 5PM CST.
+                                                   </li>
+                                                   <li style="padding-bottom:10px">
+                                                      Please reference <b>Account Number @Model.Account.Lookup</b>.
+                                                   </li>
+                                                   <li style="padding-bottom:10px">
+                                                      <b>If you don't update your credit/debit card</b>, your automatic/recurring payment may decline and fees may be billed to your account.
+                                                   </li>
+                                                </ul>
+                                                <br>
+                                                Sincerely,
+                                                <br>
+                                                <b>Your Moovers Team</b>
+                                             </td>
+                                          </tr>
+                                       </tbody>
+                                    </table>
+                                 </td>
+                              </tr>
+                           </tbody>
+                        </table>
+                        <p align="center" style="line-height:20px;font-size:11px;font-family:Arial,Helvetica,sans-serif;color:#666666;padding:12px 20px 0">
+                           Each franchise independently owned and operated, &copy; 2013 Moovers Franchising Inc.
+                           <a style="margin:0;font-size:11px;font-style:normal;color:#0065b1;text-decoration:none" href="http://www.1800moovers.com/" target="_blank">
+                           http://www.1800moovers.com
+                           </a>
+                           <br>
+                           <br>
+                           Moovers understands the importance of protecting your privacy.
+                           <br>
+                           You received this email because you have created an account with Moovers.
+                           <br>
+                        </p>
+                     </div>
+                  </td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+   </body>
+</html>

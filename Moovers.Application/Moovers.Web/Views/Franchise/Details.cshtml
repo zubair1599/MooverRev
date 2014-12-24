@@ -1,0 +1,43 @@
+﻿@model Business.Models.Franchise
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+<div class="center-container">
+    <div class="container-pad">
+        <fieldset>
+            <legend>@Model.Name <img width="20" height="20" src="@(Model.Icon.Replace("~",""))" /></legend> 
+            @Html.ActionLink("Edit", "Edit", new { id=Model.FranchiseID })
+           
+
+            
+            <div class="display-field">
+                @Model.Address.DisplayString()
+            </div>
+
+            
+
+            
+            <div class="display-field">
+               Phone: @Html.DisplayFor(model => model.PhoneNumber)
+            </div>
+
+          
+            <div class="display-field">
+              Email:  @Html.DisplayFor(model => model.FranchiseEmail)
+            </div>
+
+           
+            <div class="display-field">
+               Storage @Html.DisplayFor(model => model.HasStorage)
+            </div>
+
+            
+          
+           
+        </fieldset>
+        
+</div>
+</div>

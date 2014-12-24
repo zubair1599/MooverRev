@@ -1,0 +1,129 @@
+﻿@using Business.Models
+@model Moovers.WebModels.StorageInventoryModel
+@{
+    ViewBag.Title = "Manage Inventory";
+    ViewBag.BodyClass = "storage";
+}
+
+<div class="container-pad">
+    <h3>Manage Inventory - #@Model.WorkOrder.Lookup
+        <span class="subcontrol">
+            @Html.ActionLink("back", "View", new { id = Model.WorkOrder.Lookup })
+        </span>
+    </h3>
+
+    @using (Html.BeginForm("AddInventory", "Storage", new { id = Model.WorkOrder.Lookup }, FormMethod.Post, new { id = "add-item-form" }))
+    {
+        <input type="hidden" name="itemid" />
+        <input type="text" id="inventory-add" placeholder="Add Item" required autofocus />
+        <input type="number" name="count" placeholder="Count" required />
+        <input type="submit" class="btn" />
+    }
+
+    @using (Html.BeginForm("EditOverstuffed", "Storage", new { id = Model.WorkOrder.Lookup }, FormMethod.Post, new { @id = "os-form" }))
+    {
+    <table>
+        <tr>
+            <th>Oversized</th>
+            <th>Name</th>
+        </tr>
+        @foreach (var rel in Model.WorkOrder.GetInventoryRels())
+        {
+            <tr>
+                <td>
+                    <input type="hidden" name="overstuffed" value="@rel.RelID" />
+                    @if (!rel.IsOverstuffed)
+                    {
+                        <input type="checkbox" name="isos" value="@rel.RelID" />
+                    }
+                    else {
+                        <text>#@rel.OverstuffID</text>
+                        <input type="checkbox" name="isos" value="@rel.RelID" class="hide" checked />
+                    }
+                </td>
+                <td>@rel.Count - @rel.InventoryItem.Name
+                    @if (!String.IsNullOrEmpty(rel.OverstuffDescription))
+                    {
+                        <text>(</text>@rel.OverstuffDescription<text>)</text>
+                    }
+                </td>
+                <td>
+                    @if (rel.IsOverstuffed)
+                    {
+                        @rel.StorageZone.Name<text> </text>@rel.OverstuffRow<text> - </text>@rel.OverstuffShelf
+                        <a href="#" class="show-os">edit</a>
+                    }
+
+                    <div class="os" style="display: none;">
+                        @{
+                            var thisrel = rel;
+                        }
+                        @Html.DropDownList("oszone", Model.Zones.Select(i => new SelectListItem() {
+                            Text = i.Name,
+                            Value = i.ZoneID.ToString(),
+                            Selected = i.ZoneID == thisrel.OverstuffZoneID
+                        }), new { @class = "input-small" })
+                        <input type="text" name="alias" placeholder="Description" value="@rel.OverstuffDescription" />
+                        <input type="text" name="row" class="input-mini" placeholder="Row" value="@rel.OverstuffRow" />
+                        <input type="text" name="shelf" class="input-mini" placeholder="Shelf" value="@rel.OverstuffShelf" />
+                    </div>
+                </td>
+                <td>
+                    @* Hack -- this page is much more convenient markup w/ nested forms, this hack makes it so all of these forms work correctly.*@
+                    @* nested forms aren't technically allowed, but only the first "form" is broken. So, create a hidden form (which is broken), then display the correct form *@
+                    @using (Html.BeginForm("RemoveInventory", "Storage", new { id = Model.WorkOrder.Lookup }, FormMethod.Post, new { @class = "hide" })){}
+                    @using (Html.BeginForm("RemoveInventory", "Storage", new { id = Model.WorkOrder.Lookup }, FormMethod.Post))
+                    {
+                        <input type="hidden" name="relid" value="@rel.RelID" />
+                        <button class="btn btn-link" type="submit">
+                            <i class="icon-remove"></i>
+                        </button>
+                    }
+                </td>
+                <td>
+                    @if (rel.IsRemoved)
+                    {
+                        <span class="red">REMOVED</span>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+        <br />
+        <button type="button" class="btn" id="os-form-save">Save</button>
+    }
+
+</div>
+
+
+<script type="text/javascript">
+    $(function() {
+        Storage.InventoryItems = @Html.Raw(Model.Items.ToList().Select(itm => itm.ToJsonObject()).OrderBy(i => i.Name).SerializeToJson());
+        Storage.init();
+
+        var toggleOs = function(item, show) {
+            $(item).closest("tr").find(".os").toggle(show).find("input").toggleAttr("required", show);
+        };
+
+        $(".show-os").click(function() {
+            toggleOs(this, true);
+        });
+
+        $("#os-form-save").click(function() {
+            $("#os-form").submit();
+        });
+
+        $("#add-item-form").submit(function() {
+            var itemid = $(this).find("[name=itemid]").val();
+            if (!itemid) {
+                alert("Please enter an item. You cannot add custom items from this page. If you did add an item...try deleting the text in the box and re-adding it. If that doesn't work, file a bug please!");
+                return false;
+            }
+        });
+
+        $("[name=isos]").change(function() {
+            var checked = $(this).is(":checked");
+            toggleOs(this, checked);
+        });
+    });
+</script>

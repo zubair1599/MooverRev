@@ -1,0 +1,141 @@
+﻿@model Moovers.WebModels.StorageStatementModel
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=8">
+    <title></title>
+    <style>
+        @Html.RenderFile("~/static/css-plugins/reset.css")
+        @Html.RenderFile("~/static/css/base.css")
+        @Html.RenderFile("~/static/css/PDF/statement.css")
+    </style>
+</head>
+<body>
+    @foreach (var workOrder in Model.StorageWorkOrders)
+    {
+        <div class="pdf-page">
+            <table class="header">
+                <tr>
+                    <td>
+                        Moovers<br />
+                        @Html.Partial("Accounts/_DisplayAddress", Model.Franchise.Address)
+                        <br /><br />
+                        @Model.Franchise.DisplayNumber()
+                        <br />
+                        @Model.Franchise.FranchiseEmail
+                        <br />
+                        http://www.1800moovers.com
+                        <br /><br />
+                    </td>
+                    <td style="text-align: center;">
+                        <h4>Moovers</h4>
+                    </td>
+                    <td style="text-align: right;">
+                        <table class="top-right">
+                            <tr>
+                                <th>Date</th>
+                            </tr>
+                            <tr>
+                                <td>@Model.Date.ToShortDateString()</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+
+            <div class="toAddress">
+                <table>
+                    <tr>
+                        <th>To</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            @workOrder.Account.DisplayName<br />
+                            @Html.Partial("Accounts/_DisplayAddress", workOrder.Account.GetAddress(Business.Models.AddressType.Billing))
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="right">
+                <table class="amount-table">
+                    <tr>
+                        <th>Account #</th>
+                        <th>Amount Due</th>
+                    </tr>
+                    <tr>
+                        <td>@workOrder.Account.Lookup</td>
+                        <td class="number">@String.Format("{0:C}", workOrder.GetBalance())</td>
+                    </tr>
+                </table>
+            </div>
+
+            <br class="clear" />
+            <br >
+
+            @if (workOrder.IsAutomaticBilling && workOrder.GetOverdueBalance() == 0)
+            {
+                <div class="auto">
+                    @workOrder.GetBalance() will be automatically billed to your account on 
+                    @workOrder.GetActiveInvoices().Where(i => i.GetBalance() > 0).Max(i => i.ForDate).ToShortDateString().
+                </div>
+            }
+            else {
+                <div class="detach">
+
+                    Please detach top portion and return with your payment
+                </div>
+            }
+
+            <br /><br />
+
+            <table class="invoices">
+                <tr class="item">
+                    <th>Date</th>
+                    <th>Activity</th>
+                    <th>Amount</th>
+                    <th>Open Amount</th>
+                </tr>
+                @foreach (var invoice in workOrder.GetActiveInvoices().Where(i => !i.IsPaid()).OrderBy(i => i.ForDate))
+                {
+                    <tr class="item">
+                        <td style="width: 10px;">@invoice.ForDate.ToShortDateString()</td>
+                        <td>Invoice #@invoice.Lookup: Due @invoice.ForDate.ToShortDateString()</td>
+                        <td class="number" style="width: 60px;">@String.Format("{0:C}", invoice.Amount)</td>
+                        <td class="number" style="width: 50px;">@String.Format("{0:C}", invoice.GetBalance())</td>
+                    </tr>
+                }
+                <tr class="spacer">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+            <div class="footer">
+                <table>
+                    <tr>
+                        <th>Current Due</th>
+                        <th>1-30 Days Past Due</th>
+                        <th>31-60 Days Past Due</th>
+                        <th>61-90 Days Past Due</th>
+                        <th>90+ Days Past Due</th>
+                        <th>Amount Due</th>
+                    </tr>
+                    <tr>
+                        @{
+                            var invoices = workOrder.GetActiveInvoices().Where(i => !i.IsPaid()).ToList();
+                        }
+                        <td>@String.Format("{0:C}", invoices.Where(i => i.ForDate >= Model.Date.AddDays(-1)).Sum(i => i.GetBalance()))</td>
+                        <td>@String.Format("{0:C}", invoices.Where(i => i.ForDate >= Model.Date.AddDays(-30) && i.ForDate <= Model.Date.AddDays(-1)).Sum(i => i.GetBalance()))</td>
+                        <td>@String.Format("{0:C}", invoices.Where(i => i.ForDate >= Model.Date.AddDays(-60) && i.ForDate <= Model.Date.AddDays(-31)).Sum(i => i.GetBalance()))</td>
+                        <td>@String.Format("{0:C}", invoices.Where(i => i.ForDate >= Model.Date.AddDays(-90) && i.ForDate <= Model.Date.AddDays(-61)).Sum(i => i.GetBalance()))</td>
+                        <td>@String.Format("{0:C}", invoices.Where(i => i.ForDate <= Model.Date.AddDays(-90)).Sum(i => i.GetBalance()))</td>
+                        <td>@String.Format("{0:C}", workOrder.GetBalance())</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    }
+</body>

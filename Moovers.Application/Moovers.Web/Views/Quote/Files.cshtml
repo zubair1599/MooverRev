@@ -1,0 +1,61 @@
+﻿@model Moovers.WebModels.QuoteEdit
+@{
+    ViewBag.Title = "Quote " + Model.Quote.Lookup;
+    Layout = "~/Views/Quote/AddQuoteLayout.cshtml";
+}
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "" }))
+{
+    <div class="row-fluid">
+        <div class="span2"></div>
+        <div class="span4">
+            <div class="controls">
+                <h5 style="margin-bottom: 0;">Files
+                    <span class="subcontrol">
+                        @Html.ActionLink("Back", "Overview", new { id = Model.Quote.Lookup })
+                    </span>
+                </h5>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span2"></div>
+        <div class="span10">
+            <h6>Generate</h6>
+            <ul class="file-list">
+                <li>@Html.ActionLink("New Proposal", "ViewProposal", new { id = Model.Quote.Lookup }, new { @class = "pdf" })</li>
+                <li>@Html.ActionLink("New Invoice", "ViewSpecialInvoice", new { id = Model.Quote.Lookup }, new { @class = "pdf" })</li>
+                @if (Model.Quote.GetSchedules().Any())
+                {
+                <li>@Html.ActionLink("New Contract", "ViewContract", new { id = Model.Quote.Lookup }, new { @class = "pdf" })</li>
+                }
+                @if (Model.Quote.GetPayments().Any())
+                {
+                    <li>@Html.ActionLink("Payment Receipt", "ViewReceipt", new { id = Model.Quote.Lookup }, new { @class = "pdf" })</li>
+                }
+            </ul>
+        </div>
+    </div>
+    if (Model.Quote.GetFiles().Any())
+    {
+    <div class="row-fluid">
+        <div class="span2"></div>
+        
+        <div class="span10">
+            <h6>Old Files</h6>
+            <ul class="file-list">
+                @foreach (var file in Model.Quote.GetFiles())
+                {
+                    <li>@Html.ActionLink(file.Name, "ViewFile", new { id = Model.Quote.Lookup, fileid = file.FileID }, new { @class = "pdf" })</li>
+                }
+            </ul>
+        </div>
+    </div>
+    }
+    <div class="row-fluid">
+        <div style="float: right;">
+            @Html.ActionLink("Cancel", "Overview", new { id = Model.Quote.Lookup }, new { @class = "btn" })
+        </div>
+    </div>
+}

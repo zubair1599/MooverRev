@@ -1,0 +1,27 @@
+﻿@model PostListModel
+@{
+    ViewBag.Title = "Posted Quotes";
+    Layout = "_PostLayout.cshtml";
+    ViewBag.BodyClass = "post-body";
+    ViewBag.Page = "posted";
+}
+
+@section Buttons 
+{
+    <button id="btn-post" class="btn btn-primary" style="visibility: hidden;">Post</button>
+}
+
+<div class="col2-right posted">
+    <div class="section">
+        @if (!Model.Postings.Any())
+        {
+            <div class="alert alert-info">
+                No posted quotes available.
+            </div>
+        }
+        else
+        {
+            @Html.Partial("_PostList")
+        }
+    </div>
+</div>

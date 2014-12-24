@@ -1,0 +1,500 @@
+﻿/*! Copyright (c) 2012 Moovers Franchising, Inc.
+ * Credits: http://crm.1800moovers.com/credits.txt
+ * License: http://crm.1800moovers.com/license.txt
+*/
+/** Base Element Styles **/
+html {
+  height: 100%; }
+
+body {
+  height: 100%;
+  font-size: 12px;
+  background-color: white;
+  min-width: 1270px;
+  overflow: hidden;
+  overflow: visible; }
+
+.clickable {
+  cursor: pointer; }
+
+.printonly, .printonly-inline {
+  display: none; }
+
+.mobile-only {
+  display: none !important; }
+
+.dark a {
+  color: #00B8FF; }
+  .dark a:hover {
+    color: #00B8FF;
+    text-decoration: underline; }
+
+.table tbody tr.error td {
+  background-color: rgba(242, 222, 222, 0.5); }
+
+button {
+  box-sizing: content-box; }
+
+form {
+  margin: 0; }
+
+a {
+  color: #15C; }
+
+a:hover {
+  color: #1769FF; }
+
+label, input, button, select, textarea {
+  font-size: 12px; }
+
+label.checkbox {
+  display: inline-block;
+  padding-left: 0;
+  position: relative;
+  top: 2px; }
+
+label {
+  margin-top: 10px;
+  margin-bottom: 0; }
+
+label.radio.inline {
+  float: left;
+  margin-left: 10px;
+  width: 145px; }
+
+label.radio {
+  line-height: 24px; }
+
+label.radio.condensed {
+  margin-top: 4px; }
+
+hr {
+  margin: 20px 0;
+  border: 0;
+  border-top: 1px solid #CCC;
+  border-bottom: 1px solid white; }
+
+/***************************/
+/*        HEADINGS         */
+/***************************/
+h1, h2, h3, h4, h5, h6 {
+  font-family: Helvetica, Arial, 'DejaVu Sans', 'Liberation Sans', Freesans, sans-serif;
+  margin: 0 0 10px 0; }
+  h1.nomargin, h2.nomargin, h3.nomargin, h4.nomargin, h5.nomargin, h6.nomargin {
+    margin-bottom: 0; }
+  h1 .desc, h2 .desc, h3 .desc, h4 .desc, h5 .desc, h6 .desc {
+    font-weight: normal;
+    font: 0.85em; }
+
+h1 {
+  font-size: 36px;
+  line-height: 36px; }
+
+h2 {
+  font-size: 32px;
+  line-height: 32px; }
+
+h3 {
+  font-size: 24px;
+  line-height: 24px; }
+
+h4 {
+  font-size: 18px;
+  line-height: 18px; }
+
+h5 {
+  font-size: 14px;
+  line-height: 14px; }
+
+h6 {
+  font-size: 12px;
+  line-height: 12px; }
+
+/*** Input Default Styling **/
+textarea, select, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"] {
+  padding: 0 8px;
+  font-size: 12px;
+  outline: none;
+  margin: 0;
+  border-radius: 3px;
+  height: 32px;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline-block;
+  -moz-transition: box-shadow 0.25s ease-in-out;
+  /* Firefox 4 */
+  -webkit-transition: box-shadow 0.25s ease-in-out;
+  /* Safari and Chrome */
+  -ms-transition: box-shadow 0.25s ease-in-out;
+  /* Safari and Chrome */
+  -o-transition: box-shadow 0.25s ease-in-out;
+  /* Opera */
+  transition: box-shadow 0.25s ease-in-out; }
+  textarea:focus, select:focus, input[type="text"]:focus, input[type="password"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="date"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="url"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="color"]:focus {
+    border-color: #ffa000;
+    box-shadow: 0 0 5px #FFA000; }
+  textarea.error, select.error, input[type="text"].error, input[type="password"].error, input[type="datetime"].error, input[type="datetime-local"].error, input[type="date"].error, input[type="month"].error, input[type="time"].error, input[type="week"].error, input[type="number"].error, input[type="email"].error, input[type="url"].error, input[type="search"].error, input[type="tel"].error, input[type="color"].error {
+    border-color: red; }
+
+/*
+    Chrome, by default, shows up/down arrows on date boxes, this hides them
+*/
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0; }
+
+/*
+    Chrome shows an "X" on date boxes, this hides it
+*/
+input[type=date]::-webkit-clear-button {
+  display: none; }
+
+input[type=date] {
+  width: 102px; }
+
+textarea {
+  padding-top: 4px; }
+
+input[type="checkbox"] {
+  margin-top: 0;
+  margin-right: 10px; }
+
+select {
+  padding: 2px 2px 2px 8px;
+  height: 29px;
+  margin-bottom: 0; }
+
+/*
+    On invalid select boxes, the text of all options turns red. This makes only the invalid selection red.
+*/
+select:focus:required:invalid option:not(:first-child) {
+  color: #555; }
+
+input[type=tel] {
+  width: 176px; }
+
+input[type=tel].extension {
+  width: 70px; }
+
+.filedrop {
+  background: #f9b660; }
+
+div.file-input {
+  position: relative;
+  width: 40px;
+  height: 10px;
+  overflow: hidden;
+  display: inline-block; }
+
+div.file-input button {
+  position: absolute;
+  width: 100%;
+  height: 100%; }
+
+div.file-input button.btn-link {
+  margin-left: 0;
+  padding-left: 0;
+  height: auto;
+  padding: 0;
+  line-height: 10px;
+  font-size: 10px;
+  color: #15C; }
+
+div.file-input input {
+  font: 500px monospace;
+  /* make the input's button HUGE */
+  opacity: 0;
+  /* this will make it transparent */
+  filter: alpha(opacity=0);
+  /* transparency for Internet Explorer */
+  position: absolute;
+  /* making it absolute with z-index:1 will place it on top of the button */
+  z-index: 1;
+  top: 0;
+  right: 0;
+  padding: 0;
+  margin: 0; }
+
+/*WebKit Scrollbar*/
+/*
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+ 
+::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.1);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.2); 
+}
+::-webkit-scrollbar-thumb:window-inactive {
+    background: rgba(0,0,0,0.2); 
+}*/
+/** Utility Classes **/
+.clearfix:after, .cfix:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0; }
+
+.hide {
+  display: none; }
+
+.vhide {
+  visibility: hidden; }
+
+.desc {
+  color: #999; }
+
+.cursor-default {
+  cursor: default; }
+
+/* Remove element from flow, make it unclickable and take no space, but don't make it display none.
+    Useful when the element needs to be focusable with tab, or when the default functionality of browsers
+    only works when the element is visible (such as with form submit buttons) */
+.jank-hide {
+  width: 0 !important;
+  height: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  display: inline-block !important;
+  position: absolute !important; }
+
+.forcewidth {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block; }
+
+.controls-pad {
+  padding: 15px 0; }
+
+.right {
+  float: right; }
+
+.left {
+  float: left; }
+
+.clear {
+  clear: both; }
+
+.clear-right {
+  clear: right; }
+
+.clear-left {
+  clear: left; }
+
+.text-left {
+  text-align: left; }
+
+.text-right {
+  text-align: right; }
+
+.text-center {
+  text-align: center; }
+
+.inline {
+  display: inline-block; }
+
+.alert {
+  margin-top: 1em; }
+
+.h100 {
+  height: 100%; }
+
+.nowrap {
+  white-space: nowrap; }
+
+.pad-top {
+  padding-top: 10px; }
+
+.max-size {
+  display: inline-block;
+  width: 100%;
+  height: 100%; }
+
+.pointer {
+  cursor: pointer; }
+
+.table-verycondensed tr td .max-size {
+  line-height: 20px; }
+
+/*POSITIONING*/
+.rel {
+  position: relative; }
+
+.abs {
+  position: absolute; }
+
+.abs-right-top {
+  position: absolute;
+  top: 0;
+  right: 0; }
+
+.abs-left-top {
+  position: absolute;
+  top: 0;
+  left: 0; }
+
+.noselect {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
+
+/***************************/
+/*    PERCENTAGE WIDTHS    */
+/***************************/
+.w5 {
+  width: 5%; }
+
+.w10 {
+  width: 10%; }
+
+.w15 {
+  width: 15%; }
+
+.w20 {
+  width: 20%; }
+
+.w25 {
+  width: 25%; }
+
+.w30 {
+  width: 30%; }
+
+.w35 {
+  width: 35%; }
+
+.w40 {
+  width: 40%; }
+
+.w45 {
+  width: 45%; }
+
+.w50 {
+  width: 50%; }
+
+.w55 {
+  width: 55%; }
+
+.w60 {
+  width: 60%; }
+
+.w65 {
+  width: 65%; }
+
+.w70 {
+  width: 70%; }
+
+.w75 {
+  width: 75%; }
+
+.w80 {
+  width: 80%; }
+
+.w85 {
+  width: 85%; }
+
+.w90 {
+  width: 90%; }
+
+.w95 {
+  width: 95%; }
+
+.w100 {
+  width: 100%; }
+
+/***************************/
+/*      ABSOLUTE WIDTHS    */
+/***************************/
+.a70 {
+  width: 70px; }
+
+.a75 {
+  width: 75px; }
+
+.a80 {
+  width: 80px; }
+
+.a85 {
+  width: 85px; }
+
+.a90 {
+  width: 90px; }
+
+.a100 {
+  width: 100px; }
+
+.a150 {
+  width: 150px; }
+
+/***************************/
+/*          Text            */
+/***************************/
+.text-r {
+  text-align: right; }
+
+table td.text-r {
+  text-align: right; }
+
+.table-hover tr.no-hover:hover, table tr.no-hover:hover td {
+  background-color: inherit;
+  cursor: default; }
+
+.strikethrough {
+  text-decoration: line-through; }
+
+.text-sm {
+  font-size: 11px; }
+
+.text-norm {
+  font-weight: normal; }
+
+.red {
+  color: red; }
+
+.small-alert {
+  color: red;
+  font-size: 10px; }
+
+.text-green, .green {
+  color: #66CD00; }
+
+.text-orange, .orange {
+  color: #F70; }
+
+.title-lg {
+  font-size: 18px;
+  font-weight: normal;
+  line-height: 30px; }
+
+.label-sm {
+  font-size: 10px;
+  color: #999; }
+
+ul.errors {
+  margin: 0;
+  padding: 0; }
+  ul.errors li {
+    list-style-type: none;
+    color: red;
+    font-weight: bold; }
+
+.box-icon {
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAadEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41LjEwMPRyoQAABOlJREFUOE+V1FlQU2cUB/BYpzPVBzo82Ie+VNtOO1pfGLRT29EZWzuiVou4ICI0LGoWligYcEGDAWRVWYsGEkRACIYQ1ssqWY1JMEBZZFFAQI2AjKgMEsy/371Qdab2oWfmzE1u7v3lnO9897LooL7wZw34Zn0+IVK5vB6/vny2X7jpVXvQppn2E049uhyWQa9dYTabT2kaq0p0Cd97D+evyx+2nDlvGZF8rR64+jGDvB8yZ7cl1bsi2Zbi8taJUaXy9UiU7YXJ68lLU1DuI6OYY+uUtoQGc+aE4SG4IJPMNrRpHaOTg3OPpwd6eifHc2r6X3yZZRxfssgtRKQw/LOe2oSOmeF8zNniMWnh4lVfEt48lcDxTAqXDT/hlxMp4Kta0fRwBs9mHZixA2Mv5h2KnmnLufqxlYsUi1WWuIulzw9cMUpxS6ctCei1FqCpJgPPhrLxZiIL87aL2HE8AIIyN8TrEpHbMYGOiTkMT8/D/Pg1krQ2h1+2QVIr5X3KgKqU3cuac3zTrMXs2Sd1XJSV5GG963fg+G1Etz4MT++JsEnojVDVD0jSHSXHLlw2T6Kw6zkuGmw4K9egRH55xlgaEsmA5UnuG5uu+sxq8vyhk7FRcZWHDa5fYc03K7B98yqcPbUVLkfWYnPcSgQpt8DtvAKH0rVIvVmBFioNDzTReKA9D6vq+HMGrLq0x0Mt87dr8gJAo825bFyP8wDfax2OsdeiLu9XfOu9GmsOr4Jn8s+IS4tGgzIRfWoxhvUxeHibzlgCi+wMqL0WuJ0ktNdocAHVyPyhlvnBVOSDwSoP+PG5EIuCYCg/if6Wc0xFw4YYjBjjMGq6gNE7F+jPc/+ATpprhzPUeQFvNB9ANVI2dMXB6Kw/id7mKNxXizCkEzPYmCmewUilL4f0MUcYkI42VViooYhnb87xIwjB3kObJX9AV8hBFwH7GDCaVCdm0IEWEQZ1MTQ69ciS4LbIsVjdVGRoZ7XQ3loWilvSADRc8cWtHDaDNmT7kHX1R3u1EPcaz6CLOgmTPBiGQi6D2qzJsLUlT9msSe/AjsowQbvquN2qFMBUwidQIKgsb1AZB1GXeRD12b64XcyHRRGKu2UCGAqO4q4ihLQqxuPWBJDqSIXx78C7ZSGC1pvBdrOcD+MNDvTXD0Mt9Uf9n96oy/AirQeQ8zx0VIThr8pwGIs4sJQG4z4Z0Igxls6pkduxC+CypUtZ+gKOgFxkp/9Zmx/IDKNZ4osGAlIZB6Aj58zyILSVH2OSvo5Gu2sjMEjvQ0301AO16G2FnxQm7Isig5inh9FC9iHZ6G+xmtR9zHCMN7ggXeAOOerINqO/91CR6CPrSnKqr/H0AkheE8vSIrbxmyS+4zTUmO2N+kwv1KZ5ovrSXlSm7MYtMml6GWjMVMIjezaQabmz6gS6aoQOktbumoj1DEhHbebB5Y1XDm2pz/JSUOkHpklVDvIEoSJ5N8oTf2eqVUv9GNRYxGXaJdW+alMKOskww8m6ru6sDP/3u5HK2PNR9eW9OytTPMpVSe5zyvhdUMT9BirdE01XfNBCUFLdjKHgSJ2pmHeADNF58db/DlWyO0uV6O6kjN+5XRG7o6FUvG2atD5fl+k1RLqQkjX+kQzJ6Y6ct3jH/wi52M25JHrrftL66ZrU/a5U+v6liz99IFisvwEmiYwUff1OagAAAABJRU5ErkJggg==);
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  line-height: 18px;
+  position: absolute;
+  top: 8px; }
+
+.franchise-selector.dropdown-menu {
+  padding-left: 5px;
+  min-width: 97px; }
+
+/*# sourceMappingURL=base.css.map */

@@ -1,0 +1,15 @@
+﻿@model Business.Models.StorageWorkOrder
+
+<div class="panel-container">
+    <div class="panel-title">
+        Statements
+    </div>
+    <table>
+        @foreach (var statement in Model.StorageStatements.OrderByDescending(i => i.Date).Take(15))
+        {
+            <tr>
+                <td>@Html.ActionLink(statement.Date.ToShortDateString(), "ViewStatement", new { id = statement.StatementID })</td>
+            </tr>
+        }
+    </table>
+</div>

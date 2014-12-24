@@ -1,0 +1,134 @@
+﻿@using (Html.BeginTemplate("competitor-template"))
+{
+    <div class="selection-badge" data-id="{{- ID }}">{{- Name }}
+        <i class="icon-remove"></i>
+    </div>
+}
+
+
+<script type="text/x-jquery-tmpl" id="quote-comment-template">
+    <div class="user-comment clearfix {{- getCommentClass() }}" data-commentid="{{- CommentID }}">
+        {{ if (IsEditable || SERVER.isAdministrator)  { }}
+        @*<span style="margin-right: 20px;" class="control delete-icon" data-commentid="{{- CommentID }}"></span>
+        <span style="margin-right: 20px;" class="control edit-icon" data-commentid="{{- CommentID }}" data-text="{{- Text }}"></span>*@
+        {{ } }}
+        <img class="user-comment-image" src="{{- SERVER.baseUrl + "static/img/user-profile-placeholder-28x28.png" }}" />
+        <div class="user-comment-text-container">
+            <div class="user-comment-text-wrap">
+                <span class="user-comment-link">{{- UserName }}</span>
+                <span class="user-comment-text">
+                    {{= Utility.addCustomLinks(Utility.lineBreakToBr(Text)) }}
+                </span>
+            </div>
+            <div class="row-fluid">
+                <div class="span9">
+                    <div class="user-comment-date">{{- GetDateString() }}</div>
+                </div>
+                <div class="span1">
+                    <span style="position: inherit;margin-top: 17px;" class="control delete-icon" data-commentid="{{- CommentID }}"></span>
+                </div>
+                <div class="span1">
+                    <span style="position: inherit;margin-top: 17px;" class="control edit-icon" data-commentid="{{- CommentID }}" data-text="{{- Text }}"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+@using (Html.BeginTemplate("quote-quicklook-template"))
+{
+    <table>
+        <thead>
+            <tr>
+                <td>Miles</td>
+                <td>Pieces</td>
+                <td>Cubic Feet</td>
+                <td>Pounds</td>
+                <td>Duration</td>
+                <td>Price</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <p class="num">{{- TotalMiles }}</p>
+                    <p class="detail">Base: <span>{{- BaseMiles }}</span> Move: <span>{{- MoveMiles }}</span></p>
+                </td>
+                <td>
+                    <p class="num">{{- Furniture + Boxes }}</p>
+                    <p class="detail">Furniture: <span>{{- Furniture }}</span> Boxes: <span>{{- Boxes }}</span></p>
+                </td>
+                <td>
+                    <p class="num">{{- CubicFeet }}</p>
+                    <p class="detail">% of Truck: <span>{{- Math.floor(CubicFeet / SERVER.MAX_TRUCK_CUBICFEET * 100) }}%</span></p>
+                </td>
+                <td>
+                    <p class="num">{{- TotalWeight }}</p>
+                    <p class="detail">% of Capacity: <span>{{- Math.floor(TotalWeight / SERVER.MAX_TRUCK_Weight * 100) }}%</span></p>
+                </td>
+                <td>
+                    {{ if (IsHourly) { }}
+                        <p class="num">{{- CustomerTimeEstimate }} {{- CustomerTimeEstimate > 1 ? "Hours" : "Hour" }}</p>
+                        <p class="detail">
+                            Drive: <span>{{- Utility.formatHours(DriveDuration, true) }}</span>
+                        </p>
+                    {{ } else { }}
+                        <p class="num">{{- Utility.getEstimateString(TotalDuration) }}</p>
+                        <p class="detail">
+                            Labor: <span>
+                                {{- Utility.formatHours(LaborDuration, 15, true) }}
+                                {{ if (!IsHourly) { }}
+                                    ({{- MinimumMovers }} men)
+                                {{ } }}
+                            </span> 
+                            Drive: <span>
+                                {{- Utility.formatHours(DriveDuration, true) }}
+                                {{ if (MinimumTrucks > 1) { }}
+                                    ({{- MinimumTrucks }} Trucks)
+                                {{ } }}
+                            </span>
+                        </p>
+                    {{ } }}
+                </td>
+                <td>
+                    <p class="num price">
+                        {{ if (FinalPostedPrice) { }}
+                            {{- Utility.formatCurrency(FinalPostedPrice) }}
+                            {{ if (!IsPaid) { }}
+                                <br />
+                                <span class="small-alert">Owes {{- Utility.formatCurrency(Balance) }}</span>
+                            {{ } }}
+                        {{ } else { }}
+                            {{- Utility.formatCurrency(FinalPrice) }}
+                            {{ if (IsHourly) { }}
+                                <span class="icon-clock" title="Hourly Move, {{- Utility.formatCurrency(HourlyRate) }}/hr"></span>
+                            {{ } }}
+                            <span class="noprint">
+                                @Html.Image("~/static/img/ajax-loader-dark.gif", "Loading...", new { id = "inventory-loading", style = "display: none; position: absolute; padding-left: 4px;" })
+                            </span>
+                        {{ } }}
+                    </p>
+                    <p class="detail printonly">&nbsp;</p>
+                    <p class="detail noprint">
+                        {{ if (!IsHourly && !IsCompleted && !Utility.priceHidden()) { }}
+                            Original: 
+                            <span>
+                                {{- Utility.formatCurrency(OriginalPrice) }} ({{- Discount }}%)
+                            </span>
+                        {{ } else { }}
+                            <span>&nbsp;</span>
+                        {{ } }}
+                    </p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div id="lower-trucks-warning" class="alert alert-error" {{ if (!ShowLowerTrucksWarning) { }} style="display: none;" {{ } }}>
+        {{ if (ShowLowerTrucksWarning) { }}
+            <strong><center>
+                This move is priced PER TRUCK. All the inventory may not fit on {{- PricingTrucks }} {{- PricingTrucks != 1 ? "trucks" : "truck" }}.
+            </center></strong>
+        {{ } }}
+    </div>
+        
+}

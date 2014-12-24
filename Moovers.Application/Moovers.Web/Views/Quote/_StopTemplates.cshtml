@@ -1,0 +1,144 @@
+﻿@model QuoteStopsModel
+@{ var UserCanEdit = Model.Quote.CanUserEdit(User.Identity.Name); }
+
+<script type="text/x-jquery-tmpl" id="address-template">
+    <div class="address{{ if (verified) { }} verified-address{{ } }}">
+        <label>
+            {{ if (verified) { }}
+                <input type="radio" class="verified"  name="address-select" value="{{- json }}" />
+            {{}  else { }}
+                <input type="radio" name="address-select" value="{{- json }}" />
+            {{ } }}
+            {{- displayString() }}
+        </label>
+    </div>
+</script>
+
+<script type="text/x-jquery-tmpl" id="stop-template">
+    <div class="stop" data-stopid="{{- id }}">
+        {{ var url = SERVER.baseUrl + "Quote/MoveUp?stopid=" + id; }}
+        @if (UserCanEdit)
+        {
+            @:{{ if (sort > 0) { }}
+            <a class="btn btn-primary btn-flip" href="{{- url }}">
+                <i class="icon-arrow-up"></i>
+            </a>
+            @:{{ } }}
+        }
+        {{ if (liftgate) { }}
+            <div class="stop-special-condition liftgate">Liftgate</div>
+        {{ } }}
+        {{ if (dock) { }}
+            <div class="stop-special-condition dockhigh">Dock High</div>
+        {{ } }}
+        {{ if (storageDays && storageDays > 0) { }} 
+            <div class="stop-special-condition storage">
+                {{- storageDaysDisplay() }}
+            </div>
+        {{ } }}
+
+
+        <div class="stop-address">
+            {{- address.display() }}
+            {{ if (verified) { }}
+                <span class="verified-address-text">verified</span>
+            {{ } }}
+            @if (UserCanEdit)
+            {
+                <a href="#" class="btn btn-black btn-small right stop-edit" data-stopid="{{- id }}">Edit</a>
+            }
+        </div>
+        <div class="stop-condition-wrapper">
+            <div class="stop-condition-group">
+                <div class="stop-condition">
+                    Type
+                    <div class="stop-condition-value">{{- addressTypeDisplay() }}</div>
+                </div>
+                <div class="stop-condition">
+                    Parking
+                    <div class="stop-condition-value">{{- parkingTypeDisplay() }}</div>
+                </div>
+                <div class="stop-condition">
+                    Walk
+                    <div class="stop-condition-value">
+                        {{ if (walkDistance < 100) { }}
+                            < 50
+                        {{ } else if (walkDistance < 1000) { }}
+                            {{- walkDistance }}
+                        {{ } else { }}
+                            > 1000
+                        {{ } }}
+                        feet
+                    </div>
+                </div>
+                {{ if (apartmentComplex !== "" || apartmentGateCode)  { }}
+                <div class="stop-condition">
+                    Description
+                    <div class="stop-condition-value">
+                        {{ if (apartmentComplex) { }}
+                            {{- apartmentComplex }}
+                        {{ } else { }}
+                            (not specified)
+                        {{ } }}
+                    </div>
+                </div>
+                {{ } }}
+            </div>
+            <div class="stop-condition-group">
+                <div class="stop-condition">
+                    Stairs Outside
+                    <div class="stop-condition-value">
+                        {{ if (outsideStairsCount  === 0) { }}
+                            None
+                        {{ } else { }}
+                            {{- outsideStairsCount }} {{- outsideStairsTypeDisplay() }}
+                        {{ } }}
+                    </div>
+                </div>
+                
+                <div class="stop-condition">
+                    Stairs Inside
+                    <div class="stop-condition-value">
+                        {{ if (insideStairsCount === 0) { }}
+                            None
+                        {{ } else {}}
+                            {{- insideStairsCount }} {{- insideStairsTypeDisplay() }}
+                        {{ } }}
+                    </div>
+                </div>
+                
+                <div class="stop-condition">
+                    Elevator
+                    <div class="stop-condition-value">
+                        {{- elevatorTypeDisplay() }}
+                        {{ if (elevatorType != "No_Elevator") { }}
+                            Floor {{- floor }}
+                        {{ } }}
+                    </div>
+                </div>
+                {{ if (apartmentGateCode) { }}
+                <div class="stop-condition">
+                    Gate Code
+                    <div class="stop-condition-value">
+                        {{- apartmentGateCode }}
+                    </div>
+                </div>
+                {{ } }}
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-jquery-tmpl" id="distance-template">
+    <div class="stop-mileage">
+        <span class="loading">
+            Calculating Mileage...
+        </span>
+        <span class="loaded" style="display: none;">
+            <span class="mileage"></span> Miles 
+            <span class="details">
+                (<span class="hours"></span>)
+            </span>
+        </span>
+    </div>
+</script>

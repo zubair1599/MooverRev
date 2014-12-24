@@ -1,0 +1,25 @@
+﻿@model Moovers.WebModels.QuoteScheduleModel
+@{
+    ViewBag.Title = "Quote " + Model.Quote.Lookup;
+    Layout = "~/Views/Quote/AddQuoteLayout.cshtml";
+}
+
+<style>
+    h2 {
+        font-size: 15px;
+    }
+
+    .tab-body {
+        padding-top: 10px;
+    }
+</style>
+
+<div class="clearfix">
+    <div id="schedule" style="width: 800px; margin: 0 auto;"></div>
+</div>
+
+<script type="text/javascript">
+    $(function() {
+        Schedule.init(SERVER.baseUrl + "Quote/ScheduleDay/@Model.Quote.Lookup", 500, undefined, "@Model.Quote.FranchiseID");
+    });
+</script>

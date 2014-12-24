@@ -1,0 +1,200 @@
+﻿@model Business.Models.ScheduleConfirmation
+@{
+    ViewBag.Title = "Confirm Move Email";
+    Layout = "~/Views/Shared/Email.cshtml";
+    ViewBag.ViewLink = "http://confirm.1800moovers.com/email/" + Model.Key;
+
+    var schedule = Model.Quote.GetSchedules().OrderBy(i => i.Date).FirstOrDefault() ?? new Business.Models.Schedule();
+    var quicklook = Model.Quote.GetQuicklook();
+    var accountManager = Model.Quote.AccountManager.aspnet_Users_Profile.First();
+}
+
+@section HeaderMessage {
+    Your Account Number: @Model.Quote.Account.Lookup
+}
+
+<h3 id="title" style="font-size: 24px; font-weight: bold; color: #333333; margin-top: 0; margin-bottom: 10px;">
+    Confirm Your Move
+</h3>
+
+<p style="list-style-type: none; line-height: 1.4em; margin: 0 0 20px; padding: 0; font-size: 12px; color: #333333;">
+    @Model.Quote.Account.DisplayName,
+        <br>
+    To confirm your move, <strong>verify the following information</strong> and review the attached estimate. If everything accurately reflects your upcoming move, please click the <strong>Confirm Move</strong> button.
+        Should you have further questions or changes, please contact us at <strong>1-800-MOOVERS</strong> and reference quote number
+    <strong>@Model.Quote.Lookup</strong>.
+</p>
+
+<table cellspacing="0" cellpadding="0">
+    <tr>
+        <td align="center" width="120" height="30" bgcolor="#ff9b00" style="margin-bottom: 20px; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; color: #ffffff; display: block;">
+            <a href="http://confirm.1800moovers.com/confirm/@Model.Key" style="color: #ffffff; font-size: 13px; text-decoration: none; line-height: 30px; width: 100%; display: inline-block">
+                Confirm Move
+            </a>
+        </td>
+    </tr>
+</table>
+
+<h4 id="subtitle" style="font-size: 16px; font-weight: bold; color: #333333; margin-top: 0; margin-bottom: 5px;">
+    Move overview
+</h4>
+
+<table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, Helvetica, sans-serif; border: solid 6px #f5f5f5; margin-bottom: 20px;">
+    <tbody>
+        <tr>
+            <td colspan="4" style="text-align: right; background-color: #f5f5f5; padding: 1px 5px 5px; font-size: 12px; color: #444444;">
+                Your Quote Number: @Model.Quote.Lookup
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" height="15"></td>
+        </tr>
+        <tr>
+            <td valign="top" style="border-right: solid 1px #e5e5e5; padding: 0 11px 3px 11px; color: #444444;">
+                <span style="font-size: 25px; color: #444444;">@schedule.Date.ToString("ddd. MMM d")
+                </span>
+                <h4 style="text-transform: uppercase; font-size: 12px; color: #444444; margin-top: 0; margin-bottom: 8px;">Load Date
+                </h4>
+            </td>
+            <td valign="top" style="border-right: solid 1px #e5e5e5; padding: 0 11px 3px 11px; color: #444444;">
+                <span style="font-size: 25px; color: #444444;">@schedule.DisplayTime()
+                </span>
+                <h4 style="text-transform: uppercase; font-size: 12px; color: #444444; margin-top: 0; margin-bottom: 8px;">Est. Arrival Time
+                </h4>
+            </td>
+            <td valign="top" style="border-right: solid 1px #e5e5e5; padding: 0 11px 3px 11px; color: #444444;">
+                <span style="font-size: 25px; color: #444444;">@quicklook.Furniture
+                </span>
+                <h4 style="text-transform: uppercase; font-size: 12px; color: #444444; margin-top: 0; margin-bottom: 8px;">Pieces
+                </h4>
+            </td>
+            <td valign="top" style="padding: 0 11px 3px 11px; color: #444444;">
+                <span style="font-size: 25px; color: #444444;">@quicklook.Boxes
+                </span>
+                <h4 style="text-transform: uppercase; font-size: 12px; color: #444444; margin-top: 0; margin-bottom: 8px;">Boxes
+                </h4>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" height="20"></td>
+        </tr>
+        <tr>
+            <td colspan="4" style="padding: 0 11px;">
+                <table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; border: solid 1px #00529B; background: #bde5f8;">
+                    <tr>
+                        <td valign="top" style="padding: 15px;">
+                            <h3 style="color: #00529B !important; font-size: 14px; margin-bottom: 5px; margin-top: 0;">Estimated Arrival Time</h3>
+                            The arrival time is an <strong>estimated</strong> range of time the movers are expected to arrive.
+                                For example, your arrival time is @schedule.DisplayTime(), so the movers could arrive as early 
+                                as @Business.Utility.Date.DisplayHour(schedule.StartTime)  or as late as @Business.Utility.Date.DisplayHour(schedule.EndTime).
+                                <strong>The movers will call you 30 minutes prior to arriving at your location.</strong>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" height="20"></td>
+        </tr>
+        <tr>
+            <td colspan="4" style="padding: 0 11px;">
+                <h4 style="margin-top: 0; margin-bottom: 3px; font-size: 14px;">Stops
+                </h4>
+                <p style="font-size: 11px; color: #808080; margin-top: 0;">
+                    Please verify the following addresses.
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="padding: 0 11px;">
+                <ul style="list-style-type: none; line-height: 1.4em; margin: 0; padding: 0; font-size: 12px; color: #333333;">
+                    @foreach (var addr in Model.Quote.GetStops())
+                    {
+                        <li style="margin-bottom: 3px; margin-left: 0; padding-left: 0;">@addr.Address.DisplayString()</li>
+                    }
+                </ul>
+            </td>
+            <td colspan="2">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 0 10px 0 30px; border-right: solid 1px #e5e5e5;">
+                                <span style="font-size: 25px; color: #444444;">@Model.Quote.GetStops().Count()
+                                </span>
+                                <h4 style="text-transform: uppercase; font-size: 12px; color: #444444; margin-top: 0; margin-bottom: 8px;">Stops
+                                </h4>
+                            </td>
+                            <td style="padding: 0 10px;">
+                                <span style="font-size: 25px; color: #444444;">@Math.Round(quicklook.MoveMiles)</span>
+                                <h4 style="text-transform: uppercase; font-size: 12px; color: #444444; margin-top: 0; margin-bottom: 8px;">Miles
+                                </h4>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" height="10"></td>
+        </tr>
+        <tr>
+            <td colspan="4" style="padding: 0 11px;">
+                <h4 style="margin-top: 0; margin-bottom: 3px; font-size: 14px;">Payment</h4>
+                <p style="font-size: 11px; color: #808080; margin-top: 0;">
+                    We accept Visa, Mastercard, Cashier's Checks, Discover, American Express and Cash.
+                </p>
+                <p style="font-size: 11px; color: #808080; margin-top: 0;">
+                    <strong>No Personal Checks</strong>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" height="10"></td>
+        </tr>
+    </tbody>
+</table>
+
+<table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px; background-color: #f5f5f5; padding: 13px; margin-bottom: 20px;">
+    <tbody>
+        <tr>
+            <td style="text-align: center; font-weight: bold; font-size: 14px; color: #444444;">
+                <strong>Please review the attached estimate prior to confirming your move.</strong>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+@Html.Partial("Emails/_EmailContactFooter", new Business.ViewModels.EmailModel() {
+    Account = Model.Quote.Account,
+    AccountManager = accountManager,
+    Franchise = Model.Quote.Franchise,
+    From = Model.Quote.Franchise.FranchiseEmail,
+    To = ""
+})
+
+<table>
+    <tbody>
+        <tr>
+            <td colspan="4" height="20"></td>
+        </tr>
+    </tbody>
+</table>
+<table cellspacing="0" cellpadding="0" style="width: 100%; table-layout: fixed;">
+    <tr>
+        <td align="center" width="120" height="30" bgcolor="#ff9b00" style="margin-bottom: 20px; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; color: #ffffff; display: block; text-align: center;">
+            <a href="http://confirm.1800moovers.com/confirm/@Model.Key" style="color: #ffffff; font-size: 13px; text-decoration: none; line-height: 30px; width: 100%; display: inline-block">
+                Confirm Move
+            </a>
+        </td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td colspan="2" style="font-size: 11px; color: #808080;">You may also copy and paste the following link into your browser to confirm your move:
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="font-size: 12px; color: #333333;">
+            http://confirm.1800moovers.com/confirm/@Model.Key
+        </td>
+    </tr>
+</table>

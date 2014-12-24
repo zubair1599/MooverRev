@@ -1,0 +1,191 @@
+﻿<div ng-controller="home">
+    
+    
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="content-header" class="clearfix">
+                <div class="pull-left">
+                    <ol class="breadcrumb">
+                        <li><a href="#">Home</a></li>
+                        <li class="active"><span>Dashboard</span></li>
+                    </ol>
+
+                    <h1>Dashboard</h1>
+                </div>
+
+                <div class="pull-right hidden-xs">
+                    <div class="xs-graph pull-left">
+                        <div class="graph-label">
+                            <b><i class="fa fa-shopping-cart"></i> 838</b> Orders
+                        </div>
+                        <div class="graph-content spark-orders"><canvas width="125" height="25" style="display: inline-block; width: 125px; height: 25px; vertical-align: top;"></canvas></div>
+                    </div>
+
+                    <div class="xs-graph pull-left mrg-l-lg mrg-r-sm">
+                        <div class="graph-label">
+                            <b>$12.338</b> Revenues
+                        </div>
+                        <div class="graph-content spark-revenues"><canvas width="132" height="25" style="display: inline-block; width: 132px; height: 25px; vertical-align: top;"></canvas></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-3 col-sm-6 col-xs-12">
+            <div class="main-box infographic-box">
+                <i class="fa fa-user red-bg"></i>
+                <span class="headline">Notifications</span>
+                <span class="value">
+                    
+                    <span style="font-size: 13px">
+                        {{LeadCount}} Leads / {{StorageCount}} Storage Bills
+
+                    </span>
+                </span>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-xs-12">
+            <div class="main-box infographic-box">
+                <i class="fa fa-shopping-cart emerald-bg"></i>
+                <span class="headline">Quotes</span>
+                <span class="value">
+                    <!--<span style="font-size: 13px">
+                            {{QuotesStats.Open.Count}} Open <br />
+                            {{QuotesStats.Scheduled.Count}} Scheduled
+                        </span>-->
+                    <span style="font-size: 13px">
+                       {{QuotesStats.Open.Count}} Open / {{QuotesStats.Scheduled.Count}} Scheduled
+
+                    </span>
+                    
+                </span>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-xs-12">
+            <div class="main-box infographic-box">
+                <i class="fa fa-money green-bg"></i>
+                <span class="headline">Income</span>
+                <span class="value">
+                    <span style="font-size: 13px">
+                        {{QuotesStats.Won.Count}} Won / {{QuotesStats.Lost.Count}} Lost
+                    </span>
+                </span>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-xs-12">
+            <div class="main-box infographic-box">
+                <i class="fa fa-eye yellow-bg"></i>
+                <span class="headline">My Jobs ( This month )</span>
+                <span class="value">
+                    <span style="font-size: 13px">
+                        {{Jobs.Booked}} Booked / {{Jobs.Posted}} Posted
+                    </span>
+                </span>
+            </div>
+        </div>
+    </div>
+    
+
+    
+
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2 class="pull-left">Recent Quotes</h2>
+
+
+                </header>
+
+                <div class="main-box-body clearfix">
+                    <div class="table-responsive clearfix">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th><a href="#"><span>Lookup</span></a></th>
+                                    <th><a href="#" class="desc"><span>Date</span></a></th>
+                                    <th><a href="#" class="asc"><span>Customer</span></a></th>
+                                    <th class="text-center"><span>Status</span></th>
+                                    <!--<th class="text-right"><span></span></th>-->
+                                    <th>&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="quote in RecentQuotes">
+                                    <td>
+                                        <a href="#" ng-bind="quote.Lookup"></a>
+                                    </td>
+                                    <td>
+                                        {{quote.MoveDate}}
+                                    </td>
+                                    <td>
+                                        <a href="#" ng-bind="quote.AccountName"></a>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="label label-success" ng-bind="quote.Stage"></span>
+                                    </td>
+
+
+                                </tr>
+                       
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2 class="pull-left">Moving Today</h2>
+
+
+                </header>
+
+                <div class="main-box-body clearfix">
+                    <div class="table-responsive clearfix">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th><a href="#"><span>Lookup</span></a></th>
+                                    <th><a href="#" class="desc"><span>Name</span></a></th>
+                                    <th><a href="#" class="asc"><span>Time Span</span></a></th>
+                                    <th ><span>Price</span></th>
+                                    <th class="text-right"><span></span></th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="quote in MovingToday">
+                                    <td>
+                                        <a href="#" ng-bind="quote.Lookup"></a>
+                                    </td>
+                                    <td>
+                                        <a href="#" ng-bind="quote.AccountName"></a>
+                                    </td>
+                                    <td>
+                                        <a href="#">{{quote.StartTime}} - {{quote.EndTime}}</a>
+                                    </td>
+                                    <td>
+                                        <a href="#">${{quote.Price}}</a>
+                                    </td>
+                                    <td>
+                                        <i class="fa fa-user"></i>
+                                        <a href="#">{{quote.Movers}}</a>
+                                    </td>
+
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

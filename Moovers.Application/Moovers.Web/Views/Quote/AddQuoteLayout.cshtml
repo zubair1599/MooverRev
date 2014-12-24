@@ -1,0 +1,481 @@
+﻿@using Business.Enums
+@using Business.ToClean.QuoteHelpers
+@model Moovers.WebModels.QuoteEdit
+@{
+    Layout = "~/Views/Shared/Main.cshtml";
+}
+
+@{ var UserCanEdit = Model.Quote.CanUserEdit(User.Identity.Name); }
+
+@Html.Partial("_QuoteTemplates")
+
+<div class="panel-right">
+    <div class="account-owner-container cfix">
+        <img class="user-comment-image" src="" />
+        <div class="user-comment-text-container-small">
+            <span class="user-comment-link">@Model.Quote.AccountManager.UserName</span>
+            <span class="user-comment-text">(owner)</span>
+            @if (UserCanEdit)
+            {
+                <a id="change-user-button" href="#" class="btn btn-grey btn-small right"><i class="icon-user"></i></a>
+            }
+        </div>
+    </div>
+    <div class="panel-spacer">
+        <div>
+            <span></span>
+        </div>
+    </div>
+    <div class="user-comment-container cfix">
+        @if (!Model.Quote.GetComments().Any())
+        {
+            <div id="user-no-comments" class="user-comment text-center">Be the first to write a comment.</div>
+        }
+        </div>
+    @Html.AjaxLoader("add-comment-loader")
+    <div class="save-comment-container" id="comment-edit-container" style="display: none;">
+        <textarea id="comment-edit-text"></textarea>
+        <a href="#" id="save-comment" class="btn btn-primary">Save Comment</a>
+        <a href="#" id="cancel-comment" class="cancel">cancel</a>
+    </div>
+    <div class="save-comment-container" id="comment-container">
+        <textarea id="comment-text" placeholder="Write a comment..."></textarea>
+        <a href="#" id="add-comment" class="btn btn-primary" style="display:none">Post Comment</a>
+    </div>
+</div>
+
+<div class="content-flexible">
+    @{
+        var showCookie = Request.Cookies["show-quote-summary"];
+        var lastId = Request.Cookies["last-quote"];
+        bool hidePanel = !(showCookie != null && showCookie.Value == "true" && lastId != null && lastId.Value == Model.Quote.QuoteID.ToString());
+
+        // whether the billing and shipping accounts are different
+        var hasBillingAccount = Model.Quote.ShippingAccountID != Model.Quote.AccountID;
+    }
+    <div class="panel-toggle forceprint" id="shipping-info" style="@if (hidePanel) { <text>display: none;</text> }">
+        <div class="tab-section-pad cfix">
+            @if (Model.Quote.Status == QuoteStatus.Cancelled)
+            {
+            <div class="quote-alerts">
+                <div class="alert alert-error">This quote has been cancelled</div>
+            </div>
+            }
+            @Html.Partial("_HeaderAccountDisplay", Model.Quote.ShippingAccount,  new ViewDataDictionary() { 
+                new KeyValuePair<string, object>("class", "shipper-info" ),
+                new KeyValuePair<string, object>("title", (hasBillingAccount) ? "Shipping Account Information" : "Account Information")
+            })
+
+            @if (hasBillingAccount)
+            {
+                <div style="display: inline-block; width: 25px;"></div>
+                @Html.Partial("_HeaderAccountDisplay", Model.Quote.Account,  new ViewDataDictionary() { 
+                    new KeyValuePair<string, object>("class", "shipper-info" ),
+                    new KeyValuePair<string, object>("title", "Billing Account Information")
+                })                
+            }
+            <div class="noprint">
+                <a class="add-account" href="#" data-account-json="@Model.AccountJson" data-type="@Model.Quote.Account.DisplayType()">Edit Account</a>
+            </div>
+        </div>
+    </div>
+    <div class="panel-header">
+        <button class="btn0 btn1 btn-toggle" id="toggle-shipping-info">
+            <i class="icon-chevron-@(hidePanel ? "down" : "up")"></i>
+        </button>
+        <h2 class="quote-page-header">
+            @Model.Quote.ShippingAccount.DisplayName
+            @if (Model.Quote.ShippingAccountID != Model.Quote.AccountID)
+            {
+                <text>(</text>@Model.Quote.Account.DisplayName<text>)</text>
+            }
+            
+            <span class="quote-page-header-desc">
+                · @Model.Quote.Lookup
+            </span>
+            @if (Model.Quote.QuoteType != QuoteType.Unset_Quote_Type)
+            {
+                <span class="quote-page-header-type">
+                    @Model.Quote.QuoteType.GetDescription()
+                </span>
+            }
+
+            <img class="franchise-logo large" src="@Model.Quote.Franchise.GetIconUrl()" />
+
+        </h2>
+        <div class="header-btns noprint">
+            @if (Model.Quote.Schedules.Any(i => i.Postings.Any(p => p.IsComplete)))
+            {
+                @Html.ActionLink("Clone", "Clone", new { Controller = "Quote", id = Model.Quote.Lookup }, new { @class = "btn0" })
+                
+                if (Model.Quote.Schedules.Where(i => i.IsCancelled).Any(i => i.Postings.Any(p => p.IsComplete)))
+                {
+                    <span class="quote-status-label lost">
+                        Cancelled
+                    </span>
+                }
+                else
+                {
+                <span class="quote-status-label won">
+                    Won
+                </span>
+                }
+            }
+            else
+            {
+                <span class="quote-status-label @Model.Quote.Status.GetDescription().ToLower()">
+                    @Model.Quote.Status.GetDescription()
+                    @if (Model.Quote.Status == QuoteStatus.Scheduled && Model.Quote.GetSchedules().Any())
+                    {
+                        var schedule = Model.Quote.GetSchedules().OrderBy(i => i.Date).First();
+                        var day = schedule.Date;
+                        <text>: </text>
+                        @Html.ActionLink(day.ToShortDateString(), "ViewDay", new { Controller = "Schedule", day = day.Day, month = day.Month, year = day.Year })
+                        <text> - </text>@schedule.DisplayTime()
+                    }
+                </span>
+
+                <span class="btn-group" style="display: inline-block;">
+                    <a class="dropdown-toggle btn btn-primary btn-small" href="#" data-toggle="dropdown">
+                        Actions
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            @Html.ActionLink("Clone", "Clone", new { Controller = "Quote", id = Model.Quote.Lookup })
+                        </li>
+                        <li>
+                            @Html.ActionLink("Visual Survey", "ScheduleSurvey", new { Controller = "Quote", id = Model.Quote.Lookup })
+                        </li>
+                        <li>
+                           @Html.ActionLink("Pricing Breakdown", "PricingBreakdown", new { id = Model.Quote.Lookup }, new { @target = "_blank" })
+                        </li>
+                        @if (Model.Quote.HasStorage())
+                        {
+                        <li>
+                            @Html.ActionLink("Move Out of Storage", "CloneMoveOut", new { id = Model.Quote.Lookup })
+                        </li>
+                        }
+                        <li>
+                            @Html.ActionLink("Schedule Pack Job", "SchedulePackJob", new { id = Model.Quote.Lookup })
+                        </li>
+                        <li>
+                            @Html.ActionLink("Field Summary", "FieldStatus", new { id = Model.Quote.Lookup })
+                        </li>
+                        <li>
+                            @Html.ActionLink("Reopen for IPad", "ReopenForIPad", new { id = Model.Quote.Lookup })
+                        </li>
+                    </ul>
+                </span>
+                
+                        using (Html.BeginForm("Index", "Quote", FormMethod.Post, new { @class = "inline", id = "change-quote-status" }))
+                        {
+                            if (UserCanEdit || Model.Quote.Status == QuoteStatus.Open)
+                            {
+                        <div class="dropdown" style="display: inline-block; margin-left: 5px; margin-right: 5px;">
+                            <a href="#" class="dropdown-toggle btn0" data-toggle="dropdown">Status<i class="icon-caret-down btn-margin-left"></i></a>
+      
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="#" class="action">Lost</a>
+                                        <input type="submit" name="Action" value="Lost" class="hide" data-title="Mark Lost" />
+                                    </li>
+                                    @if (Model.Quote.Status == QuoteStatus.Open)
+                                    {
+                                    <li>
+                                        <a href="#" class="action">Mark as Duplicate</a>
+                                        <input type="submit" name="Action" value="Duplicate" class="hide" data-title="Duplicate" />
+                                    </li>
+                                    }
+                                    @if (Model.Quote.Status == QuoteStatus.Scheduled)
+                                    {
+                                        <li>
+                                            <a href="#" class="action">Reschedule</a>
+                                            <input type="submit" name="Action" value="Reschedule" class="hide" data-title="Reschedule Quote" />
+                                        </li>
+                                    }
+                                </ul>
+                        </div>
+                                    if (UserCanEdit)
+                                    {
+                            <a href="@Url.Action("Index", new { Controller = "Accounts", id = Model.Quote.Account.Lookup })" class="btn0 btn1" id="save-button">Save &amp; Close</a>
+                                    }
+                            }
+                            else if (Model.Quote.Status == QuoteStatus.Lost || Model.Quote.Status == QuoteStatus.Deferred || Model.Quote.Status == QuoteStatus.Cancelled || Model.Quote.Status == QuoteStatus.Duplicate)
+                            {
+                        <div class="dropdown" style="display: inline-block;">
+                            <a href="#" class="dropdown-toggle btn0" data-toggle="dropdown">Status<i class="icon-caret-down btn-margin-left"></i></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="#" class="action">Reopen</a>
+                                    <input type="submit" name="Action" value="Reopen" class="hide" data-title="Reopen Quote" />
+                                </li>
+                            </ul>
+                        </div>
+                        @Html.ActionLink("Back to Account", "Index", new { Controller = "Accounts", id = Model.Quote.Account.Lookup })
+                            }
+                        }
+            }
+        </div>
+    </div>
+
+    <div id="quote-quicklook"></div>
+
+    <div class="row2 cfix">
+        <div class="left" style="min-width: 700px;">
+            <div id="competitor-container"></div>
+                <label id="competitor-select">
+                    <select>
+                        <option value="SELECT">Add Competitor</option>
+                        @foreach (var item in Model.Competitors.OrderBy(i => i.IsOther).ThenBy(i => i.Name))
+                        {
+                            <option value="@item.CompetitorID">@item.Name</option>
+                        }
+                    </select>
+                </label>
+            @if (Model.Quote.GetSurveys().Any())
+            {
+                <div class="clear-left ">
+                    Visual Surveys: <span class="desc">@Model.Quote.DisplaySurveys()</span>
+                </div>
+            }
+        </div>
+        <div class="right" style="line-height: 28px; min-height: 28px;">
+            @if (Model.Quote.StorageWorkOrder_Quote_Rel.Any())
+            {
+                var workorder = Model.Quote.StorageWorkOrder_Quote_Rel.First().StorageWorkOrder;
+                @Html.ActionLink("Storage Account " + workorder.Lookup, "View", new { id = workorder.Lookup, Controller = "Storage" })
+                <br />
+            }
+            @Model.Quote.ReferralMethod
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="nav-secondary cfix">
+            <ul class="left">
+                <li class="nav-item @(Model.Tab == "Stops" ? "selected" : "")">
+                    @Html.ActionLink("Stops", "Stops", new { Controller = "Quote", id = Model.Quote.Lookup })
+                </li>
+                <li class="nav-item @(Model.Tab == "Inventory" ? "selected" : "")">
+                    @Html.ActionLink("Inventory", "Inventory", new { Controller = "Quote", id = Model.Quote.Lookup })
+                </li>
+                <li class="nav-item @(Model.Tab == "Pricing" ? "selected" : "")">
+                    @Html.ActionLink("Pricing", "Pricing", new { Controller = "Quote", id = Model.Quote.Lookup })
+                </li>
+                <li class="nav-item @(Model.Tab == "Schedule" ? "selected" : "")">
+                    @Html.ActionLink("Schedule", "Schedule", new { Controller = "Quote", id = Model.Quote.Lookup })
+                </li>
+                <li class="nav-item @(Model.Tab == "Overview" ? "selected" : "")">
+                    @Html.ActionLink("Overview", "Overview", new { Controller = "Quote", id = Model.Quote.Lookup })
+                </li>
+            </ul>
+            <span class="quote-nav">
+                <a href="@Url.Action(Model.GetBackAction(), new { Controller = "Quote", id = Model.Quote.Lookup })" class="btn0 btn-prev"><i class="icon-chevron-left"></i></a>
+                <a href="@Url.Action(Model.GetForwardAction(), new { Controller = "Quote", id = Model.Quote.Lookup })" class="btn0 btn-next"><i class="icon-chevron-right"></i></a>
+            </span>
+        </div>
+        <div class="quote-status clearfix">
+            <div class="left">
+                @if (Model.Quote.Status == QuoteStatus.Scheduled || Model.Quote.GetSchedules().Any())
+                {
+                    <span class="label-sm">Scheduled For</span>
+                    <span>
+                        <span class="text-sm">
+                            <span class="schedule">
+                                @Model.Quote.GetScheduleDisplay("MM/dd/yyyy", ", ")
+                            </span>
+                        </span>
+                    </span>
+                }
+                else
+                {
+                    <span class="label-sm">Est. Move Date</span>
+                    <span>
+                        @Model.Quote.MoveDate.ToString("MMM dd, yyyy")
+                        @if (UserCanEdit)
+                        {
+                        <a href="#" id="edit-move-date">
+                            <span class="edit-icon"></span>
+                        </a>
+                        }
+                    </span>
+                }
+            </div>
+            <div class="right">
+                @{ var stops = Model.Quote.GetStops(); }
+                @if (stops.Any())
+                {
+                    <div class="dbl-line" style="margin: -5px 0;">
+                        <div class="text-sm">
+                            @stops.First().Address.DisplayCityState()
+                        </div>
+                        @if (stops.Count() > 1)
+                        {
+                            <div class="text-sm">
+                                @stops.Last().Address.DisplayCityState()
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="panel-left">
+            <div class="panel-left-section">
+                <div class="tab-body">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("Accounts/_CreateBusiness", new Business.ViewModels.BusinessAccountModel())
+@Html.Partial("Accounts/_CreatePerson", new Business.ViewModels.PersonAccountModel())
+
+@using (Html.BeginModal("status-modal", "Update Status"))
+{
+    <h4 class="title"></h4>
+    using (Html.BeginForm("ChangeStatus", "Quote", FormMethod.Post))
+    {
+        <input type="hidden" name="redirect" value="@Request.RawUrl" />
+        <input type="hidden" name="id" value="@Model.Quote.QuoteID" />
+        <input type="hidden" name="action" />
+        <div>
+            <div class="control-group">
+                <label class="control-label">Reason</label>
+                <textarea rows="3" name="reason" style="width: 100%;"></textarea>
+            </div>
+        </div>
+        <div class="clearfix">
+            <div class="end-controls">
+                <button  type="button" class="btn cancel" data-dismiss="modal">cancel</button>
+                <input type="submit" class="btn btn-primary" value="Add Quote" />
+            </div>
+        </div>
+    }
+}
+
+@using (Html.BeginModal("change-movedate-modal", "Change Move Date"))
+{
+    <h4>Change Move Date</h4>
+    using (Html.BeginForm("ChangeMoveDate", "Quote", FormMethod.Post))
+    {
+        <div>
+            <div class="control-group">
+                <label for="expiration" class="control-label">Move Date</label>
+                <div class="controls">
+                    <input type="hidden" name="redirect" value="@Request.Url.AbsoluteUri" />
+                    <input type="hidden" name="quoteid" value="@Model.Quote.QuoteID" />
+                    @Html.DateBox("movedate", Model.Quote.MoveDate, new { style = "width: 123px;" })
+                </div>
+            </div>
+            <div class="clearfix">
+                <div class="end-controls">
+                    <button type="button" class="btn cancel" data-dismiss="modal">Cancel</button>
+                    <input type="submit" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@using (Html.BeginModal("change-owner-modal", "Change Owner"))
+{
+    using (Html.BeginForm("ChangeUser", "Quote", new { id = Model.Quote.Lookup }, FormMethod.Post))
+    {
+        @Html.Hidden("redirect", Request.Url.AbsoluteUri)
+        @Html.DropDownList("userid", Model.Users.Select(i => new SelectListItem() {
+            Text = i.UserName,
+            Value = i.UserId.ToString(),
+            Selected = Model.Quote.AccountManagerID == i.UserId
+        }))
+
+        if (ViewBag.IsAdministrator) 
+        {
+            @Html.DropDownList("franchiseid", Model.Franchises.Select(i => new SelectListItem() {
+                Text = i.Name,
+                Value = i.FranchiseID.ToString(),
+                Selected = i.FranchiseID == Model.Quote.FranchiseID
+            }))
+        }
+        <br />
+        <br />
+
+        <a href="#" data-dismiss="modal" class="btn">Cancel</a>
+        <button type="submit" class="btn btn-primary">Change User</button>
+    }
+}
+
+@using (Html.BeginModal("change-storage-modal", "Change Storage"))
+{
+    using (Html.BeginForm("AddStorageAccount", "Quote", new { quoteid = Model.Quote.Lookup }, FormMethod.Post))
+    {
+        <div class="control-group">
+            <div class="control-label">Storage Account</div>
+            <div class="controls">
+                @Html.TextBox("storageid")
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="control-label">Move Type</div>
+            <div class="controls">
+                @Html.DropDownList("type", Business.Models.StorageQuoteType.MoveIn.ToSelectList())
+            </div>
+        </div>
+    }
+}
+
+@RenderSection("Modals", false)
+
+@{ var stopjson = Model.Quote.GetStops().Select(i => i.ToJsonObject(true)).SerializeToJson(); }
+@{ var competitionJson = Model.Quote.Quote_Competitor_Rel.Select(i => i.ToJsonObject()).SerializeToJson(); }
+<script type="text/javascript">
+    var opp = @Html.Raw(Model.Quote.ToJsonObject().SerializeToJson());
+    var competition = @Html.Raw(competitionJson);
+    $(function() {
+        Quotes.init(opp, competition);
+    });
+</script>
+
+
+@*<script type="text/javascript">
+    window.SERVER = window.SERVER || { };
+            //PERSON_PRICE_MULTIPLIER: @ViewBag.PersonPriceMultiplier,
+            //TRUCK_PRICE_MULTIPLIER: @ViewBag.TruckPriceMultiplier,
+            //PERSON_PRICE_DESTINATION_MULTIPLIER: @ViewBag.PersonMultiplierDestination,
+            //TRUCK_PRICE_DESTINATION_MULTIPLIER: @ViewBag.TruckMultiplierDestination,
+
+</script>*@
+
+@if (Model.Tab == "Inventory")
+{
+<script type="text/javascript">
+    $(function() {
+        Inventory.init(@Html.Raw(stopjson));
+    });
+</script>
+}
+else if (Model.Tab == "Pricing")
+{
+<script type="text/javascript">
+    $(function() {
+        Pricing.init();
+    });
+</script>
+}
+else if (Model.Tab == "Overview")
+{
+}
+else if (Model.Tab == "Stops")
+{
+<script type="text/javascript">
+    $(function() {
+        var stops = _.map(@Html.Raw(stopjson), function(stop) {
+            return new Stop(stop);
+        });
+        Stops.init(stops);
+    });
+</script>
+}

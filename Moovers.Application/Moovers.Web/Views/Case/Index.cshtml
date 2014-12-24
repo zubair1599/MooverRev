@@ -1,0 +1,144 @@
+﻿@model CaseListModel
+@{
+    ViewBag.Title = "index";
+}
+
+
+@foreach (var item in Model.Case)
+{
+    @Html.Partial("_ViewClaim", new ViewDataDictionary(this.ViewData) { { "CaseID", item.CaseID.ToString() } , {"CaseNumber", item.Lookup} , {"AccountName" , item.Quote.Account.PersonAccount.FirstName} , {"CaseRemarks" , item.Remarks} , {"CaseStatus" , ViewBag.Status} , {"CaseCreated" , item.Created}  })
+}
+<div class="center-container">
+
+
+        <div class="nav-column">
+        <ul class="nav-column-tabs">
+            <li class="@(ViewBag.status ? "active" : "")">
+                @Html.ActionLinkPreserveQuery("Open Cases", null, new { @status = true })
+            </li>
+            <li class="@(!ViewBag.status ? "active" : "")">
+                @Html.ActionLinkPreserveQuery("Closed Cases", null, new { @status = false })
+            </li>
+        </ul>
+    </div>
+    <div class="content-column">
+
+        @if (!String.IsNullOrEmpty((string)ViewBag.ErrorMessage))
+        {    
+
+            <div class="alert alert-error">
+                @ViewBag.ErrorMessage
+            </div>
+        }
+
+        <table id="employees" class="table-striped table-hover">
+            <thead>
+                @Html.Partial("Generic/_SortableTableHeader")
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Case)
+                {
+
+                    <tr>
+
+                        <td>@if (item.Status != null)
+                            {
+                            @item.CaseStatus.GetDescription();
+                            }
+
+                        </td>
+
+                        <td>
+                            @*@Html.ActionLink(item.CaseNumber,"View" , new {id= item.CaseID})*@
+                            <a href="#" class="view_claims"  data-id="@item.CaseID" data-name ="@item.Lookup" >@item.Lookup</a>
+                        </td>
+                        <td>
+                            @item.ShipperName()
+
+                        </td>
+
+                        <td>@if (item.Coverage != null)
+                            {
+                            @item.converage.GetDescription();
+                            }
+                        </td>
+                        <td>@if (item.DaysOpen != null)
+                            {
+                            @item.DaysOpen
+                            }
+                        </td>
+                        <td>@if (item.Created != null)
+                            {
+                            @item.Created
+                            }
+                        </td>
+                        <td>
+                            @if (item.Priority != null)
+                            {
+                                @item.Priority
+                            }
+                        </td>
+
+                        <td>
+                            @if (item.Updated != null)
+                            {
+                                @item.Updated
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    
+        $(".view_claims").click(function () {
+            var id = $(this).data("id");
+            (function () {
+                var ClaimListing = {
+                    dialogs: { viewClaims: "#" + id },
+                    init: function () {
+                        Utility.initBase(this);
+                        
+                            var dialog = ClaimListing.dialogs.viewClaims;
+                           
+                          
+                            dialog.modal("show");
+                       
+                    }
+                };
+
+                $(function () {
+                    ClaimListing.init();
+                });
+            })();
+
+                  });
+    
+
+    
+    //(function () {
+    //    var EmployeeListing = {
+    //        dialogs: { removeEmployee: "189d9cd2-60d2-4276-bbd2-01b8459e6202" },
+    //        init: function () {
+    //            Utility.initBase(this);
+    //            $(".view_claims").click(function () {
+    //                var id = $(this).data("id");
+    //              //  var name = $(this).data("name");
+    //                var dialog = EmployeeListing.dialogs.removeEmployee;
+    //               // dialog.find(".name-display").text(name);
+    //                //dialog.find("[name=id]").val(id);
+    //                alert(dialog);
+    //                dialog.modal("show");
+    //            });
+    //        }
+    //    };
+
+    //    $(function () {
+    //        EmployeeListing.init();
+    //    });
+    //})();
+</script>

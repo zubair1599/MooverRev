@@ -1,0 +1,127 @@
+﻿@model Moovers.WebModels.QuoteInventoryModel
+@{
+    ViewBag.Title = "Quote " + Model.Quote.Lookup;
+    Layout = "~/Views/Quote/AddQuoteLayout.cshtml";
+    ViewBag.BodyClass = "quote-inventory";
+}
+
+@{ var UserCanEdit = Model.Quote.CanUserEdit(User.Identity.Name); }
+
+<style>
+    .btn-group .btn {
+        font-size: 10px;
+        font-weight: normal;
+    }
+
+    .icon-external-link:hover {
+        color: blue;
+    }
+</style>
+
+<br />
+
+@Html.Partial("_InventoryTemplates")
+@Html.Partial("_InventoryModals")
+
+@if (!Model.Quote.GetStops().Any())
+{
+    <div class="alert alert-block">
+        You'll need to  @Html.ActionLink("add some stops", "Stops", new { id = @Model.Quote.Lookup }) before editing inventory.
+    </div>
+}
+else if (!UserCanEdit && !Model.Quote.GetStops().Any(s => s.GetRooms().Any()) && !Model.Quote.GetMovepointInventory().Any())
+{
+    <div class="alert alert-block">
+        No inventory added for this quote.
+    </div>
+}
+else 
+{
+<div class="inventory clearfix">
+    @if (Model.Quote.GetStops().Any())
+    {
+        <div class="inventory-left">
+            <div class="btn-group" style="padding-bottom: 20px;">
+                @if (UserCanEdit) {
+                    <button type="button" class="btn" id="allToStorage">Send all to storage</button>
+                    <button type="button" class="btn" id="allFromStorage">Remove all storage</button>
+                    <button type="button" class="btn" id="add-room-button">
+                        <i class="icon-plus-sign"></i>
+                        Add Room
+                    </button>
+                }
+            </div>
+            <div class="room-menu clearfix"></div>
+        </div>
+    }
+
+    <div class="inventory-right">        
+        @if (UserCanEdit && Model.Quote.GetStops().Any())
+        {
+            <div class="add-item-container clearfix" style="position: relative;">
+                <form id="add-item-form" style="float: left; padding-bottom: 9px;">
+                    <div id="add-items-header">
+                        <input type="text" id="add-item" tabindex="100" placeholder="Search for item..." />
+                        <a href="@Url.Action("InventoryList", new { Controller = "Home" })" target="_blank" class="icon" title="View Item List" tabindex="-1" data-popup="true">
+                            <i class="icon-external-link"></i>
+                        </a>
+                        <input type="text" id="add-item-quantity" name="quantity" class="input-mini" tabindex="120" placeholder="Qty" />
+                        <input type="text" id="add-item-storage" name="storage" class="input-mini" tabindex="130" placeholder="Store" />
+
+                        <input type="hidden" id="add-item-roomid" name="roomid" />
+
+                        <button class="btn0 btn1" tabindex="140" id="add-item-submit">Add Item</button>
+                        <button class="btn cancel" id="add-item-cancel" type="button" style="display: none;" tabindex="150">Cancel</button>
+                    </div>
+                </form>   
+                <div class="btn-group" style="margin-left: 0; padding-bottom: 10px; position: absolute; right: 39px; ">
+                    <button type="button" class="btn" id="removeAll">Remove All</button>
+                    <button type="button" class="btn" id="undoRepo">Undo/Redo</button>
+                </div>             
+            </div>
+        }
+        else
+        {
+            <div style="height: 11px;"></div>
+        }
+
+        @*
+            The old software we used, http://www.movepoint.com/, used a very different inventory storage than this system.
+            This displays inventory from quotes imported from that system.
+        *@
+        @if (Model.Quote.GetMovepointInventory().Any())
+        {
+            <div id="room-list" style="position: relative" class="no-edit room-items">
+                <h4>Imported from Movepoint</h4>
+                @foreach (var item in Model.Quote.GetMovepointInventory())
+                {
+                    <div class="item">
+                        <span class="item">
+                            @item
+                        </span>
+                    </div>
+                }
+            </div>
+        }
+        else if (Model.Quote.GetStops().Any())
+        {
+            <div id="room-list" style="position: relative;" class="@(!UserCanEdit ? "no-edit" : "")">
+            </div>
+        }
+    </div>
+</div>
+
+}
+<script>
+    $(function() {
+        window.Inventory = window.Inventory || { };
+        var cats = @Html.Raw(Model.GetItems().ToList().Select(itm => itm.ToJsonObject()).OrderBy(i => i.Name).SerializeToJson());
+        window.Inventory.inventoryItems = _.map(cats, function(i) {
+            return new Item(i); 
+        });
+        window.Inventory.customItems = @Html.Raw(Model.GetCustomItems().Select(itm => itm.ToJsonObject()).OrderBy(i => i.Name).SerializeToJson());
+        window.Inventory.boxes = @Html.Raw(Model.GetBoxes().Select(b => b.ToJsonObject()).SerializeToJson());
+        window.EDITABLE = @UserCanEdit.ToString().ToLower();
+        window.Inventory.stops = @Html.Raw(Model.Quote.GetStops().ToList().Select(i => i.ToJsonObject(false)).OrderBy(i => i.sort).SerializeToJson());
+   });
+</script>

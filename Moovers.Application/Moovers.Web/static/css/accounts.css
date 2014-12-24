@@ -1,0 +1,222 @@
+﻿/* Add Account Box*/
+.account-box {
+  width: 800px;
+  position: relative;
+  margin: 0; }
+  .account-box form {
+    margin: 0; }
+  .account-box input[type="email"], .account-box input[type="number"], .account-box input[type="password"], .account-box input[type="search"], .account-box input[type="tel"], .account-box input[type="text"], .account-box input[type="url"], .account-box input[type="color"], .account-box input[type="date"], .account-box input[type="datetime"], .account-box input[type="datetime-local"], .account-box input[type="month"], .account-box input[type="time"], .account-box input[type="week"] {
+    margin-bottom: 5px; }
+  .account-box select {
+    width: 100%; }
+  .account-box table {
+    width: 100%;
+    margin-top: 20px; }
+  .account-box label {
+    margin-top: 0; }
+  .account-box .control-group {
+    margin-bottom: 5px; }
+  .account-box .controls {
+    margin-left: 140px; }
+  .account-box .control-label {
+    width: 120px; }
+  .account-box .mailing {
+    float: right;
+    font-weight: normal; }
+  .account-box .mailing input {
+    margin: 0 0 0 5px; }
+
+.account-box-footer {
+  display: block; }
+
+/*ACCOUNT PAGE*/
+#create-person-dialog, #create-business-dialog {
+  display: none;
+  width: 884px;
+  margin-left: -442px; }
+
+#account-menu-container {
+  position: absolute;
+  top: 56px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  width: 340px;
+  padding: 20px;
+  border-right: solid 1px #CDCDCD;
+  background: whitesmoke;
+  box-shadow: inset -8px 0 10px -1px rgba(0, 0, 0, 0.11);
+  z-index: 1; }
+
+#account-content-container {
+  position: absolute;
+  top: 55px;
+  right: 0px;
+  bottom: 0px;
+  left: 380px;
+  background: white;
+  overflow: auto; }
+
+.content-head {
+  height: 40px;
+  padding-left: 19px;
+  background: #2C2C2C;
+  color: white;
+  line-height: 40px;
+  font-weight: bold;
+  font-size: 18px; }
+
+#account-menu-header {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  margin-bottom: 10px; }
+
+#account-menu-search {
+  width: 100%; }
+
+#btn-new-account {
+  float: right; }
+
+#btn-new-account .dropdown-menu {
+  margin-top: -16px; }
+
+#account-menu {
+  width: 100%;
+  margin: 0; }
+
+#account-menu-scroll {
+  max-height: 100%;
+  /* Don't use @include calc() here -- there is a bug in Internet Explorer and css calc w/ overflow: auto */
+  max-height: -webkit-calc(100% - 40px);
+  overflow: auto; }
+
+@-moz-document url-prefix() {
+  #account-menu-scroll {
+    max-height: calc(100% - 20px); } }
+
+#account-menu a {
+  color: black; }
+
+#account-menu > tr {
+  border-bottom: 1px solid #DEDEDE;
+  cursor: pointer; }
+  #account-menu > tr:hover, #account-menu > tr.selected {
+    background-color: #d5d5d5; }
+
+#account-menu > tr > td {
+  color: #333;
+  font-size: 12px;
+  height: 25px;
+  padding: 0 5px; }
+
+#account-menu tr .address {
+  white-space: nowrap; }
+
+#account-menu tr.selected:hover {
+  cursor: default; }
+
+#account-menu tr.selected {
+  color: black; }
+
+#add-quote-modal {
+  width: 284px;
+  top: 50%;
+  left: 50%;
+  margin-left: -131px;
+  margin-top: -144px; }
+
+#create-person-dialog {
+  display: none; }
+
+#account-quote-table {
+  font-size: 12px;
+  margin: 0 0 10px; }
+
+#account-quote-table tbody tr:hover {
+  background-color: #eee; }
+
+#account-quote-table td, #quote-table th {
+  height: 17px;
+  padding: 2px 5px;
+  vertical-align: middle; }
+
+#account-quote-table th {
+  border-bottom: 2px solid #aaa;
+  line-height: 29px; }
+
+#account-quote-table td {
+  border: 0;
+  border-bottom: 1px solid #DEDEDE;
+  cursor: pointer; }
+
+.subtitle-bar {
+  overflow: visible;
+  padding: 0 0 5px;
+  font-weight: bold;
+  margin-top: 25px;
+  margin-left: 140px; }
+
+.subtitle-bar a {
+  font-weight: normal;
+  margin-left: 10px; }
+
+.contact-info span {
+  display: block; }
+
+/*Account Detail*/
+#acct-num {
+  font-weight: normal;
+  float: right;
+  margin-right: 20px; }
+
+#account-detail {
+  height: 100px;
+  background: white;
+  box-shadow: 0 6px 6px -3px rgba(0, 0, 0, 0.1); }
+  #account-detail .title {
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #D7D7D7;
+    margin-bottom: 13px;
+    color: #3C3C3C;
+    word-wrap: break-word; }
+
+.account-section {
+  padding: 20px; }
+
+/*Summary*/
+/*Example:
+                <div class="summary">
+                    <div class="summary-title">Account Contacts</div>
+                    <div class="summary-section">Bill Gates</div>
+                    <div class="summary-section">Melinda Gates</div>
+                </div>
+*/
+/*
+.summary {
+    border-color: #DEDEDE;
+    border-width: 1px 1px 2px;
+    border-style: solid;
+    border-radius: 4px;
+}
+
+.summary-title {
+    background: #F8F8F8;
+    border-radius: 4px 4px 0 0;
+    color: #1769FF;
+    font-size: 10px;
+    font-weight: bold;
+    border-bottom: 1px solid #DBDBDB;
+    padding: 9px 15px;
+    text-transform: uppercase;
+}
+
+.summary-section {
+    padding: 9px 16px;
+    border-top: 1px solid #E8E8E8;
+    background: #FEFEFE;
+}
+*/
+/*# sourceMappingURL=accounts.css.map */

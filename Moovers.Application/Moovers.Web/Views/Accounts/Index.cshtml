@@ -1,0 +1,186 @@
+﻿@model Guid?  
+@{
+    ViewBag.Title = "Accounts";
+    ViewBag.SubMenu = "Accounts";
+    ViewBag.ParentMenu = "Accounts";
+}
+
+<div id="content-absolute">
+    <div class="page-container">
+        <div class="page-content">
+            <div class="page-head">
+                <div class="page-head-left">
+                    Account Search
+                    <div id="btn-new-account" class="btn-group">
+                        <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#">
+                            Add New Account 
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="add-account" data-type="Person" href="#">Person</a></li>
+                            <li><a class="add-account" data-type="Business" href="#">Business</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="page-head-right dark" id="header-container">
+                </div>
+            </div>
+            <div id="account-menu-container">
+                <div id="account-menu-header">
+                    <input id="account-menu-search" type="search" placeholder="Search for a Person or Business" autofocus />
+                </div>
+                <div id="account-menu-scroll">
+                    <table id="account-menu"></table>
+                </div>
+            </div>
+            <div id="account-content-container">
+                <div id="account-container"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("Accounts/_CreatePerson", new Business.ViewModels.PersonAccountModel())
+@Html.Partial("Accounts/_CreateBusiness", new Business.ViewModels.BusinessAccountModel())
+
+@using (Html.BeginModal("add-storage-modal", "Add Storage"))
+{
+    <h4>Add Storage</h4>
+    using (Html.BeginForm("AddStorage", "Storage", FormMethod.Post))
+    {
+        @Html.Hidden("hiddenAccountID", (Model.HasValue) ? Model.Value.ToString() : "")
+        <label>Start Date:</label>
+        <input type="date" required name="startDate" />
+    
+        <label>Billing Date:</label>
+        <input type="date" required name="billingDate" />
+    
+        <label>Monthly Amount:</label>
+        <input type="number" step=".01" class="input-mini" name="monthlyAmount" required />
+    
+        <div class="clearfix">
+            <div class="end-controls">
+                <button  type="button" class="btn cancel" data-dismiss="modal">cancel</button>
+                <input type="submit" class="btn btn-primary" value="Add Storage" />
+            </div>
+        </div>
+    }
+}
+
+@using (Html.BeginModal("add-quote-modal", "Add Quote"))
+{
+    <h4>Add Quote</h4>
+    using (Html.BeginForm("AddQuote", "Quote", FormMethod.Post))
+    {
+        <div class="page">
+            <label>Shipper</label>
+            
+            @Html.Hidden("hiddenAccountID", (Model.HasValue) ? Model.Value.ToString() : "")
+            <input type="hidden" name="displayName" />
+
+            <select id="shippingaccountid" name="shippingAccount">
+                <option value="--SAME-AS-BILLING--" id="same-as-billing-option"></option>
+                <option value="--NEW PERSON--">-- New Person Account --</option>
+                <option value="--NEW BUSINESS--">-- New Business Account --</option>
+                @*<option value="--EXISTING ACCOUNT--">-- Existing Account --</option>*@
+            </select>
+
+            <label>Estimate Move Date</label>
+            @Html.DateBox("movedate", DateTime.Now, new { @class = "input-large", required = "" })
+
+            <label>How did you hear about us?</label>
+            @Html.DropDownList("referralmethod", new List<SelectListItem>() {
+                new SelectListItem() { Text = "-- Select One --", Value = "" },
+                new SelectListItem() { Text = "ValPak"},
+                new SelectListItem() { Text = "Billboards"},
+                new SelectListItem() { Text = "Trucks"},
+                new SelectListItem() { Text = "Referral"},
+                new SelectListItem() { Text = "Website"},
+                new SelectListItem() { Text = "Leads"},
+                new SelectListItem() { Text = "Phone Book"},
+                new SelectListItem() { Text = "Facebook"},
+                new SelectListItem() { Text = "Internet"},
+                new SelectListItem() { Text = "MyMoovers.com" },
+                new SelectListItem() { Text = "Moving.com" },
+                new SelectListItem() { Text = "Movers.com" },
+                new SelectListItem() { Text = "123Movers.com" },
+                new SelectListItem() { Text = "Used before" },
+                new SelectListItem() { Text = "Other"}
+            }, new { required = "" })
+        </div>
+    
+        <div class="clearfix save-quote">
+            <div class="end-controls">
+                <button  type="button" class="btn cancel">cancel</button>
+                <button type="submit" class="btn btn-primary">Add Quote</button>
+            </div>
+        </div>
+    
+        <div class="clearfix next-modal hide">
+            <div class="end-controls">
+                <button  type="button" class="btn cancel">cancel</button>
+                <button type="submit" class="btn btn-primary" id="add-quote-next">Next</button>
+            </div>
+        </div>
+    }
+}
+
+@using (Html.BeginModal("add-card-modal", "Add Card"))
+{
+    using (Html.BeginForm())
+    {
+        <h4>Add Credit Card</h4>
+        <div class="errors" style="display: none;">
+
+        </div>
+        @Html.Partial("Payment/_CreditCards")
+        <div class="clearfix">
+            <div class="end-controls">
+                <button type="button" class="btn cancel">cancel</button>
+                <input type="submit" class="btn btn-primary" value="Add Card" />
+            </div>
+        </div>
+    }
+}
+
+@using (Html.BeginTemplate("account-menu-template"))
+{
+    <tr class="account" data-accountid="{{- AccountID }}" data-type="{{- Type }}">
+        <td class="w60">
+            <a href="@Url.Content("~/Accounts/Index/"){{- AccountID }}">{{- Name }}</a>
+
+        </td>
+        <td class="address text-right">
+            {{- City }}, {{- State }}
+        </td>
+    </tr>
+}
+
+@using (Html.BeginTemplate("account-template"))
+{
+    @Html.Partial("_ViewAccount")
+}
+
+@using (Html.BeginTemplate("businessheader-account-template"))
+{
+    <h3>{{- DisplayName }}</h3>
+    <a href="#" data-type="Business" class="add-account button button-black">Edit</a>
+    <span class="detail">
+        {{- ViewBusinessType }}
+    </span>
+    <span id="acct-num">{{- Lookup }}</span>
+}
+
+@using (Html.BeginTemplate("personheader-account-template"))
+{
+    <h3>{{- DisplayName }}</h3>
+    <a href="#" data-type="Person" class="add-account button button-black">Edit</a>
+    <span id="acct-num">{{- Lookup }}</span>
+}
+
+<script type="text/javascript">
+    $(function() {
+        var accountid = '@(Model.HasValue ? Model.Value.ToString() : "")';
+        Accounts.init(accountid);
+    });
+</script>

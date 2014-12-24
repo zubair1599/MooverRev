@@ -1,0 +1,151 @@
+﻿@model Business.Interfaces.IPayable
+
+<div class="payments panel-container">
+    <div class="panel-title">Payments</div>
+
+    <a id="add-payment" href="#">add payment</a>
+
+    @if (Model.GetPayments().Any() || Model.Account_CreditCard != null)
+    {
+        <table class="table table-condensed table-striped">
+            <tr>
+                <th>Payment Method</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Transaction #</th>
+                <th>Processed By</th>
+                <th>Amount</th>
+            </tr>
+            @if (Model.Account_CreditCard != null)
+            {
+                <tr class="payment-row">
+                    <td>
+                        <div class="payment-method @Model.Account_CreditCard.GetCardType().ToString().ToLower()">
+                            @Model.Account_CreditCard.CardType
+                        </div>
+                        <span class="desc">ending in @Model.Account_CreditCard.GetLast4()
+                        </span>
+                    </td>
+                    <td>
+                        @if (Model.DateScheduled.HasValue)
+                        {
+                            @Model.DateScheduled.Value.ToString("MMMM dd, yyyy")
+                        }
+                    </td>
+                    <td>
+                        @if (Model is Business.Models.Quote)
+                        {
+                            <text>Reservation</text>
+                        }
+                        else if (Model is Business.Models.StorageWorkOrder)
+                        {
+                            <text>Card on File</text>
+                        }
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td>$0.00</td>
+                </tr>
+            }
+            @foreach (var payment in Model.GetPayments())
+            {
+                <tr class="payment-row" data-paymentid="@payment.PaymentID" data-paymenttype="@payment.PaymentType.ToString()" data-amount="@String.Format("{0:C}", payment.Amount)">
+                    <td>
+                        @if (payment.PaymentType != PaymentTypes.CreditCard)
+                        {
+                            <div class="payment-method @payment.PaymentType.ToString().ToLower()">
+                                @payment.PaymentType.ToString()
+                            </div>
+                            if (!String.IsNullOrEmpty(payment.CheckNumber))
+                            {
+                                <span class="desc">#@payment.CheckNumber</span>
+                            }
+                            else {
+                                <span class="desc">
+                                    @payment.PaymentType.GetDescription()
+                                </span>
+                            }
+                        }
+                        else
+                        {
+                            <div class="payment-method @payment.Account_CreditCard.GetCardType().ToString().ToLower()">
+                                @payment.Account_CreditCard.GetCardType().ToString()
+                            </div>
+                            <span class="desc" style="height: 29px;">ending in @payment.Account_CreditCard.GetLast4()</span>
+                        }
+                    </td>
+                    <td>
+                        <span class="noprint">
+                            @payment.Date.ToString("MMMM dd, yyyy") @payment.Date.ToShortTimeString()
+                        </span>
+                        <span class="printonly">
+                            @payment.Date.ToShortDateString() @@@payment.Date.ToShortTimeString()
+                        </span>
+                    </td>
+                    <td>
+                        @if (payment.IsCancelled)
+                        {
+                            <span class="red">Cancelled</span>
+                        }
+                        else if (payment.PaymentType != PaymentTypes.CreditCard || payment.Success)
+                        {
+                            <span class="green">Success</span>
+                        }
+                        else
+                        {
+                            <span class="red">Error</span>
+                        }
+                    </td>
+                    <td>
+                        @payment.TransactionID
+                    </td>
+                    <td>
+                        @if (payment.GetProcessedBy() != null)
+                        {
+                            @payment.GetProcessedBy().UserName
+                        }
+                    </td>
+                    <td style="width:90px;">
+                        <div style="width: 100%; height: 100%; position: relative;">
+                            @if (payment.Success && !payment.IsCancelled && payment.Amount > 0)
+                            {
+                                <span class="green">@String.Format("{0:C}", payment.Amount)</span>
+                            }
+                            else if (payment.Success && !payment.IsCancelled && payment.Amount <= 0)
+                            {
+                                <span class="red">@String.Format("{0:C}", payment.Amount)</span>
+                            }
+                            else
+                            {
+                                <span class="red strikethrough">@String.Format("{0:C}", payment.Amount)</span>
+                            }
+
+                            @if (!payment.IsCancelled)
+                            { 
+                                <i class="icon-remove"></i>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Total: 
+                    <span class="green">
+                        @String.Format("{0:C}", Model.GetTotalPayments())
+                    </span>
+                </td>
+            </tr>
+
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-warning" style="margin-bottom: 0; border-radius: 0;">No Payments have been added.</div>
+    }
+</div>
+

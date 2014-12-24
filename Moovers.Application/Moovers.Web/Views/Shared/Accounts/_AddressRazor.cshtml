@@ -1,0 +1,44 @@
+﻿@model Business.Models.Franchise
+<div >
+    
+    <div class="control-group">
+        @Html.Label("street1", "Street", new { @class = "control-label" })
+        <div class="controls">
+            <input name="street1" type="text" data-field="@Model.Address.Street1"  />
+            @Html.EditorFor(model => model.Address.Street1);
+        </div>
+    </div>
+
+    <div class="control-group">
+        @Html.Label("street2", "Apt / Ste", new { @class = "control-label" })
+        <div class="controls">
+            <input name="street2" type="text" data-field="@Model.Address.Street2" />
+            @Html.EditorFor(model => model.Address.Street2);
+        </div>
+    </div>
+
+    <div class="control-group">
+        @Html.Label("city", "City", new { @class = "control-label" })
+        <div class="controls">
+            <input name="city" type="text" data-field="@Model.Address.City"  />
+            @Html.EditorFor(model => model.Address.City);
+        </div>
+    </div>
+
+    <div class="control-group">
+        @Html.Label("state", "State", new { @class = "control-label" })
+        <div class="controls">
+
+                @Html.DropDownList("state", General.SelectStateList, "--- Select State ---", new { value = Model.Address.State })
+   
+        </div>
+    </div>
+
+    <div class="control-group">
+        @Html.Label("zip", "Zip", new { @class = "control-label" })
+        <div class="controls">
+            <input name="zip" type="text"  pattern="\d{5}(\-\d{4})?" title="12345 (optional zip+ 4)" data-errormessage="Please enter a valid zip" value="@Model.Address.Zip" />
+            
+        </div>
+    </div>
+</div>

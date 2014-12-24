@@ -1,0 +1,50 @@
+﻿@using Business.Enums
+@using Business.ToClean.QuoteHelpers
+@model Moovers.WebModels.QuoteEdit
+@{
+    ViewBag.Title = "Quote " + Model.Quote.Lookup;
+    Layout = "~/Views/Quote/AddQuoteLayout.cshtml";
+}
+
+<h5>Access Log - Quote @Model.Quote.Lookup
+    <span class="subcontrol">
+        @Html.ActionLink("Back", "Overview", new { id = Model.Quote.Lookup })
+    </span>
+</h5>
+
+<table class="table">
+    <tr>
+        <th>Access Date</th>
+        <th>User</th>
+        <th>Action</th>
+    </tr>
+    @{
+        var accesses = Model.Quote.QuoteAccessLogs.Select(s => new {
+            Date = s.Date,
+            User = (s.aspnet_Users != null) ? s.aspnet_Users.UserName : "",
+            Message = "View " + s.Action
+        });
+        
+        var statuses = Model.Quote.QuoteStatusLogs.Select(s => new {
+            Date = s.Date,
+            User = (s.aspnet_Users != null) ? s.aspnet_Users.UserName : "",
+            Message = (s.Status.HasValue ? "Mark " + ((QuoteStatus)s.Status).ToString() : s.Message)
+        });
+    }
+
+@foreach (var item in accesses.Concat(statuses).OrderByDescending(i => i.Date).Take(15))
+{
+    <tr>
+        <td>
+            @item.Date.ToShortDateString()
+            @@ @item.Date.ToShortTimeString()
+        </td>
+        <td>
+            @item.User
+        </td>
+        <td>
+            @item.Message
+        </td>
+    </tr>
+}
+</table>

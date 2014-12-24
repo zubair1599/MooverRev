@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0E48404B-C3A2-47ED-A1FE-4E3DB1E080C7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Moovers.WebModels</RootNamespace>
+    <AssemblyName>Moovers.WebModels</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Beta|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Beta\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FluentValidation, Version=5.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentValidation.5.0.0.1\lib\Net40\FluentValidation.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EditFranchiseModel.cs" />
+    <Compile Include="LocationListModel.cs" />
+    <Compile Include="LocationSort.cs" />
+    <Compile Include="EmployeeSort.cs" />
+    <Compile Include="FieldStatusViewModel.cs" />
+    <Compile Include="SmartListModel.cs" />
+    <Compile Include="PayrollSummarySort.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AddCardModel.cs" />
+    <Compile Include="AddressModel.cs" />
+    <Compile Include="AdminAccountEditModel.cs" />
+    <Compile Include="CalendarItemModel.cs" />
+    <Compile Include="CaseListModel.cs" />
+    <Compile Include="ClaimListModel.cs" />
+    <Compile Include="ContractPrintModel.cs" />
+    <Compile Include="DisplaySurveyItem.cs" />
+    <Compile Include="EditEmployeeModel.cs" />
+    <Compile Include="EditUserModel.cs" />
+    <Compile Include="EmployeeListModel.cs" />
+    <Compile Include="ErrorModel.cs" />
+    <Compile Include="FullScheduleModel.cs" />
+    <Compile Include="HeaderModel.cs" />
+    <Compile Include="HomePageViewModel.cs" />
+    <Compile Include="LeadListModel.cs" />
+    <Compile Include="PayrollSummaryModel.cs" />
+    <Compile Include="PostListModel.cs" />
+    <Compile Include="QuoteDirectionViewModel.cs" />
+    <Compile Include="QuoteEdit.cs" />
+    <Compile Include="QuoteInventoryModel.cs" />
+    <Compile Include="QuoteListModel.cs" />
+    <Compile Include="QuoteOverviewModel.cs" />
+    <Compile Include="QuotePricingModel.cs" />
+    <Compile Include="QuoteScheduleModel.cs" />
+    <Compile Include="QuoteSendEmailModel.cs" />
+    <Compile Include="QuoteStopsModel.cs" />
+    <Compile Include="QuoteSurveyModel.cs" />
+    <Compile Include="Reports\BookingRate.cs" />
+    <Compile Include="Reports\DailyActivityReport.cs" />
+    <Compile Include="Reports\ItemListReport.cs" />
+    <Compile Include="Reports\PaymentReport.cs" />
+    <Compile Include="Reports\SalesProjection.cs" />
+    <Compile Include="Reports\StorageWarehouseModel.cs" />
+    <Compile Include="Reports\StorageZoneReport.cs" />
+    <Compile Include="ScheduleMapModel.cs" />
+    <Compile Include="ScheduleModal.cs" />
+    <Compile Include="SearchViewModel.cs" />
+    <Compile Include="StorageInventoryModel.cs" />
+    <Compile Include="StorageList.cs" />
+    <Compile Include="StoragePaymentEmail.cs" />
+    <Compile Include="StorageStatementModel.cs" />
+    <Compile Include="StorageWorkOrderModel.cs" />
+    <Compile Include="SurveyList.cs" />
+    <Compile Include="Validators\AccountModelValidator.cs" />
+    <Compile Include="Validators\AddPaymentValidator.cs" />
+    <Compile Include="Validators\AddressValidator.cs" />
+    <Compile Include="Validators\BusinessAccountValidator.cs" />
+    <Compile Include="Validators\EmailAddressValidator.cs" />
+    <Compile Include="Validators\PersonAccountValidator.cs" />
+    <Compile Include="Validators\PhoneNumberValidator.cs" />
+    <Compile Include="Validators\QuotePage1Validator.cs" />
+    <Compile Include="Validators\ScheduleModalValidator.cs" />
+    <Compile Include="Validators\UserAccountValidator.cs" />
+    <Compile Include="VaultListModel.cs" />
+    <Compile Include="VehicleListModel.cs" />
+    <Compile Include="WebquoteEmailModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Business\Business.csproj">
+      <Project>{5737068b-218b-4bb8-a617-cc8ea7ddf5ec}</Project>
+      <Name>Business</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

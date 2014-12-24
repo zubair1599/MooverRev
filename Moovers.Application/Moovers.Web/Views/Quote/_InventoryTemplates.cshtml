@@ -1,0 +1,143 @@
+﻿@model Moovers.WebModels.QuoteInventoryModel
+
+<script id="inventory-item-question-template" type="text/x-jquery-tmpl">
+    <form class="form-horizontal" action="void(0)">
+        <input type="hidden" name="itemid" value="{{- ItemID }}" />
+        {{ _.each(AdditionalQuestions, function(q) { }}
+            <div class="control-group">
+                <label class="control-label" for="{{- q.QuestionID }}">{{- q.QuestionText }}</label>
+                <div class="controls">
+                    {{ if (q.Options.length > 0) { }}
+                        <select name="{{- q.QuestionID }}" class="input-small">
+                            {{ _.each(q.getOptions(), function(o) { }}
+                                <option value="{{- o.OptionID }}" {{- (o.Selected) ? "selected" : "" }} data-displayname="{{- o.Option }}">
+                                    {{- o.Option }}
+                                </option>
+                            {{ }); }}
+                       </select>
+                    {{ } else { }}
+                        <input type="checkbox" name="{{- q.QuestionID }}" data-displayname="{{- q.ShortName }}" style="margin-top: 10px;" class="input-small" />
+                    {{ } }}
+                </div>
+            </div>
+        {{ }); }}
+    </form>
+</script>
+
+<script type="text/x-jquery-tmpl" id="room-menu-template">
+    <div class="room-selector clearfix" data-roomid="{{- RoomID }}">
+        <div class="left">
+            <h4>
+                {{ if (!IsUnassigned) { }}
+                    {{- Type }} 
+
+                    {{ if (Description) { }}
+                        <span class="description">{{- Description }}</span>
+                    {{ } }}
+
+                    {{ if (Inventory.editable) { }} 
+                        <a href="#"><i class="icon-edit"></i></a>
+                    {{ } }}
+                {{ } else { }}
+                    Overview
+                {{ } }}
+            </h4>
+            <span class="desc">
+                {{ if (!IsUnassigned) { }}
+                    {{- StopName }}
+                {{ } else { }}
+                    &nbsp;
+                {{ } }}
+            </span>
+        </div>
+        <div class="right">
+            <span class="icon-items">{{- getItemCount() }}</span>
+            {{ if (!IsUnassigned && Inventory.editable) { }}
+                <span class="remove">
+                    <a href="#">
+                        <i class="icon-remove"></i>
+                    </a>
+                </span>
+            {{ } }}
+        </div>
+    </div>
+</script>
+
+<script type="text/x-jquery-tmpl" id="item-template">
+    <div class="item" data-itemid="{{- Item.ItemID }}" data-roominverntoryitemid="{{- RoomInverntoryItemID }}" title="{{- Item.CubicFeet }} ft&#179;">
+        <span class="item">
+
+            {{ if ( IsSpecialItem === true) { }}
+            <strong class="red">
+                {{- Item.Name }}
+            </strong>
+            {{ } else { }}
+            {{- Item.Name }}
+            {{ } }}
+
+            {{ if (hasRelevantAdditionalInfo()) { }}
+            <i class="icon icon-info-sign" title="{{- getAdditionalDescription() }}"></i>
+            {{ } }}
+            {{ if( Notes && Notes != ""){ }}
+            <i class="icon icon-envelope" title="{{- Notes }}"></i>
+            {{ } }}
+            {{ if (StorageCount > 0) { }}
+            <span class="storage-count">
+                {{- StorageCount }}
+            </span>
+            {{ } }}
+            {{ if (Count > 1) { }}
+            <span class="count">
+                {{- Count }}
+            </span>
+            {{ } }}
+
+            <span class="remove-item" data-roominverntoryitemid="{{- RoomInverntoryItemID }}">
+
+                <i class="icon-remove"></i>
+
+            </span>
+        </span>
+    </div>
+</script>
+
+<script type="text/x-jquery-tmpl" id="room-body-template">
+  <div class="{{- divClass }}" data-roomid="{{- RoomID }}" {{ if (!isSelected() && divClass == "room") { }} style="display: none;" {{ } }}>
+        {{ if (!IsUnassigned || _.any(getItems())) { }}
+        <div>
+            <h4>{{- Type }}</h4>
+            {{ if (Description) { }} 
+                <span class="desc">({{- Description }})</span>
+            {{ } }}
+            {{ if (!IsUnassigned) { }}
+                <span class="desc">{{- StopName }}</span>
+            {{ } }}
+        </div>
+      
+        <div class="room-items">
+            {{ _.each(getItems(), function(i) { }}
+                {{= i.renderTemplate() }}
+            {{ }); }}
+        </div>
+      {{ } }}
+      
+      {{= renderUnassigned() }}
+    </div>
+</script>
+
+<script type="text/x-jquery-tmpl" id="history-template">
+    <label class='radio'>
+        <input type='radio' name="history" value="{{- JSON.stringify(inventory) }}">
+            {{- time.format('mm/dd/yy - h:MM TT') }} 
+            {{- inventory.length }} rooms, 
+            {{- getItemCount() }} items
+        </input>
+    </label>
+   
+</script>
+
+<script>
+    $('#notes').click(function () {
+        alert('$(this).name');
+    })
+</script>

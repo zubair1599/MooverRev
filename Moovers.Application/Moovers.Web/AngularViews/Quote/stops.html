@@ -1,0 +1,132 @@
+﻿
+
+
+
+
+
+
+
+<div id="quote-coordinators" class="container-transparent" ng-controller="manageStops">
+    <span class="title title2">
+        Manage Stops <span class="subtitle">Which stops are used for coordinating the move? {{$parent.length}}</span>
+        <span class="pull-right">
+            <input type="button" class="btn btn-primary" value="Add Stop" onclick="OpenDialog('stopmodal')" ng-click="Clear()" />
+        </span>
+    </span>
+    <div class="quote-contacts">
+        <div class="contact">
+            <div class="primary-contact">
+                Stops
+            </div>
+            <div class="contact-details">
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingOne">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapseOne" ng-bind="franchiseAddress">
+
+                                </a>
+                            </h4>
+                        </div>
+
+                    </div>
+                    <div class="panel panel-default" ng-repeat="stop in $parent.selectedQuote.Stops">
+                        <div class="panel-heading" role="tab" id="headingTwo">
+                            <h4 class="panel-title">
+                                <a class="collapsed" style="font-size: 14px;" data-toggle="collapse" data-parent="#accordion" data-target="#{{stop.id}}" aria-expanded="false" aria-controls="collapseTwo">
+                                    {{stop.street1}} {{stop.street2}} {{stop.city}} {{stop.state}} {{stop.zip}} - {{stop.distanceFromPrevious}} Miles ({{stop.timeFromPrevious}} Minutes)
+
+                                </a>
+                                <span class="verified-address-text" ng-show="stop.verified">Verified</span>
+                                <img src="../../static/img/edit.png" ng-click="ScopeDialogInitialize(stop.id)" onclick="OpenDialog('stopmodal')" style="width: 20px" class="pull-right" />
+
+
+                            </h4>
+                        </div>
+                        <div id="{{stop.id}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+                            <div class="panel-body">
+                                <table class="table">
+                                    <tr>
+                                        <td>
+                                            Type
+                                        </td>
+                                        <td>
+                                            <span style="font-weight: bold" ng-bind="stop.addressType">
+                                               
+                                            </span>
+
+                                        </td>
+                                        <td>
+                                            Stairs Outside
+                                        </td>
+                                        <td>
+                                            <span style="font-weight: bold">
+                                                {{stop.outsideStairsCount}} {{stop.outsideStairsType}}
+                                            </span>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Parking
+                                        </td>
+                                        <td>
+                                            <span style="font-weight: bold">
+                                                {{stop.parkingType}}
+                                            </span>
+
+                                        </td>
+                                        <td>
+                                            Stairs Inside
+                                        </td>
+                                        <td>
+                                            <span style="font-weight: bold">
+                                                {{stop.insideStairsCount}} {{stop.insideStairsType}}
+                                            </span>
+
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Walk
+                                        </td>
+                                        <td>
+                                            <span style="font-weight: bold">
+                                                < {{stop.walkDistance}} Feet
+                                            </span>
+
+                                        </td>
+                                        <td>
+                                            Elevator
+                                        </td>
+                                        <td>
+                                            <span style="font-weight: bold">
+                                                {{stop.elevatorType}}
+                                            </span>
+
+                                        </td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingThree">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapseOne" >
+                                    {{franchiseAddress}} - {{DistanceFromLastStop}} Miles ({{TimeFromLastStop}} Minutes )
+                                </a>
+                            </h4>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <stop-dialog></stop-dialog>
+</div>

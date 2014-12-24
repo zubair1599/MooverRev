@@ -1,0 +1,51 @@
+﻿@model FullScheduleModel
+@{
+    ViewBag.Title = "Moovers Schedule";
+    
+}
+<div style="margin-left:3%">
+    @Html.Partial("_FranchiseSelector")
+</div>
+<div style="padding-left:40px" >
+    <span id="selectedFranchiseName"></span>
+</div>
+
+<div id="schedule-container" class="clearfix" style="width: 100%;">
+    <div id="schedule" class="full-calendar">
+      
+    </div>
+    <div id="schedule2" class="full-calendar"></div>
+</div>
+<style>
+    #schedule-container {
+        padding-top: 10px;
+        min-width: 1020px;
+    }
+        #schedule-container .full-calendar {
+            float: left;
+            width: 46%;
+            margin-left: 3%;
+        }
+
+    .fc-content {
+        background: white;
+    }
+
+    #schedule2 .fc-header-right {
+        visibility: hidden;
+    }
+
+    .fc-header-right {
+        -webkit-user-select: none;
+    }
+</style>
+
+
+
+<script type="text/javascript">
+    $(function() {
+        var crews = @Html.Raw(Model.CustomCrews.SerializeToJson());
+        var franchiseID = '@ViewBag.SessionFranchiseID';
+        Schedule.init(SERVER.baseUrl + "Schedule/ViewDay", null, _.map(crews, function(i) { return new Date(i); }), franchiseID);
+    });
+</script>

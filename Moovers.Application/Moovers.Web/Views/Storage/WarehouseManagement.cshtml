@@ -1,0 +1,37 @@
+﻿@model Moovers.WebModels.Reports.StorageWarehouseModel
+
+@{
+    ViewBag.Title = "WarehouseManagement";
+    ViewBag.BodyClass = "storage";
+}
+
+<div class="container-pad">
+    <h3>Warehouse Management</h3>
+
+    <div class="span6" style="margin: 0;">
+    <table class="table table-verycondensed table-hover">
+        <tr>
+            <th>Zone</th>
+            <th>Row</th>
+            <th>Vaults</th>
+            <th>OS</th>
+        </tr>
+    @foreach (var zone in Model.Zones)
+    {
+        foreach (var row in zone.GetRows())
+        {
+            <tr>
+                <td>@zone.Name</td>
+                <td>@row</td>
+                <td>
+                    @Model.GetVaultsIn(zone.ZoneID, row)
+                </td>
+                <td>
+                    @Model.GetOSIn(zone.ZoneID, row)
+                </td>
+            </tr>
+        }
+    }
+    </table>
+    </div>
+</div>

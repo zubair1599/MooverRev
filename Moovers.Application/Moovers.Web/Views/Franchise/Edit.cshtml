@@ -1,0 +1,59 @@
+﻿@model Business.Models.Franchise
+@{
+    ViewBag.Title = "Edit";
+}
+<div class="center-container">
+    <div class="container-pad">
+
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+            <fieldset>
+                <legend>Edit Franchise</legend>
+
+                @Html.HiddenFor(model => model.FranchiseID)
+
+                <div class="editor-label">
+                    Name:
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.Name)
+                    @Html.ValidationMessageFor(model => model.Name)
+                </div>
+               @* @Html.Partial("Accounts/_AddressRazor", Model, Html.EditorFor(model => model.PhoneNumber),"")*@
+                @Html.ValidationMessageFor(model => model.PhoneNumber)
+       
+
+            <div class="editor-label">
+                Email:
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.FranchiseEmail)
+                @Html.ValidationMessageFor(model => model.FranchiseEmail)
+            </div>
+
+            <div class="editor-label">
+                Storage?
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.HasStorage)
+                @Html.ValidationMessageFor(model => model.HasStorage)
+            </div>
+
+
+            <br />
+            <p>
+                <input type="submit" class="btn btn-primary" value="Save" />
+            </p>
+            </fieldset>
+        }
+
+
+    </div>
+    </div>
+
+
+

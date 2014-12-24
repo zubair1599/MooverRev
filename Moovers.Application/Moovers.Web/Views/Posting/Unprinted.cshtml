@@ -1,0 +1,34 @@
+﻿@model PostListModel
+@{
+    ViewBag.Title = "Unprinted Quotes";
+    Layout = "_PostLayout.cshtml";
+    ViewBag.BodyClass = "post-body";
+    ViewBag.Page = "unprinted";
+}
+
+@section Buttons 
+{
+    <button id="btn-post" class="btn btn-primary" style="visibility: hidden;">Post</button>
+}
+
+<div class="col2-right posted">
+    <div class="section">
+        @using (Html.BeginForm(null, null, FormMethod.Get))
+        {
+            <br style="padding-top: 15px;" />
+            @Html.DateBox("date", (DateTime)ViewBag.Date)
+            <input type="submit" class="btn btn-primary" />
+        }
+
+        @if (!Model.Postings.Any())
+        {
+            <div class="alert alert-info">
+                No unprinted quotes exist before @ViewBag.Date.ToShortDateString().
+            </div>
+        }
+        else
+        {
+            @Html.Partial("_PostList")
+        }
+    </div>
+</div>

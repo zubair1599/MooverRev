@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Business.Models.Franchise>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+
+<div class="center-container">
+    <div class="container-pad">
+        <p>
+
+            <a class="btn btn-primary" href="/Franchise/Create">New Franchise</a>
+        </p>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    Address
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.PhoneNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FranchiseEmail)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HasStorage)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Icon)
+                </th>
+
+
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                 
+                        @Html.ActionLink(item.Name, "Details", new { id = item.FranchiseID }) 
+                    </td>
+                    <td>
+                        @item.Address.DisplayString()
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FranchiseEmail)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HasStorage)
+                    </td>
+                    <td>
+                        <img width="20" height="20" src="@(item.Icon.Replace("~",""))" />
+                      @*  <img src="~/static/img/logos/kc.png">*@
+                    </td>
+
+                    @*<td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.FranchiseID }, new { @class=  "btn"}) |
+                        @Html.ActionLink("Details", "Details", new { id = item.FranchiseID }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.FranchiseID })
+                    </td>*@
+                </tr>
+            }
+
+        </table>
+        </div>
+    </div>

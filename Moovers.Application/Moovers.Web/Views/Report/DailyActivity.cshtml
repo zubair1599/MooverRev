@@ -1,0 +1,138 @@
+﻿@using Business.Enums
+@using Business.Repository.Models
+@using Business.ToClean.QuoteHelpers
+@model Moovers.WebModels.Reports.DailyActivityReport
+
+@{
+    ViewBag.Title = "Daily Activity Report - " + Model.Date.ToShortDateString();
+    var franchises = new FranchiseRepository().GetAll().Select(f => f.Name);
+    
+}
+<style>
+    tr {
+        page-break-inside: avoid;
+    }
+</style>
+
+<div class="container-pad">
+
+<h3>Employee Daily Activity</h3>
+
+@using (Html.BeginForm(null, null, FormMethod.Get))
+{
+    @Html.DateBox("day", Model.Date)
+    <button type="submit">Submit</button>
+}
+    <div style="margin-left:3%; margin-top:10px">
+        Stores:
+        @Html.ActionLinkPreserveQuery("All", null, new { @franchise = "" }, new { @class = (ViewBag.franchise == "") ? "sel" : "" })
+        @foreach (var f in franchises)
+        {
+            <text> | </text>@Html.ActionLinkPreserveQuery(f, null, new { @franchise = f }, new { @class = (ViewBag.franchise == f) ? "sel" : "" })
+        }
+    </div>
+
+<table class="table table-condensed">
+    <tr>
+        <th>Customer Name</th>
+        <th>Quote</th>
+        <th>Quoted</th>
+        <th>Scheduled</th>
+        <th>Account Manager</th>
+        <th style="border-right: 1px solid black;">Adjust %</th>
+        <th>Quoted</th>
+        <th>Booked</th>
+        <th>Lost</th>
+    </tr>
+
+    @{
+        var prices = new List<decimal>(){ 0 };
+        var booked = new List<decimal>(){ 0 };
+        var lost = new List<decimal>(){ 0 };
+        var cancelled = new List<decimal>() { 0 };
+    }
+
+@foreach (var item in Model.ReportItems)
+{
+    <tr>
+        <td>@item.Account.DisplayNameLastFirst</td>
+        <td>@item.Quote.Lookup</td>
+        <td>@item.Quote.Created.ToShortDateString()</td>
+        <td>@if (item.Quote.GetSchedules().Any())
+            {
+                @item.Quote.GetSchedules().OrderBy(i => i.Date).First().Date.ToShortDateString()
+            }
+        </td>
+        <td>@item.User.LoweredUserName</td>
+        <td style="border-right: 1px solid black;">@if (item.Quote.PricingType == QuotePricingType.Binding && item.Quote.GuaranteeData.CalculateAdjustmentPercent() != 0) {
+                @String.Format("{0:P}", item.Quote.GuaranteeData.CalculateAdjustmentPercent() / 100)
+            }
+        </td>
+        <td>
+            @{
+                var price = item.Quote.PricingType == QuotePricingType.Hourly ? item.Quote.HourlyData.EstimateTotalHourly() : item.Quote.GuaranteeData.GuaranteedPrice;
+                prices.Add(price);
+            }
+
+            @*@if (item.Quote.Schedules.Any() && item.Quote.Schedules.All(i => i.IsCancelled))
+            {
+                cancelled.Add(price);
+                <span class="red">Cancelled</span>
+            }
+            else {*@
+                @if (item.Quote.Created.Date.Date == Model.Date.Date)
+                {
+                    @String.Format("{0:C}", price)
+                }
+            @*}*@
+        </td>
+        <td>
+            
+            @if ((item.Quote.Status == QuoteStatus.Scheduled || item.Quote.Status == QuoteStatus.Completed) && item.Quote.DateScheduled.HasValue && item.Quote.DateScheduled.Value.Date == Model.Date.Date)
+            {
+                
+                booked.Add(price);
+                @String.Format("{0:C}", price)
+            }
+            
+        </td>
+        
+            @if (item.Quote.Status == QuoteStatus.Lost && item.Quote.DateScheduled != null && item.Quote.CancellationDate.HasValue && item.Quote.CancellationDate.Value.Date == Model.Date.Date)
+            {
+                lost.Add(price);
+                string p = String.Format("{0:C}", price);
+
+                if (item.Quote.DateScheduled != null)
+                {
+                    <td style="color:red">
+                        @p
+                    </td>
+
+                }
+                else
+                {
+                    <td>
+                        @p
+                    </td>
+                }
+
+
+            }
+                    
+
+    </tr>
+}
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td style="border-right: 1px solid black;"></td>
+        <td>@String.Format("{0:C}", prices.Sum())</td>
+        <td>@String.Format("{0:C}", (booked.Sum() - cancelled.Sum()))</td>
+        <td >@String.Format("{0:C}", lost.Sum())</td>
+    </tr>
+
+</table>
+    </div>

@@ -1,0 +1,52 @@
+﻿@model dynamic
+@*
+    - Model = string to create a javascript template for an address with that property
+    - Model = Address to return markup to display 
+*@
+
+@if (Model is String)
+{
+    <div class="address">
+
+        <span class="street-address">
+            {{- @(Model).Street1 }}
+        </span>
+        {{ @("if (" + (Model) + ".Verified) {") }}
+            <span class="verified-address-text">verified</span>
+        {{ } }}
+
+        {{ @("if (" + Model + ".Street2) {") }}
+            <span class="extended-address">
+                {{- BillingAddress.Street2 }}
+            </span>
+        {{ } }}
+        <br />
+        {{ @("if (" + Model + ".City) {") }}
+            <span class="locality">{{- @(Model).City }}</span> 
+        {{ } }}
+        {{ @("if (" + Model + ".State) {") }}
+            <span class="region">{{- @(Model).State }}</span>
+        {{ } }}
+        <span class="postal-code">{{- @(Model).Zip }}</span>
+    </div>
+}
+else if (Model is Business.Models.Address) {
+    <div class="address">
+        @if (!String.IsNullOrWhiteSpace(Model.Street1))
+        {
+        <span class="street-address">
+            @Model.Street1
+        </span>
+        }
+        @if (!String.IsNullOrEmpty(Model.Street2)) {
+            <span class="extended-address">@Model.Street2</span>
+        }
+        @if (!String.IsNullOrWhiteSpace(Model.Street1))
+        {
+        <br />
+        }
+        <span class="locality">@Model.City</span> 
+        <span class="region">@Model.State</span>
+        <span class="postal-code">@Model.Zip</span>
+    </div>
+}

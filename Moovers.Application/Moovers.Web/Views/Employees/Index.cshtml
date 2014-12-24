@@ -1,0 +1,155 @@
+﻿@using Business.Enums
+@model EmployeeListModel
+
+@{
+    ViewBag.Title = "Employees";
+}
+
+@using (Html.BeginModal("remove-employee-modal", "Remove Employee"))
+{
+    using (Html.BeginForm("Remove", "Employees"))
+    {
+        <input type="hidden" name="id" />
+        <h4>Remove 
+            <span class="name-display">Employees</span>
+        </h4>
+        
+        <div class="control-group">
+            <label class="control-label" for="terminationDate">Termination Date</label>
+            <input type="date" name="terminationDate" />
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="terminationType">Type</label>
+            @Html.DropDownList("terminationType", TerminationReasons.Discharged.ToSelectList())
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="reason">Reason</label>
+            <textarea name="reason"></textarea>
+        </div>
+        
+        <div class="clearfix">
+            <div class="end-controls">
+                <button type="button" class="btn cancel" data-dismiss="modal">cancel</button>
+                <button type="submit" class="btn btn-primary">
+                    Terminate <span class="name-display">Employee</span>
+                </button>
+            </div>
+        </div>
+    }
+}
+
+<div class="center-container">
+    <div class="container-pad">
+        <div>
+            @Html.ActionLink("New Employee", "Edit", new { Controller = "Employees" }, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Payroll Summary", "PayrollSummary")
+            <span class="spacer">&nbsp;|&nbsp;</span>
+             @Html.ActionLink("Payroll Summary Report", "PayrollSummaryReport")
+            <span class="spacer">&nbsp;|&nbsp;</span>
+            @if (ViewBag.Inactive)
+            {
+                @Html.ActionLinkPreserveQuery("Active", null, new { @inactive = false })
+            }
+            else
+            {
+                @Html.ActionLinkPreserveQuery("Inactive", null, new { @inactive = true })
+            }
+        </div>
+
+        @if (!String.IsNullOrEmpty((string)ViewBag.ErrorMessage))
+        {    
+        <div class="alert alert-error">
+            @ViewBag.ErrorMessage
+        </div>
+        }
+
+        <table id="employees" class="table-striped table-hover">
+            <thead>
+                @Html.Partial("Generic/_SortableTableHeader")
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Employees)
+                {
+                    <tr>
+                        <td>@Html.ActionLink(item.Lookup, "View", new { id = item.Lookup })</td>
+                        <td>@Html.ActionLink(item.NameFirst + " " + item.NameLast, "View", new { id = item.Lookup })</td>
+                        <td>
+                            @if (item.PositionTypeID > 0)
+                            {
+                                @item.PositionType.GetDescription()
+                            }
+                    </td>
+                    <td>
+                        @if (item.PositionType == Position.Driver)
+                        {
+                            <i class="icon icon-check"></i>
+                        }
+                </td>
+                <td>@String.Format("{0:C}", item.Wage)</td>
+                <td>
+                    @if (item.PrimaryPhone != null)
+                    {
+                        @item.PrimaryPhone.DisplayString()
+                    }
+                </td>
+                <td>
+                    @if (item.SecondaryPhone != null)
+                    {
+                        @item.SecondaryPhone.DisplayString()
+                    }
+            </td>
+            <td>
+                <a href="#" class="remove-employee" data-id="@item.Lookup" data-name="@item.DisplayShortName()">
+                    <i class="icon-remove"></i>
+                </a>
+
+                @*                        <a href="@Url.Action("Remove", "Employees", new { id = item.Lookup })" onclick="return confirm('Are you sure you want to remove @item.DisplayName()?');">
+                        <i class="icon-remove"></i>
+                    </a>*@
+            </td>
+        </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    (function() {
+        var EmployeeListing = {
+            dialogs: { removeEmployee: "#remove-employee-modal" },
+            init: function() {
+                Utility.initBase(this);
+                $(".remove-employee").click(function() {
+                    var id = $(this).data("id");
+                    var name = $(this).data("name");
+                    var dialog = EmployeeListing.dialogs.removeEmployee;
+                    dialog.find(".name-display").text(name);
+                    dialog.find("[name=id]").val(id);
+                    dialog.modal("show");
+                });
+            }
+        };
+
+        $(function() {
+            EmployeeListing.init();
+
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "positionClass": "toast-top-full-width",
+                "onclick": null,
+                "showDuration": "1000",
+                "hideDuration": "1000",
+                "timeOut": "10000",
+                "extendedTimeOut": "500",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+
+            toastr.success('<div>New Employee View is implemented<a style="font-weight: bold;text-underline: thick;" href="../Employees/IndexNew"> Click Here </a>to switch to new view</div>', 'New Employee View');
+        });
+    })();
+</script>

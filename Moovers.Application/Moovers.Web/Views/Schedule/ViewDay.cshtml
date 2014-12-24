@@ -1,0 +1,114 @@
+﻿@using Business.Repository.Models
+@model Moovers.WebModels.QuoteScheduleModel
+@{
+    ViewBag.Title = "Schedule For " + Model.Date.ToShortDateString();
+}
+
+@Html.Partial("Schedule/_ResourcesModal", Model.Date)
+
+@using (Html.BeginModal("print-modal", "Print Quotes"))
+{
+    using (Html.BeginForm("Print", "Schedule", FormMethod.Get, new { target = "_blank", id = "print-form" }))
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" class="check-all-invoice" @if (!Model.ScheduledQuotes.Any(i => i.Postings.Any())) { <text>checked</text> } />
+                    </th>
+                    <th>Quote</th>
+                    <th data-type="date">Day</th>
+                    <th>
+                        <input type="checkbox" class="check-all-storage" />
+                        Storage
+                    </th>
+                </tr>
+            </thead>
+            
+            @foreach (var crew in Enumerable.Range(1, Model.GetCrewCount()).ToList())
+            {
+                var schedules = Model.ScheduledQuotes.Where(q => q.ScheduledOnCrew(crew) || (crew == 0 && !q.Crew_Schedule_Rel.Any())).ToList();
+                foreach (var schedule in schedules.OrderBy(i => i.StartTime).ThenBy(i => i.EndTime))
+                {
+                <tr>
+                    <td><input type="checkbox" name="invoice" value="@schedule.ScheduleID"
+                        @if (!schedule.Postings.Any()) { <text>checked</text> } /></td>
+                    <td>
+                        @schedule.Quote.Account.DisplayNameLastFirst (@schedule.Quote.Lookup)
+                        @if (!schedule.Postings.Any() && Model.ScheduledQuotes.Any(i => i.Postings.Any()))
+                        {
+                            <span class="red">NEW</span>
+                        }
+                    </td>
+                    <td>@schedule.Date.ToShortDateString()</td>
+                    <td><input type="checkbox" name="storage" value="@schedule.ScheduleID" @(schedule.Quote.HasStorage() ? "checked" : "")  /></td>
+                </tr>
+                }
+            }
+        </table>
+
+        <div class="right" style="position: absolute; bottom: 15px; right: 15px; padding: 8px;">
+            <button  type="button" class="btn cancel" data-dismiss="modal">Cancel</button>
+            <input type="submit" class="btn btn-primary" value="Print" />
+        </div>
+    }
+}
+
+<div class="center-container noselect">
+    <div class="container-pad clearfix">
+        @{ var prevDay = Model.Date.AddDays(-1);
+            var nextDay = Model.Date.AddDays(1);
+        }
+        <div class="clearfix noprint">
+            <div class="left">
+                <div class="title-lg">
+                    @Model.Date.ToString("D")
+                </div>
+                <a href="@Url.Action("Index", new { month = Model.Date.Month })" class="btn0">
+                    <i class="icon-table"></i> View Month
+                </a>
+                <a href="#" class="btn0 no-mobile" id="print-quotes">
+                    <i class="icon-print"></i> Print
+                </a>
+                <a href="@Url.Action("Map", new { date = Model.Date })" class="btn0 no-mobile" target="_blank">
+                    <i class="icon-map-marker"></i>
+                    Map
+                </a>
+
+            </div>
+            <div class="right">
+                <a href="@Url.Action("ViewDay", new { day = prevDay.Day, month = prevDay.Month, year = prevDay.Year })" class="btn0 btn-prev">
+                    <i class="icon-chevron-left"></i>
+                </a>
+                <a href="@Url.Action("ViewDay", new { day = nextDay.Day, month = nextDay.Month, year = nextDay.Year })" class="btn0 btn-next">
+                    <i class="icon-chevron-right"></i>
+                </a>
+                @Html.DateBox("schedule-day-picker", Model.Date, new { id = "schedule-day-picker", @class = "inline" })
+            </div>
+        </div>
+
+        <div class="right clearfix">
+            <button type="submit" id="save-day" class="btn btn-primary" style="display: none; margin-bottom: 25px;">Save Changes</button>
+        </div>
+
+        <br class="clear" />
+
+        <div>
+            @Html.Partial("Schedule/_Surveys", new SurveyList() {
+                Surveys = Model.Surveys,
+                FranchiseAddress = new FranchiseRepository().Get(Model.FranchiseID).Address
+           })
+        </div>
+
+        @Html.Partial("Schedule/_ScheduleDay", Model)
+    </div>
+</div>
+
+<script>
+    $(function() {
+            window.EMPLOYEE_JSON = @Html.Raw(Model.Employees.Select(i => i.ToJsonObject()).SerializeToJson());
+            window.VEHICLE_JSON = @Html.Raw(Model.Vehicles.Select(i => i.ToJsonObject()).SerializeToJson());
+            QuoteScheduleDay.init(SERVER.baseUrl + "Schedule/ViewDay/", SERVER.IsMobile);
+            ScheduleDay.init();
+    });
+</script>

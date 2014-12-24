@@ -1,0 +1,119 @@
+﻿@model Business.Models.StorageWorkOrder
+@{
+    ViewBag.BodyClass = "storage";
+    ViewBag.Title = "Manage Vaults - Work Order " + Model.Lookup;
+    var zones = (IEnumerable<Business.Models.StorageZone>)ViewBag.Zones;
+}
+
+<div class="container-pad">
+    <h3 style="margin-bottom: 0;">
+        @Html.ActionLink("#" + Model.Lookup, "View", new { id = Model.Lookup, Controller = "Storage" })
+        @Model.Account.DisplayName
+        <span class="desc">
+            @Html.ActionLink(Model.Account.Lookup, "Index", new { id = Model.Account.Lookup, Controller = "Accounts" })
+        </span>
+    </h3>
+
+    <div class="phone-number-display">
+        @{
+            var acct = Model.Account;
+            var primary = acct.GetPhone(Business.Models.PhoneNumberType.Primary);
+            var secondary = acct.GetPhone(Business.Models.PhoneNumberType.Secondary);
+            var fax = acct.GetPhone(Business.Models.PhoneNumberType.Fax);
+        }
+
+        @if (primary != null)
+        {
+            <label>Primary</label>
+            @primary.DisplayString()
+        }
+        @if (secondary != null)
+        {
+            <label>Secondary</label>
+            @secondary.DisplayString()
+        }
+        @if (fax != null)
+        {
+            <label>Fax</label>
+            @fax.DisplayString()
+        }
+    </div>
+
+    <h4>Vaults</h4>
+
+    @if (!String.IsNullOrEmpty(ViewBag.Error))
+    {
+        <div class="alert alert-error">@ViewBag.Error</div>
+    }
+
+    @if (!Model.CancellationDate.HasValue)
+    {
+        using (Html.BeginForm("AddVault", "Storage", new { id = Model.Lookup }, FormMethod.Post))
+        {
+            <input type="text" name="vaultid" placeholder="Vault #" autofocus />
+
+            @Html.DropDownList("zoneID", zones.Select(i => new SelectListItem {
+                Text = i.Name,
+                Value = i.ZoneID.ToString()
+            }), new { @class="input-small" })
+        
+            <input type="text" name="row" placeholder="Row" class="input-mini" required />
+            <input type="hidden" name="shelf" placeholder="Shelf" class="hide input-mini" required value="1" />
+            <br />
+            <br />
+            <button type="submit" class="btn btn-primary">Add Vault</button>
+
+            <br class="clear" />
+            <br class="clear" />
+        }
+    }
+
+    @if (Model.GetVaults().Any())
+    {
+        <div class="section span6">
+        @using (Html.BeginForm("RemoveVault", "Storage", new { id = Model.Lookup }, FormMethod.Post))
+        {
+            <table class="table table-bordered  table-condensed" id="storage-vaults">
+                <tr>
+                    <th>Vault ID</th>
+                    <th>Zone</th>
+                    <th>Row</th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model.GetVaults())
+                {
+                    <tr>
+                        <td>
+                            @item.Lookup
+                        </td>
+                        <td>
+                             @(item.StorageZone != null ? item.StorageZone.Name : "")
+                        </td>
+                        <td>
+                            @item.Row
+                        </td>
+                        <td width="1">
+                            <button class="btn btn-link" type="submit" value="@item.StorageVaultID" name="vaultid">
+                                <i class="icon-remove"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+        </div>
+    }
+    else {
+        <div class="alert alert-info">
+            No vaults are in use by this work order.
+        </div>
+    }
+
+    <br class="clear" />
+
+    <br />
+    @if (ViewBag.Edit)
+    {
+        <button type="submit" class="btn btn-primary">Save</button>
+    }
+</div>

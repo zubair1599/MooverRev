@@ -1,0 +1,170 @@
+﻿@using Business.Enums
+@using Business.ToClean.QuoteHelpers
+@model Business.Models.Quote
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+
+<script type="text/x-jquery-tmpl" id="stops-nav-template">
+    <li data-step="page1"><span>{{- (Index * 2) + 1 }}. Address</span></li>
+    <li data-step="page2"><span>{{- (Index * 2) + 2 }}. Conditions</span></li>
+</script>
+
+<div id="add-stop-modal" class="modal hide" tabindex="-1" role="dialog" area-labelledby="Add Stop" area-hidden="true"  data-backdrop="static">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <input type="hidden" name="stopid" />
+    <div class="nav-ul-steps-wrapper">
+        <button type="button" id="btn-delete-stop" class="btn btn-danger right">Delete Stop</button>
+
+        <ul class="nav-ul-steps"></ul>
+
+        <div id="address-find-error" class="alert alert-error"></div>
+    </div>
+
+    <div class="add-stop-nav-btns page1">
+        <button  class="btn btn-grey cancel">Cancel</button>
+        <button  class="btn back-pg1">Back</button>
+        <button  class="btn btn-primary next">Next</button>
+    </div>
+    <div class="add-stop-nav-btns page2">
+        @Html.AjaxLoader("save-stop-loader")
+        <button type="submit" class="btn btn-grey back">Back</button>
+        <button type="submit" class="btn primary next-pg2" style="display: none;">Next</button>
+        <button type="submit" class="btn primary save add-another" data-continue="true">Save &amp; Add Another</button>
+        <button type="submit" class="btn btn-primary save" data-continue="false">Save &amp; Close</button>
+    </div>
+
+    <div class="page page1 clearfix">
+        <div class="find-address-container form-horizontal">
+            <div class="control-group">
+                <h3>Search for an address</h3>
+                <input id="searchTextField" type="text" size="50" style="width: 895px; margin-bottom: 10px;"><br />
+                <a href="#"  tabindex="-1" data-address="@Model.Account.GetAddress(Business.Models.AddressType.Billing).ToJsonObject().SerializeToJson()" id="select-current-address">
+                    Use @Model.Account.GetAddress(Business.Models.AddressType.Billing).DisplayLine1()
+                </a>
+            </div>
+            <form action="javascript:void(0);" class="addr-search" tabindex="-1">
+                @Html.Partial("Accounts/_Address", new AddressModel(new Business.Models.Address(), false, "addr-form"))
+                <div class="control-group">
+                    <div class="controls">
+                        <button class="btn btn-grey" type="submit">Find Address</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="find-address-container" style="margin-top: 70px;">
+            <h3>Select an address</h3>
+            <div class="alert alert-info no-search-results">Please search for an address.</div>
+            <div id="selected-address">
+                <div class="address-title">
+                    Current Selected
+                </div>
+                <div class="address">
+                    <label>
+                        <input type="radio" name="address-select" value="CURRENT_SELECTED" />
+                        <span id="selected-display"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="search-results">
+                <div class="address-title">Verified Addresses</div>
+                <div class="verified-address-container"></div>
+                <div class="address-title">Unverified Addresses</div>
+                <div class="unverified-address-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page page2 clearfix" >
+        <form class="page2">
+            <input type="hidden" name="continue" />
+            <input type="submit" class="jank-hide" />
+            <div class="find-address-container">
+                @Html.Image("~/static/img/placeholder.png", "map", new { id = "maps-holder", @class = "stop-map-img" })
+            </div>
+            <div class="find-address-container form-horizontal">
+                <div class="control-group">
+                    <label class="control-label">Address Type</label>
+                    <div class="controls">
+                       <select name="addressType">
+                            <optgroup label="Residential">
+                                @foreach (var i in StopAddressType.Apartment.ToDictionary("Residential"))
+                                {
+                                    <option value="@i.Key">@i.Value</option>
+                                }
+                            </optgroup>
+                            <optgroup label="Commercial">
+                                @foreach (var i in StopAddressType.Industrial.ToDictionary("Commercial"))
+                                {
+                                    <option value="@i.Key">@i.Value</option>
+                                }
+                            </optgroup>
+                            <optgroup label="Government">
+                                @foreach (var i in StopAddressType.Military_Base.ToDictionary("Government"))
+                                {
+                                    <option value="@i.Key">@i.Value</option>
+                                }
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Parking</label>
+                    <div class="controls">
+                        @Html.DropDownList("parkingType", ParkingType.Driveway.ToSelectList())
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Walk Distance (in feet)</label>
+                    <div class="controls">
+                        @Html.DropDownList("walkDistance", new []{
+                            new SelectListItem() { Text = "< 50", Value = "50" },
+                            new SelectListItem() { Text = "< 100", Value = "100" },
+                            new SelectListItem() { Text = "< 250", Value = "250" },
+                            new SelectListItem() { Text = "< 500", Value = "500" },
+                            new SelectListItem() { Text = "< 1,000", Value = "1000" },
+                            new SelectListItem() { Text = "Over 1,000", Value = "1001" }
+                        })
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Stairs Outside</label>
+                    <div class="controls">
+                        <input name="outsideStairsCount" class="input-small" type="text" />
+                        @Html.DropDownList("outsideStairsType", StairType.Flight.ToSelectList(), new { @class = "input-small" })
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Stairs Inside</label>
+                    <div class="controls">
+                        <input class="input-small" type="text" name="insideStairsCount" />
+                        @Html.DropDownList("insideStairsType", StairType.Flight.ToSelectList(), new { @class = "input-small" })
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Elevator</label>
+                    <div class="controls">
+                        @Html.DropDownList("elevatorType", ElevatorType.No_Elevator.ToSelectList(), new { @class = "input-medium" })
+                        <input name="floor" type="text" class="input-small" placeholder="Floor" />
+                    </div>
+                </div>
+                <div class="control-group controls-row">
+                    <label class="control-label span1">Requires Liftgate</label>
+                    <div class="controls span1">
+                        @Html.CheckBox("liftgate")
+                    </div>
+                    <label class="control-label span1" style="width: 57px;">Dock High</label>
+                    <div class="controls span1">
+                        @Html.CheckBox("dock")
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Description</label>
+                    <div class="controls">
+                        <input type="text" name="apartmentComplex" class="input-medium" placeholder="Complex" maxlength="27" />
+                        <input type="text" name="apartmentGateCode" class="input-small" placeholder="Gate Code" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

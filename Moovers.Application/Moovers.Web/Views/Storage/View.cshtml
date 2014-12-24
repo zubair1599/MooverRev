@@ -1,0 +1,200 @@
+﻿@model StorageWorkOrderModel
+@{
+    ViewBag.Title = "Storage - " + Model.WorkOrder.Account.DisplayName;
+    ViewBag.BodyClass = "storage";
+}
+
+@Html.Partial("Payment/_AddPayment", Model.WorkOrder)
+@Html.Partial("_StorageModals", Model.WorkOrder)
+
+
+<div class="container-pad">
+    
+    <h3 style="margin-bottom: 0;">#@Model.WorkOrder.Lookup - @Model.WorkOrder.Account.DisplayName
+        <span class="desc">
+            @Html.ActionLink(Model.WorkOrder.Account.Lookup, "Index", new { id = Model.WorkOrder.Account.Lookup, Controller = "Accounts" })
+        </span>
+    </h3>
+
+    @if (Model.WorkOrder.HasPaymentError)
+    {
+        <div class="alert alert-error">
+            <h5>Invalid Credit Card</h5>
+            The credit card on file has an error:
+            <strong>@Model.WorkOrder.LastPaymentError</strong>
+        </div>
+    }
+
+    <input type="hidden" value="@Model.WorkOrder.Lookup" name="current-storage-id" />
+    
+    @Html.Partial("Accounts/_AccountDisplayPhone", Model.WorkOrder.Account)
+
+    @if (Model.WorkOrder.CancellationDate.HasValue)
+    {
+        <div class="alert alert-error">
+            This account was closed @Model.WorkOrder.CancellationDate.Value.ToShortDateString()
+        </div>
+    }
+
+    <div class="btn-toolbar">
+        <div class="btn-group">
+        @using (Html.BeginForm("ScheduleMove", "Storage", new { id = Model.WorkOrder.Lookup }, FormMethod.Post, new { @class = "inline" }))
+        {
+            <input type="hidden" name="moveDate" value="@DateTime.Now" />
+                <a class="btn dropdown-toggle btn-mini" data-toggle="dropdown" href="#">
+                    Schedule Move
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <button type="submit" name="moveType" value="@Business.Models.StorageQuoteType.MoveOut" class="btn btn-link">Move Out</button>
+                    </li>
+                    <li>
+                        <button type="submit" class="btn btn-link" name="moveType" value="@Business.Models.StorageQuoteType.PartialMoveOut">Partial Move Out</button>
+                    </li>
+                    <li>
+                        <button type="submit" class="btn btn-link" name="moveType" value="@Business.Models.StorageQuoteType.StorageAccess">Storage Access</button>
+                    </li>
+                </ul>
+                <a class="btn btn-mini" name="moveType" href="@Url.Action("ViewWorkOrder", new { Controller = "Storage", id = Model.WorkOrder.Lookup })">
+                    <i class="icon-print"></i>
+                     Warehouse List
+                </a>
+            
+                <a class="btn btn-mini" name="moveType" href="@Url.Action("ViewPaymentReceipt", new { Controller = "Storage", id = Model.WorkOrder.Lookup })">
+                    <i class="icon-print"></i>
+                     Payment Receipt
+                </a>
+            
+        }
+
+    @if (!Model.WorkOrder.CancellationDate.HasValue)
+    {
+        using (Html.BeginForm("Cancel", "Storage", FormMethod.Post, new { @class = "inline" }))
+        {
+            <input type="hidden" name="workOrderID" value="@Model.WorkOrder.WorkOrderID" />
+            <button type="submit" class="btn btn-danger btn-mini" id="btn-close">Close Account</button>
+        }
+    }
+        </div>
+    </div>
+    
+    @Html.Partial("_StorageDescription", Model.WorkOrder)
+    
+    <div class="panel-container clearfix">
+        <div class="panel-title">
+            Job Notes
+        </div>
+        <div class="panel-section">
+            <div id="notes">
+                <a href="#" id="edit-notes-link">edit</a>
+                @if (!String.IsNullOrEmpty(Model.WorkOrder.JobNotes))
+                {
+                    <pre>@Model.WorkOrder.JobNotes</pre>
+                }
+            </div>
+            <div id="edit-notes" style="display: none;">
+                @using (Html.BeginForm("JobNotes", "Storage", new { id = Model.WorkOrder.Lookup }, FormMethod.Post))
+                {
+                    @Html.TextArea("notes", Model.WorkOrder.JobNotes, new { style = "width: 100%; height: 200px;" })
+                    <div class="right">
+                        <a href="#" class="cancel" id="cancel-edit-notes-link">cancel</a>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    @Html.Partial("_StorageQuoteList", Model.WorkOrder)
+
+    @Html.Partial("_StorageVaultList", Model.WorkOrder)
+
+    <br class="clear" />
+    <br class="clear" />
+
+    <div class="panel-container">
+        <div class="panel-title">Files
+            <span class="subcontrol">
+                <div class="file-input">
+                    <button class="btn btn-link">add file</button>
+                    <input type="file" id="add-storage-file" />
+                </div>
+            </span>
+        </div>
+        <table>
+            @foreach (var f in Model.WorkOrder.GetFiles())
+            {
+                <tr>
+                    <td>@Html.ActionLink(f.Name, "ViewFile", new { Controller = "Storage", id = f.FileID })</td>
+                </tr>
+            }
+        </table>
+    </div>
+
+    @Html.Partial("_StorageInventoryList", Model.WorkOrder)
+
+    @Html.Partial("_StorageInvoiceList", Model.WorkOrder)
+    
+    @Html.Partial("_StorageEmailList", Model.WorkOrder)
+
+    @Html.Partial("_StorageStatementList", Model.WorkOrder)
+
+    @Html.Partial("Payment/_PaymentsList", Model.WorkOrder)
+</div>
+
+<div class="panel-right">
+    <div class="user-comment-container cfix">
+        @if (!Model.WorkOrder.GetComments().Any())
+        {
+            <div id="user-no-comments" class="user-comment text-center">Be the first to write a comment.</div>
+        }
+        </div>
+    @Html.AjaxLoader("add-comment-loader")
+    <div class="save-comment-container" id="comment-edit-container" style="display: none;">
+        <textarea id="comment-edit-text"></textarea>
+        <a href="#" id="save-comment" class="btn btn-primary">Save Comment</a>
+        <a href="#" id="cancel-comment" class="cancel">cancel</a>
+    </div>
+    <div class="save-comment-container" id="comment-container">
+        <textarea id="comment-text" placeholder="Write a comment..."></textarea>
+        <a href="#" id="add-comment" class="btn btn-primary" style="display:none">Post Comment</a>
+    </div>
+</div>
+
+<script type="text/x-jquery-tmpl" id="storage-comment-template">
+    <div class="user-comment clearfix {{- getCommentClass() }}" data-commentid="{{- CommentID }}">
+        {{ if (IsEditable || SERVER.isAdministrator)  { }}
+        @*<span style="margin-right: 20px;" class="control delete-icon" data-commentid="{{- CommentID }}"></span>
+        <span style="margin-right: 20px;" class="control edit-icon" data-commentid="{{- CommentID }}" data-text="{{- Text }}"></span>*@
+        {{ } }}
+        <img class="user-comment-image" src="{{- SERVER.baseUrl + "static/img/user-profile-placeholder-28x28.png" }}" />
+        <div class="user-comment-text-container">
+            <div class="user-comment-text-wrap">
+                <span class="user-comment-link">{{- UserName }}</span>
+                <span class="user-comment-text">
+                    {{= Utility.addCustomLinks(Utility.lineBreakToBr(Text)) }}
+                </span>
+            </div>
+            <div class="row-fluid">
+                <div class="span9">
+                    <div class="user-comment-date">{{- GetDateString() }}</div>
+                </div>
+                <div class="span1">
+                    <span style="position: inherit;margin-top: 17px;" class="control delete-icon" data-commentid="{{- CommentID }}"></span>
+                </div>
+                <div class="span1">
+                    <span style="position: inherit;margin-top: 17px;" class="control edit-icon" data-commentid="{{- CommentID }}" data-text="{{- Text }}"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+<script type="text/javascript">
+    $(function() {
+        var storageid = "@Model.WorkOrder.WorkOrderID";
+        Storage.initView(storageid);
+    });
+</script>

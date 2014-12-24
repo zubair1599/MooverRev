@@ -1,0 +1,29 @@
+﻿@model Business.Models.StorageWorkOrder
+
+<div class="panel-container">
+    <div class="panel-title">Emails</div>
+    <table class="tbl" id="email-log">
+        @foreach (var log in Model.GetEmails())
+        {
+            <tr class="toggle">
+                <td>@log.MailTo</td>
+                <td>@log.MailFrom</td>
+                <td>@log.Subject</td>
+                <td>@log.DateSent.ToShortDateString() @@@log.DateSent.ToShortTimeString()</td>
+                <td>
+                    <ul>
+                    @foreach (var file in log.EmailLog_File_Rel)
+                    {
+                        <li>@Html.ActionLink(file.File.Name, "ViewFile", new { id = file.FileID }, new { _target = "blank" })</li>    
+                    }
+                    </ul>
+                </td>
+            </tr>
+            <tr class="hidden" style="display: none;">
+                <td colspan="5">
+                    @Html.Raw(log.Message)
+                </td>
+            </tr>
+        }
+    </table>
+</div>

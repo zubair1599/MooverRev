@@ -1,0 +1,147 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    
+    
+    
+    <JavaScriptFiles Include="$(ProjectDir)Scripts/jquery.min.js" />
+    <JavaScriptFiles Include="$(ProjectDir)Scripts/angular.js" />
+    <JavaScriptFiles Include="$(ProjectDir)Scripts/angular-route.js" />
+    <JavaScriptFiles Include="$(ProjectDir)Scripts/angular-resource.js" />
+    <JavaScriptFiles Include="$(ProjectDir)Scripts/angular-animate.js" />
+    
+    <JavaScriptFiles Include="$(ProjectDir)static/js/plugins/jquery-ui-1.10.2.custom.js" />
+	
+	
+  
+    
+    
+    
+    
+    
+    
+   <CssFiles Include="$(ProjectDir)content/bootstrap.min.css" />
+    <CssFiles Include="$(ProjectDir)content/font-awesome.css" />
+    <CssFiles Include="$(ProjectDir)content/nanoscroller.css" />
+    <CssFiles Include="$(ProjectDir)content/angular.css" />
+    <CssFiles Include="$(ProjectDir)content/loading-bar.css" />
+    <CssFiles Include="$(ProjectDir)content/theme_styles.css" />
+    <CssFiles Include="$(ProjectDir)content/select2.css" />
+    <CssFiles Include="$(ProjectDir)content/bootstrap-editable.css" />
+    <CssFiles Include="$(ProjectDir)content/magnific-popup.css" />
+    <CssFiles Include="$(ProjectDir)content/datepicker.css" />
+    <CssFiles Include="$(ProjectDir)content/daterangepicker.css" />
+    <CssFiles Include="$(ProjectDir)content/bootstrap-timepicker.css" />
+    <CssFiles Include="$(ProjectDir)content/jquery.nouislider.css" />
+    <CssFiles Include="$(ProjectDir)content/fullcalendar.css" />
+    <CssFiles Include="$(ProjectDir)content/fullcalendar.print.css" />
+    <CssFiles Include="$(ProjectDir)content/calendar.css" />
+    <CssFiles Include="$(ProjectDir)content/morris.css" />
+    <CssFiles Include="$(ProjectDir)content/jquery-jvectormap-1.2.2.css" />
+
+    <CssFiles Include="$(ProjectDir)content/weather-icons.css" />
+    <CssFiles Include="$(ProjectDir)content/timeline.css" />
+    <CssFiles Include="$(ProjectDir)contentdataTables.fixedHeader.css" />
+    <CssFiles Include="$(ProjectDir)content/dataTables.tableTools.css" />
+    <CssFiles Include="$(ProjectDir)content/ns-default.css" />
+    <CssFiles Include="$(ProjectDir)content/ns-style-growl.css" />
+    <CssFiles Include="$(ProjectDir)content/ns-style-bar.css" />
+    <CssFiles Include="$(ProjectDir)content/ns-style-attached.css" />
+    <CssFiles Include="$(ProjectDir)content/ns-style-other.css" />
+    <CssFiles Include="$(ProjectDir)content/ns-style-theme.css" />
+    <CssFiles Include="$(ProjectDir)content/nifty-component.css" />
+    <CssFiles Include="$(ProjectDir)content/xcharts.css" />
+    <CssFiles Include="$(ProjectDir)content/dropzone.css" />
+    <CssFiles Include="$(ProjectDir)content/gallery-component.css" />
+    <CssFiles Include="$(ProjectDir)content/wizard.css" />
+    <CssFiles Include="$(ProjectDir)content/bootstrap-wizard.css" />
+    <CssFiles Include="$(ProjectDir)content/summernote.min.css" />
+    <CssFiles Include="$(ProjectDir)content/hopscotch.css" />
+   
+
+     <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/bootstrap.js" />
+       <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery.nanoscroller.min.js" />
+       <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/bootstrap-editable.min.js" />
+       <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/select2.min.js" />
+       <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/moment.min.js" />
+       <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery.slimscroll.min.js" />
+       <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery.magnific-popup.min.js" />
+       <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery.maskedinput.min.js" />
+       <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/bootstrap-datepicker.js" />
+       <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/daterangepicker.js" />
+       <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/bootstrap-timepicker.min.js" />
+       <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/hogan.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/typeahead.min.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery.pwstrength.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery.nouislider.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery.nestable.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery.hotkeys.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/bootstrap-wysiwyg.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery-ui.custom.min.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/fullcalendar.min.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery-jvectormap-1.2.2.min.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery-jvectormap-world-merc-en.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/gdp-data.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/skycons.js" />
+       <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/modernizr.js" />
+       <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery.grid-a-licious.min.js" />   
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery.dataTables.js" />
+       <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/hopscotch.js" />
+    
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/d3.min.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/xcharts.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/rainbow.min.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery.knob.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/raphael-min.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/morris.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/dygraph-data.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/dygraph.min.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/dygraph-interaction.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/dataTables.fixedHeader.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/dataTables.tableTools.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery.dataTables.bootstrap.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/flot/jquery.flot.min.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/flot/jquery.flot.resize.min.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/flot/jquery.flot.time.min.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/flot/jquery.flot.threshold.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/flot/jquery.flot.axislabels.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/wizard.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/bootstrap-wizard.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/flot/jquery.flot.pie.min.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/flot/jquery.flot.stack.min.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/flot/jquery.flot.orderBars.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/loading-bar.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/angular.easypiechart.min.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/scripts.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/hopscotch.js" />
+    
+    
+    
+    <!--<JavaScriptFiles Include="$(ProjectDir)AngularApp/Template/app.js" />
+    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Template/directives.js" />
+    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Template/controllers.js" />-->
+    
+    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/quoteApp.js" />
+    
+    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Services/addressFactory.js" />
+    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Services/homeFactory.js" />
+    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Services/quoteFactory.js" />
+    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Services/inventoryFactory.js" />
+    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Services/scheduleFactory.js" />
+    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Services/priceFactory.js" />
+
+    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/home.js" />
+    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/manageInventory.js" />
+    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/managePricing.js" />
+    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/manageSchedule.js" />
+    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/manageStops.js" />
+    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/quoteHome.js" />
+    
+    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Directives/addQuoteDialog.js" />
+    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Directives/addressStopDialog.js" />
+    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Directives/customerSearchDialog.js" />
+    <JavaScriptFiles Include="$(ProjectDir)/Scripts/draganddrop.js" />
+    
+	
+
+  </ItemGroup>
+</Project>

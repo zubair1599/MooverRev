@@ -1,0 +1,17 @@
+﻿@model Business.Models.Quote
+
+<style>
+    @Html.RenderFile("~/static/css-plugins/reset.css")
+    @Html.RenderFile("~/static/css-plugins/bootstrap.css")
+    @Html.RenderFile("~/static/css/PDF/contract.css")
+</style>
+
+<h4>Storage - @Model.Account.DisplayName (Quote @Model.Lookup) - @DateTime.Today.ToShortDateString()</h4>
+
+    <ul class="inventory clearfix">
+        @foreach (var i in Model.GetStops().SelectMany(i => i.GetRooms()).SelectMany(i => i.GetItems()).Where(i => i.StorageCount > 0))
+        {
+            <li>@i.Item.Name - @i.StorageCount</li>
+        }
+    </ul>
+<div style="page-break-after: always;"></div>

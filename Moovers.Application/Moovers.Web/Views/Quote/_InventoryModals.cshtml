@@ -1,0 +1,186 @@
+﻿@using Business.Enums
+@using Business.ToClean.QuoteHelpers
+@model Moovers.WebModels.QuoteInventoryModel
+
+@using (Html.BeginModal("add-room-modal", "Room"))
+{
+    <h4>Room</h4>
+    <form id="add-room" class="form-horizontal">
+        <input type="hidden" name="roomid" />        
+        <div class="control-group">
+            <label class="control-label">Room</label>
+            <div class="controls tandem">
+                <select name="roomType" tabindex="10" required autofocus style="width: 150px; float:left;">
+                    <option value="">-- Select Room --</option>
+                    @foreach (RoomType room in Enum.GetValues(typeof(RoomType)))
+                    {
+                        if (room == RoomType.Other) {
+                            <option value="Other">@room.GetDescription()</option>
+                        } else {
+                            <option>@room.GetDescription()</option>
+                        }
+                    }
+                </select>
+                <input type="text" class="hide" placeholder="Room Name" name="roomTypeCustom" tabindex="11" style="width: 150px; float: left;" />
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Description</label>
+            <div class="controls">
+                <input type="text" placeholder="Room Description (optional)" name="roomDescription" tabindex="20" />
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Stop</label>
+            <div class="controls">
+                <select name="roomStop" tabindex="30" required>
+                    @foreach (var item in Model.Quote.GetStops())
+                    {
+                        <option value="@item.StopID">@item.Address.DisplaySmall()</option>
+                    }
+                </select>
+            </div>
+        </div>
+        
+        <div class="clearfix" style="padding-top: 10px;">
+            <div style="float: right;">
+                <button class="btn" data-dismiss="modal" type="button">Cancel</button>
+                <button class="btn btn-primary" tabindex="40" type="submit">Save</button>
+            </div>
+        </div>
+        <div style="clear: both"></div>
+    </form>
+}
+
+@using (Html.BeginModal("custom-inventory-dialog", "Add Inventory Item"))
+{
+    using (Html.BeginForm("AddCustomItem", "Quote", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        <h3>Add Inventory Item</h3>
+        <div class="alert alert-error hide error"></div>
+        <div class="control-group">
+            <label class="control-label" for="name">Name:</label>
+            <div class="controls">
+                <input type="text" id="name" name="name" />
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="moversRequired">
+                Movers Required
+            </label>
+            <div class="controls">
+                <input type="number" name="moversRequired" class="input-small" required />
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="cubicFeet">
+                Approximate Size
+                    <span class="desc">(cu. ft.)</span>
+            </label>
+            <div class="controls">
+                <input type="number" name="cubicFeet" class="input-small" required />
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <button class="btn" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" type="submit">Add Item</button>
+                @Html.AjaxLoader("custom-item-loader", new { style = "display: none;" })
+            </div>
+        </div>
+    }
+}
+
+@using (Html.BeginModal("inventory-item-question", "Additional Questions", new { @class = "" }))
+{
+    <div class="modal-container"></div>
+    <div class="control-group clearfix">
+        <div class="controls" style="float: right;">
+            <button class="btn btn-primary" id="add-item-with-questions">Add Item</button>
+        </div>
+    </div>
+}
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @style = "display: none; ", id = "save-inventory-form" }))
+{
+    <input type="hidden" name="quoteid" />
+    <input type="hidden" name="Rooms" id="hidden-room-json" />
+}
+
+@using (Html.BeginModal("custom-item-modal", "Add Item"))
+{
+    <h4>Add Item</h4>
+    using (Html.BeginForm()) 
+    {
+        <div class="control-group">
+            <label class="control-label">Name</label>
+            <div class="controls">
+                <input type="text" name="name" />
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">Approx. Cubic Feet</label>
+            <div class="controls">
+                <input type="number" name="cubicFeet" class="input-small" required />
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label">Approx. Weight</label>
+            <div class="controls">
+                <input type="number" name="weight" class="input-small" required />
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label">Est. Move Time (Minutes)</label>
+            <div class="controls">
+                <input type="number" name="movetime" class="input-small" required />
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">Minimum Movers</label>
+            <div class="controls">
+                <input type="number" name="movers" class="input-small" required />
+            </div>
+        </div>
+
+        <div class="clearfix">
+            <div class="end-controls">
+                <button type="button" class="btn cancel" data-dismiss="modal">Cancel</button>
+                <input type="submit" class="btn btn-primary" />
+            </div>
+        </div>
+    }
+}
+
+@using (Html.BeginModal("packing-list", "Packing List", new { @style = "width: 400px;" }))
+{    
+    @Html.DropDownList("box-type", Model.GetBoxes().Select(i => new SelectListItem {
+        Selected = false,
+        Text = i.Name,
+        Value =  new { Name = i.Name, BoxTypeID = i.BoxTypeID }.SerializeToJson()
+    }), new { @class = "input-small" })
+
+    <button class="btn add-box-type" type="button">
+        <i class="icon-plus"></i>
+    </button>
+
+    <div class="item-room-count"></div>
+
+    <div style="text-align: right;">
+        <a class="btn" data-dismiss="modal">Cancel</a>
+        <a href="#" class="btn btn-primary">Save</a>
+    </div>
+}
+
+@using (Html.BeginModal("inventory-history", "Inventory History"))
+{
+    <div class="history-container"></div>
+    <div>
+        <button data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary">Switch</button>
+    </div>
+}

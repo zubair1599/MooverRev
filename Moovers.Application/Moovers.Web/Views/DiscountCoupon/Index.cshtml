@@ -1,0 +1,95 @@
+﻿@using Business.Models
+@model IEnumerable<Business.Models.DiscountCoupon>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="center-container">
+    <div class="container-pad">
+
+        <p>
+            @Html.ActionLink("New Coupon", "Create", null, new { @class = "btn btn-primary" })
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Title)
+                    </th>
+                    <th>
+                        @Html.DisplayName("Coupon Code")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Discount Percentage")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Discount Amount")
+                    </th>
+                    <th>
+                        @Html.DisplayName("# of Times Usable")
+                    </th>
+                    <th>
+                        @Html.DisplayName("# of Times Used")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Duration Start")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Duration End")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Published")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Expired")
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (DiscountCoupon item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CouponCode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Percentage)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Amount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NumberOfTimesUsable)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NumberOfTimesUsed)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DurationStart)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DurationEnd)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsPublished)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsExpired)
+                        </td>
+                        <td>
+                            
+                            @Html.ActionLink("Edit", "Edit", new { id = item.DiscountCouponId })
+                            @*@Html.ActionLink("Details", "Details", new { id = item.DiscountCouponId }) |*@
+                            @*@Html.ActionLink("Delete", "Delete", new { id = item.DiscountCouponId })*@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

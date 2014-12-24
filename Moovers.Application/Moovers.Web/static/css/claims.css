@@ -1,0 +1,55 @@
+﻿.nav-column {
+  width: 230px;
+  float: left;
+  padding: 20px 0 0 0;
+  position: relative; }
+
+.nav-column-tabs {
+  margin: 0;
+  padding: 0; }
+  .nav-column-tabs li a {
+    padding: 10px 10px 10px 20px;
+    display: block;
+    border-bottom: 1px solid #f2f2f2;
+    position: relative;
+    text-decoration: none;
+    line-height: 25px;
+    font-size: 13px;
+    vertical-align: middle;
+    color: #777; }
+  .nav-column-tabs li a:hover {
+    background: #f2f2f2;
+    color: #ff7700; }
+  .nav-column-tabs li.active a {
+    background: #f8f8f8;
+    font-weight: bold;
+    color: #ff7700; }
+  .nav-column-tabs li.active a:before, .nav-column-tabs li.active a:after {
+    border-color: transparent transparent transparent transparent;
+    border-color: rgba(255, 255, 255, 0) rgba(255, 255, 255, 0) rgba(255, 255, 255, 0) rgba(255, 255, 255, 0);
+    border-style: solid;
+    border-width: 8px 0px 8px 8px;
+    content: "";
+    display: block;
+    height: 0;
+    margin-top: -8px;
+    position: absolute;
+    top: 50%;
+    right: -8px;
+    width: 0; }
+  .nav-column-tabs li.active a:before {
+    border-left-color: #ccc;
+    right: -8px;
+    top: 50%; }
+  .nav-column-tabs li.active a:after {
+    border-left-color: #f8f8f8;
+    right: -7px; }
+
+.content-column {
+  border-left: 1px solid #dddddd;
+  margin-left: 230px;
+  min-height: 660px;
+  padding: 20px;
+  min-width: 700px; }
+
+/*# sourceMappingURL=claims.css.map */

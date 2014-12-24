@@ -1,0 +1,159 @@
+﻿@using Business.Enums
+@using Business.Models
+@using Business.Repository.Models
+@using RestSharp
+@model EmployeeListModel
+
+@{
+    ViewBag.Title = "Employees";
+    var ytdstartdate = new DateTime(DateTime.Now.Year, 1, 1);
+    DateTime ytdenddate = DateTime.Now;
+    var storenumbers = new FranchiseRepository().GetAll().OrderBy(sn=>sn.StoreNumber).Select(store => store.StoreNumber.ToString()).ToList();
+    storenumbers.Add("All Stores");
+    var storenum = HttpContext.Current.Request.QueryString["storenumber"];
+    var selectliststore = new SelectList(storenumbers, storenum ?? "").OrderBy(sn => sn.Text.StartsWith("5"));
+    
+}
+
+<script src="~/static/js/plugins/moment.js"></script>
+<script src="~/static/js/plugins/livestamp.min.js"></script>
+
+@using (Html.BeginModal("remove-employee-modal", "Remove Employee"))
+{
+    using (Html.BeginForm("Remove", "Employees"))
+    {
+        <input type="hidden" name="id" />
+        <h4>Remove 
+            <span class="name-display">Employee</span>
+        </h4>
+
+        <div class="control-group">
+            <label class="control-label" for="terminationDate">Termination Date</label>
+            <input type="date" name="terminationDate" />
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="terminationType">Type</label>
+            @Html.DropDownList("terminationType", TerminationReasons.Discharged.ToSelectList())
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="reason">Reason</label>
+            <textarea name="reason"></textarea>
+        </div>
+
+        <div class="clearfix">
+            <div class="end-controls">
+                <button type="button" class="btn cancel" data-dismiss="modal">cancel</button>
+                <button type="submit" class="btn btn-primary">
+                    Terminate <span class="name-display">Employee</span>
+                </button>
+            </div>
+        </div>
+    }
+}
+
+<div class="center-container">
+    <div class="container-pad">
+        <div>
+            @Html.ActionLink("New Employee", "Edit", new { Controller = "Employees" }, new { @class = "btn btn-primary" })
+            @Html.DropDownList("status", EmployeeStatus.Active.ToSelectList(), new { style = "width: 120px;", id = "employeestatus" })
+            @Html.DropDownList("store", selectliststore, new { style = "width: 120px;", id = "storenumber" })
+        </div>
+
+        @if (!String.IsNullOrEmpty((string)ViewBag.ErrorMessage))
+        {
+            <div class="alert alert-error">
+                @ViewBag.ErrorMessage
+            </div>
+        }
+
+        <table id="employees" class="table table-bordered table-striped table-hover" style="border-left-width: 1px;border-left-style: solid; border-left-color: rgb(222,222,222)">
+            <thead>
+                @Html.Partial("Generic/_SortableTableHeader")
+            </thead>
+            <tbody>
+                @foreach (Employee item in Model.Employees)
+                {
+                    <tr>
+                        <td>
+                            @item.EmployeeStatus.GetDescription()
+                        </td>
+                        <td>@Html.ActionLink(item.EmployeeNumber.ToString("### ### ###"), "View", new { id = item.Lookup })</td>
+                        <td>@Html.ActionLink(item.NameFirst + " " + item.NameLast, "View", new { id = item.Lookup })</td>
+                        <td>
+                            @if (item.TypeId!=null)
+                            {
+                                var tmp = ((WorkingType)item.TypeId);
+                                @tmp.GetDescription();
+                            }
+                            
+                            
+                        </td>
+                        <td>
+                            @if (item.ClassId != null)
+                            {
+                                ClassType ty = (ClassType)item.ClassId;
+                                string a = ty.GetDescription();
+                                @a
+
+                            }
+                        </td>
+                        <td>
+                            @item.GetManHoursBetween(ytdstartdate, ytdenddate).ToString("####")
+                        </td>
+                        <td>
+                            @{
+                                var test = item.GetLatestJobs(1).Select(i => i.Posting.Schedule.Date).FirstOrDefault().Date.ToShortDateString();
+                                if (test == "1/1/0001")
+                                {
+                                    test = null;
+                                }
+                            }
+                            <span data-livestamp="@test">
+                                @if (test == null)
+                                {
+                                    @:Never
+                                }
+                            </span>
+                        </td>
+                        <td>
+                            @item.Franchise.StoreNumber
+                        </td>
+                        <td>
+                            @if (item.PositionTypeID > 0)
+                            {
+                                @item.PositionType.GetDescription()
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    (function() {
+        var EmployeeListing = {
+            dialogs: { removeEmployee: "#remove-employee-modal" },
+            init: function() {
+                Utility.initBase(this);
+                $(".remove-employee").click(function() {
+                    var id = $(this).data("id");
+                    var name = $(this).data("name");
+                    var dialog = EmployeeListing.dialogs.removeEmployee;
+                    dialog.find(".name-display").text(name);
+                    dialog.find("[name=id]").val(id);
+                    dialog.modal("show");
+                });
+            }
+        };
+
+        $(function() {
+            EmployeeListing.init();
+
+            $('#employeestatus,#storenumber').on('change', function () {
+                window.location.assign("../Employees/IndexNew?status=" + $('#employeestatus').val() + "&storenumber=" + $('#storenumber').val());
+            });
+        });
+    })();
+</script>

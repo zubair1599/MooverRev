@@ -1,0 +1,22 @@
+﻿@model Business.ViewModels.EmailModel
+@{
+    ViewBag.Title = "LeadGeneration";
+    Layout = "~/Views/Shared/Emails/_MarketingEmail.cshtml";
+}
+
+<div style="list-style-type: none; line-height: 1.4em; margin: 0 0 20px; padding: 0; font-size: 12px; color: #333333;">
+    Dear @Model.Account.DisplayName,
+    <p>
+        We received information in regards to your plans to relocate, and we are eager to assist you in your moving needs.
+    </p>
+    <p>
+        Let Moovers give you a free quote by either visiting our website at <a href="http://1800moovers.com">http://1800moovers.com</a> or contacting us at 1-800-MOOVERS.
+    </p>
+    <p>
+        Thank you, and we look forward to working with you.<br />
+        @Model.AccountManager.DisplayName()<br />
+        <a href="mailto:@Model.AccountManager.aspnet_Users.aspnet_Membership.Email">@Model.AccountManager.aspnet_Users.aspnet_Membership.Email</a>
+    </p>
+</div>
+
+@Html.Partial("Emails/_EmailContactFooter", Model)

@@ -1,0 +1,64 @@
+﻿body {
+  margin-top: 0px;
+  margin-left: 0px; }
+
+#page_1 {
+  position: relative;
+  overflow: hidden;
+  margin: 27px 0px 29px 37px;
+  margin-left: 0;
+  padding: 0px;
+  border: none; }
+
+h1 {
+  font-size: 20px;
+  background-color: #3689BF;
+  color: white;
+  padding-left: 10px; }
+  h1 .left {
+    font-size: 12px;
+    margin-right: 100px; }
+  h1 .center {
+    display: inline-block;
+    text-align: center; }
+
+.section {
+  margin-bottom: 20px;
+  margin-left: 3px; }
+  .section h4 {
+    background-color: #333;
+    padding: 5px;
+    margin: 0;
+    color: white; }
+  .section h3 {
+    background-color: #ccc;
+    padding: 5px;
+    margin: 0;
+    font-size: 1.17em;
+    line-height: 1.17em; }
+  .section table {
+    width: 100%; }
+    .section table th, .section table td {
+      text-align: left;
+      padding: 3px;
+      border-top: 1px solid #ddd; }
+
+.contact-info {
+  padding: 6px; }
+  .contact-info .line {
+    display: table;
+    width: 100%;
+    border-bottom: 1px solid #999;
+    height: 17px;
+    font-size: 14px;
+    font-family: tahoma; }
+    .contact-info .line span {
+      display: table-cell; }
+    .contact-info .line label {
+      font-size: 10px;
+      font-family: tahoma;
+      display: inline; }
+      .contact-info .line label:after {
+        content: ":"; }
+
+/*# sourceMappingURL=workorder.css.map */

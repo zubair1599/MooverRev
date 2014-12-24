@@ -1,0 +1,121 @@
+﻿@using Business.Enums
+@using Business.ToClean.QuoteHelpers
+@model LeadListModel
+@{
+    ViewBag.Title = "Leads";
+}
+<div class="center-container">
+    <div class="container-pad">
+        <h4>Web Quotes</h4>
+        @if (Model.WebQuotes.Any()) {
+            <table class="table table-condensed table-verycondensed table-striped">
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Est. Move Date</th>
+                    <th>Estimated Price</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Submitted</th>
+                </tr>
+                <tbody>
+                    @foreach (var i in Model.WebQuotes.OrderByDescending(i => i.Created)) {
+                        <tr>
+                            @*<td>@Html.ActionLink(i.Account.DisplayName, "Overview", new { Controller = "Quote", id = i.Lookup })</td>*@
+                            <td>
+                                <a class="btn btn-primary btn-small" href="@Url.Action("Overview","Quote", new { id = i.Lookup })">Accept</a>
+                            </td>
+                           <td>@i.Account.DisplayName</td>
+                            <td>@i.MoveDate.ToShortDateString()</td>
+                            <td>
+                                @if (i.PricingType == QuotePricingType.Binding) {
+                                    @String.Format("{0:C}", i.GuaranteeData.BasePrice)
+                                }
+                                else {
+                                    @String.Format("{0:C}", i.HourlyData.EstimateTotalHourly())
+                                }
+                            <td>
+                                @if (i.GetStops().Any()) {
+                                    @i.GetStops().First().Address.DisplayString()
+                                }
+                            </td>
+                            <td>
+                                @if (i.GetStops().Any()) {
+                                    @i.GetStops().Last().Address.DisplayString()
+                                }
+                            </td>
+                            <td>@i.Created.ToShortDateString()</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else {
+            <div class="alert">
+                No web quotes waiting.
+            </div>
+        }
+        <hr/>
+        <h4>Leads</h4>
+        @using (Html.BeginForm("RemoveChecked", "Lead", FormMethod.Post, new { id = "remove-form" }))
+        {
+            if (Model.Leads.Any()) {
+                @*<ul class="action-menu dark">
+                    <li>
+                        <button type="submit" class="icon">
+                            <i class="icon-remove"></i>
+                            Remove checked
+                        </button>
+                    </li>
+                </ul>*@
+                <table class="table table-condensed table-verycondensed table-striped">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Owner</th>
+                            <th>Name</th>
+                            <th>Move Date</th>
+                            <th>Weight</th>
+                            <th>Origin</th>
+                            <th>Dest</th>
+                            <th>Submitted</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var i in Model.Leads.OrderByDescending(i => i.AddedDate)) {
+                            @Html.Partial("_DisplayLead", i)
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="alert">
+                    No leads waiting.
+                </div>
+            }
+        }
+        <hr/>
+      
+
+    </div>
+</div>
+
+<script>
+    $(function() {
+        $("#remove-form").submit(function() {
+            var leadCount = $(this).find(":checked").length;
+            if (leadCount > 0) {
+                return confirm("Are you sure you'd like to remove these " + leadCount + " leads?");
+            }
+
+            return false;
+        });
+
+        //$("#remove-form").find("input:checkbox[name=removeids]").click(function() {
+        //    var chk = $(this);
+        //    var tr = chk.closest("tr");
+        //    tr.toggleClass("warning", chk.is(":checked"));
+        //});
+    });
+</script>

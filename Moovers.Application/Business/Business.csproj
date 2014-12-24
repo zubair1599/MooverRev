@@ -1,0 +1,423 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5737068B-218B-4BB8-A617-CC8EA7DDF5EC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Business</RootNamespace>
+    <AssemblyName>Business</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;RELEASE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Beta|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Beta\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AE.Net.Mail">
+      <HintPath>..\packages\AE.Net.Mail.1.7.6.0\lib\net40\AE.Net.Mail.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging">
+      <HintPath>..\packages\Common.Logging.2.1.1\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentValidation">
+      <HintPath>..\packages\FluentValidation.3.4.6.0\lib\Net40\FluentValidation.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net40\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="LinqKit">
+      <HintPath>..\packages\LinqKit.1.0\lib\35\LinqKit.dll</HintPath>
+    </Reference>
+    <Reference Include="NCalc">
+      <HintPath>..\packages\ncalc.1.3.8\lib\NCalc.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RabbitMQ.Client">
+      <HintPath>..\packages\RabbitMQ.Client.3.0.2\lib\net30\RabbitMQ.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.104.1\lib\net4\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SmartFormat">
+      <HintPath>..\packages\SmartFormat.NET.1.0.0.0\lib\net35-Client\SmartFormat.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Entity.Design" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Enums\DiscountType.cs" />
+    <Compile Include="Enums\EmployeeStatus.cs" />
+    <Compile Include="Enums\LocationType.cs" />
+    <Compile Include="Enums\QuoteFieldStatus.cs" />
+    <Compile Include="Enums\SignatureType.cs" />
+    <Compile Include="Enums\Case.cs" />
+    <Compile Include="Enums\ClaimFields.cs" />
+    <Compile Include="Enums\ClaimType.cs" />
+    <Compile Include="Enums\CrewStatus.cs" />
+    <Compile Include="Enums\ElevatorType.cs" />
+    <Compile Include="Enums\Employee_File_Type.cs" />
+    <Compile Include="Enums\FilingStatus.cs" />
+    <Compile Include="Enums\Gender.cs" />
+    <Compile Include="Enums\ParkingType.cs" />
+    <Compile Include="Enums\PayType.cs" />
+    <Compile Include="Enums\Position.cs" />
+    <Compile Include="Enums\PostSortColumn.cs" />
+    <Compile Include="Enums\QuotePricingType.cs" />
+    <Compile Include="Enums\QuoteSort.cs" />
+    <Compile Include="Enums\QuoteStatus.cs" />
+    <Compile Include="Enums\QuoteType.cs" />
+    <Compile Include="Enums\RoomType.cs" />
+    <Compile Include="Enums\SettingTypes.cs" />
+    <Compile Include="Enums\StairType.cs" />
+    <Compile Include="Enums\StopAddressType.cs" />
+    <Compile Include="Enums\StorageSort.cs" />
+    <Compile Include="Enums\SurveyType.cs" />
+    <Compile Include="Enums\TerminationReasons.cs" />
+    <Compile Include="Enums\VaultSort.cs" />
+    <Compile Include="Enums\WorkingType.cs" />
+    <Compile Include="Interfaces\IFranchiseRepository.cs" />
+    <Compile Include="Interfaces\ICustomAuthRepository.cs" />
+    <Compile Include="Interfaces\IMoverScheduleRepository.cs" />
+    <Compile Include="Interfaces\IPaymentRepository.cs" />
+    <Compile Include="Interfaces\IQuoteRepository.cs" />
+    <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Interfaces\IVerificationRepository.cs" />
+    <Compile Include="Interfaces\IVersionable.cs" />
+    <Compile Include="Interfaces\IZipcodeRepository.cs" />
+    <Compile Include="Interfaces\SearchResult.cs" />
+    <Compile Include="JsonObjects\AccountSearchResult.cs" />
+    <Compile Include="JsonObjects\AdditionalInfo.cs" />
+    <Compile Include="JsonObjects\BoxRelJson.cs" />
+    <Compile Include="JsonObjects\EmployeeStatJson.cs" />
+    <Compile Include="JsonObjects\ItemCollection.cs" />
+    <Compile Include="JsonObjects\ItemJson.cs" />
+    <Compile Include="JsonObjects\LeadJson.cs" />
+    <Compile Include="JsonObjects\QuoteQuicklook.cs" />
+    <Compile Include="JsonObjects\QuoteStatList.cs" />
+    <Compile Include="JsonObjects\RoomJson.cs" />
+    <Compile Include="JsonObjects\SmallAccountJson.cs" />
+    <Compile Include="JsonObjects\StorageVaultJson.cs" />
+    <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\CustomModels\ScheduleTime.cs" />
+    <Compile Include="Models\EmployeeAuthorization.cs" />
+    <Compile Include="Models\Location.cs" />
+    <Compile Include="Models\QuoteMapDirection.cs" />
+    <Compile Include="Models\RoomInventoryItemNote.cs" />
+    <Compile Include="Models\Room_InventoryItem_Option.cs" />
+    <Compile Include="Models\Signature.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Repository\ApplicationRepository.cs" />
+    <Compile Include="Repository\aspnet_RolesRepository.cs" />
+    <Compile Include="Repository\aspnet_Users_MembershipRepository.cs" />
+    <Compile Include="Repository\DiscountCouponRepository.cs" />
+    <Compile Include="Repository\EmployeeAuthenticationRepository.cs" />
+    <Compile Include="Interfaces\ICacheRepository.cs" />
+    <Compile Include="Repository\Employee_aspnet_User_RelRepository.cs" />
+    <Compile Include="Repository\LocationRepository.cs" />
+    <Compile Include="Repository\MooverScheduleRepository.cs" />
+    <Compile Include="Repository\RoleAppRelationRepository.cs" />
+    <Compile Include="Repository\SmartMoveRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Repository\VerificationRepository.cs" />
+    <Compile Include="ToClean\AccountModelBase.cs" />
+    <Compile Include="Models\Account_CreditCard.cs" />
+    <Compile Include="Models\AddPaymentViewModel.cs" />
+    <Compile Include="Models\Address.cs" />
+    <Compile Include="Models\AddressParseException.cs" />
+    <Compile Include="Models\AddressType.cs" />
+    <Compile Include="Models\aspnet_User.cs" />
+    <Compile Include="Models\aspnet_Users_Profile.cs" />
+    <Compile Include="Models\Box.cs" />
+    <Compile Include="Models\BusinessAccount.cs" />
+    <Compile Include="ToClean\BusinessAccountModel.cs" />
+    <Compile Include="Models\CachedMapResponse.cs" />
+    <Compile Include="Models\Case.cs" />
+    <Compile Include="Models\Claim.cs" />
+    <Compile Include="Models\Competitor.cs" />
+    <Compile Include="Models\Crew.cs" />
+    <Compile Include="Models\Crew_Employee_Rel.cs" />
+    <Compile Include="Models\CustomCrewCount.cs" />
+    <Compile Include="Models\EmailAddressType.cs" />
+    <Compile Include="Models\EmailTemplate.cs" />
+    <Compile Include="Models\EmailUnsubscribe.cs" />
+    <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\File.cs" />
+    <Compile Include="Models\Franchise.cs" />
+    <Compile Include="Models\Franchise_aspnet_User.cs" />
+    <Compile Include="Models\FrontPageMessage.cs" />
+    <Compile Include="Models\GlobalSetting.cs" />
+    <Compile Include="Models\InventoryItemQuestion.cs" />
+    <Compile Include="Models\InventoryItemQuestionOption.cs" />
+    <Compile Include="Models\InvoicePeriod.cs" />
+    <Compile Include="Models\Lead.cs" />
+    <Compile Include="Models\MarketingEmailLog.cs" />
+    <Compile Include="Models\Payment.cs" />
+    <Compile Include="Models\PhoneNumberType.cs" />
+    <Compile Include="Models\Post.cs" />
+    <Compile Include="Models\Posting_Employee_Rel.cs" />
+    <Compile Include="Models\PricingAlgorithm.cs" />
+    <Compile Include="Models\Quote.cached.cs" />
+    <Compile Include="Models\Quote.external.cs" />
+    <Compile Include="Models\Quote.hourly.cs" />
+    <Compile Include="Models\Quote.pricing.cs" />
+    <Compile Include="Models\Quote.scheduling.cs" />
+    <Compile Include="Models\QuoteServiceJson.cs" />
+    <Compile Include="Models\Room_InventoryItem.cs" />
+    <Compile Include="Models\ScheduleConfirmation.cs" />
+    <Compile Include="Models\QuoteService.cs" />
+    <Compile Include="Models\QuoteAccessLog.cs" />
+    <Compile Include="Models\EmailLog.cs" />
+    <Compile Include="Models\QuoteHistory.cs" />
+    <Compile Include="Models\QuoteStatusLog.cs" />
+    <Compile Include="Models\QuoteSurvey.cs" />
+    <Compile Include="Models\Quote_CompetitorRel.cs" />
+    <Compile Include="Models\ReplacementValuation.cs" />
+    <Compile Include="Models\Room.cs" />
+    <Compile Include="Models\QuoteComment.cs" />
+    <Compile Include="Models\EmailAddress.cs" />
+    <Compile Include="Models\Error.cs" />
+    <Compile Include="Models\InventoryItem.cs" />
+    <Compile Include="Models\PasswordReset.cs" />
+    <Compile Include="Models\PersonAccount.cs" />
+    <Compile Include="Models\PhoneNumber.cs" />
+    <Compile Include="Models\Quote.cs" />
+    <Compile Include="Models\RepositoryBase.cs" />
+    <Compile Include="Models\Model.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Schedule.cs" />
+    <Compile Include="Models\ScheduleNote.cs" />
+    <Compile Include="Models\SmartyStreetsCache.cs" />
+    <Compile Include="Models\Stop.cs" />
+    <Compile Include="Models\StorageComment.cs" />
+    <Compile Include="Models\StorageInvoice.cs" />
+    <Compile Include="Models\StoragePayment.cs" />
+    <Compile Include="Models\StorageQuoteType.cs" />
+    <Compile Include="Models\StorageStatement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\StorageVault.cs" />
+    <Compile Include="Models\StorageWorkOrder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\StorageZone.cs" />
+    <Compile Include="Models\TransactionLog.cs" />
+    <Compile Include="Models\Vehicle.cs" />
+    <Compile Include="Models\ZipCode.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\AccountRepository.cs" />
+    <Compile Include="Repository\CustomCrewCountRepository.cs" />
+    <Compile Include="Repository\EmailLogRepository.cs" />
+    <Compile Include="Repository\EmailTemplateRepository.cs" />
+    <Compile Include="Repository\EmailUnsubscribeRepository.cs" />
+    <Compile Include="Repository\EmployeeRepository.cs" />
+    <Compile Include="Repository\ErrorRepository.cs" />
+    <Compile Include="Repository\FileRepository.cs" />
+    <Compile Include="Repository\FranchiseRepository.cs" />
+    <Compile Include="Repository\FrontPageMessageRepository.cs" />
+    <Compile Include="Repository\GlobalSettingRepository.cs" />
+    <Compile Include="Repository\Account_CreditCardRepository.cs" />
+    <Compile Include="Repository\AddressRepository.cs" />
+    <Compile Include="Repository\aspnet_UserRepository.cs" />
+    <Compile Include="Repository\aspnet_Users_ProfileRepository.cs" />
+    <Compile Include="Repository\BoxRepository.cs" />
+    <Compile Include="Repository\BusinessAccountRepository.cs" />
+    <Compile Include="Repository\CachedMapResponseRepository.cs" />
+    <Compile Include="Repository\CacheRepository.cs" />
+    <Compile Include="Repository\CaseRepository.cs" />
+    <Compile Include="Repository\ClaimRespository.cs" />
+    <Compile Include="Repository\CompetitorRepository.cs" />
+    <Compile Include="Repository\CrewRepository.cs" />
+    <Compile Include="Repository\InventoryItemRepository.cs" />
+    <Compile Include="Repository\LeadRepository.cs" />
+    <Compile Include="Repository\MarketingEmailLogRepository.cs" />
+    <Compile Include="Repository\PasswordResetRepository.cs" />
+    <Compile Include="Repository\PaymentRepository.cs" />
+    <Compile Include="Repository\PersonAccountRepository.cs" />
+    <Compile Include="Repository\PostingRepository.cs" />
+    <Compile Include="Repository\PricingAlgorithmRepository.cs" />
+    <Compile Include="Repository\QuoteAccessLogRepository.cs" />
+    <Compile Include="Repository\QuoteCommentRepository.cs" />
+    <Compile Include="Repository\QuoteHistoryRepository.cs" />
+    <Compile Include="Repository\QuoteRepository.cs" />
+    <Compile Include="Repository\QuoteServiceRepository.cs" />
+    <Compile Include="Repository\QuoteStatusLogRepository.cs" />
+    <Compile Include="Repository\QuoteSurveyRepository.cs" />
+    <Compile Include="Repository\Quote_Competitor_Rel_Repository.cs" />
+    <Compile Include="Repository\ReplacementValuationRepository.cs" />
+    <Compile Include="Repository\RoomRepository.cs" />
+    <Compile Include="Repository\ScheduleConfirmationRepository.cs" />
+    <Compile Include="Repository\ScheduleNoteRepository.cs" />
+    <Compile Include="Repository\ScheduleRepository.cs" />
+    <Compile Include="Repository\SmartyStreetsCacheRepository.cs" />
+    <Compile Include="Repository\StopRepository.cs" />
+    <Compile Include="Repository\StorageCommentRepository.cs" />
+    <Compile Include="Repository\StorageInvoiceRepository.cs" />
+    <Compile Include="Repository\StorageStatementRepository.cs" />
+    <Compile Include="Repository\StorageVaultRepository.cs" />
+    <Compile Include="Repository\StorageWorkOrderRepository.cs" />
+    <Compile Include="Repository\StorageWorkOrder_InventoryItem_RelRepository.cs" />
+    <Compile Include="Repository\StorageZoneRepository.cs" />
+    <Compile Include="Repository\TransactionLogRepository.cs" />
+    <Compile Include="Repository\VehicleRepository.cs" />
+    <Compile Include="Repository\ZipCodeRepository.cs" />
+    <Compile Include="Roles\Roles.cs" />
+    <Compile Include="Service Models\FirstData\FirstDataCardTypes.cs" />
+    <Compile Include="Service Models\FirstData\FirstDataCurrency.cs" />
+    <Compile Include="Service Models\FirstData\FirstDataTransactionTypes.cs" />
+    <Compile Include="Service Models\Google Maps\GoogleMapsDistance.cs" />
+    <Compile Include="Service Models\Google Maps\GoogleMapsDuration.cs" />
+    <Compile Include="Service Models\Google Maps\GoogleMapsLeg.cs" />
+    <Compile Include="Service Models\Google Maps\GoogleMapsLocation.cs" />
+    <Compile Include="Service Models\Google Maps\GoogleMapsResult.cs" />
+    <Compile Include="Service Models\Google Maps\GoogleMapsRoute.cs" />
+    <Compile Include="Service Models\Google Maps\GoogleMapsStep.cs" />
+    <Compile Include="Service Models\Google Maps\InvalidMapsRequestException.cs" />
+    <Compile Include="Service Models\Google Maps\LatLng.cs" />
+    <Compile Include="Service Models\Google Maps\MapNotFoundException.cs" />
+    <Compile Include="Service Models\Smarty Streets\Analysis.cs" />
+    <Compile Include="Service Models\Smarty Streets\CandidateAddress.cs" />
+    <Compile Include="Service Models\Smarty Streets\Components.cs" />
+    <Compile Include="Service Models\Smarty Streets\Metadata.cs" />
+    <Compile Include="Service References\FirstData\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="ToClean\EmailModel.cs" />
+    <Compile Include="ToClean\PersonAccountModel.cs" />
+    <Compile Include="ToClean\QuoteHelpers\GuaranteedInfo.cs" />
+    <Compile Include="ToClean\QuoteHelpers\HourlyInfo.cs" />
+    <Compile Include="ToClean\QuoteHelpers\OptGroupAttribute.cs" />
+    <Compile Include="ToClean\StatsModel.cs" />
+    <Compile Include="ToClean\Stop.cs" />
+    <Compile Include="Utility\AddressVerification.cs" />
+    <Compile Include="Utility\ContentType.cs" />
+    <Compile Include="Utility\Date.cs" />
+    <Compile Include="Utility\DistanceCalculator.cs" />
+    <Compile Include="Utility\GeocodeCalc.cs" />
+    <Compile Include="Interfaces\IPayable.cs" />
+    <Compile Include="Interfaces\ISortableModel.cs" />
+    <Compile Include="Utility\GmailLeadRepository.cs" />
+    <Compile Include="Utility\JsonNetResult.cs" />
+    <Compile Include="Utility\ParseFiles.cs" />
+    <Compile Include="Utility\HtmlHelpers.cs" />
+    <Compile Include="Utility\Email.cs" />
+    <Compile Include="Utility\Extensions.cs" />
+    <Compile Include="Utility\LeadParsers.cs" />
+    <Compile Include="Utility\ParseLeads.cs" />
+    <Compile Include="Utility\Payment.cs" />
+    <Compile Include="Utility\SearchParser.cs" />
+    <Compile Include="Utility\Security.cs" />
+    <Compile Include="Utility\PagedResult.cs" />
+    <Compile Include="Utility\SortableModel.cs" />
+    <Compile Include="Utility\Utility.cs" />
+    <Compile Include="Interfaces\IPosting.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
+    <EntityDeploy Include="Models\Model.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Models\Model.edmx.diagram">
+      <DependentUpon>Model.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Service References\FirstData\Business.FirstData.TransactionResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\FirstData\service.wsdl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\FirstData\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\FirstData\configuration.svcinfo" />
+    <None Include="Service References\FirstData\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\FirstData\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Moovers.HtmlToPdf\Moovers.HtmlToPdf.csproj">
+      <Project>{d292d05b-ade2-41d8-a7df-2cdea9ba10f3}</Project>
+      <Name>Moovers.HtmlToPdf</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,21 @@
+﻿@model Business.Utility.PagedResult<Business.Models.Error>
+
+@{
+    ViewBag.Title = "Errors";
+}
+
+<table class="table table-striped">
+    <tr>
+        <th>Occurred</th>
+        <th>Url</th>
+        <th>Message</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.ActionLink(item.Created.Value.ToShortDateString() + " @" + item.Created.Value.ToShortTimeString(), "ErrorView", new { id = item.ErrorLogID })</td>
+            <td>@item.URL</td>
+            <td>@item.Message</td>
+        </tr>
+    }
+</table>

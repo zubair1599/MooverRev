@@ -1,0 +1,160 @@
+﻿@using Business.Repository.Models
+@model AccountEditModel
+
+@Html.ValidationSummary()
+@{
+    Model.Employees = new EmployeeRepository().GetAll().OrderBy(e=>e.NameFirst);
+}
+<script type="text/javascript">
+    $(function() {
+        $('#empddl').change(function() {
+            var empId = $(this).val();
+           
+
+            $.ajax({
+                url: '/Admin/GetEmployeeProfile',
+                type:'Post',
+                data: { empId: empId},
+                dataType: 'json',
+                success: function(data) {
+                    if ($('#email').val() === '') $('#email').val(data['Email']);
+                    if ($('#fname').val() === '') $('#fname').val(data['FirstName']);
+                    if ($('#lname').val() === '') $('#lname').val(data['LastName']);
+                    if ($('#phone').val() === '') $('#phone').val(data['Phone']);
+                },
+                error: function(jqXhr,textStatus,errorThrown) {
+                    alert(errorThrown);
+                }
+
+            });
+
+        });
+    })
+</script>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-horizontal", autocomplete = "off" }))
+{
+    <div class="control-group">
+        <div class="controls">
+            <h3>Add New Account</h3>
+        </div>
+        @Html.LabelFor(m => m.EmployeeID, "Employee", new { @class = "control-label" })
+        <div class="controls">
+            @if (false)//Model.IsEdit) // will turn on condition once all crm user will have employee associated
+            {
+                @Html.DropDownListFor(m => m.EmployeeID, Model.Employees.Select(i => new SelectListItem()
+                {
+                    Selected = Model.EmployeeID == i.EmployeeID,
+                    Text = i.DisplayName(),
+                    Value = i.EmployeeID.ToString()
+                }), new {@id = "empddl", @disabled = "disabled"})
+            }
+            else
+            {
+                @Html.DropDownListFor(m => m.EmployeeID, Model.Employees.Select(i => new SelectListItem()
+                {
+                    Selected = Model.EmployeeID == i.EmployeeID,
+                    Text = i.DisplayName(),
+                    Value = i.EmployeeID.ToString()
+                }), new {@id = "empddl"})
+            }
+        </div>
+    </div>
+    
+    <div class="control-group">
+      
+        @Html.LabelFor(m => m.User.UserName, "Username", new { @class = "control-label" })
+        <div class="controls">
+            @if (Model.IsEdit)
+            {
+                @Html.TextBoxFor(m => m.User.UserName, new { required = "required", disabled = "disabled" })
+            }
+            else
+            {
+                @Html.TextBoxFor(m => m.User.UserName, new { required = "required" })
+            }
+        </div>
+    </div>
+    <div class="control-group">
+        @Html.LabelFor(m => m.Password, new { @class = "control-label" })
+        <div class="controls">
+            @Html.PasswordFor(m => m.Password, new { required = "required", value = (Model.IsEdit) ? AccountEditModel.UnchangedPasswordText : "" })
+        </div>
+    </div>
+    <div class="control-group">
+        @Html.LabelFor(m => m.ConfirmPassword, "Confirm Password", new { @class = "control-label" })
+        <div class="controls">
+            @Html.PasswordFor(m => m.ConfirmPassword, new { required = "required", value = (Model.IsEdit) ? AccountEditModel.UnchangedPasswordText : "" })
+        </div>
+    </div>
+    <div class="control-group">
+        @Html.LabelFor(m => m.Email, new { @class = "control-label" })
+        <div class="controls">
+            @Html.TextBoxFor(m => m.Email, new { @id = "email", required = "required", @type = "email" })
+        </div>
+    </div>
+
+    <div class="control-group">
+        @Html.LabelFor(m => m.FirstName, "First Name", new {  @class = "control-label" })
+        <div class="controls">
+            @Html.TextBoxFor(m => m.FirstName, new { @id = "fname", required = "required" })
+        </div>
+    </div>
+    <div class="control-group">
+        @Html.LabelFor(m => m.LastName, "Last Name", new { @class = "control-label" })
+        <div class="controls">
+            @Html.TextBoxFor(m => m.LastName, new { @id = "lname", required = "required" })
+        </div>
+    </div>
+
+    <div class="control-group">
+        @Html.LabelFor(m => m.Phone, "Office Phone (direct line)", new { @class = "control-label" })
+        <div class="controls">
+            @Html.TextBoxFor(m => m.Phone, new { @id = "phone", @class = "required", @type = "phone" })
+        </div>
+    </div>
+
+    <div class="control-group">
+        @Html.LabelFor(m => m.Title, new { @class = "control-label" })
+        <div class="controls">
+            @Html.TextBoxFor(m => m.Title, new { @class = "required" })
+        </div>
+    </div>
+
+    <div class="control-group">
+        @Html.LabelFor(m => m.FranchiseIds, "Franchise", new { @class = "control-label" })
+
+        <div class="controls">
+            @Html.CheckBoxListFor(model => model.FranchiseIds,
+                model => model.GetFranchises(),
+                franchise => franchise.FranchiseID,
+                franchise => franchise.Name,
+                model => model.SelectedFranchises, Position.Horizontal)
+        </div>
+    </div>
+   
+    <div class="control-group">
+        <label class="checkbox"></label>
+        <div class="controls">
+            <select multiple name="roles">
+                @foreach (var role in Roles.GetAllRoles())
+                {
+                    <option value="@role" @(Model.IsEdit && System.Web.Security.Roles.IsUserInRole(Model.User.UserName, role) ? "selected" : "")>@role</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="controls">
+            @if (Model.IsEdit)
+            {
+                <button type="submit" class="btn">Save User</button>
+            }
+            else
+            {
+                <button type="submit" class="btn">Create User</button>
+            }
+        </div>
+    </div>
+}

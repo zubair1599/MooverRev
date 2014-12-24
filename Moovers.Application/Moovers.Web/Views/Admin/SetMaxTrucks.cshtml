@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Business.Models.Franchise>
+@{
+    ViewBag.Title = "Set Max Trucks";
+    var maxTrucks = ViewData["maxTrucks"];
+    var trucks = Enumerable.Range(1, 20).Select(i =>  new SelectListItem() {
+       
+          Text = i.ToString(),
+          Value = i.ToString(),
+         
+        });
+     trucks.Where(i=>i.Value!= null && i.Value.Equals(maxTrucks.ToString())).FirstOrDefault().Selected = true;
+}
+
+<h2>Max Trucks</h2>
+
+@using (Html.BeginForm())
+{
+    <div>
+        @Html.DropDownList("maxtrucks", trucks)
+    </div>
+    <div>
+        @Html.DropDownList("franchiseid", Model.Select(i => new SelectListItem() {
+            Text = i.Name,
+            Value = i.FranchiseID.ToString()
+        }))
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+}

@@ -1,0 +1,32 @@
+﻿@model Business.Models.Account            
+<div class="shipper-info">
+        <h5>@ViewBag.title</h5>
+        <div>@Model.DisplayName</div>
+        <div>
+            @Html.ActionLink("Account #" + Model.Lookup, "Index", new { Controller = "Accounts", id = Model.Lookup })
+        </div>
+        <div>
+            @Html.Partial("Accounts/_DisplayAddress", Model.GetAddress(Business.Models.AddressType.Mailing))
+            <br />
+        </div>
+        <div class="shipper-phones">
+            @{ var primaryphone = Model.GetPhone(Business.Models.PhoneNumberType.Primary); }
+            @if (primaryphone != null)
+            {
+                @primaryphone.DisplayString()
+            }
+
+            &nbsp;
+
+            @{ var secondary = Model.GetPhone(Business.Models.PhoneNumberType.Secondary); }
+            @if (secondary != null)
+            {
+                @secondary.DisplayString()
+            }
+        </div>
+        @{ var email = Model.GetEmail(Business.Models.EmailAddressType.Primary); }
+        @if (email != null)
+        {
+            <a href="mailto:@(email.Email)">@email.Email</a>
+        }
+</div>

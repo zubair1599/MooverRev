@@ -1,0 +1,44 @@
+﻿@model AccountEditModel
+
+@{
+    ViewBag.Title = "Settings";
+    Layout = "~/Views/Shared/Main.cshtml";
+}
+
+
+<div class="center-container">
+    <div class="container-pad">
+        <div class="account-settings">
+            <h5>Account Settings 
+            <span class="subcontrol">@Html.ActionLink("Edit", "EditSettings")</span>
+            </h5>
+
+            @if (ViewBag.Success)
+            {
+                <div class="alert alert-success">
+                    Your information has been updated!
+                </div>
+            }
+
+
+            @Html.Label("Username")
+            <span>@Model.User.UserName</span>
+
+            @Html.Label("email", "Email")
+            <span>@Model.User.aspnet_Membership.Email</span>
+
+            @Html.Label("password", "Password")
+            <span>**********</span>
+
+            <div>
+                <ul class="roles">
+                    @foreach (var i in Model.UserRoles)
+                    {
+                        <li>@i</li>
+                    }
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</div>

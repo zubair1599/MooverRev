@@ -1,0 +1,177 @@
+﻿@model Moovers.WebModels.StoragePaymentEmail
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+    <div style="margin: 0; padding: 0">
+        <table width="100%" cellpadding="0" cellspacing="0" align="center" style="background: #bfe7fb">
+            <tbody>
+                <tr>
+                    <td align="center" width="600">
+                        <div align="center" style="max-width: 600px; min-width: 100px; text-align: left; padding-top: 30px">
+                            <table style="text-align: left; width: 600px; max-width: 600px; min-width: 200px; font-family: Arial,Helvetica,sans-serif; color: #333333; margin: 0 auto; background: #ffffff" cellpadding="0" cellspacing="0">
+                                <tbody>
+                                    <tr>
+                                        <td style="background-color: #ff9900; height: 40px">
+                                            <h3 style="font-size: 19px; font-weight: bold; color: #ffffff; line-height: 40px; margin: 0 0 0 30px">
+                                                AutoPay Declined
+                                            </h3>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" style="padding: 30px 50px">
+                                            <p style="list-style-type: none; line-height: 17px; margin: 0 0 20px; padding: 0; font-size: 13px; color: #555555">
+                                                Dear <strong>@Model.WorkOrder.Account.DisplayName</strong>,
+                                                <br>
+                                                <br>
+                                                You are receiving this alert because your recent <strong>Moovers </strong> recurring/automatic storage payment has been declined.
+                                            </p>
+                                            <table cellspacing="0" cellpadding="0" width="500px" bgcolor="444444">
+                                                <tr>
+                                                    <td style="color: #ffffff; font-weight: bold; font-size: 13px; padding: 5px 0 5px 20px">Payment Details
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <table border="0" cellspacing="0" cellpadding="0" width="500" bgcolor="#f1f1f1" style="font-size: 14px">
+                                                @{
+                                                    var darkStyle = "font-weight: bold; font-size: 14px; color: #444444; padding: 10px; border-bottom: 1px solid #ffffff; border-right: 1px solid #ffffff; background-color: #dedede; text-align: right; width: 150px;";
+                                                    var lightStyle = "font-size: 14px; color: black; padding: 10px; border-bottom: 1px solid #ffffff; border-right: 1px solid #f1f1f1; background-color: #f1f1f1; text-align: left;";
+                                                }
+                                                <tr>
+                                                    <td style="@darkStyle">
+                                                        Status:
+                                                    </td>
+                                                    <td style="color: red; @lightStyle">Declined
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="@darkStyle">
+                                                        Account Name:
+                                                    </td>
+                                                    <td style="@lightStyle">
+                                                        @Model.WorkOrder.Account.DisplayName
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="@darkStyle">
+                                                        Account Number:
+                                                    </td>
+                                                    <td style="@lightStyle">
+                                                        @Model.WorkOrder.Account.Lookup
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="@darkStyle">
+                                                        Invoice Number:
+                                                    </td>
+                                                    <td style="@lightStyle">
+                                                        <span>INV</span>@Model.Invoice.Lookup
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="@darkStyle">
+                                                        Transaction Number:
+                                                    </td>
+                                                    <td style="@lightStyle">
+                                                        @Model.Payment.TransactionID
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="@darkStyle">
+                                                        Billing Date:
+                                                    </td>
+                                                    <td style="@lightStyle">
+                                                        @Model.Payment.Date.ToShortDateString()
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="@darkStyle">
+                                                        <b>Storage Period:</b>
+                                                    </td>
+                                                    <td style="@lightStyle">
+                                                        @Model.Invoice.ForDate.ToShortDateString() - @Model.Invoice.ForDate.AddMonths(1).ToShortDateString()
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="@darkStyle">
+                                                        <b>Amount:</b>
+                                                    </td>
+                                                    <td style="@lightStyle">
+                                                        @String.Format("{0:C}", Model.Invoice.Amount)
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="@darkStyle">
+                                                        <b>Paid With:</b>
+                                                    </td>
+                                                    <td style="@lightStyle">
+                                                        @if (Model.Payment.Account_CreditCard != null)
+                                                        {
+                                                            @Model.Payment.Account_CreditCard.CardType<text> ending in </text>@Model.Payment.Account_CreditCard.GetLast4()
+                                                        }
+                                                    </td>
+                                                </tr>
+                                                <tr style="background-color: #ffffff">
+                                                    <td colspan="2" width="500" style="color: #555555; font-weight: normal; font-size: 13px; line-height: 17px; margin: 0; font-family: Arial,Helvetica,sans-serif">
+                                                        <br />
+                                                        <br />
+                                                        <b style="color: #ff9900; font-size: 18px">
+                                                            Immediate Action Required
+                                                        </b>
+                                                        <ul>
+                                                            <li style="padding-bottom: 10px">
+                                                                Your current payment method has been placed on hold.
+                                                            </li>
+                                                            <li style="padding-bottom: 10px">
+                                                                Please contact Customer Care to update your existing payment method or provide an alternate payment method. 
+                                                                1-800-MOOVERS (1-800-666-8377), Monday - Friday, 8AM - 5PM CST.
+                                                            </li>
+                                                            <li style="padding-bottom: 10px">
+                                                                Please reference 
+                                                                <b>Transaction Number @Model.Payment.TransactionID</b>.
+                                                            </li>
+                                                            @*<li style="padding-bottom:10px">
+                                                                <b>If payment is not received by 6/5/13</b>, you will be assessed a $25 fee.
+                                                            </li>*@
+                                                            <li style="padding-bottom: 10px">
+                                                                <b>If you&#39;re sure the payment method is valid</b>, 
+                                                                your card might have been declined due to insufficient funds or as a precautionary measure against fraud. 
+                                                                Call the phone number on the back of your card to resolve any issues.
+                                                            </li>
+                                                            <li style="padding-bottom: 10px">
+                                                                Attached is a PDF version of your invoice if you prefer to mail your payment. If you do not already have Adobe PDF Reader installed please go to
+                                                                <a style="margin: 0; font-style: normal; color: #0065b1; text-decoration: none" href="http://www.adobe.com" target="_blank">
+                                                                    www.adobe.com
+                                                                </a>
+                                                                to install it.
+                                                            </li>
+                                                        </ul>
+                                                        <br />
+                                                        Sincerely,
+                                                        <br />
+                                                        <b>Your Moovers Team</b>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p align="center" style="line-height: 20px; font-size: 11px; font-family: Arial,Helvetica,sans-serif; color: #666666; padding: 12px 20px 0">
+                                Each franchise independently owned and operated, &copy; 2013 Moovers Franchising Inc.
+                                <a style="margin: 0; font-size: 11px; font-style: normal; color: #0065b1; text-decoration: none" href="http://www.1800moovers.com" target="_blank">
+                                    http://www.1800moovers.com
+                                </a>
+                                <br />
+                                Moovers understands the importance of protecting your privacy.
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

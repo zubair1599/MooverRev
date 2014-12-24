@@ -1,0 +1,104 @@
+﻿<div class="nav-dd-container">
+    <div class="nav-dd-selected">
+        <span class="nav-dd-icon icon-@ViewBag.SelectedMenu.ToLower()"></span>
+        <span class="nav-dd-text">@ViewBag.SelectedMenu</span>
+        <span class="dd-icon"></span>
+    </div>
+    <div class="nav-dd-list">
+        @if (ViewBag.SelectedMenu != "Dashboard")
+        {
+            <div class="nav-dd-link">
+                <a href="@Request.RawUrl">
+                    <span class="nav-dd-icon icon-@ViewBag.SelectedMenu.ToLower()"></span>
+                    <span class="nav-dd-text">@ViewBag.SelectedMenu</span>
+                </a>
+            </div>
+            <div class="list-divider"></div>
+        }
+        <div class="nav-dd-link">
+            <a href="@Url.Action("Index", "Home")">
+                <span class="nav-dd-icon icon-dashboard"></span>
+                <span class="nav-dd-text">Dashboard</span>
+            </a>
+        </div>
+        <div class="nav-dd-link">
+            <a href="@Url.Action("Index", "Accounts")">
+                <span class="nav-dd-icon icon-accounts"></span>
+                <span class="nav-dd-text">Accounts</span>
+            </a>
+        </div>
+        <div class="nav-dd-link">
+            <a href="@Url.Action("Index", "Quote")">
+                <span class="nav-dd-icon icon-quotes"></span>
+                <span class="nav-dd-text">Quotes</span>
+            </a>
+        </div>
+        <div class="nav-dd-link">
+            <a href="@Url.Action("List", "Lead")">
+                <span class="nav-dd-icon icon-leads"></span>
+                <span class="nav-dd-text">Leads</span>
+            </a>
+        </div>
+        <div class="nav-dd-link">
+            <a href="@Url.Action("Index", "Schedule")">
+                <span class="nav-dd-icon icon-schedule"></span>
+                <span class="nav-dd-text">Schedule</span>
+            </a>
+        </div>
+        <div class="nav-dd-link">
+            <a href="@Url.Action("Index", "Case")">
+                <span class="nav-dd-icon icon-cases"></span>
+                <span class="nav-dd-text">Cases</span>
+            </a>
+        </div>
+        <div class="list-divider"></div>
+        <div class="nav-dd-link">
+            <a href="@Url.Action("Index", "Storage")">
+                <span class="nav-dd-icon icon-storage"></span>
+                <span class="nav-dd-text">Storage</span>
+                @{ var storageCount = ViewBag.storageCount; }
+                @if (storageCount > 0)
+                {
+                    <span class="label label-important @(storageCount >= 10 ? "large" : "") @(storageCount >= 100 ? "very-large" : "")">@storageCount</span>
+                }
+            </a>
+        </div>
+        <div class="nav-dd-link">
+            <a href="@Url.Action("Index", "Posting")">
+                <span class="nav-dd-icon icon-accounting"></span>
+                <span class="nav-dd-text">Accounting</span>
+            </a>
+        </div>
+        <div class="nav-dd-link">
+            <a href="@Url.Action("Index", "Employees")">
+                <span class="nav-dd-icon icon-employees"></span>
+                <span class="nav-dd-text">Employees</span>
+            </a>
+        </div>
+        <div class="nav-dd-link">
+            <a href="@Url.Action("Vehicles", "Admin")">
+                <span class="nav-dd-icon icon-vehicles"></span>
+                <span class="nav-dd-text">Vehicles</span>
+            </a>
+        </div>
+        <div class="nav-dd-link">
+            <a href="@Url.Action("Index", "Report")">
+                <span class="nav-dd-icon icon-reports"></span>
+                <span class="nav-dd-text">Reports</span>
+            </a>
+        </div>
+        <div class="nav-dd-link">
+            <a href="@Url.Action("Index", "Admin")">
+                <span class="nav-dd-icon icon-admin"></span>
+                <span class="nav-dd-text">Admin</span>
+            </a>
+        </div>
+        @*<div class="list-divider"></div>
+            <div class="nav-dd-link">
+                <a href="#">
+                    <span class="nav-dd-icon icon-preferences"></span>
+                    <span class="nav-dd-text">Company Preferences</span>
+                </a>
+            </div>*@
+    </div>
+</div>

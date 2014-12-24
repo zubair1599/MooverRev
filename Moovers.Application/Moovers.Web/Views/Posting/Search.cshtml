@@ -1,0 +1,38 @@
+﻿@model PostListModel
+@{
+    ViewBag.Title = "Search Results";
+    Layout = "_PostLayout.cshtml";
+    ViewBag.BodyClass = "post-body";
+    ViewBag.Page = "unposted";
+}
+
+@section Buttons 
+{
+    <button id="btn-post" class="btn btn-primary" style="visibility: hidden;">Post</button>
+}
+
+<div class="col2-right">
+    <div class="section">
+        <div class="post-search">
+            @using (Html.BeginForm("Search", "Posting", FormMethod.Get))
+            {
+                <input type="search"  name="q" placeholder="Search..." value="@ViewBag.Search" autofocus />
+                <button type="submit" class="btn">Search</button>
+            }
+        </div>
+
+        @if (!Model.Postings.Any())
+        {
+            <div class="alert alert-info">
+                No quotes matched your search.
+            </div>
+        }
+        else
+        {
+            using (Html.BeginForm("Post", "Posting", FormMethod.Get))
+            {
+                @Html.Partial("_PostList")
+            }
+        }
+    </div>
+</div>

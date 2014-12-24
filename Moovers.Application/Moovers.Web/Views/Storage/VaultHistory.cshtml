@@ -1,0 +1,51 @@
+﻿@model Business.Models.StorageWorkOrder
+@{
+    ViewBag.Title = "Vault History - #" + @Model.Lookup;
+}
+
+<div class="container-pad">
+    <h4>Work Order #@Model.Lookup Vault History</h4>
+    <div>
+        @Html.ActionLink("back", "View", new { Controller = "Storage", id = Model.Lookup })
+    </div>
+
+
+    @if (Model.StorageWorkOrder_Vault_Rel.Any())
+    {
+        <div class="span6">
+            <table class="table table-verycondensed table-hover">
+                <tr>
+                    <th>Vault ID</th>
+                    <th>Last Location</th>
+                    <th>Date Removed</th>
+                </tr>
+            @foreach (var item in Model.StorageWorkOrder_Vault_Rel.OrderBy(i => i.IsRemoved))
+            {
+                <tr>
+                    <td>@item.StorageVault.Lookup</td>
+                    <td>
+                        @item.StorageZone.Name - @item.Row -@item.Shelf
+                    </td>
+                    <td>
+                        @if (item.DateRemoved.HasValue)
+                        {
+                            @item.DateRemoved.Value.ToShortDateString() <text>@@</text> @item.DateRemoved.Value.ToShortTimeString()
+                        }
+                        else if (Model.CancellationDate.HasValue) {
+                            @Model.CancellationDate.Value.ToShortDateString()
+                        }
+                        else {
+                            <span class="green">Current</span>
+                        }
+                    </td>
+                </tr>
+            }
+            </table>
+        </div>
+    }
+    else {
+        <div class="alert alert-info">
+            Work Order #@Model.Lookup has no vault history.
+        </div>
+    }
+</div>

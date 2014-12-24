@@ -1,0 +1,92 @@
+﻿@using Business.Repository.Models
+@model IEnumerable<Moovers.WebModels.Reports.SalesProjection>
+
+@{
+    ViewBag.Title = "SalesProjection";
+    bool LimitedAccess = Convert.ToBoolean(ViewBag.LimitedAccess);
+    var employees = new aspnet_UserRepository().GetSalesPeople().Select(s => s.UserName);
+    var franchises = new FranchiseRepository().GetAll().Select(f => f.Name);// (IEnumerable<Business.Models.Franchise>)new FranchiseViewBag.AllFranchises.Select(f => f.Name);
+    decimal totalBooked;
+    decimal totalPosted;
+}
+<style>
+    a.sel {
+        color: black;
+    }
+        a.sel:hover {
+            cursor: default;
+            text-decoration: none;
+        }
+</style>
+@if (!LimitedAccess)
+{ 
+<div style="margin-left:3%; margin-top:10px">
+    Franchise: 
+    @Html.ActionLinkPreserveQuery("All", null, new { @franchise = "" }, new { @class = (ViewBag.franchise == "") ? "sel" : "" })
+    @foreach (var f in franchises)
+    {
+        <text> | </text>@Html.ActionLinkPreserveQuery(f, null, new { @franchise = f }, new { @class = (ViewBag.franchise == f) ? "sel" : "" })
+    }
+</div>
+}
+<div class="container-pad">
+    <h3 style="margin-left: 4%;">Sales Projection (@ViewBag.franchise)- @DateTime.Now.ToString("MMMM")</h3>
+    <div style="margin-left: 4%;">
+        @Html.ActionLinkPreserveQuery("All", null, new { @salesperson = "" }, new { @class = (ViewBag.Person == "") ? "sel" : "" })
+        @foreach (var e in employees)
+        {
+            <text> | </text>@Html.ActionLinkPreserveQuery(e, null, new { @salesperson = e }, new { @class = (ViewBag.Person == e) ? "sel" : "" })
+        }
+    </div>
+
+@foreach (var report in Model)
+{
+    totalBooked = 0;
+    totalPosted = 0;
+    <div style="width: 20%; margin-left: 4%; float: left;">
+        <h4>@(new DateTime(report.Year, report.Month, 1).ToString("MMMM"))</h4>
+        <div>
+            <div>
+                Total - $<span id='booked@(report.Month)'></span>  (@report.Booked.Count() Quotes)
+                <br />
+                Posted - $<span id='posted@(report.Month)'></span> (@report.Booked.Count(i => i.IsComplete()) Quotes)
+            </div>
+        </div>
+
+        <table class="table">
+            <tr>
+                <th>Day</th>
+                <th>Booked</th>
+                <th>Posted</th>
+            </tr>
+            @for (var i = 1; i <= DateTime.DaysInMonth(report.Year, report.Month); i++)
+            {
+                var date = new DateTime(report.Year, report.Month, i);
+                var booked = report.GetBookedAmount(date);
+                var posted = report.GetPostedAmount(date);
+                <tr>
+                    <td>@date.ToShortDateString()</td>
+                    <td>@if (booked > 0) {
+                            @String.Format("{0:C}", booked)
+                            totalBooked = totalBooked + booked;
+                            totalPosted = totalPosted + posted;
+                        }
+                    </td>
+                    <td>@if (posted > 0) {
+                            @String.Format("{0:C}", posted)
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+        
+        <script type="text/javascript">
+            $(function () {
+                $('#booked@(@report.Month)').html(@totalBooked);
+                $('#posted@(@report.Month)').html(@totalPosted);
+            });
+        </script>
+    </div>
+}
+</div>
+

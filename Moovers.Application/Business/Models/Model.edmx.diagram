@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="6e5be1fc8bbb4e27b3f2d44cb632400a" Name="Diagram1" ZoomLevel="77">
+        <EntityTypeShape EntityType="Business.Models.Account" PointX="7.375" PointY="7.5" Width="1.5" FillColor="Red" />
+        <EntityTypeShape EntityType="Business.Models.Account_Address_Rel" Width="1.5" PointX="3.25" PointY="5.375" />
+        <EntityTypeShape EntityType="Business.Models.Account_EmailAddress_Rel" Width="1.5" PointX="4.625" PointY="9.75" />
+        <EntityTypeShape EntityType="Business.Models.Account_PhoneNumber_Rel" Width="1.5" PointX="2.875" PointY="8.125" />
+        <EntityTypeShape EntityType="Business.Models.Address" Width="2" PointX="11.125" PointY="2.5" />
+        <EntityTypeShape EntityType="Business.Models.aspnet_User" Width="1.5" PointX="37.875" PointY="19.125" />
+        <EntityTypeShape EntityType="Business.Models.BusinessAccount" Width="1.5" PointX="8" PointY="3.375" />
+        <EntityTypeShape EntityType="Business.Models.EmailAddress" PointX="0.5" PointY="4.375" Width="1.5" />
+        <EntityTypeShape EntityType="Business.Models.Employee" Width="1.5" PointX="30.5" PointY="7.875" />
+        <EntityTypeShape EntityType="Business.Models.Error" Width="1.5" PointX="43.5" PointY="8.5" />
+        <EntityTypeShape EntityType="Business.Models.Franchise_aspnetUser" Width="1.5" PointX="28.125" PointY="19.5" />
+        <EntityTypeShape EntityType="Business.Models.PersonAccount" Width="1.5" PointX="5.75" PointY="3.375" />
+        <EntityTypeShape EntityType="Business.Models.PhoneNumber" Width="1.5" PointX="0.5" PointY="1.375" />
+        <AssociationConnector Association="Business.Models.FK_Account_Address_Rel_Account" />
+        <AssociationConnector Association="Business.Models.FK_Account_EmailAddress_Rel_Account" ManuallyRouted="false" >
+        </AssociationConnector>
+        <AssociationConnector Association="Business.Models.FK_Account_PhoneNumber_Rel_Account" />
+        <AssociationConnector Association="Business.Models.FK_BusinessAccount_Account" ManuallyRouted="false" >
+        </AssociationConnector>
+        <AssociationConnector Association="Business.Models.FK_PersonAccount_Account" />
+        <AssociationConnector Association="Business.Models.FK_Account_Address_Rel_Address" />
+        <AssociationConnector Association="Business.Models.FK_Account_EmailAddress_Rel_EmailAddress" />
+        <AssociationConnector Association="Business.Models.FK_Account_PhoneNumber_Rel_PhoneNumber" />
+        <AssociationConnector Association="Business.Models.FK_Franchise_aspnetUser_aspnet_Users" />
+        <InheritanceConnector EntityType="Business.Models.BusinessAccount" ManuallyRouted="false" >
+        </InheritanceConnector>
+        <InheritanceConnector EntityType="Business.Models.PersonAccount" ManuallyRouted="false" >
+        </InheritanceConnector>
+        <EntityTypeShape EntityType="Business.Models.aspnet_Membership" Width="1.5" PointX="41.875" PointY="17.375" />
+        <AssociationConnector Association="Business.Models.FK__aspnet_Me__UserI__38996AB5" />
+        <EntityTypeShape EntityType="Business.Models.PasswordReset" Width="1.5" PointX="51.375" PointY="7.625" />
+        <EntityTypeShape EntityType="Business.Models.ContactRole" Width="1.5" PointX="53.5" PointY="7.875" />
+        <EntityTypeShape EntityType="Business.Models.Contact" Width="1.5" PointX="6.75" PointY="0.5" />
+        <AssociationConnector Association="Business.Models.FK_Contact_Account" />
+        <AssociationConnector Association="Business.Models.FK_Contact_Account1" />
+        <EntityTypeShape EntityType="Business.Models.ManHourRate" Width="1.5" PointX="45.75" PointY="5.25" />
+        <EntityTypeShape EntityType="Business.Models.Stop" Width="1.5" PointX="12.75" PointY="14.5" />
+        <AssociationConnector Association="Business.Models.FK_Stop_Address" ManuallyRouted="false" >
+        </AssociationConnector>
+        <EntityTypeShape EntityType="Business.Models.QuoteComment" Width="1.5" PointX="21" PointY="19.875" />
+        <AssociationConnector Association="Business.Models.FK_QuoteComment_aspnet_Users" />
+        <EntityTypeShape EntityType="Business.Models.Room" Width="1.5" PointX="9.75" PointY="15.625" />
+        <EntityTypeShape EntityType="Business.Models.Room_InventoryItem" Width="1.5" PointX="6.375" PointY="13.375" />
+        <AssociationConnector Association="Business.Models.FK_Room_InventoryItem_Room" />
+        <AssociationConnector Association="Business.Models.FK_Room_Stop" />
+        <EntityTypeShape EntityType="Business.Models.ZipCode" Width="1.5" PointX="53.625" PointY="4.25" />
+        <EntityTypeShape EntityType="Business.Models.QuoteHistory" Width="1.5" PointX="46" PointY="8" />
+        <EntityTypeShape EntityType="Business.Models.CachedMapResponse" Width="1.5" PointX="49" PointY="7.75" />
+        <EntityTypeShape EntityType="Business.Models.Franchise" Width="1.5" PointX="36.25" PointY="28.75" />
+        <AssociationConnector Association="Business.Models.FK_Franchise_Address" ManuallyRouted="false" >
+        </AssociationConnector>
+        <AssociationConnector Association="Business.Models.FK_Employee_Franchise" />
+        <AssociationConnector Association="Business.Models.FK_Franchise_aspnetUser_Franchise" />
+        <EntityTypeShape EntityType="Business.Models.Lead" Width="1.5" PointX="51.25" PointY="4" />
+        <EntityTypeShape EntityType="Business.Models.Quote" Width="1.5" PointX="16.125" PointY="6.125" FillColor="Red" IsExpanded="true" />
+        <AssociationConnector Association="Business.Models.FK_Quote_Account" />
+        <AssociationConnector Association="Business.Models.FK_Quote_Account1" />
+        <AssociationConnector Association="Business.Models.FK_Quote_Franchise" />
+        <AssociationConnector Association="Business.Models.FK_QuoteComment_Quote" />
+        <AssociationConnector Association="Business.Models.FK_Stop_Stop" />
+        <EntityTypeShape EntityType="Business.Models.Competitor" Width="1.5" PointX="24.375" PointY="20.875" />
+        <EntityTypeShape EntityType="Business.Models.Quote_Competitor_Rel" Width="1.5" PointX="21.5" PointY="22.625" />
+        <AssociationConnector Association="Business.Models.FK_Quote_Competitor_Rel_Competitor" />
+        <AssociationConnector Association="Business.Models.FK_Quote_Competitor_Rel_Quote" />
+        <EntityTypeShape EntityType="Business.Models.Account_CreditCard" Width="1.5" PointX="0.5" PointY="6.625" />
+        <EntityTypeShape EntityType="Business.Models.TransactionLog" Width="1.5" PointX="48.625" PointY="4.375" />
+        <AssociationConnector Association="Business.Models.FK_Account_CreditCard_Account" />
+        <AssociationConnector Association="Business.Models.FK_Account_Franchise" />
+        <EntityTypeShape EntityType="Business.Models.Vehicle" Width="1.5" PointX="22.375" PointY="3.75" />
+        <EntityTypeShape EntityType="Business.Models.Posting" Width="1.5" PointX="29.875" PointY="1" />
+        <EntityTypeShape EntityType="Business.Models.Posting_Employee_Rel" Width="1.5" PointX="27.25" PointY="5.25" />
+        <EntityTypeShape EntityType="Business.Models.Posting_Vehicle_Rel" Width="1.5" PointX="25" PointY="3.5" />
+        <AssociationConnector Association="Business.Models.FK_Posting_Employee_Rel_Employee" />
+        <AssociationConnector Association="Business.Models.FK_Posting_Employee_Rel_Posting" />
+        <AssociationConnector Association="Business.Models.FK_Posting_Quote" />
+        <AssociationConnector Association="Business.Models.FK_Posting_Vehicle_Rel_Posting" />
+        <AssociationConnector Association="Business.Models.FK_Posting_Vehicle_Rel_Vehicle" />
+        <EntityTypeShape EntityType="Business.Models.QuoteStatusLog" Width="1.5" PointX="21.75" PointY="26.25" />
+        <EntityTypeShape EntityType="Business.Models.QuoteAccessLog" Width="1.5" PointX="20.75" PointY="17.125" />
+        <AssociationConnector Association="Business.Models.FK_QuoteAccessLog_Quote" ManuallyRouted="false" >
+        </AssociationConnector>
+        <AssociationConnector Association="Business.Models.FK_QuoteStatusLog_Quote" />
+        <AssociationConnector Association="Business.Models.FK_QuoteAccessLog_aspnet_Users" />
+        <AssociationConnector Association="Business.Models.FK_QuoteStatusLog_aspnet_Users" />
+        <EntityTypeShape EntityType="Business.Models.EmailTemplate" Width="1.5" PointX="53.625" PointY="21.25" />
+        <EntityTypeShape EntityType="Business.Models.Quote_File_Rel" Width="1.5" PointX="32.25" PointY="16.375" />
+        <AssociationConnector Association="Business.Models.FK_Quote_File_Rel_Quote" />
+        <EntityTypeShape EntityType="Business.Models.File" Width="1.5" PointX="34.625" PointY="6.875" />
+        <AssociationConnector Association="Business.Models.FK_Quote_File_Rel_File" />
+        <AssociationConnector Association="Business.Models.FK_Quote_Account_CreditCard" />
+        <EntityTypeShape EntityType="Business.Models.QuoteService" Width="1.5" PointX="19.75" PointY="12.625" />
+        <AssociationConnector Association="Business.Models.FK_QuoteService_Quote" />
+        <EntityTypeShape EntityType="Business.Models.InventoryItem" Width="1.5" PointX="1.75" PointY="20.625" />
+        <AssociationConnector Association="Business.Models.FK_InventoryItem_InventoryItem1" />
+        <AssociationConnector Association="Business.Models.FK_Room_InventoryItem_InventoryItem" />
+        <EntityTypeShape EntityType="Business.Models.InventoryItemQuestion" Width="1.5" PointX="4.75" PointY="17.75" />
+        <AssociationConnector Association="Business.Models.FK_InventoryItemQuestion_InventoryItem" />
+        <EntityTypeShape EntityType="Business.Models.InventoryItemQuestionOption" Width="1.5" PointX="2.5" PointY="16.75" />
+        <AssociationConnector Association="Business.Models.FK_InventoryItemQuestionOption_InventoryItemQuestion" />
+        <EntityTypeShape EntityType="Business.Models.Room_InventoryItem_Option" Width="1.5" PointX="2.75" PointY="13.5" />
+        <AssociationConnector Association="Business.Models.FK_Room_InventoryItem_Option_Room_InventoryItem" />
+        <AssociationConnector Association="Business.Models.FK_Room_InventoryItem_Option_InventoryItemQuestion" />
+        <AssociationConnector Association="Business.Models.FK_Room_InventoryItem_Option_InventoryItemQuestionOption" />
+        <EntityTypeShape EntityType="Business.Models.FrontPageMessage" Width="1.5" PointX="41.25" PointY="13.75" />
+        <AssociationConnector Association="Business.Models.FK_FrontPageMessage_aspnet_Users" />
+        <EntityTypeShape EntityType="Business.Models.Schedule" Width="1.5" PointX="17.625" PointY="33.875" />
+        <AssociationConnector Association="Business.Models.FK_Posting_Schedule" ManuallyRouted="false" >
+        </AssociationConnector>
+        <AssociationConnector Association="Business.Models.FK_Schedule_Quote" />
+        <EntityTypeShape EntityType="Business.Models.Crew_Employee_Rel" Width="1.5" PointX="26" PointY="10.375" />
+        <EntityTypeShape EntityType="Business.Models.Crew_Vehicle_Rel" Width="1.5" PointX="25.5" PointY="46.625" />
+        <AssociationConnector Association="Business.Models.FK_Crew_Employee_Rel_Employee" />
+        <AssociationConnector Association="Business.Models.FK_Crew_Vehicle_Rel_Vehicle" />
+        <EntityTypeShape EntityType="Business.Models.Crew_Schedule_Rel" Width="1.5" PointX="7.125" PointY="31.375" />
+        <AssociationConnector Association="Business.Models.FK_Crew_Schedule_Rel_Schedule" />
+        <EntityTypeShape EntityType="Business.Models.Crew" Width="1.5" PointX="27" PointY="15.125" />
+        <AssociationConnector Association="Business.Models.FK_Crew_Employee_Rel_Crew" />
+        <AssociationConnector Association="Business.Models.FK_Crew_Schedule_Rel_Crew" />
+        <AssociationConnector Association="Business.Models.FK_Crew_Vehicle_Rel_Crew" />
+        <AssociationConnector Association="Business.Models.FK_Quote_aspnet_Users" />
+        <EntityTypeShape EntityType="Business.Models.ScheduleConfirmation" PointX="19.375" PointY="6.375" Width="1.5" />
+        <EntityTypeShape EntityType="Business.Models.Box" Width="1.5" PointX="23.625" PointY="30.125" />
+        <EntityTypeShape EntityType="Business.Models.InventoryItem_Box_Rel" Width="1.5" PointX="27" PointY="32.875" />
+        <AssociationConnector Association="Business.Models.FK_InventoryItem_Box_Rel_Box" />
+        <AssociationConnector Association="Business.Models.FK_InventoryItem_Box_Rel_InventoryItem" />
+        <EntityTypeShape EntityType="Business.Models.Room_Box_Rel" Width="1.5" PointX="21.125" PointY="30.875" />
+        <AssociationConnector Association="Business.Models.FK_Box_Box" />
+        <AssociationConnector Association="Business.Models.FK_Room_Box_Rel_Box" />
+        <AssociationConnector Association="Business.Models.FK_Room_Box_Rel_Room" />
+<<<<<<< HEAD
+        <EntityTypeShape EntityType="Business.Models.PricingAlgorithm" Width="1.5" PointX="13.5" PointY="22.875" />
+        <EntityTypeShape EntityType="Business.Models.Quote_PricingAlgorithm_Rel" Width="1.5" PointX="13.125" PointY="20" />
+        <AssociationConnector Association="Business.Models.FK_Quote_PricingAlgorithm_Rel_PricingAlgorithm" />
+        <AssociationConnector Association="Business.Models.FK_Quote_PricingAlgorithm_Rel_Quote" />
+=======
+>>>>>>> master
+        <AssociationConnector Association="Business.Models.FK_Employee_Address" />
+        <EntityTypeShape EntityType="Business.Models.Quote_SavedItemList_Rel" Width="1.5" PointX="13.25" PointY="9.875" />
+        <AssociationConnector Association="Business.Models.FK_Quote_SavedItemList_Rel_Quote" />
+        <AssociationConnector Association="Business.Models.FK_ScheduleConfirmation_Quote" />
+        <EntityTypeShape EntityType="Business.Models.aspnet_Users_Profile" Width="1.5" PointX="24.625" PointY="16.5" />
+        <AssociationConnector Association="Business.Models.FK_aspnet_Users_Profile_aspnet_Users" />
+        <EntityTypeShape EntityType="Business.Models.Payment" Width="1.5" PointX="68.375" PointY="13.375" />
+        <EntityTypeShape EntityType="Business.Models.QuotePayment" Width="1.5" PointX="88" PointY="24.75" />
+        <AssociationConnector Association="Business.Models.FK_Payment_Account_CreditCard" />
+        <AssociationConnector Association="Business.Models.FK_Quote_Payment_Quote" ManuallyRouted="false" >
+        </AssociationConnector>
+        <AssociationConnector Association="Business.Models.FK_QuotePayment_Payment" />
+        <InheritanceConnector EntityType="Business.Models.QuotePayment" />
+        <AssociationConnector ManuallyRouted="false" Association="Business.Models.FK_Quote_Payment_Account_CreditCard">
+        </AssociationConnector>
+        <EntityTypeShape EntityType="Business.Models.StorageWorkOrder" Width="1.5" PointX="3.375" PointY="31" />
+        <AssociationConnector Association="Business.Models.FK_StorageWorkOrder_Account" />
+        <EntityTypeShape EntityType="Business.Models.StoragePayment" Width="1.5" PointX="71.125" PointY="16" />
+        <AssociationConnector Association="Business.Models.FK_StoragePayment_Payment" />
+        <AssociationConnector Association="Business.Models.FK_StoragePayment_StorageWorkOrder" />
+        <InheritanceConnector EntityType="Business.Models.StoragePayment" />
+        <AssociationConnector Association="Business.Models.FK_StorageWorkOrder_Account_CreditCard" />
+        <EntityTypeShape EntityType="Business.Models.StorageVault" Width="1.5" PointX="19.75" PointY="3.25" />
+        <EntityTypeShape EntityType="Business.Models.Employee_aspnet_User_Rel" Width="1.5" PointX="3.5" PointY="27.75" />
+        <AssociationConnector Association="Business.Models.FK_Employee_aspnet_User_Rel_aspnet_Users" />
+        <AssociationConnector Association="Business.Models.FK_Employee_aspnet_User_Rel_Employee" />
+        <EntityTypeShape EntityType="Business.Models.EmailUnsubscribe" Width="1.5" PointX="24" PointY="13.625" />
+        <EntityTypeShape EntityType="Business.Models.MarketingEmailLog" Width="1.5" PointX="36.25" PointY="0.75" />
+        <AssociationConnector Association="Business.Models.FK_MarketingEmailLog_Lead" />
+        <EntityTypeShape EntityType="Business.Models.QuoteSurvey" Width="1.5" PointX="20" PointY="9.125" />
+        <AssociationConnector Association="Business.Models.FK_QuoteSurvey_Quote" />
+        <EntityTypeShape EntityType="Business.Models.GlobalSetting" Width="1.5" PointX="13.625" PointY="26.875" />
+        <AssociationConnector Association="Business.Models.FK_GlobalSetting_Franchise" />
+        <EntityTypeShape EntityType="Business.Models.ScheduleNote" Width="1.5" PointX="3.3510959033626579" PointY="6.6545109779827811" />
+        <EntityTypeShape EntityType="Business.Models.Employee_File_Rel" Width="1.5" PointX="1.0106811788914172" PointY="16.326708145591759" />
+        <AssociationConnector Association="Business.Models.FK_Employee_File_Rel_Employee" />
+        <AssociationConnector Association="Business.Models.FK_Employee_File_Rel_File" />
+        <EntityTypeShape EntityType="Business.Models.CustomCrewCount" Width="1.5" PointX="7.4372983330103093" PointY="24.460706588095384" />
+        <AssociationConnector Association="Business.Models.FK_Lead_Franchise" />
+        <EntityTypeShape EntityType="Business.Models.Storage_File_Rel" Width="1.5" PointX="1.6108436405709217" PointY="14.251507124980682" />
+        <AssociationConnector Association="Business.Models.FK_Storage_File_Rel_File" />
+        <AssociationConnector Association="Business.Models.FK_Storage_File_Rel_StorageWorkOrder" />
+        <EntityTypeShape EntityType="Business.Models.EmailLog_File_Rel" Width="1.5" PointX="6.875" PointY="21.5" />
+        <AssociationConnector Association="Business.Models.FK_EmailLog_File_Rel_File" />
+        <EntityTypeShape EntityType="Business.Models.EmailLog" Width="1.5" PointX="8.75" PointY="19.875" />
+        <AssociationConnector Association="Business.Models.FK_EmailLog_File_Rel_EmailLog" />
+        <AssociationConnector Association="Business.Models.QuoteEmailLog" />
+        <AssociationConnector Association="Business.Models.StorageEmailLog" />
+        <AssociationConnector Association="Business.Models.FK_Vehicle_Franchise" />
+        <EntityTypeShape EntityType="Business.Models.StorageComment" Width="1.5" PointX="4.77226629516681" PointY="7.5916694885081" />
+        <AssociationConnector Association="Business.Models.FK_StorageComment_aspnet_Users" />
+        <AssociationConnector Association="Business.Models.FK_StorageComment_StorageWorkOrder" />
+        <EntityTypeShape EntityType="Business.Models.FranchiseTerritory" Width="1.5" PointX="6.75" PointY="27.375" />
+        <AssociationConnector Association="Business.Models.FK_FranchiseTerritory_Franchise" />
+        <EntityTypeShape EntityType="Business.Models.StorageStatement" Width="1.5" PointX="3.7808061669491257" PointY="9.89672066732157" />
+        <AssociationConnector Association="Business.Models.FK_StorageStatement_aspnet_Users" />
+        <AssociationConnector Association="Business.Models.FK_StorageStatement_File" />
+        <AssociationConnector Association="Business.Models.FK_StorageStatement_StorageWorkOrder" />
+        <EntityTypeShape EntityType="Business.Models.Claim" Width="1.5" PointX="10" PointY="30.75" />
+        <EntityTypeShape EntityType="Business.Models.Account_Customer_Credentials" Width="1.5" PointX="4.6653607528029761" PointY="14.139330050972911" />
+        <AssociationConnector Association="Business.Models.FK_Account_Customer_Credentials_Account" />
+        <AssociationConnector Association="Business.Models.FK_Account_Customer_Credentials_Account_Customer_Credentials" />
+        <EntityTypeShape EntityType="Business.Models.Claim_Inventory_Items" Width="1.5" PointX="0.66372256198139978" PointY="12.03983407283194" />
+        <AssociationConnector Association="Business.Models.FK_Claim_Inventory_Items_Claim" />
+        <EntityTypeShape EntityType="Business.Models.Case" Width="1.5" PointX="0.26577321824886518" PointY="27.008867589295313" />
+        <AssociationConnector Association="Business.Models.FK_Case_Quote" />
+        <AssociationConnector Association="Business.Models.FK_Claim_Case" />
+        <EntityTypeShape EntityType="Business.Models.EmployeeAuthorization" Width="1.5" PointX="0.17525281020219102" PointY="30.331934093652261" />
+        <AssociationConnector Association="Business.Models.FK_EmployeeAuthorization_Employee" />
+        <EntityTypeShape EntityType="Business.Models.EmployeeAuth_Session" Width="1.5" PointX="10.302241175576224" PointY="6.202487859037932" />
+        <AssociationConnector Association="Business.Models.FK_EmployeeAuth_Session_EmployeeAuthorization" />
+        <EntityTypeShape EntityType="Business.Models.RequestLog" Width="1.5" PointX="1.112673830759094" PointY="13.577789089445858" />
+        <AssociationConnector Association="Business.Models.FK_RequestLog_EmployeeAuthorization" />
+        <EntityTypeShape EntityType="Business.Models.RoomInventoryItemNote" Width="1.5" PointX="8.6422942060242853" PointY="11.039030765667107" />
+        <AssociationConnector Association="Business.Models.FK_RoomInventoryItemNotes_RoomInventoryItemNotes" />
+        <AssociationConnector Association="Business.Models.FK_Schedule_Stop_EndStop" />
+        <AssociationConnector Association="Business.Models.FK_Schedule_Stop_StartStop" />
+        <AssociationConnector Association="Business.Models.FK_EmployeeAuth_Session_EmployeeAuthorization1" />
+        <AssociationConnector Association="Business.Models.FK_RequestLog_EmployeeAuthorization1" />
+        <AssociationConnector Association="Business.Models.FK_Franchise_Address_Old" />
+        <EntityTypeShape EntityType="Business.Models.InventoryVerification" Width="1.5" PointX="8.4778612202395962" PointY="14.090155354742965" />
+        <EntityTypeShape EntityType="Business.Models.QuoteCustomerSignOff" Width="1.5" PointX="1.1343724770165851" PointY="0.27886490536800812" />
+        <AssociationConnector Association="Business.Models.FK_InventoryVerification_InventoryVerification" />
+        <AssociationConnector Association="Business.Models.FK_InventoryVerification_Stop" />
+        <AssociationConnector Association="Business.Models.FK_QuoteCustomerSignOff_Quote" />
+        <AssociationConnector Association="Business.Models.FK_QuoteCustomerSignOff_Stop" />
+        <EntityTypeShape EntityType="Business.Models.AccountSignature" Width="1.5" PointX="11.342502113125521" PointY="20.93183800062716" />
+        <AssociationConnector Association="Business.Models.FK_AccountSignature_Account" />
+        <AssociationConnector Association="Business.Models.FK_InventoryVerification_Signature1" />
+        <AssociationConnector Association="Business.Models.FK_QuoteCustomerSignOff_Signature1" />
+        <EntityTypeShape EntityType="Business.Models.QuoteStatu" Width="1.5" PointX="4.7342224683306284" PointY="1.4328071332689407" />
+        <AssociationConnector Association="Business.Models.FK_QuoteStatus_Stop" />
+        <EntityTypeShape EntityType="Business.Models.UnloadVerification" Width="1.5" PointX="1.1336005260858688" PointY="12.920349067505612" />
+        <AssociationConnector Association="Business.Models.FK_UnloadVerification_Signature" />
+        <AssociationConnector Association="Business.Models.FK_UnloadVerification_Quote" />
+        <AssociationConnector Association="Business.Models.FK_UnloadVerification_Stop" />
+        <AssociationConnector Association="Business.Models.FK_Quote_Payment_Account_CreditCard1" />
+        <EntityTypeShape EntityType="Business.Models.QuoteMapDirection" Width="1.5" PointX="10.961233231686631" PointY="29.230369432470933" />
+        <AssociationConnector Association="Business.Models.FK_QuoteMapDirection_Quote" />
+        <EntityTypeShape EntityType="Business.Models.SmartMove" Width="1.5" PointX="3.8709032832975052" PointY="3.8805023300836341" />
+        <AssociationConnector Association="Business.Models.FK_SmartMove_Address" />
+        <AssociationConnector Association="Business.Models.FK_SmartMove_FromAddress" />
+        <AssociationConnector Association="Business.Models.FK_SmartMove_ToAddress" />
+        <EntityTypeShape EntityType="Business.Models.ReplacementValuation" Width="1.5" PointX="9" PointY="0.5" />
+        <AssociationConnector Association="Business.Models.FK_Quote_ReplacementValuation" />
+        <AssociationConnector Association="Business.Models.FK_QuoteCustomerSignOff_ReplacementValuation" />
+        <EntityTypeShape EntityType="Business.Models.IPadCheckList" Width="1.5" PointX="0.036268612386783868" PointY="26.081826266870753" />
+        <AssociationConnector Association="Business.Models.FK_IPadCheckList_Quote" />
+        <EntityTypeShape EntityType="Business.Models.DiscountCoupon" Width="1.5" PointX="11.954665224978079" PointY="19.055071273378594" />
+        <AssociationConnector Association="Business.Models.FK_Quote_DiscountCoupon" />
+        <EntityTypeShape EntityType="Business.Models.Application" Width="1.5" PointX="9.0559253641664625" PointY="10.244622905852562" />
+        <EntityTypeShape EntityType="Business.Models.Role_App_Rel" Width="1.5" PointX="6.3502814631677609" PointY="23.21963107177039" />
+        <AssociationConnector Association="Business.Models.FK_Role_App_Rel_Applications" />
+        <EntityTypeShape EntityType="Business.Models.Location" Width="1.5" PointX="1.3479063666183064" PointY="28.174534929997538" />
+        <AssociationConnector Association="Business.Models.FK_Employee_Locations" />
+        <AssociationConnector Association="Business.Models.FK_Locations_Locations" />
+        <EntityTypeShape EntityType="Business.Models.aspnet_Roles" Width="1.5" PointX="1.2733175760476465" PointY="0.58105061975356687" />
+        <AssociationConnector Association="Business.Models.FK_Role_App_Rel_aspnet_Roles" />
+        </Diagram>
+      <Diagram DiagramId="06d95bc4b0514a72827d42802ac05efd" Name="CacheTables" >
+        <EntityTypeShape EntityType="Business.Models.SmartyStreetsCache" Width="1.5" PointX="10.415137230611936" PointY="20.193465868101207" />
+      </Diagram>
+      <Diagram DiagramId="aa9e58ac364a4e818bbdb4c0b3258d42" Name="Storage" ZoomLevel="82" >
+        <EntityTypeShape EntityType="Business.Models.StorageVault" Width="1.5" PointX="3.2443976901678355" PointY="3.5940614210414057" />
+        <EntityTypeShape EntityType="Business.Models.StorageWorkOrder" Width="1.5" PointX="5.2436066163906858" PointY="8.3818161675621834" />
+        <EntityTypeShape EntityType="Business.Models.StorageWorkOrder_InventoryItem_Rel" Width="1.5" PointX="17.375" PointY="4.75" />
+        <EntityTypeShape EntityType="Business.Models.StorageWorkOrder_Quote_Rel" Width="1.5" PointX="16.5" PointY="10.125" />
+        <EntityTypeShape EntityType="Business.Models.StorageWorkOrder_Vault_Rel" Width="1.5" PointX="7.25" PointY="13.875" />
+        <EntityTypeShape EntityType="Business.Models.StorageZone" Width="1.5" PointX="10.872119228761699" PointY="13.641773677264235" />
+        <AssociationConnector Association="Business.Models.FK_Storage_WorkOrderVault_Rel_StorageVault" />
+        <AssociationConnector Association="Business.Models.FK_Storage_WorkOrderVault_Rel_StorageWorkOrder" />
+        <AssociationConnector Association="Business.Models.FK_StorageWorkOrder_InventoryItem_Rel_StorageWorkOrder" />
+        <AssociationConnector Association="Business.Models.FK_StorageWorkOrder_Quote_Rel_StorageWorkOrder" />
+        <EntityTypeShape EntityType="Business.Models.Account" Width="1.5" PointX="10.368061349898605" PointY="8.1874471195915" />
+        <AssociationConnector Association="Business.Models.FK_StorageWorkOrder_Account" />
+        <EntityTypeShape EntityType="Business.Models.Quote" Width="1.5" PointX="5.5271460383791222" PointY="26.068620068053072" />
+        <AssociationConnector Association="Business.Models.FK_Quote_Account" />
+        <AssociationConnector Association="Business.Models.FK_Quote_Account1" />
+        <AssociationConnector Association="Business.Models.FK_StorageWorkOrder_Quote_Rel_Quote" />
+        <EntityTypeShape EntityType="Business.Models.InventoryItem" Width="1.5" PointX="1.1155492929348485" PointY="21.28043603397926" />
+        <AssociationConnector Association="Business.Models.FK_InventoryItem_InventoryItem1" />
+        <AssociationConnector Association="Business.Models.FK_StorageWorkOrder_InventoryItem_Rel_InventoryItem" />
+        <EntityTypeShape EntityType="Business.Models.Payment" Width="1.5" PointX="4.0567537918951144" PointY="12.59683609595375" />
+        <EntityTypeShape EntityType="Business.Models.StorageInvoice" Width="1.5" PointX="3" PointY="8.25" />
+        <AssociationConnector Association="Business.Models.FK_StorageInvoice_StorageWorkOrder" />
+        <EntityTypeShape EntityType="Business.Models.StorageInvoice_Payment_Rel" Width="1.5" PointX="9.125" PointY="14" />
+        <AssociationConnector Association="Business.Models.FK_StorageInvoice_Payment_Rel_StorageInvoice" />
+        <AssociationConnector Association="Business.Models.FK_StorageWorkOrder_InventoryItem_Rel_StorageZone" />
+        <AssociationConnector Association="Business.Models.FK_StorageWorkOrder_Vault_Rel_StorageZone" />
+      </Diagram>
+      <Diagram DiagramId="b68f82ff1d884737a2ce9f32819e24a1" Name="Quote" ZoomLevel="43" >
+        <EntityTypeShape EntityType="Business.Models.Quote" Width="1.5" PointX="10.234350151491515" PointY="15.094087160701903" />
+        <EntityTypeShape EntityType="Business.Models.Quote_Competitor_Rel" Width="1.5" PointX="2.6892356046891006" PointY="20.191923180684412" />
+        <AssociationConnector Association="Business.Models.FK_Quote_Competitor_Rel_Quote" />
+        <EntityTypeShape EntityType="Business.Models.Quote_PricingAlgorithm_Rel" Width="1.5" PointX="7.9615113586008137" PointY="27.935936314955324" />
+        <AssociationConnector Association="Business.Models.FK_Quote_PricingAlgorithm_Rel_Quote" />
+        <EntityTypeShape EntityType="Business.Models.Quote_SavedItemList_Rel" Width="1.5" PointX="11.541298471177601" PointY="31.478036209697851" />
+        <AssociationConnector Association="Business.Models.FK_Quote_SavedItemList_Rel_Quote" />
+        <EntityTypeShape EntityType="Business.Models.QuoteAccessLog" Width="1.5" PointX="4.66340507597821" PointY="7.8034071660616471" />
+        <AssociationConnector Association="Business.Models.FK_QuoteAccessLog_Quote" />
+        <EntityTypeShape EntityType="Business.Models.QuoteComment" Width="1.5" PointX="6.946758832292053" PointY="5.7462754276330932" />
+        <AssociationConnector Association="Business.Models.FK_QuoteComment_Quote" />
+        <EntityTypeShape EntityType="Business.Models.Quote_File_Rel" Width="1.5" PointX="3.3642957971265055" PointY="29.369217379656256" />
+        <AssociationConnector Association="Business.Models.FK_Quote_File_Rel_Quote" />
+        <EntityTypeShape EntityType="Business.Models.QuoteHistory" Width="1.5" PointX="10.450955298939235" PointY="0.63391146093323425" />
+        <EntityTypeShape EntityType="Business.Models.QuotePayment" Width="1.5" PointX="3.9435924831515141" PointY="31.889406785317419" />
+        <AssociationConnector Association="Business.Models.FK_Quote_Payment_Quote" />
+        <EntityTypeShape EntityType="Business.Models.QuoteService" Width="1.5" PointX="2.8653507171503039" PointY="10.848757614776845" />
+        <AssociationConnector Association="Business.Models.FK_QuoteService_Quote" />
+        <EntityTypeShape EntityType="Business.Models.QuoteStatusLog" Width="1.5" PointX="5.2918434745128469" PointY="29.582393451399351" />
+        <AssociationConnector Association="Business.Models.FK_QuoteStatusLog_Quote" />
+        <EntityTypeShape EntityType="Business.Models.QuoteSurvey" Width="1.5" PointX="9.7393960755967512" PointY="21.862595031905265" />
+        <AssociationConnector Association="Business.Models.FK_QuoteSurvey_Quote" />
+      </Diagram>
+      <Diagram DiagramId="8dfe8347dcdd4dbfa644fe5b1f45b4cb" Name="DiscountCoupon" >
+        <EntityTypeShape EntityType="Business.Models.DiscountCoupon" Width="1.5" PointX="3.7600318993255648" PointY="25.513678517897464" />
+      </Diagram>
+      <Diagram DiagramId="7c3c50d6f63242c4a6646403fc4b1dd5" Name="UserProfileMatrix" >
+        <EntityTypeShape EntityType="Business.Models.Application" Width="1.5" PointX="5.4618996220929086" PointY="19.583577716529174" />
+        <EntityTypeShape EntityType="Business.Models.Role_App_Rel" Width="1.5" PointX="8.75" PointY="19.625" />
+        <AssociationConnector Association="Business.Models.FK_Role_App_Rel_Applications" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

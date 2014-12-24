@@ -1,0 +1,94 @@
+﻿@model EditUserModel
+
+@{
+    var path = ViewBag.ServerPath + Model.PictureURL;
+}
+<div class="section-container">
+    <div class="section section-white">
+
+        <div class="section-wrap cfix">
+            <div class="section-title">
+                <img width="100" src="@Url.Content(@path)" alt="Image">
+
+            </div>
+            <div class="section-content">
+                <h4 class="nomargin">
+                    @Model.FirstName @Model.LastName
+                </h4>
+
+                <a  data-toggle="modal" data-target="#photoModal">
+                    Change picture
+                  
+                </a>
+                <br/>
+                @Html.ActionLink("Change Password", "ChangePassword", new { id = Model.UserProfile.UserID }) <br />
+               
+            </div>
+        </div>
+
+        <div class="section section-light">
+            <div class="section-wrap cfix">
+                <div class="section-title">
+                    <h5>Personal Information</h5>
+                </div>
+                <div class="section-content">
+                    <div class="label-inline">
+                        <label>Name</label>
+                    </div>
+                    <div class="form-inline">
+                        @Html.ContentFor(m => m.DisplayName)
+                    </div>
+
+                    <div class="label-inline">
+                        <label>Email</label>
+
+                    </div>
+                    <div class="form-inline">
+
+                        <span class="input-holder">
+                            @Model.Email
+
+                        </span>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </
+</div>
+
+<div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" autofocus class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h5 class="modal-title" id="myModalLabel">Upload new picture</h5>
+            </div>
+                @*<table>
+            <tr>
+                <td><img width="100" src="@Url.Content(@path)" alt="Image"></td>
+                <td><h4 class="modal-title" id="myModalLabel">Profile picture</h4></td>
+            </tr>
+
+        </table>
+
+
+    </div>*@
+            @using (Html.BeginForm("UploadNewPhoto", "User", FormMethod.Post, new { id = Model.UserProfile.UserID, enctype = "multipart/form-data" }))
+            {
+                <div class="modal-body">
+                   
+                    @Html.Hidden("userID", Model.UserProfile.UserID)
+                    <input type="file" style="outline:none" name="uploadFile" />,
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            }
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

@@ -1,0 +1,109 @@
+﻿@using Business.Enums
+@using Business.ToClean.QuoteHelpers
+@model EmployeeSummaryModel
+@{
+    var title = Model.Employee.DisplayName() + " (" + Model.Postings.Count() + " Job" +
+                    (Model.Postings.Count() != 1 ? "s" : "") + ")";
+    ViewBag.Title = title;
+}
+
+<div class="center-container">
+    <div class="content-pad">
+        <h3>@title</h3>
+        <span class="desc">
+            @Model.StartDate.ToShortDateString() - @Model.EndDate.ToShortDateString()
+        </span>
+        @Html.ActionLink("Back", "PayrollSummary", new { start = Model.StartDate.ToString("yyyy-MM-dd"), end = Model.EndDate.ToString("yyyy-MM-dd") })
+        <table class="table table-condensed table-striped">
+            <tr>
+                <th>Quote</th>
+                <th>Move Cost</th>
+                <th>Date</th>
+                <th>Valuation Cost</th>
+                <th>Hours</th>
+                <th>Commission</th>
+                <th>Tip</th>
+                <th>Per Diem</th>
+                <th>MHR</th>
+                <th>New Commission</th>
+            </tr>
+            @foreach (var quote in Model.Valuations.OrderBy(i => i.GetSchedules().Min(s => s.Date)))
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink("Quote #" + quote.Lookup, "View", new { id = quote.Postings.First(p => p.IsComplete).Lookup, Controller = "Posting", referrer = "posted" })
+                    </td>
+                    <td>
+                        @String.Format("{0:C}", quote.FinalPostedPrice ?? 0)
+                        @if (quote.PricingType == QuotePricingType.Hourly) {
+                            <span class="icon-clock" title="Hourly, @quote.HourlyData.HourlyPrice/hr"></span>
+                        }
+                    </td>
+                    <td>@quote.GetSchedules().Min(i => i.Date).ToShortDateString()</td>
+                    <td>
+                       
+                        @if (quote.ReplacementValuationCost.HasValue)
+                        {
+                            @String.Format("{0:C}", quote.ReplacementValuationCost)
+                        }
+                        else if (quote.ValuationTypeID.HasValue)
+                        {
+                            @String.Format("{0:C}", quote.ReplacementValuation.Cost)
+                        }
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            }
+
+            @foreach (var job in Model.Postings.OrderBy(i => i.Posting.Schedule.Date))
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink("Quote #" + job.Posting.Schedule.Quote.Lookup, "View", new { id = job.Posting.Lookup, Controller = "Posting", referrer = "posted" })
+                    </td>
+                    <td>
+                        @if (job.Posting.Schedule.IsCancelled) {
+                            <span class="red">Cancelled</span>
+                        }
+                        else {
+                            @String.Format("{0:C}", job.Posting.Quote.FinalPostedPrice ?? 0)
+                            if (job.Posting.Quote.PricingType == QuotePricingType.Hourly) {
+                                 <span class="icon-clock" title="Hourly, @job.Posting.Quote.HourlyData.HourlyPrice/hr"></span>
+                             }
+                        }
+                    </td>
+                    <td>@job.Posting.Schedule.Date.ToShortDateString()</td>
+                    <td></td>
+                    <td>@job.Hours (@job.Posting.GetEmployees().Count() movers)</td>
+                    <td>
+                        @if (job.Commission > 0)
+                        {
+                            @String.Format("{0:C}", job.Commission)
+                        }
+                    </td>
+                    <td>
+                        @if (job.Tip > 0)
+                        {
+                            @String.Format("{0:C}", job.Tip)
+                        }
+                    </td>
+                    <td>
+                        @if (job.PerDiem > 0)
+                        {
+                            @String.Format("{0:C}", job.PerDiem)
+                        }
+                    </td>
+                    <td>
+                        @if (job.Posting.Quote.GetManHourRate() > 0)
+                        {
+                            @String.Format("{0:C}", job.Posting.Quote.GetManHourRate())
+                        }
+                    </td>
+                    <td>@String.Format("{0:C}", job.GetCommission())</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

@@ -1,0 +1,90 @@
+﻿@{
+    ViewBag.Title = "DisplayMoovers";
+}
+
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+<script src="~/static/js/plugins/jquery.ui.map.js"></script>
+<script src="~/static/js/gmaps.js"></script>
+<script src="~/static/js/demo.js"></script>
+
+<script type="text/javascript">
+
+    $(function () {
+
+
+        var map = new GMaps({
+            div: '#map_canvas',
+            lat: -12.07635776902266,
+            lng: -77.02792530422971,
+            zoom: 13,
+            zoomControl: true,
+            zoomControlOpt: {
+                style: 'SMALL',
+                position: 'TOP_LEFT'
+            },
+            panControl: false,
+        });
+
+       
+
+        $.ajax({
+            url: '/Admin/TodayMoves',
+            dataType: 'json',
+            type: 'Get',
+            success: function (data) {
+
+                for (var i = 0; i < data.data.length; i++) {
+                    drawMaps(data.data[i]);
+                }
+        
+            },
+            error: function(jqXhr, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        });
+
+        function drawMaps(param) {
+            map.drawPolyline({
+                path: param.dir,
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.6,
+                strokeWeight: 6,
+
+            });
+            map.drawOverlay({
+                lat: param.dir[param.dir.length - 1][0],
+                lng: param.dir[param.dir.length - 1][1],
+                content: '<button class="btn btn-lg btn-primary">' + param.lookup + '</button>'
+            });
+            map.addMarker({
+                lat: param.dir[0][0],
+                lng: param.dir[0][1],
+                title: 'Start Quote ' + param.lookup,
+                click: function (e) {
+
+                    getPanorama(param.dir[0][0], param.dir[0][1]);
+                }
+            });
+            map.addMarker({
+                lat: param.dir[param.dir.length - 1][0],
+                lng: param.dir[param.dir.length - 1][1],
+                title: param.lookup,
+                click: function (e) {
+                    getPanorama(param.dir[param.dir.length - 1][0], param.dir[param.dir.length - 1][1]);
+                }
+            });
+        }
+
+        function getPanorama(lat,lng) {
+            var panorama = GMaps.createPanorama({
+                el: '#map_panorama',
+                lat: lat,
+                lng: lng,
+            });
+        }
+    });
+</script>
+<h2>DisplayMoovers</h2>
+<div id="map_canvas" style="width: 100%;height: 400px;"></div>
+<div id="map_panorama" style="width: 100%;height: 400px;"></div>

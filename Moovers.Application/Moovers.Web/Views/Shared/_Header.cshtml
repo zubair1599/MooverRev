@@ -1,0 +1,106 @@
+﻿@using Business.Models
+@model HeaderModel
+
+<script type="text/javascript">
+    $(function(e) {
+        function hideProfile(e) {
+            var container = $(e.target).closest('.profile-dd');
+            if (container.length === 0) {
+                $('.profile-dd').removeClass('show');
+                $(document).unbind('mousedown', hideProfile);
+            }
+        }
+
+        function showProfile() {
+            $('.profile-dd ').toggle();
+            }
+
+        $('.profile-pic').click(showProfile);
+        $("select.selectBoxIt").selectBoxIt({
+            showFirstOption: false
+        });
+    });
+
+</script>
+
+<link href='http://fonts.googleapis.com/css?family=Roboto:700,400,300' rel='stylesheet' type='text/css'>
+
+<div class="header">
+    <div class="header-right">
+        <span class="username no-mobile">
+            @User.Identity.Name
+        </span>
+
+        @{
+            var leadCount = Model.GetLeadCount();
+            var leadClass = (leadCount == 0) ? "none" : "";
+        }
+        <div class="header-alerts @leadClass no-mobile">
+            <a href="@Url.Action("List", new { Controller = "Lead" })" title="@leadCount Leads Waiting">
+                @leadCount
+            </a>
+        </div>
+
+        <a href="@Url.Action("ViewDay", "Schedule", new { day = DateTime.Today.Day, month = DateTime.Today.Month, year = DateTime.Today.Year })">
+            <span class="calendar">
+                <span class="day-word">
+                    @DateTime.Today.DayOfWeek.ToString().Substring(0, 3).ToUpper()
+                </span>
+                <span class="day-num">@DateTime.Today.Day.ToString().PadLeft(2, '0')</span>
+            </span>
+        </a>
+
+        <div  class="profile-pic no-mobile">
+        </div>
+        <div id="profDetails" class="profile-dd no-mobile">
+            <div class="dd-arrow-border"></div>
+            <div class="dd-arrow"></div>
+            @*<div class="profile-domain">
+                You are logged into the <strong>Call Center</strong> domain.
+                <div><a href="#">Change Domain</a></div>
+            </div>*@
+            <div class="profile-details">
+                <div><strong>@ViewBag.UserProfile.DisplayName()</strong></div>
+                <div class="profile-email">@Membership.GetUser(User.Identity.Name).Email</div>
+                <div class="profile-role">Your current role is <strong>@ViewBag.UserProfile.Title</strong>.</div>
+                <div class="profile-role"> <strong>Franchise</strong>
+                    @foreach (var franchise in ViewBag.UserFranchises)
+                    {
+                        <div>
+                            @franchise
+                        </div>
+                    }
+                </div>
+                    <a class="btn btn-default" href="@Url.Action("ViewProfile", "User", new { id = @ViewBag.UserID })">
+                        View profile
+                    </a>
+                </div>
+            <div class="profile-actijoons">
+                <a href="@Url.Action("LogOff", "Login")" class="btn">
+                    Sign out
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    @if (ViewBag.IsBeta || ViewBag.IsDevelopment)
+    {
+        <a class="header-logo-beta no-mobile" href="@Url.Action("Index", "Home")"></a>
+    }
+    else
+    {
+        <a class="header-logo no-mobile" href="@Url.Action("Index", "Home")"></a>
+    }
+
+    <div class="header-search">
+        <div class="input-append">
+            @using (Html.BeginForm("Index", "Quote", FormMethod.Get))
+            {
+                <input name="search" class="form-control" type="text" autocomplete="off" spellcheck="false" style="outline: none;" placeholder="Search for accounts, quotes, and more"/>
+                <button type="submit" class="add-on btn btn-primary">
+                    <span></span>
+                </button>
+            }
+        </div>
+    </div>
+</div>

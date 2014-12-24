@@ -1,0 +1,44 @@
+﻿@model Moovers.WebModels.Reports.StorageZoneReport
+@{
+    ViewBag.Title = "Storage Zone";
+}
+
+
+
+<div class="container-pad">
+    <h4>View Zone</h4>
+
+    @using (Html.BeginForm(null, null, FormMethod.Get)) {
+        @Html.DropDownList("zoneid", Model.Zones.Select(i => new SelectListItem() {
+            Selected = false,
+            Text = i.Name,
+            Value = i.ZoneID.ToString()
+        }))
+
+        @Html.TextBox("row", null, new { @type = "number", placeholder = "Row", style = "height: 23px; text-align: right; width: 60px;", required = "required" })
+        <input type="submit" />
+    }
+  
+    <br />
+
+    <div style="width: 200px">
+        <table class="table table-condensed">
+            <tr>
+                <th>Vault</th>
+                <th>Account</th>
+            </tr>
+            @if (Model.Vaults != null) 
+            {
+
+                foreach (var i in Model.Vaults)
+                {
+                    <tr>
+                        <td>@i.Lookup</td>
+                        <td class="nowrap">@Html.ActionLink(i.GetWorkOrder().Account.DisplayName, "View", new { id = i.GetWorkOrder().Lookup })</td>
+                    </tr>
+                }
+    
+            }
+        </table>
+    </div>
+</div>

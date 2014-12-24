@@ -1,0 +1,339 @@
+﻿@using Business.Enums
+@using Business.ToClean.QuoteHelpers
+@model QuoteScheduleModel
+
+@{ var UserCanEdit = Model.Quote.CanUserEdit(User.Identity.Name); }
+
+
+@foreach (var schedule in Model.ScheduledQuotes)
+{
+    @Html.Partial("Payment/_AddPayment", schedule.Quote, new ViewDataDictionary(this.ViewData) { 
+        { "ID", "schedule-payment-" + schedule.ScheduleID.ToString() }, 
+        { "scheduleid", schedule.ScheduleID.ToString() }
+    })
+}
+
+@using (Html.BeginForm("SaveOrder", "Schedule", new { day = Model.Date.Day, month = Model.Date.Month, year = Model.Date.Year, redirect = HttpContext.Current.Request.Url.AbsoluteUri }, FormMethod.Post, new { style = "margin-top: 21px;" }))
+{
+    <input type="submit" id="save-order-submit" style="display: none;" />
+    
+    // loop through crews 0 to # of crews -- 0 = "Move Pool" crew
+    var list = Enumerable.Range(1, Model.GetCrewCount()).ToList();
+    list.Add(0);
+    foreach (var crew in list)
+    {
+        var c = Model.GetForDayLookup(Model.Date, crew);
+        var schedules = Model.ScheduledQuotes.Where(q => q.ScheduledOnCrew(crew) || (crew == 0 && !q.Crew_Schedule_Rel.Any())).ToList();
+
+        if (crew > Model.GetMaxCrewToDisplay() && !schedules.Any())
+        {
+            continue;
+        }
+        
+    <div class="schedule-table-container @(c != null ? c.Status.ToString().ToLower() : "")">
+        <table class="schedule-table table @(!schedules.Any() && !(c != null && c.GetEmployees().Any()) ? "noprint" : "")" data-crewid="@crew">
+            <thead>
+                <tr>
+                    <td style="width: 10%;" class="no-mobile">
+                        @if (crew == 0)
+                        {
+                            <h5 class="inline a150" style="margin-top: 0;">Move Pool</h5>
+                        }
+                        else
+                        {
+                            <h5 class="inline nomargin a150" style="margin-top: 0;">Crew @crew</h5>
+                        }
+
+                        @* On the print view, show drivers/movers full names *@
+                        <span class="printonly-inline">
+                            @if (c != null)
+                            {
+                                var count = 0;
+                                foreach (var emp in c.GetEmployees())
+                                {
+                                    var spanStyle = (emp.IsDriver) ? "font-weight: bold;" : "color: red;";
+                                    count++;
+                                
+                                    <span style="@spanStyle">@emp.Employee.NameLast</span>
+
+                                    if (count > 0 && count % 3 == 0)
+                                    {
+                                        <span class="printonly"></span>
+                                    }
+                                }
+                            }
+                        </span>
+
+                        @* If we're not on the "Move Pool", show a dropdown that lets us set crew status (out of town, etc) *@
+                        @if (crew != 0)
+                        {
+                            var selectedStatus = (c != null) ? c.Status : CrewStatus.Default;
+                            <span class="inline a150"></span>
+                            <span class="text-r noprint">
+                                @Html.DropDownList("crewstatus", selectedStatus.ToSelectList(), new { style = "height: 22px; width: 110px;" })
+                            </span>
+                        }
+
+                    </td>
+                    <td>Arrival</td>
+                    <td class="price">
+                        <span class="printonly">Price</span>
+                        <span class="noprint">
+                            @if (schedules.Any())
+                            {
+                                @String.Format("{0:C}", schedules.Sum(q => q.Quote.GetPricePerTruck()))
+                            }
+                        </span>
+                    </td>
+                    <td class="stops">Origin / Destination</td>
+                    <td colspan="3" class="text-r wrap">
+                        @if (crew != 0)
+                        {
+                            <span>
+                                <span class="emp-holder">
+                                    @if (c != null)
+                                    {
+                                        foreach (var emp in c.GetEmployees())
+                                        {
+                                            @* &#13; == carriage return. We display Name/number on separate lines *@
+                                            <span class="spacer text-norm cursor-default" title="@emp.Employee.DisplayName()&#13; @emp.Employee.DisplayNumber()" data-employeeid="@emp.Employee.EmployeeID" data-isdriver="@emp.IsDriver">
+                                                <span class="noprint nowrap inline">
+                                                    @emp.Employee.Lookup
+                                                    <i class="icon-user@(emp.IsDriver ? " driver" : "")"></i>
+                                                </span>
+                                            </span>
+                                        }
+                                    }
+                                </span>
+                                @* This makes Employees and Vehicles display on separate lines in the print view *@
+                                <span class="printonly"></span>
+                                <span class="vehicle-holder">
+                                    @if (c != null)
+                                    {
+                                        foreach (var v in c.GetVehicles())
+                                        {
+                                        <span class="spacer text-norm nowrap inline" title="@v.Name" data-vehicleid="@v.VehicleID">
+                                            @v.Lookup
+                                            <i class="icon-truck"></i>
+                                        </span>
+                                        }
+                                    }
+                                </span>
+                            </span>
+                            
+                            @* If we're not on the "Quote" view, allow us to setup staff/crew for the truck *@
+                            if (Model.Quote.QuoteID == default(Guid))
+                            {
+                                <a href="#" class="btn btn-mini btn-assign noprint no-mobile" data-crew="@crew">Assign Staff</a>
+                            }
+                        }
+
+                        @* If we're on a quote, allow us to schedule a quote to the truck *@
+
+                        @if (Model.Quote.QuoteID != default(Guid))
+                        {
+                            if (UserCanEdit && crew != 0 && Model.Quote.GetScheduleForDay(Model.Date) != null && !Model.Quote.GetSchedules().Any(s => s.Date == Model.Date && s.ScheduledOnCrew(crew)))
+                            {
+                                <a href="#" data-addTruck="true" class="schedule-job" data-quoteid="@Model.Quote.QuoteID" data-crew="@crew" data-day="@Model.Date.ToShortDateString()">
+                                    Schedule Job
+                                </a>
+                            }
+                            else if (UserCanEdit && Model.Quote.GetScheduleForDay(Model.Date) == null)
+                            {
+                                <a class="schedule-job" href="#" data-crew="@crew">Schedule Job</a>
+                            }
+                        }
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var schedule in schedules.OrderBy(i => i.StartTime).ThenBy(i => i.EndTime))
+                {
+                    var isDuplicate = schedule.GetCrews().Count() > 1;
+                    var hasStorage = schedule.Quote.HasStorage() || schedule.Quote.StorageWorkOrder_Quote_Rel.Any();
+                    
+                    <tr class="quote@(schedule.Quote.QuoteID == Model.Quote.QuoteID ? " warning" : "") @(isDuplicate ? " info" : "") @(hasStorage ? " error" : "")" data-scheduleid="@schedule.ScheduleID">
+                        <td class="nowrap reorder">
+                            <input type="hidden" value="@crew" name="crewid"/>
+                            <input type="hidden" value="@schedule.ScheduleID" name="scheduleid" />
+                            <span class="handle"></span>
+                            <div class="forcewidth" style="width: 330px;">
+                                @if (schedule.IsConfirmed)
+                                {
+                                    var summary = schedule.ConfirmedBy.Trim().Replace("Confirmation Client", "");
+                                    if (schedule.DateConfirmed.HasValue)
+                                    {
+                                        summary += " on " + schedule.DateConfirmed.Value.ToShortDateString() + " at " + schedule.DateConfirmed.Value.ToShortTimeString();
+                                    }
+                                    
+                                    <a href="@Url.Action("UnConfirmMove", "Schedule", new { redirect = Request.Url.AbsoluteUri, id = schedule.ScheduleID })" onclick="return confirm('Are you sure you\'d like to unconfirm?');" class="check">
+                                        <i class="icon-check" style="font-size: 10px;" title="Confirmed by @summary"></i>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("ConfirmMove", "Schedule", new { redirect = Request.Url.AbsoluteUri, id = schedule.ScheduleID })" class="check">
+                                        <i class="icon-check-empty" style="font-size: 10px;" title="Confirm Move"></i>
+                                    </a>
+                                }
+
+                                @schedule.Quote.Account.DisplayName (
+                                    @Html.ActionLink(schedule.Quote.Lookup, "Overview", new { Controller = "Quote", id = schedule.Quote.Lookup },
+                                        new { title = Math.Ceiling(schedule.Quote.GetCubicFeet()) + " ft³\n" + Math.Ceiling(schedule.Quote.GetWeight()) + " lbs" })
+                                )
+                                
+                                @if (schedule.Quote.IsPackJob)
+                                {
+                                    <div class="box-icon" title="Pack Job">
+                                        <strong class="printonly">Pack Job</strong>
+                                    </div>
+                                }
+
+                                @* Certain things need to show up in big block letters when they print out stuff *@
+                                @if (schedule.Quote.StorageWorkOrder_Quote_Rel.Any())
+                                {
+                                    var rel = schedule.Quote.StorageWorkOrder_Quote_Rel.First();
+                                    if (rel.StorageQuoteType == Business.Models.StorageQuoteType.MoveIn)
+                                    {
+                                    <strong class="printonly">INTO STORAGE</strong>
+                                    }   
+                                    if (rel.StorageQuoteType == Business.Models.StorageQuoteType.MoveOut)
+                                    {
+                                    <strong class="printonly">OUT OF STORAGE</strong>
+                                    }
+                                    if (rel.StorageQuoteType == Business.Models.StorageQuoteType.StorageAccess)
+                                    {
+                                    <strong class="printonly">STORAGE ACCESS</strong>
+                                    }
+                                    if (rel.StorageQuoteType == Business.Models.StorageQuoteType.PartialMoveOut)
+                                    {
+                                    <strong class="printonly">STORAGE ACCESS</strong>
+                                    }
+                                }
+                                else if (schedule.Quote.HasStorage())
+                                {
+                                    <strong class="printonly">INTO STORAGE</strong>
+                                }
+
+                                @if (schedule.Quote.HasPoolTable())
+                                {
+                                    <div class="inline">
+                                        <img class="noprint" src="@Url.Content("~/static/img/pool-table.png")" />
+                                        <strong class="printonly">POOL TABLE</strong>
+                                    </div>
+                                }
+                                
+                                @if (schedule.Quote.HasPiano())
+                                {
+                                    <div class="inline">
+                                        <img class="noprint" src="@Url.Content("~/static/img/piano.png")" />
+                                        <strong class="printonly">PIANO</strong>
+                                    </div>
+                                }
+
+                                @if (schedule.Quote.ReplacementValuationCost.HasValue && schedule.Quote.ReplacementValuationCost > 0)
+                                {
+                                    <strong class="printonly">PREMIUM PROTECTION</strong>
+                                }
+
+                                @* Link to the posting if possible *@
+                                @if (schedule.Postings.Any())
+                                {
+                                    var posting = schedule.Postings.FirstOrDefault(i => i.IsComplete) ?? schedule.Postings.First();
+                                    var title = posting.IsComplete ? "View Posting" : "Post Quote";
+                                    var pinStyle = posting.IsComplete ? "color: green;" : "display: none;";
+                                    <a href="@Url.Action("View", "Posting", new { id = posting.Lookup })" title="@title">
+                                        <i class="noprint icon-pushpin" style="@pinStyle"></i>
+                                    </a>
+                                }
+                            </div>
+                        </td>
+                        <td class="nowrap">
+                            <div class="forcewidth" style="width: 100px;">
+                                <div style="width: 0; overflow: hidden; position: absolute; opacity: 0;">
+                                    <input type="text" class="cursor-holder" tabindex="-1" />
+                                </div>
+                                @schedule.DisplayTime()
+                            </div>
+                        </td>
+                        <td class="nowrap">
+                            @String.Format("{0:C}", schedule.Quote.GetDisplayPrice())
+                            @if (schedule.Quote.PricingType == QuotePricingType.Hourly)
+                            {
+                                <span class="noprint">
+                                    <i class="icon-clock" title="Hourly, @schedule.Quote.HourlyData.HourlyPrice/hr"></i>
+                                </span>
+                                <span class="printonly-inline">
+                                    @Html.Image("~/static/img/clock.png", "Hourly")
+                                </span>
+                            }
+                        </td>
+                        <td class="nowrap">
+                            <div class="dbl-line">
+                                @if (schedule.Quote.Stops.Any())
+                                {
+                                    <div class="text-sm" title="@schedule.Quote.GetStops().First().Address.DisplayString()">
+                                        @schedule.Quote.GetStops().First().Address.DisplayCityState()
+                                    </div>
+                                }
+                                @if (schedule.Quote.GetStops().Count() > 1)
+                                {
+                                    <div class="text-sm" title="@schedule.Quote.GetStops().Last().Address.DisplayString()">
+                                        @schedule.Quote.GetStops().Last().Address.DisplayCityState()
+                                    </div>
+                                }
+                            </div>
+                        </td>
+                        <td>
+                            <div class="dbl-line">
+                                @if (schedule.Quote.Stops.Any())
+                                {
+                                    <div class="text-sm">
+                                        @schedule.Quote.GetStops().First().Address.DisplayZip()
+                                    </div>
+                                }
+                                @if (schedule.Quote.GetStops().Count() > 1)
+                                {
+                                    <div class="text-sm">
+                                        @schedule.Quote.GetStops().Last().Address.DisplayZip()
+                                    </div>
+                                }
+                            </div>
+                        </td>
+                        <td class="noprint">
+                            <i class="icon-money" style="font-size: 17px;" data-scheduleid="@schedule.ScheduleID"></i>
+                        </td>
+
+                        @{
+                            var paymentString = "";
+                            if (schedule.Quote.GetSuccessfulPayments().Any())
+                            {
+                                var payment = schedule.Quote.GetSuccessfulPayments().Last();
+                                paymentString = String.Format("{0:C}", payment.Amount) + " @ " + payment.Date.ToShortTimeString();
+                                if (payment.Date.Date != DateTime.Today)
+                                {
+                                    paymentString += " " + payment.Date.ToShortDateString();
+                                }
+                            }
+                        }
+
+                        <td class="nowrap text-r note" title="@paymentString">
+                            @paymentString
+                            @if (String.IsNullOrEmpty(paymentString))
+                            {
+                                <text> - </text>
+                            }
+                            <a class="add-note @(!String.IsNullOrEmpty(schedule.Note) ? "changed" : "")" href="#" title="@schedule.Note">
+                                @(String.IsNullOrEmpty(schedule.Note) ? "Add Note" : schedule.Note)
+                            </a>
+                            <input class="note-text" type="text" />
+                        </td>
+                    </tr>
+                }
+                <tr class="spacer noprint">
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    }
+}

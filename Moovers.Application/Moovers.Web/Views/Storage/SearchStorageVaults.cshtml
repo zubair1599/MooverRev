@@ -1,0 +1,63 @@
+﻿@model Business.Models.StorageVault
+
+@{
+    ViewBag.Title = "SearchStorageVaults";
+    bool foundEmpty = false;
+    var sv = Model;
+}
+
+
+
+<div class="center-container">
+    
+
+    <div class="container-pad">
+        <h4>Container History</h4>
+        @using (Html.BeginForm())
+        {
+            <span>Serach Vault: </span>
+            <div>
+                @Html.TextBox("vault_no")
+            </div>
+            <br/>
+            <button type="submit" class="btn btn-primary">Search</button>
+        }
+         <br/><br/>
+      @if (sv != null) { 
+             <span><b>Vault: @sv.Lookup</b></span>  <hr>
+        foreach (var rel in sv.StorageWorkOrder_Vault_Rel.OrderBy(r => r.StorageWorkOrder.StartDate))
+        {
+            if (foundEmpty)
+            {
+                <span> - @rel.StorageWorkOrder.StartDate.AddDays(-1).ToShortDateString() </span><hr>
+                foundEmpty = false;
+            }
+            <span><b>Job #:</b> @rel.StorageWorkOrder.Lookup</span>
+
+            <span> (@rel.StorageWorkOrder.Account.DisplayName)</span>
+
+            <span> Start: @rel.StorageWorkOrder.StartDate.ToShortDateString()</span>
+            <span>-</span>
+            if (rel.StorageWorkOrder.CancellationDate.HasValue)
+            {
+                <span> End: @rel.StorageWorkOrder.CancellationDate.Value.ToShortDateString()</span>
+                <hr>
+                <span> Empty: @rel.StorageWorkOrder.CancellationDate.Value.AddDays(1).ToShortDateString() </span>
+                foundEmpty = true;
+            }
+            else
+            {
+                  <span>continued</span>
+            }
+
+
+        }
+        }
+      else
+      {
+          <span> No record found</span>
+      }
+      
+    
+    </div>
+</div>

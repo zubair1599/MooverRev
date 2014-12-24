@@ -1,0 +1,17 @@
+﻿@model Business.Models.Lead
+
+<tr>
+    <td>
+       <a class="btn btn-primary btn-small"  href="@Url.Action("AcceptLead", new { id = Model.LeadID })" >Accept</a>       
+    </td>
+    <td>@Model.DisplayOwner</td>
+    <td>
+       
+        @(Model.GetLeadJson().Name)
+    </td>
+    <td>@((Model.GetLeadJson().MoveDate ?? Model.AddedDate).ToShortDateString())</td>
+    <td>@Model.GetLeadJson().Weight.Replace(" -", " lbs -")</td>
+    <td>@Model.GetLeadJson().Origin.Replace("&nbsp;", " ")</td>
+    <td>@Model.GetLeadJson().Destination.Replace("&nbsp;", " ")</td>
+    <td>@((Model.GetLeadJson().DateSubmitted ?? Model.AddedDate).ToShortDateString())</td>
+</tr>

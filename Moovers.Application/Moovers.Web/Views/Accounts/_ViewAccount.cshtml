@@ -1,0 +1,135 @@
+﻿<div id="account-detail" data-accountid="{{- AccountID }}">
+    <div class="row-fluid">
+        <div class="content-pad">
+            <div class="span4">
+                <div class="contact-info">
+                    {{ if (PrimaryPhone) { }}
+                    <a class="tel" href="tel:{{- PrimaryPhone.Display }}">Primary: {{- PrimaryPhone.Display }}</a>
+                    {{ } }}
+                    {{ if (PrimaryEmail) { }}
+                    <span class="email"><a href="mailto:{{- PrimaryEmail }}">{{- PrimaryEmail }}</a></span>
+                    {{ } }}
+                    {{ if (SecondaryPhone) { }}
+                        <span class="tel">{{- SecondaryPhone.Display }}</span>
+                    {{ } }}
+                    {{ if (FaxPhone) { }}
+                        <span class="tel">{{- FaxPhone.Display }}</span>
+                    {{ } }}
+
+                    {{ if (SecondaryEmail) { }}
+                        <span class="email">
+                            <a href="mailto:{{- SecondaryEmail }}">{{- SecondaryEmail }}</a></span>
+                    {{ } }}
+                </div>
+
+            </div>
+            <div class="span4 address">
+                {{ if (MailingAddress) { }}
+                    @Html.Partial("Accounts/_DisplayAddress", "MailingAddress")
+                {{ } }}
+
+            </div>
+            <div class="span4 address">
+                {{ if (BillingAddress) { }}
+                    @Html.Partial("Accounts/_DisplayAddress", "BillingAddress")
+                {{ } }}
+            </div>
+
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+
+<div class="account-section">
+    <button id="add-quote" class="btn btn-primary">Add Quote</button>
+    {{ if (Opportunities.length > 0) { }}
+        <table class="table table-condensed" id="account-quote-table">
+            <thead>
+                <tr>
+                    <th>Quote Number</th>
+                    <th>Move Date</th>
+                    <th>Created</th>
+                    <th>Stage</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            {{ _.each(Opportunities, function(o) { }}
+                <tr>
+                    <td><a class="max-size" href="@Url.Action("Overview", "Quote")/{{- o.Lookup }}">{{- o.Lookup }}</a></td>
+                    <td>{{- o.Created }}</td>
+                    <td>{{- o.MoveDate }}</td>
+                    <td>{{- o.Stage }}</td>
+                    <td>{{- Utility.formatCurrency(o.Price) }}</td>
+                </tr>
+            {{ }); }}
+        </table>
+    {{ } }}
+</div>
+
+<div class="account-section">
+    <button class="btn btn-primary" id="add-storage">
+        Add Storage
+    </button>
+    {{ if (WorkOrders.length > 0) { }}
+        <table class="table table-condensed" id="storage-table">
+            <thead>
+                <tr>
+                    <th>Work Order</th>
+                    <th>Next Payment</th>
+                    <th>Balance</th>
+                </tr>
+            </thead>
+            {{ _.each(WorkOrders, function(o) { }}
+                <tr>
+                    <td><a class="max-size" href="@Url.Action("View", "Storage")/{{- o.Lookup }}">{{- o.Lookup }}</a></td>
+                    <td>
+                        {{ if (o.NextPayment) { }}
+                            {{- dateFormat(o.NextPayment, "mm/dd/yyyy") }}
+                        {{ } else { }}
+                            <span class="red">INACTIVE</span>
+                        {{ } }}
+                    </td>
+                    <td>
+                        {{ if (o.Balance > 0) { }}
+                            <span class="red">{{- Utility.formatCurrency(o.Balance) }}</span>
+                        {{ } else if (o.Balance < 0) { }}
+                            <span class="green">{{- Utility.formatCurrency(o.Balance) }}</span>
+                        {{ } else { }}
+                            <span>{{- Utility.formatCurrency(o.Balance) }}</span>
+                        {{ } }}
+                    </td>
+                </tr>
+            {{ }); }}
+        </table>
+    {{ } }}
+
+
+</div>
+
+<div class="account-section">
+  
+    {{ if (Leads.length > 0) { }}
+    <h5>Leads</h5>
+    <table class="table table-condensed" id="account-quote-table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Source</th>
+                <th>Date</th>
+                <th>Franchise</th>
+                <th>Owner</th>
+            </tr>
+        </thead>
+        {{ _.each(Leads, function(l) { }}
+        <tr>
+            <td><a class="max-size" href="@Url.Action("View", "Lead")/{{- l.LeadID }}">View</a></td>
+           
+            <td>{{- l.Source }}</td>
+            <td>{{- l.AddedDate}}</td>
+            <td>{{- l.Franchise}}</td>
+            <td>{{- l.Owner}}</td>
+        </tr>
+        {{ }); }}
+    </table>
+    {{ } }}
+</div>
