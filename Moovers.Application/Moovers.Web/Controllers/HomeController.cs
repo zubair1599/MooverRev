@@ -68,6 +68,7 @@ namespace MooversCRM.Controllers
         {
             var surveyRepo = new QuoteSurveyRepository();
             var surveys = surveyRepo.GetForDay(SessionFranchiseID, DateTime.Today);
+            var surveyJson = surveys.Select(s => new { quote = s.Quote.Lookup, account = s.Quote.Account.DisplayName, time = s.DisplayTime() });
             return Json(surveys, JsonRequestBehavior.AllowGet);
 
         }
@@ -75,8 +76,8 @@ namespace MooversCRM.Controllers
         public JsonResult MessagesJson()
         {
             var msgRepo = new FrontPageMessageRepository();
-            var msgs = msgRepo.GetLatest();
-            return Json(msgs.Select(m=>new{date = m.Date, user=m.aspnet_Users.UserName,text=m.Message }), JsonRequestBehavior.AllowGet);
+            var msgs = msgRepo.GetLatest().Select(m=>new{date = m.Date.ToLongDateString(), user=m.aspnet_Users.UserName,text=m.Message });
+            return Json(msgs, JsonRequestBehavior.AllowGet);
 
         }
         public ActionResult RemoveMsg(Guid id)

@@ -50,7 +50,7 @@
                         <div class="row">
                             <div class="col-lg-3 col-sm-6 col-xs-12">
                                 <div class="main-box infographic-box">
-                                    <i class="fa fa-user red-bg"></i>
+                                    <i class="fa fa-envelope-o red-bg"></i>
                                     <span class="headline">Notifications</span>
                                     <span class="value">
 
@@ -63,19 +63,17 @@
                             </div>
                             <div class="col-lg-3 col-sm-6 col-xs-12">
                                 <div class="main-box infographic-box">
-                                    <i class="fa fa-shopping-cart emerald-bg"></i>
+                                    <i class="fa fa-bars emerald-bg"></i>
                                     <span class="headline">Quotes</span>
                                     <span class="value">
                                         <!--<span style="font-size: 13px">
-                                {{QuotesStats.Open.Count}} Open <br />
-                                {{QuotesStats.Scheduled.Count}} Scheduled
-                            </span>-->
+                            {{QuotesStats.Open.Count}} Open <br />
+                            {{QuotesStats.Scheduled.Count}} Scheduled
+                        </span>-->
                                         <span style="font-size: 13px">
                                             {{QuotesStats.Open.Count}} Open / {{QuotesStats.Scheduled.Count}} Scheduled
 
                                         </span>
-
-                                    </span>
 
                                     </span>
                                 </div>
@@ -93,7 +91,7 @@
                             </div>
                             <div class="col-lg-3 col-sm-6 col-xs-12">
                                 <div class="main-box infographic-box">
-                                    <i class="fa fa-eye yellow-bg"></i>
+                                    <i class="fa fa-database yellow-bg"></i>
                                     <span class="headline">My Jobs ( This month )</span>
                                     <span class="value">
                                         <span style="font-size: 13px">
@@ -204,6 +202,34 @@
                                 </div>
                             </div>
 
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-6 col-sm-6">
+                                <div class="main-box feed">
+                                    <header class="main-box-header clearfix">
+                                        <h2 class="pull-left">Messages</h2>
+                                    </header>
+                                    <div class="main-box-body clearfix">
+                                        <ul>
+                                            <li class="clearfix" ng-repeat="msg in Messages">
+                                                <div class="img">
+                                                    <i class="fa fa-database yellow-bg"></i>
+                                                </div>
+                                                <div class="title">
+                                                    <a href="#">{{msg.user}}: </a>{{msg.text}}.
+                                                </div>
+                                                <div class="post-time">
+                                                    {{msg.date}}
+                                                </div>
+                                                <div class="time-ago">
+                                                    <i class="fa fa-clock-o"></i> 5 min.
+                                                </div>
+                                            </li>
+                                          
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
