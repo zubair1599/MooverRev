@@ -17,7 +17,11 @@ function home(homeFactory, $timeout, $scope) {
         homeFactory.GetRecentQuotes().then(function(data) {
 
             $scope.RecentQuotes = data;
-
+            //if ($scope.RecentQuotes.length < 10) {
+            //    for(var i = $scope.RecentQuotes.length-1;i<=10;i++){
+            //        $scope.RecentQuotes.push({});
+            //    }
+            //}
         }, function(err) { alert("er"); });
 
 

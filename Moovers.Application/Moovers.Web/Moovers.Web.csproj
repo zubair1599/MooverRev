@@ -1202,6 +1202,8 @@
     <Content Include="static\img\Logo2.png" />
     <Content Include="static\img\logo72Beta.png" />
     <Content Include="static\img\piano.png" />
+    <Content Include="static\img\user-small.jpg" />
+    <Content Include="static\img\user.jpg" />
     <Content Include="static\js\newTemplate\angular-animate.js" />
     <Content Include="static\js\newTemplate\angular-route.min.js" />
     <Content Include="static\js\newTemplate\angular.easypiechart.min.js" />
