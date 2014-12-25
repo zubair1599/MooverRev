@@ -5,7 +5,7 @@
     
 }
 
-<div id="page-wrapper" ng-controller="quoteHome as qhome" class="container">
+<div id="page-wrapper"  class="container">
     <div class="row">
 
 
@@ -223,7 +223,7 @@
                                                                     {{msg.user}}
                                                                 </div>
                                                                 <div class="time hidden-xs">
-                                                                    {{msg.date}}
+                                                                    {{msg.date}}  &nbsp;<i class="fa fa-scissors" ng-click="removeMessage(msg.Id)"></i>
                                                                 </div>
                                                                 <div class="text">
                                                                    {{msg.text}}
@@ -237,10 +237,10 @@
                                             <div class="conversation-new-message">
                                                 <form class="ng-pristine ng-valid">
                                                     <div class="form-group">
-                                                        <textarea class="form-control" rows="2" placeholder="Enter your message..."></textarea>
+                                                        <textarea class="form-control" rows="2" placeholder="Enter your message..." ng-model="newMessage"></textarea>
                                                     </div>
                                                     <div class="clearfix">
-                                                        <button type="submit" class="btn btn-success pull-right">Send message</button>
+                                                        <button type="submit" class="btn btn-success pull-right" ng-click="addNewMessage(newMessage)">Send message</button>
                                                     </div>
                                                 </form>
                                             </div>

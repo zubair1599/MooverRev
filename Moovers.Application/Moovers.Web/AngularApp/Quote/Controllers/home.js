@@ -11,7 +11,9 @@ function home(homeFactory, $timeout, $scope) {
     $scope.LeadCount = 0;
     $scope.StorageCount = 0;
     $scope.Jobs = [];
-
+    $scope.Leads = [];
+    $scope.WebQuote = [];
+    $scope.newMessage = '';
     $scope.GetRecentQuote = function() {
 
         homeFactory.GetRecentQuotes().then(function(data) {
@@ -23,8 +25,6 @@ function home(homeFactory, $timeout, $scope) {
             //    }
             //}
         }, function(err) { alert("er"); });
-
-
     };
     $scope.GetSurveys = function () {
 
@@ -46,6 +46,20 @@ function home(homeFactory, $timeout, $scope) {
 
 
     };
+    $scope.addNewMessage = function (data) {
+        homeFactory.addNewMessage(data).then(function (data1) {
+
+            $scope.Messages = data1;
+            $scope.newMessage = '';
+        }, function (err) { alert("er"); });
+
+    }
+    $scope.removeMessage = function (Id) {
+        homeFactory.removeMessage(Id).then(function (data1) {
+
+            $scope.Messages = data1;           
+        }, function (err) { alert("er"); });
+    }
     $scope.MovingToday = function() {
         homeFactory.MovingToday().then(function(data) {
             var startTime = 24;
@@ -82,7 +96,14 @@ function home(homeFactory, $timeout, $scope) {
 
     };
 
-    
+    $scope.GetLeads = function () {
+        homeFactory.GetLeads().then(function (data) {
+
+            $scope.Leads = data;
+
+        }, function (err) { alert("er"); });
+
+    };
 
     $scope.SetLeadCount = function() {
         
@@ -136,7 +157,7 @@ function home(homeFactory, $timeout, $scope) {
     
     $scope.Init = function() {
         
-
+        $scope.GetLeads();
         $scope.GetRecentQuote();
         $scope.MovingToday();
         $scope.GetStats();

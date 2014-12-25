@@ -76,11 +76,11 @@ namespace MooversCRM.Controllers
         public JsonResult MessagesJson()
         {
             var msgRepo = new FrontPageMessageRepository();
-            var msgs = msgRepo.GetLatest().Select(m=>new{date = m.Date.ToLongDateString(), user=m.aspnet_Users.UserName,text=m.Message });
+            var msgs = msgRepo.GetLatest().Select(m=>new{Id = m.MessageID, date = m.Date.ToLongDateString(), user=m.aspnet_Users.UserName,text=m.Message });
             return Json(msgs, JsonRequestBehavior.AllowGet);
 
         }
-        public ActionResult RemoveMsg(Guid id)
+        public JsonResult RemoveMsg(Guid id)
         {
             var repo = new FrontPageMessageRepository();
             var msg = repo.Get(id);
@@ -91,7 +91,8 @@ namespace MooversCRM.Controllers
                 repo.Save();
             }
 
-            return RedirectToAction("Index");
+            var msgs = repo.GetLatest().Select(m => new { Id = m.MessageID, date = m.Date.ToLongDateString(), user = m.aspnet_Users.UserName, text = m.Message });
+            return Json(msgs, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult KeepAlive()
@@ -104,7 +105,7 @@ namespace MooversCRM.Controllers
 
         [Authorize]
         [ValidateInput(false)]
-        public ActionResult AddMessage(string addMessage)
+        public JsonResult AddMessage(string addMessage)
         {
             var repo = new FrontPageMessageRepository();
 
@@ -116,7 +117,8 @@ namespace MooversCRM.Controllers
 
             repo.Add(msg);
             repo.Save();
-            return RedirectToAction("Index");
+            var msgs = repo.GetLatest().Select(m => new { Id = m.MessageID, date = m.Date.ToLongDateString(), user = m.aspnet_Users.UserName, text = m.Message });
+            return Json(msgs, JsonRequestBehavior.AllowGet);
         }
 
         [ActionName("Index")]

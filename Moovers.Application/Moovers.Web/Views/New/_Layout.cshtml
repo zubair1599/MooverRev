@@ -50,7 +50,7 @@
     </script>
 </head>
 <body class="pace-done theme-red">
-    <div id="theme-wrapper">
+    <div id="theme-wrapper" ng-controller="home">
         <header class="navbar" id="header-navbar">
             <div class="container">
                 <a href="#/dasboard" id="logo" class="navbar-brand">
@@ -76,7 +76,7 @@
                             <li class="dropdown hidden-xs">
                                 <a class="btn dropdown-toggle" data-toggle="dropdown">
                                     <i class="fa fa-bell"></i>
-                                    <span class="count">8</span>
+                                    <span class="count">{{LeadCount}}</span>
                                 </a>
                                 <ul class="dropdown-menu notifications-list">
                                     <li class="pointer">
@@ -84,42 +84,25 @@
                                             <div class="arrow"></div>
                                         </div>
                                     </li>
-                                    <li class="item-header">You have 6 new notifications</li>
-                                    <li class="item">
+                                    <li class="item-header">You have {{LeadCount}} new Leads</li>
+              
+                                    <li class="item first-item" ng-repeat="item in Leads">
                                         <a href="#">
-                                            <i class="fa fa-comment"></i>
-                                            <span class="content">New comment on ‘Awesome P...</span>
-                                            <span class="time"><i class="fa fa-clock-o"></i>13 min.</span>
+                                            <i class="fa fa-clock-o"></i>
+                                            @*<img src="img/samples/messages-photo-2.png" alt="" />*@
+                                            <span class="content">
+                                                <span class="content-headline">
+                                                    <b>{{item.name}}</b>
+                                                </span>
+                                                <span class="content-text">
+                                                    inquire {{item.source}} on {{item.date}}
+                                                </span>
+                                            </span>
+                                            @*<span class="time"><i class="fa fa-clock-o"></i>.</span>*@
                                         </a>
+                                      
                                     </li>
-                                    <li class="item">
-                                        <a href="#">
-                                            <i class="fa fa-plus"></i>
-                                            <span class="content">New user registration</span>
-                                            <span class="time"><i class="fa fa-clock-o"></i>13 min.</span>
-                                        </a>
-                                    </li>
-                                    <li class="item">
-                                        <a href="#">
-                                            <i class="fa fa-envelope"></i>
-                                            <span class="content">New Message from George</span>
-                                            <span class="time"><i class="fa fa-clock-o"></i>13 min.</span>
-                                        </a>
-                                    </li>
-                                    <li class="item">
-                                        <a href="#">
-                                            <i class="fa fa-shopping-cart"></i>
-                                            <span class="content">New purchase</span>
-                                            <span class="time"><i class="fa fa-clock-o"></i>13 min.</span>
-                                        </a>
-                                    </li>
-                                    <li class="item">
-                                        <a href="#">
-                                            <i class="fa fa-eye"></i>
-                                            <span class="content">New order</span>
-                                            <span class="time"><i class="fa fa-clock-o"></i>13 min.</span>
-                                        </a>
-                                    </li>
+                                  
                                     <li class="item-footer">
                                         <a href="#">
                                             View all notifications
@@ -336,7 +319,7 @@
             </div>
         </header>
         @RenderBody()
-        
+
     </div>
 
 

@@ -45,6 +45,25 @@ function homeFactory($rootScope, $http, $q) {
 
 
     };
+    serviceDefer.GetLeads = function () {
+
+        var test = $q.defer();
+        $http.get(serviceDefer.URL + '/Lead/LeadJson/').
+              success(function (data, status, headers, config) {
+
+                  //serviceDefer.servicePromise = $q.defer();
+                  test.resolve(data);
+                  //return serviceDefer.servicePromise.promise;
+
+              }).
+              error(function (data, status, headers, config) {
+                  test.reject(data);
+                  //return serviceDefer.servicePromise.promise;
+              });
+        return test.promise;
+
+
+    };
 
     serviceDefer.GetJobsForUser = function () {
 
@@ -120,6 +139,38 @@ function homeFactory($rootScope, $http, $q) {
         return test.promise;
 
     };
+    serviceDefer.addNewMessage = function (data) {
+        var test = $q.defer();
+        $http.get(serviceDefer.URL + '/Home/AddMessage?addMessage='+data).
+             success(function (data, status, headers, config) {
+
+                 //serviceDefer.servicePromise = $q.defer();
+                 test.resolve(data);
+                 //return serviceDefer.servicePromise.promise;
+
+             }).
+             error(function (data, status, headers, config) {
+                 test.reject(data);
+                 //return serviceDefer.servicePromise.promise;
+             });
+        return test.promise;
+    }
+    serviceDefer.removeMessage = function (Id) {
+        var test = $q.defer();
+        $http.get(serviceDefer.URL + '/Home/RemoveMsg?id=' + Id).
+             success(function (data, status, headers, config) {
+
+                 //serviceDefer.servicePromise = $q.defer();
+                 test.resolve(data);
+                 //return serviceDefer.servicePromise.promise;
+
+             }).
+             error(function (data, status, headers, config) {
+                 test.reject(data);
+                 //return serviceDefer.servicePromise.promise;
+             });
+        return test.promise;
+    }
     serviceDefer.GetQuoteStats = function (query) {
 
         var test = $q.defer();
