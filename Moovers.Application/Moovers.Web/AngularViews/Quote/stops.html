@@ -1,132 +1,302 @@
-﻿
+﻿<div ng-controller="manageStops">
+    <div class="row">
+        <div class="col-lg-12">
+            <ol class="breadcrumb">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Quote</a></li>
+                <li class="active"><span>Stops</span></li>
+            </ol>
 
-
-
-
-
-
-
-<div id="quote-coordinators" class="container-transparent" ng-controller="manageStops">
-    <span class="title title2">
-        Manage Stops <span class="subtitle">Which stops are used for coordinating the move? {{$parent.length}}</span>
-        <span class="pull-right">
-            <input type="button" class="btn btn-primary" value="Add Stop" onclick="OpenDialog('stopmodal')" ng-click="Clear()" />
-        </span>
-    </span>
-    <div class="quote-contacts">
-        <div class="contact">
-            <div class="primary-contact">
-                Stops
-            </div>
-            <div class="contact-details">
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingOne">
-                            <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapseOne" ng-bind="franchiseAddress">
-
-                                </a>
-                            </h4>
-                        </div>
-
-                    </div>
-                    <div class="panel panel-default" ng-repeat="stop in $parent.selectedQuote.Stops">
-                        <div class="panel-heading" role="tab" id="headingTwo">
-                            <h4 class="panel-title">
-                                <a class="collapsed" style="font-size: 14px;" data-toggle="collapse" data-parent="#accordion" data-target="#{{stop.id}}" aria-expanded="false" aria-controls="collapseTwo">
-                                    {{stop.street1}} {{stop.street2}} {{stop.city}} {{stop.state}} {{stop.zip}} - {{stop.distanceFromPrevious}} Miles ({{stop.timeFromPrevious}} Minutes)
-
-                                </a>
-                                <span class="verified-address-text" ng-show="stop.verified">Verified</span>
-                                <img src="../../static/img/edit.png" ng-click="ScopeDialogInitialize(stop.id)" onclick="OpenDialog('stopmodal')" style="width: 20px" class="pull-right" />
-
-
-                            </h4>
-                        </div>
-                        <div id="{{stop.id}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
-                            <div class="panel-body">
-                                <table class="table">
-                                    <tr>
-                                        <td>
-                                            Type
-                                        </td>
-                                        <td>
-                                            <span style="font-weight: bold" ng-bind="stop.addressType">
-                                               
-                                            </span>
-
-                                        </td>
-                                        <td>
-                                            Stairs Outside
-                                        </td>
-                                        <td>
-                                            <span style="font-weight: bold">
-                                                {{stop.outsideStairsCount}} {{stop.outsideStairsType}}
-                                            </span>
-
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Parking
-                                        </td>
-                                        <td>
-                                            <span style="font-weight: bold">
-                                                {{stop.parkingType}}
-                                            </span>
-
-                                        </td>
-                                        <td>
-                                            Stairs Inside
-                                        </td>
-                                        <td>
-                                            <span style="font-weight: bold">
-                                                {{stop.insideStairsCount}} {{stop.insideStairsType}}
-                                            </span>
-
-
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Walk
-                                        </td>
-                                        <td>
-                                            <span style="font-weight: bold">
-                                                < {{stop.walkDistance}} Feet
-                                            </span>
-
-                                        </td>
-                                        <td>
-                                            Elevator
-                                        </td>
-                                        <td>
-                                            <span style="font-weight: bold">
-                                                {{stop.elevatorType}}
-                                            </span>
-
-                                        </td>
-                                    </tr>
-
-                                </table>
+            <h1>Manage Stops</h1>
+        </div>
+    </div>
+    <div class="row" ng-show="stopDialog == false">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2>Collapse</h2>
+                </header>
+                <div class="main-box-body clearfix">
+                    <div class="panel-group accordion" id="accordion">
+                        <div class="panel panel-default" ng-repeat="stop in $parent.selectedQuote.Stops">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                        {{stop.street1}} {{stop.street2}} {{stop.city}} {{stop.state}} {{stop.zip}} - {{stop.distanceFromPrevious}} Miles ({{stop.timeFromPrevious}} Minutes)
+                                    </a>
+                                    <img src="../../static/img/edit.png" ng-click="ScopeDialogInitialize(stop.id)" style="width: 20px" class="pull-right" />
+                                </h4>
                             </div>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingThree">
-                            <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapseOne" >
-                                    {{franchiseAddress}} - {{DistanceFromLastStop}} Miles ({{TimeFromLastStop}} Minutes )
-                                </a>
-                            </h4>
+                            <div id="collapseOne" class="panel-collapse collapse in">
+                                <div class="panel-body">
+
+                                    <table class="table table-condensed">
+                                        <tr>
+                                            <td>
+                                                Type
+                                            </td>
+                                            <td>
+                                                <span style="font-weight: bold" ng-bind="stop.addressType">
+
+                                                </span>
+
+                                            </td>
+                                            <td>
+                                                Stairs Outside
+                                            </td>
+                                            <td>
+                                                <span style="font-weight: bold">
+                                                    {{stop.outsideStairsCount}} {{stop.outsideStairsType}}
+                                                </span>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Parking
+                                            </td>
+                                            <td>
+                                                <span style="font-weight: bold">
+                                                    {{stop.parkingType}}
+                                                </span>
+
+                                            </td>
+                                            <td>
+                                                Stairs Inside
+                                            </td>
+                                            <td>
+                                                <span style="font-weight: bold">
+                                                    {{stop.insideStairsCount}} {{stop.insideStairsType}}
+                                                </span>
+
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Walk
+                                            </td>
+                                            <td>
+                                                <span style="font-weight: bold">
+                                                    < {{stop.walkDistance}} Feet
+                                                </span>
+
+                                            </td>
+                                            <td>
+                                                Elevator
+                                            </td>
+                                            <td>
+                                                <span style="font-weight: bold">
+                                                    {{stop.elevatorType}}
+                                                </span>
+
+                                            </td>
+                                        </tr>
+
+                                    </table>
+
+
+                                </div>
+                            </div>
                         </div>
 
                     </div>
                 </div>
-
             </div>
-
         </div>
     </div>
-    <stop-dialog></stop-dialog>
+
+    <div class="row">
+
+        <div class="col-lg-12" ng-show="stopDialog == true">
+
+            <header class="main-box-header clearfix">
+                <h2>Edit</h2>
+            </header>
+
+
+
+                <h3>Search for an address</h3>
+                <input id="searchTextField" ng-model="SearchAddress" placeholder="Enter an address" type="text" size="50" style="width: 700px; margin-bottom: 10px;"><br />
+                <a href="#" tabindex="-1" ng-bind="Address" id="select-current-address"></a>
+                <div class="pull-left" style="width: 300px">
+                    <table class="table">
+                        <tr>
+                            <td>Street</td>
+                            <td><input name="street1" id="street1" ng-model="selectedStop.street1" /></td>
+                        </tr>
+                        <tr>
+                            <td>Apt/Ste</td>
+                            <td><input name="street2" id="street2" ng-model="selectedStop.street2" /></td>
+                        </tr>
+                        <tr>
+                            <td>City</td>
+                            <td><input name="city" id="city" ng-model="selectedStop.city" /></td>
+                        </tr>
+                        <tr>
+                            <td>State</td>
+                            <td>
+                                <select name="state" id="state" ng-model="selectedStop.state">
+                                    <option ng-repeat="st in states" value="{{statesCodes[$index]}}">
+                                        {{st}}
+                                    </option>
+
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Zip</td>
+                            <td><input name="zip" id="zip" ng-model="selectedStop.zip" /></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="pull-right" style="width: 400px">
+                    <h4>Select an Address</h4>
+                    <div class="alert alert-info" role="alert">Please select an address.</div>
+
+                    <div id="currentlySelected" style="width: 100%;padding-top: 10px">
+                        <h5>Previously Selected</h5>
+                        <div id="previouslySelectedResult">
+                        </div>
+                    </div>
+
+                    <div id="verifiedAddresses" style="width: 100%;padding-top: 10px">
+                        <h5>Verified Address</h5>
+                        <div id="verifiedAddressResult">
+                        </div>
+                    </div>
+                    <div id="unverifiedAddress" style="width: 100%;padding-top: 10px">
+                        <h5>Unverified Address</h5>
+                        <div id="unverifiedAddressResult">
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+            
+        
+                <h3>Conditions</h3>
+
+                <div class="pull-left">
+
+                    <img src="" id="mapImg" />
+
+                </div>
+                <div class="pull-right" style="width:450px">
+                    <table class="table table-data" style="border:none">
+                        <tr>
+                            <td>Address Type :</td>
+                            <td>
+                                <select style="width: 200px">
+                                    <optgroup ng-model="selectedStop.addressType" ng-repeat="type in BuildingType" label="{{type}}">
+
+                                        <option ng-repeat="building in Buildings[$index]" value="BuildingsCodes[$parent.$index][$index]">{{building}}</option>
+
+                                    </optgroup>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Parking :</td>
+                            <td>
+                                <select ng-model="stop().parkingType" style="width: 200px">
+                                    <option value="Loading_Dock">Loading Dock</option>
+                                    <option value="Parking_Lot">Parking Lot</option>
+                                    <option value="Driveway">Driveway</option>
+                                    <option value="Street">Street</option>
+
+
+
+
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Walk Distance (in feet):</td>
+                            <td>
+                                <select ng-model="stop().walkDistance" style="width: 200px">
+                                    <option value="50">< 50</option>
+                                    <option value="100">< 100</option>
+                                    <option value="250">< 250</option>
+                                    <option value="500">< 500</option>
+                                    <option value="1000">< 1,000</option>
+                                    <option value="1001">Over 1,000</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Stairs Outside :</td>
+                            <td>
+                                <input ng-model="selectedStop.outsideStairsCount" type="text" style="width: 100px" />
+                                <select ng-model="selectedStop.outsideStairsType" style="width: 100px">
+
+                                    <option value="Flight">Flight(s)</option>
+                                    <option value="Step">Step(s)</option>
+
+
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Stairs Inside :</td>
+                            <td>
+                                <input ng-model="selectedStop.insideStairsCount" type="text" style="width: 100px" />
+                                <select ng-model="selectedStop.insideStairsType" style="width: 100px">
+
+                                    <option value="Flight">Flight(s)</option>
+                                    <option value="Step">Step(s)</option>
+
+
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Elevator :</td>
+                            <td>
+
+                                <select ng-model="selectedStop.elevatorType" style="width: 100px">
+
+                                    <option value=" Reserved">Reserved</option>
+                                    <option value=" Public">Public</option>
+                                    <option value="No_Elevator"> No Elevator </option>
+
+
+
+                                </select>
+                                <input style="width: 100px" type="text" />
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <input type="checkbox" ng-model="selectedStop.liftgate" style="float:left" /><span style="float:left;width:150px">Required Lift Gate</span>
+                                <input type="checkbox" ng-model="selectedStop.dock" style="float:left" /><span style="float:left">Dock High</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Description :</td>
+                            <td>
+                                <input type="text" ng-model="sselectedStop.apartmentComplex" style="width: 100px" placeholder="" />
+                                <input type="text" ng-model="selectedStop.apartmentGateCode" style="width: 100px" placeholder="Gate Code" />
+
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+
+        
+        </div>
+
+
+
+    </div>
+
+
+
+
 </div>

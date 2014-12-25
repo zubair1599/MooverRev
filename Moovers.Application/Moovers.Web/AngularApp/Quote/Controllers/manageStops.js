@@ -5,9 +5,14 @@ function manageStops(quoteFactory, addressFactory,$timeout,$scope) {
    
     $scope.selectedStop = {};
     $scope.allstates = '';
+    $scope.stopDialog = false;
     
+    
+    
+
     $scope.ScopeDialogInitialize = function(id) {
 
+        $scope.stopDialog = true;
         for (var i = 0; i < $scope.$parent.selectedQuote.Stops.length; i++) {
             if ($scope.$parent.selectedQuote.Stops[i].id == id) {
                 $scope.selectedStop = $scope.$parent.selectedQuote.Stops[i];

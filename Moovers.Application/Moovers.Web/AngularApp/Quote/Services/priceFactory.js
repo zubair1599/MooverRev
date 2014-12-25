@@ -2,7 +2,7 @@
 function priceFactory($rootScope, $http, $q, $resource) {
 
     var serviceDefer = new Object();
-    serviceDefer.URL = 'http://localhost:50959';
+    serviceDefer.URL = 'http://localhost:50600';
 
 
     serviceDefer.GetPriceDetails = function (lookup) {

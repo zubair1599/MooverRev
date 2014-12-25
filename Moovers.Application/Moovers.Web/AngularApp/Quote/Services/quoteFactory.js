@@ -5,7 +5,7 @@ function quoteFactory($rootScope, $http, $q) {
     var serviceDefer = new Object();
     serviceDefer.servicePromise = '';
     serviceDefer.searchResults = [];
-    serviceDefer.URL = 'http://localhost:50959';
+    serviceDefer.URL = 'http://localhost:50600';
 
     serviceDefer.GetPeopleJSON = function (searchQuery) {
 
@@ -42,33 +42,37 @@ function quoteFactory($rootScope, $http, $q) {
         var take = 50;
             var i = 0;
         serviceDefer.customerJson = '';
-        serviceDefer.servicePromise = $q.defer();
-        $http.get('http://localhost:50959/Accounts/All?q=' + searchQuery + '&page=' + i + '&take=' + take).success(function (customerJson) {
+        var test  = $q.defer();
+        $http.get( serviceDefer.URL+ '/Accounts/All?q=' + searchQuery + '&page=' + i + '&take=' + take).success(function (customerJson) {
                     serviceDefer.searchResults = serviceDefer.searchResults.concat(customerJson);
-                    serviceDefer.servicePromise.resolve(customerJson);
+                    test.resolve(customerJson);
 
 
         }).
         error(function (data, status, headers, config) {
-            serviceDefer.servicePromise.reject();
-            });
+            test.reject();
+        });
+        return test.promise;
     };
 
     serviceDefer.GetCustomerShortInformation = function(accountId) {
 
+        var test = $q.defer();
+
         serviceDefer.servicePromise = $q.defer();
         $http.get(serviceDefer.URL + '/Accounts/Get/'+accountId).success(function(returnedData) {
-            serviceDefer.servicePromise.resolve(returnedData);
+            test.resolve(returnedData);
 
         }).
         error(function (data, status, headers, config) {
-            serviceDefer.servicePromise.reject();
+            test.reject();
         });
 
+        return test.promise;
     };
     
     serviceDefer.AddQuote = function(quoteBasicInfo) {
-        serviceDefer.servicePromise = $q.defer();
+        var test = $q.defer();
         $http.post(serviceDefer.URL + '/Quote/AddQuoteJson/', {
             shippingAccount: quoteBasicInfo.shippingAccount,
             hiddenAccountID: quoteBasicInfo.AccountID,
@@ -80,11 +84,12 @@ function quoteFactory($rootScope, $http, $q) {
                 
             }).
               success(function (data, status, headers, config) {
-                  serviceDefer.servicePromise.resolve(data);
+                  test.resolve(data);
               }).
               error(function (data, status, headers, config) {
-                  serviceDefer.servicePromise.reject();
+                  test.reject();
               });
+        return test.promise;
     };
 
 

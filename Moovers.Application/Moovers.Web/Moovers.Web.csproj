@@ -225,6 +225,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="AngularApp\Quote\Controllers\home.js" />
+    <Content Include="AngularApp\Quote\Controllers\manageContact.js" />
     <Content Include="AngularApp\Quote\Controllers\manageInventory.js" />
     <Content Include="AngularApp\Quote\Controllers\managePricing.js" />
     <Content Include="AngularApp\Quote\Controllers\manageSchedule.js" />
@@ -248,11 +249,11 @@
     <Content Include="AngularApp\Template\directives.js" />
     <Content Include="AngularViews\Quote\contacts.html" />
     <Content Include="AngularViews\Quote\home.html" />
-    <Content Include="AngularViews\Quote\home2.html" />
     <Content Include="AngularViews\Quote\inventory.html" />
     <Content Include="AngularViews\Quote\pricing.html" />
     <Content Include="AngularViews\Quote\schedule.html" />
     <Content Include="AngularViews\Quote\stops.html" />
+    <Content Include="AngularViews\Quote\stops2.html" />
     <Content Include="content\angular.css" />
     <Content Include="content\animate.css" />
     <Content Include="content\bootstrap-editable.css" />

@@ -135,6 +135,7 @@
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/manageSchedule.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/manageStops.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/quoteHome.js" />
+    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/manageContact.js" />
     
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Directives/addQuoteDialog.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Directives/addressStopDialog.js" />

@@ -8,7 +8,7 @@ function inventoryFactory($rootScope, $http, $q, $resource) {
     serviceDefer.Boxes = [];
     serviceDefer.CustomBoxes = [];
 
-    serviceDefer.URL = 'http://localhost:50959';
+    serviceDefer.URL = 'http://localhost:50600';
 
     serviceDefer.UpdateInventory = function(quoteId , json) {
 

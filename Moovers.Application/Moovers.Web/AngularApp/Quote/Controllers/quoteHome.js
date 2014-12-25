@@ -14,7 +14,7 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory, $scope, $window
     $scope.franchiseID = '';
 
     $scope.customerID = '';
-    $scope.customer = '';
+    $scope.customer = null;
     $scope.DisplayName = '';
 
     $scope.DistanceFromLastStop = '';
@@ -30,6 +30,9 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory, $scope, $window
         $scope.customer = json;
         $scope.DisplayName = $scope.customer.DisplayName;
         $scope.customerID = id;
+        $timeout(function () {
+            $scope.$apply();
+        });
     };
 
 

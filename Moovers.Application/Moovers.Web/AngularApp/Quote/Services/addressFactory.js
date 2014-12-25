@@ -3,7 +3,7 @@
 function addressFactory($rootScope, $http, $q, $resource) {
     
     var serviceDefer = new Object();
-    serviceDefer.URL = 'http://localhost:50959';
+    serviceDefer.URL = 'http://localhost:50600';
 
 
     serviceDefer.GetStates = function () {
