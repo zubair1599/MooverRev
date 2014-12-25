@@ -41,7 +41,20 @@ namespace MooversCRM.Controllers
             }
         }
 
+        public JsonResult LeadJson()
+        {
+            Guid? franchiseid = null;
+            if (!AspUser.HasMultipleFranchises())
+            {
+                franchiseid = SessionFranchiseID;
+            }
 
+            var repo = new LeadRepository();
+            var leads = repo.GetAll(franchiseid).ToList().Select(l => new { name = l.Name, source = l.Source, date = l.AddedDate.ToShortDateString() });
+
+           
+            return Json( leads, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult List()
         {
             Guid? franchiseid = null;
