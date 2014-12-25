@@ -68,8 +68,8 @@ namespace MooversCRM.Controllers
         {
             var surveyRepo = new QuoteSurveyRepository();
             var surveys = surveyRepo.GetForDay(SessionFranchiseID, DateTime.Today);
-            var surveyJson = surveys.Select(s => new { quote = s.Quote.Lookup, account = s.Quote.Account.DisplayName, time = s.DisplayTime() });
-            return Json(surveys, JsonRequestBehavior.AllowGet);
+            var surveyJson = surveys.Select(s => new { quote = s.Quote.Lookup, account = s.Quote.Account.DisplayName, time = s.DisplayTime(), text=s.Notes });
+            return Json(surveyJson, JsonRequestBehavior.AllowGet);
 
         }
         [HttpGet]
