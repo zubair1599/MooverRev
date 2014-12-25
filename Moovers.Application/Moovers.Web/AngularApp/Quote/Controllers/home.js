@@ -133,13 +133,13 @@ function home(homeFactory, $timeout, $scope) {
     $scope.Init = function() {
         
 
-        //$scope.GetRecentQuote();
-        //$scope.MovingToday();
-        //$scope.GetStats();
-        //$scope.SetLeadCount();
-        //$scope.GetStorageCount();
-        //$scope.GetJobsForUser();
-        //$scope.GetSurveys();
+        $scope.GetRecentQuote();
+        $scope.MovingToday();
+        $scope.GetStats();
+        $scope.SetLeadCount();
+        $scope.GetStorageCount();
+        $scope.GetJobsForUser();
+        $scope.GetSurveys();
         $scope.GetMessages();
     };
 

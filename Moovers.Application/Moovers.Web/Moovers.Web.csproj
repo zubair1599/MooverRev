@@ -1199,6 +1199,7 @@
     <Content Include="static\img\edit.png" />
     <Content Include="static\img\emily.jpg" />
     <Content Include="static\img\logo1.png" />
+    <Content Include="static\img\Logo2.png" />
     <Content Include="static\img\logo72Beta.png" />
     <Content Include="static\img\piano.png" />
     <Content Include="static\js\newTemplate\angular-animate.js" />
