@@ -43,8 +43,8 @@
                             <li ng-class="{active: currentTab==1}">
                                 <a href="#/stops" ng-click="currentTab=1">
                                     <i class="fa fa-dashboard"></i>
-                                    <span>Stops</span>
-                                    <span class="label label-primary label-circle pull-right"></span>
+                                    <span>Stops {{selectedQuote.Stops.length}}</span>
+                                    <span class="label label-primary label-circle pull-right">{{selectedQuote.Stops.length}}</span>
                                 </a>
                             </li>
                             <li  ng-class="{active: currentTab==2}" ng-click="currentTab=2">
@@ -74,93 +74,111 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="row ng-scope">
-                        <div class="col-lg-2 col-sm-6 col-xs-12" style="width:15%" style="width:15%">
+                        <div class="col-lg-2 col-sm-6 col-xs-12"  style="width:15%">
                             <div class="main-box infographic-box">
                              
-                                <span class="headline"  style="text-align:center">Users</span>
-                                <span class="value" style="font-size:1.5em;font-weight:400;text-align:center;" style="font-size:1.5em;font-weight:400;text-align:center;">
+                                <span class="headline"  style="text-align:center">Miles</span>
+                                <span class="value"  style="font-size:1.5em;font-weight:400;text-align:center;">
                                     <span>
-                                        2562
+                                        {{QuoteQuickLook.TotalMiles}}
                                     </span>
                                    
                                 </span>
-                                <span class="label" style="text-align:center; color:black;">
-                                    Base: 0 Move: 0
+                                <span class="label" style="text-align:center; color:black; font-size:0.7em;">
+                                    Base : {{QuoteQuickLook.BaseMiles}} , Move : {{QuoteQuickLook.MoveMiles}}
                                 </span>
                             </div>
                         </div>
                         <div class="col-lg-2 col-sm-6 col-xs-12" style="width:15%">
                             <div class="main-box infographic-box">
 
-                                <span class="headline" style="text-align:center">Users</span>
+                                <span class="headline" style="text-align:center">Peices</span>
                                 <span class="value" style="font-size:1.5em;font-weight:400;text-align:center;" style="font-size:1.5em;font-weight:400;text-align:center;">
                                     <span>
-                                        2562
+                                       {{QuoteQuickLook.Furniture + QuoteQuickLook.Boxes}}
                                     </span>
 
                                 </span>
-                                <span class="label" style="text-align:center; color:black;">
-                                    Base: 0 Move: 0
+                                <span class="label" style="text-align:center; color:black; font-size:0.7em;">
+                                    Furniture : {{QuoteQuickLook.Furniture}} , Boxes : {{QuoteQuickLook.Boxes}}
                                 </span>
                             </div>
                         </div>
                         <div class="col-lg-2 col-sm-6 col-xs-12" style="width:15%">
                             <div class="main-box infographic-box">
 
-                                <span class="headline" style="text-align:center">Users</span>
-                                <span class="value" style="font-size:1.5em;font-weight:400;text-align:center;" style="font-size:1.5em;font-weight:400;text-align:center;">
+                                <span class="headline" style="text-align:center">Cubic Feet</span>
+                                <span class="value"  style="font-size:1.5em;font-weight:400;text-align:center;">
                                     <span>
-                                        2562
+                                      {{QuoteQuickLook.CubicFeet}}
                                     </span>
 
                                 </span>
-                                <span class="label" style="text-align:center; color:black;">
-                                    Base: 0 Move: 0
+                                <span class="label" style="text-align:center; color:black; font-size:0.7em;">
+                                    % Of Trucks :{{QuoteQuickLook.CubicFeet / SERVER.MAX_TRUCK_CUBICFEET * 100 }}
                                 </span>
                             </div>
                         </div>
                         <div class="col-lg-2 col-sm-6 col-xs-12" style="width:15%">
                             <div class="main-box infographic-box">
 
-                                <span class="headline" style="text-align:center">Users</span>
-                                <span class="value" style="font-size:1.5em;font-weight:400;text-align:center;" style="font-size:1.5em;font-weight:400;text-align:center;">
+                                <span class="headline" style="text-align:center">Pounds</span>
+                                <span class="value"  style="font-size:1.5em;font-weight:400;text-align:center;">
                                     <span>
-                                        2562
+                                       {{QuoteQuickLook.TotalWeight}}
                                     </span>
 
                                 </span>
-                                <span class="label" style="text-align:center; color:black;">
-                                    Base: 0 Move: 0
+                                <span class="label" style="text-align:center; color:black; font-size:0.7em;">
+                                    % Of Capacity :{{QuoteQuickLook.TotalWeight / SERVER.MAX_TRUCK_Weight * 100 }}
                                 </span>
                             </div>
                         </div>
                         <div class="col-lg-2 col-sm-6 col-xs-12" style="width:15%">
                             <div class="main-box infographic-box">
 
-                                <span class="headline" style="text-align:center">Users</span>
-                                <span class="value" style="font-size:1.5em;font-weight:400;text-align:center;" style="font-size:1.5em;font-weight:400;text-align:center;">
+                                <span class="headline" style="text-align:center">Duration</span>
+                                <span class="value" ng-if="QuoteQuickLook.IsHourly===true" style="font-size:1.5em;font-weight:400;text-align:center;">
                                     <span>
-                                        2562
+                                        {{ QuoteQuickLook.CustomerTimeEstimate }} {{ QuoteQuickLook.CustomerTimeEstimate > 1 ? "Hours" : "Hour" }}
                                     </span>
 
                                 </span>
-                                <span class="label" style="text-align:center; color:black;">
-                                    Base: 0 Move: 0
+                                <span class="label" ng-if="QuoteQuickLook.IsHourly===true" style="text-align:center; color:black; font-size:0.7em;">
+                                    Drive :{{ QuoteQuickLook.TotalDuration }}
+                                </span>
+                                <span class="value" ng-if="QuoteQuickLook.IsHourly===false" style="font-size:1.5em;font-weight:400;text-align:center;">
+                                    <span>
+                                        {{ QuoteQuickLook.TotalDuration }}
+                                    </span>
+
+                                </span>
+                                <span class="label" ng-if="QuoteQuickLook.IsHourly===fasle" style="text-align:center; color:black; font-size:0.7em;">
+                                    Labour  :{{ QuoteQuickLook.LaborDuration }} Drive  :{{ QuoteQuickLook.DriveDuration }}
                                 </span>
                             </div>
                         </div>
                         <div class="col-lg-2 col-sm-6 col-xs-12" style="width:15%">
                             <div class="main-box infographic-box">
 
-                                <span class="headline" style="text-align:center">Users</span>
-                                <span class="value" style="font-size:1.5em;font-weight:400;text-align:center;" style="font-size:1.5em;font-weight:400;text-align:center;">
+                                <span class="headline" style="text-align:center">Price</span>
+                                <span ng-if="QuoteQuickLook.FinalPostedPrice!=null" class="value" style="font-size:1.5em;font-weight:400;text-align:center;">
                                     <span>
-                                        2562
+                                        {{QuoteQuickLook.FinalPostedPrice | currency}}
                                     </span>
 
                                 </span>
-                                <span class="label" style="text-align:center; color:black;">
-                                    Base: 0 Move: 0
+                                <span ng-if="QuoteQuickLook.FinalPostedPrice!=null" class="label" style="text-align:center; color:black;  font-size:0.7em;">
+                                    Owes :{{ QuoteQuickLook.Balance | currency }}
+                                </span>
+                                <span ng-if="QuoteQuickLook.FinalPostedPrice==null" class="value" style="font-size:1.5em;font-weight:400;text-align:center;">
+                                    <span>
+                                       {{QuoteQuickLook.FinalPrice | currency}}
+                                    </span>
+
+                                </span>
+                                <span ng-if="QuoteQuickLook.FinalPostedPrice==null" class="label" style="text-align:center; color:black;  font-size:0.7em;">
+                                    Original:{{ QuoteQuickLook.OriginalPrice | currency }} {{ QuoteQuickLook.Discount }}% 
                                 </span>
                             </div>
                         </div>
