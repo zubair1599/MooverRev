@@ -197,11 +197,11 @@ function quoteFactory($rootScope, $http, $q) {
 
     };
 
-    serviceDefer.GetRecentQuote = function () {
+    serviceDefer.GetRecentQuote = function (lookup) {
         //serviceDefer.servicePromise = $q.defer();
 
         var test = $q.defer();
-        $http.get(serviceDefer.URL + '/Quote/GetRecentQuoteJson/').success(function (returnedData) {
+        $http.get(serviceDefer.URL + '/Quote/GetRecentQuoteJson?lookup='+lookup).success(function (returnedData) {
             // serviceDefer.servicePromise.resolve(returnedData);
                 test.resolve(returnedData);
 

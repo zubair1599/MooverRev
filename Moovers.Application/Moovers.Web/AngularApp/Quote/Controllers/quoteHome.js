@@ -8,6 +8,7 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory, $scope, $window
     $scope.currentTab = 0;
 
     $scope.selectedQuote = {};
+    $scope.selectedQuote.FranchiseLogo = '/static/img/logos/none.png';
     $scope.QuoteQuickLook = '';
     
     $scope.franchiseAddress = '';
@@ -48,19 +49,18 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory, $scope, $window
 
     };
 
-    $scope.Init = function(quote) {
+    $scope.Init = function (quote) {
 
-        if (typeof quote== 'undefined') {
-            quoteFactory.GetRecentQuote().then(function (quickLookdata) {
+        var param = document.URL.substring(document.URL.indexOf('?') + 1);
+        var lookup = param.substring(param.indexOf('=') + 1);
 
+        if (typeof quote == 'undefined' && lookup!=undefined) {
+            quoteFactory.GetRecentQuote(lookup).then(function (quickLookdata) {
                 $scope.selectedQuote = quickLookdata.quote;
                 $scope.UpdateQuicklook();
                 $scope.GetFranchise();
                 $scope.SetAllRooms();
                 $scope.InventoryItems();
-                //$scope.SetDistanceTimes();
-
-
             });
         } else {
             $scope.selectedQuote = quote;
