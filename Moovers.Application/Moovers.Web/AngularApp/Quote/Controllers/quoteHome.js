@@ -51,17 +51,17 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory, $scope, $window
     $scope.Init = function(quote) {
 
         if (typeof quote== 'undefined') {
-            //quoteFactory.GetRecentQuote().then(function (quickLookdata) {
+            quoteFactory.GetRecentQuote().then(function (quickLookdata) {
 
-            //    $scope.selectedQuote = quickLookdata.quote;
-            //    $scope.UpdateQuicklook();
-            //    $scope.GetFranchise();
-            //    $scope.SetAllRooms();
-            //    $scope.InventoryItems();
-            //    //$scope.SetDistanceTimes();
+                $scope.selectedQuote = quickLookdata.quote;
+                $scope.UpdateQuicklook();
+                $scope.GetFranchise();
+                $scope.SetAllRooms();
+                $scope.InventoryItems();
+                //$scope.SetDistanceTimes();
 
 
-            //});
+            });
         } else {
             $scope.selectedQuote = quote;
             $scope.UpdateQuicklook();
