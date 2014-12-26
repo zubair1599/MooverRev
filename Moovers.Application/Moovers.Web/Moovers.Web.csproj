@@ -252,6 +252,7 @@
     <Content Include="AngularApp\Template\directives.js" />
     <Content Include="AngularViews\Quote\contacts.html" />
     <Content Include="AngularViews\Quote\home.html" />
+    <Content Include="AngularViews\Quote\inventory - Copy.html" />
     <Content Include="AngularViews\Quote\inventory.html" />
     <Content Include="AngularViews\Quote\pricing.html" />
     <Content Include="AngularViews\Quote\schedule.html" />
@@ -1186,8 +1187,6 @@
     <Content Include="Scripts\i18n\angular-locale_zu-za.js" />
     <Content Include="Scripts\i18n\angular-locale_zu.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
-    <Content Include="content\jquery-ui.css" />
-    <Content Include="Scripts\jquery-ui.js" />
     <Content Include="Scripts\jquery.min.js" />
     <Content Include="Scripts\loading-bar.js" />
     <Content Include="static\css\custombootstrap.css" />

@@ -24,6 +24,8 @@
             font-weight: bold;
             background-color: lightgrey;
         }
+
+  
 </style>
 <script>
 
@@ -32,7 +34,7 @@
         //$('#modal-room').addClass('md-effect-14');
         $('#modal-room').addClass('md-show');
         $('#modal-room').removeClass('hide');
-
+        
         //alert();
     };
 
@@ -54,14 +56,14 @@
                 <li class="active"><span>Inventory</span></li>
             </ol>
             <div class="pull-left">
-                <h1>Manage Inventory</h1>
+                <h1>Manage Inventory</h1>    
             </div>
             <div class="pull-right">
-                <input type="button" class="btn btn-danger" value="Add Room" data-modal="modal-room" onclick="Open();" ng-click="ClearRoomBox()" />
+                <input type="button" class="btn btn-primary" value="Add Room" data-modal="modal-room" onclick="Open();" ng-click="ClearRoomBox()" />
 
             </div>
-
-
+            
+            
         </div>
     </div>
 
@@ -73,7 +75,7 @@
             </div>
 
 
-
+                
 
             <div class="col-lg-3">
 
@@ -85,18 +87,18 @@
 
 
 
+            
+        <div class="col-lg-4" style="margin-left: 0;padding-left: 0">
+            <input type="button" class="btn btn-primary" value="Add Item" ng-click="AddItem()" />
+            <input type="button" class="btn btn-default" value="Remove All" />
+            <input type="button" class="btn btn-default" value="Undo / Redo" />
 
-            <div class="col-lg-4" style="margin-left: 0;padding-left: 0">
-                <input type="button" class="btn btn-primary" value="Add Item" ng-click="AddItem()" />
-                <input type="button" class="btn btn-default" value="Remove All" />
-                <input type="button" class="btn btn-default" value="Undo / Redo" />
-
-            </div>
+        </div>
 
         </div>
     </div>
-
-
+    
+    
     <div class="row">
         <div class="col-lg-12">
 
@@ -127,14 +129,11 @@
                 </div>
             </div>
             <div class="col-lg-8">
-                <br />
-                <br />
-
-
-                <div class="btn btn-default btn-draggable" ui-draggable="true" drag="itemrel" ng-repeat="itemrel in selectedRoom.Items">
-                    {{itemrel.Item.Name}} ({{itemrel.Count}})
-                    <i class="icon-remove" ng-click="RemoveItem(itemrel)"></i>
-
+               
+                        <div class="btn btn-default btn-draggable" ui-draggable="true" drag="itemrel" ng-repeat="itemrel in selectedRoom.Items">
+                            {{itemrel.Item.Name}} ({{itemrel.Count}})
+                            <i class="icon-remove" ng-click="RemoveItem(itemrel)"></i>
+                       
                 </div>
             </div>
         </div>
@@ -152,7 +151,7 @@
                     <div class="form-group">
                         <label for="roomType">Room Type</label>
                         <div class="form-inline">
-
+                        
                             <select id="roomType" class="form-control" ng-model="selectedRoom.Type">
                                 <option value="Attic">Attic</option>
                                 <option value="Basement">Basement</option>
@@ -172,11 +171,11 @@
 
                             </select>
 
-                            <input type="text" class="form-control" ng-show="selectedRoom.Type=='Other'" style="width: 150px" ng-model="selectedRoom.TypeOther" />
+                            <input type="text" class="form-control" ng-show="selectedRoom.Type=='Other'" style="width: 150px" ng-model="selectedRoom.TypeOther" />    
                         </div>
+                        
 
-
-
+                        
                     </div>
                     <div class="form-group">
                         <label for="roomDescription">Description</label>
@@ -190,61 +189,54 @@
 
                         </select>
                     </div>
-
+                    
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" ng-click="UpdateRoom()" onclick="Close();">Save changes</button>
-                <button type="button" class="btn btn-default" onclick="Close();">Cancel</button>
+                <button type="button" class="btn btn-primary" ng-click="UpdateRoom()" onclick="Close();">Save changes</button>
+                <button type="button" class="btn btn-danger" onclick="Close();">Cancel</button>
             </div>
         </div>
     </div>
 
-    <div class="modal hide fade" id="additionalQuestions-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: block;">
+    <div class="modal fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" style="display: block;">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title">{{selectedItem.Name}}</h4>
+                    <h4 class="modal-title">Modal title</h4>
                 </div>
                 <div class="modal-body">
-                    <div id="options" ng-repeat="additem in selectedItem.AdditionalQuestions">
-                        <div style="min-width:500px">
-
-                            <div style="margin-left: 200px">
-                                <div ng-show="additem.Options.length===0">
-                                    <div class="checkbox-nice checkbox-inline">
-                                        <input type="checkbox" id="chk{{$index}}">
-                                        <label for="chk{{$index}}">
-                                            {{additem.QuestionText}}
-                                        </label>
-                                    </div>
-
-                                    <!--<input type="checkbox" ng-model="additem.value" id="chk{{$index}}" />-->
-
-                                </div>
-                                <br />
-                                <div ng-show="additem.Options.length>0" class="btn-group" data-toggle="buttons">
-
-                                    <label class="btn btn-primary" ng-repeat="option in additem.Options" ng-click="ChangeOption(option)">
-                                        <input type="radio" name="options" id="option1"> {{option.Option}}
-                                    </label>
-
-
-                                    <!--<button class="btn btn-default" ng-repeat="option in additem.Options" ng-click="ChangeOption(option)">{{option.Option}}</button>-->
-                                </div>
-
+                    <form role="form">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Email address</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Password</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleTextarea">Textarea</label>
+                            <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+                        </div>
+                        <div class="form-inline form-inline-box">
+                            <div class="form-group">
+                                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
                             </div>
+                            <div class="form-group">
+                                <select class="form-control">
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                </select>
                             </div>
-
-
-
-                    </div>
+                            <button type="submit" class="btn btn-link"><i class="fa fa-eye"></i> Preview</button>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" ng-click="SaveItemOptions()" >Save changes</button>
-                    <button type="button" class="btn btn-default" onclick=" $('#additionalQuestions-modal').removeClass('in');$('#additionalQuestions-modal').addClass('hide');">Close</button>
-                    
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
         </div>
