@@ -69,10 +69,7 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory, $scope, $window
             $scope.SetAllRooms();
             $scope.InventoryItems();
             //$scope.SetDistanceTimes();
-        }
-        
-        
-
+        }              
     };
 
 

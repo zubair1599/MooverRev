@@ -335,8 +335,6 @@
                                                 <h5 class="street" style="font-weight: bold; text-align: center;margin-top: 10px;padding-bottom: 5px; margin-bottom: 5px;">{{QuoteQuickLook.TotalWeight}}</h5>
                                                 <p style="text-align: center;font-size: 10px;padding:0;margin:0">% Of Capacity :{{QuoteQuickLook.TotalWeight / SERVER.MAX_TRUCK_Weight * 100 }} </p>
                                                 <p style="text-align: center;font-size: 10px;padding:0;margin:0"></p>
-
-
                                             </div>
                                         </div>
                                         <div style="width:150px;float:left;margin-left: 2px">
@@ -359,9 +357,6 @@
                                                         Drive  :{{ Utility.formatHours(QuoteQuickLook.DriveDuration, true) }}
                                                         <span ng-if="QuoteQuickLook.MinimumTrucks>1"> ({{ QuoteQuickLook.MinimumTrucks }} Trucks)</span>
                                                     </p>
-
-
-
 
                                                 </div>
 
@@ -386,7 +381,7 @@
 
                                                     <p style="text-align: center;font-size: 10px;padding:0;margin:0">
                                                         <span ng-if="QuoteQuickLook.IsHourly">
-                                                            Hourly Move, {{ Utility.formatCurrency(QuoteQuickLook.HourlyRate) }}/hr
+                                                            Hourly Move, {{ QuoteQuickLook.HourlyRate | currency }}/hr
                                                         </span>
                                                         <span ng-if="(!QuoteQuickLook.IsHourly && !QuoteQuickLook.IsCompleted && !Utility.priceHidden())">
 
