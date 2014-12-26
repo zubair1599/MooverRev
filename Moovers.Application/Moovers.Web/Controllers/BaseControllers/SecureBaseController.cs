@@ -240,7 +240,7 @@ namespace MooversCRM.Controllers.BaseControllers
             }
             else
             {
-                filterContext.Result = new RedirectResult("~/Login");
+                filterContext.Result = new RedirectResult("~/Login/NewLogin");
             }
 
             base.OnAuthorization(filterContext);

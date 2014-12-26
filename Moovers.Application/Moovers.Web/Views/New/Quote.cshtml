@@ -32,15 +32,15 @@
                                 Navigation
                             </li>
                           
-                            <li>
-                                <a href="#/contacts" ng-class="{'active': currentTab==0}" ng-click="currentTab=0">
+                            <li ng-class="{'active': currentTab==0}">
+                                <a href="#/contacts" ng-click="currentTab=0">
                                     <i class="fa fa-dashboard"></i>
                                     <span>Contacts</span>
                                     <span class="label label-primary label-circle pull-right"></span>
                                 </a>
                             </li>
-                            <li>
-                                <a href="#/stops" ng-class="{active: currentTab==1}" ng-click="currentTab=1">
+                            <li ng-class="{active: currentTab==1}">
+                                <a href="#/stops" ng-click="currentTab=1">
                                     <i class="fa fa-dashboard"></i>
                                     <span>Stops</span>
                                     <span class="label label-primary label-circle pull-right"></span>

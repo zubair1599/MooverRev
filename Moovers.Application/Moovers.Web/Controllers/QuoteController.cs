@@ -328,7 +328,7 @@ namespace MooversCRM.Controllers
         {
             var repo = new QuoteRepository();
 
-            var quote = repo.Get("47077");
+            var quote = repo.Get("45746");
            
             string redirectUrl = Url.Action("Stops", new { id = quote.Lookup });
             

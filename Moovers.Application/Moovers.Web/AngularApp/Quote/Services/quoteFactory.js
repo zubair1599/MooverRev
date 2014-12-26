@@ -141,11 +141,6 @@ function quoteFactory($rootScope, $http, $q) {
         return test.promise;
     };
 
-
-
-
-
-
     serviceDefer.AddressSuggestions = function(address) {
         serviceDefer.servicePromise = $q.defer();
         $http.post(serviceDefer.URL + '/Address/GetSuggestions/', {

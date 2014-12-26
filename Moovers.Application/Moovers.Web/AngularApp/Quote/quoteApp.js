@@ -15,7 +15,7 @@ quoteApp.config(['$routeProvider', '$locationProvider','cfpLoadingBarProvider',
 
       $routeProvider.
           when('/', {
-              templateUrl: '/AngularViews/Quote/home.html'
+              templateUrl: '/AngularViews/Quote/contacts.html'
 
           }).when('/stops', {
               templateUrl: '/AngularViews/Quote/stops.html',
