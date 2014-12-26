@@ -1,0 +1,52 @@
+﻿#inventory-list-edit-container {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  right: 20px;
+  height: 80px; }
+
+#inventory-list-edit {
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 10px; }
+
+#inventory-list-edit > thead > tr > th {
+  text-align: left;
+  padding: 5px; }
+
+#inventory-list-edit > thead > tr > td > input {
+  width: 100%; }
+
+#inventory-list-container {
+  position: absolute;
+  top: 80px;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  overflow-y: scroll; }
+
+#inventory-list {
+  width: 100%; }
+
+#inventory-list > tbody > tr {
+  cursor: default; }
+
+#inventory-list > tbody > tr > td > i {
+  color: #CCC;
+  display: inline-block;
+  cursor: pointer;
+  margin-right: 5px; }
+
+#inventory-list i:hover {
+  color: #333; }
+
+#inventory-list > tbody > tr > td > i.icon-ok {
+  color: #333;
+  margin: 0; }
+
+.simple-error {
+  margin-top: 5px;
+  color: red;
+  text-align: center; }
+
+/*# sourceMappingURL=admin.css.map */

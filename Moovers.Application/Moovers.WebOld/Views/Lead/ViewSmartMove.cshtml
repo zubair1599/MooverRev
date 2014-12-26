@@ -1,0 +1,186 @@
+﻿@model Business.Models.SmartMove
+
+@{
+    ViewBag.Title = "View Lead";
+}
+
+
+<style>
+    td:first-child {
+        font-weight: bold;
+    }
+    #images {
+        float: left;
+        margin-right: 10px;
+    }
+
+        #images img {
+            width: 150px;
+            padding: 5px;
+        }
+
+    #full {
+        float: left;
+        width: 470px;
+        height: 333px;
+    }
+
+    .selected {
+        background-color: gray;
+    }
+
+    #caption {
+        clear: left;
+    }
+</style>
+
+<script>
+    $(function () {
+        $("#original").click(function () {
+            $("#original-view").slideToggle();
+            return false;
+        });
+    });
+</script>
+<input type="hidden" id="query" value="@Model.Name" />
+<div class="row-fluid panel-container">
+    <div class="center-container" ng-app>
+        <div class="container-pad">
+            <h3>Smart Move: @Model.Name</h3>
+
+
+            <div class="clearfix">
+                <div class="panel-container" style="width: 40%; float: left;">
+                    <div class="panel-title">
+                        Contact Details
+                    </div>
+                    <div class="panel-section">
+                        <table>
+                            <tr>
+                                <th>Name</th>
+                                <td>@Model.Name</td>
+                            </tr>
+                            <tr>
+                                <th>Phone</th>
+                                <td>@Model.Phone</td>
+                            </tr>
+
+                            @if (!String.IsNullOrWhiteSpace(Model.Email))
+                            {
+                            <tr>
+                                <th>Email</th>
+                                <td><a href="mailto:@Model.Email">@Model.Email</a></td>
+                            </tr>
+                            }
+                            <tr>
+                                <th>PREFERENCE</th>
+                                <td>ANYTIME</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="panel-container" style="width: 40%; margin-left: 10%; float: left;">
+                    <div class="panel-title">
+                        Move Details
+                    </div>
+                    <div class="panel-section">
+                        <table>
+                            <tr>
+                                <th>Current Location</th>
+                                <td>
+
+                                    @if (!String.IsNullOrEmpty(Model.Address1.Zip))
+                                    {
+                                    @Model.Address1.DisplayString()
+                                    }
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Destination</th>
+                                <td>@Html.Raw(Model.Address2.DisplayString())</td>
+                            </tr>
+                            <tr>
+                                <th>Move Size</th>
+                                <td>See attached images</td>
+                            </tr>
+                            <tr>
+                                <th>Move Date</th>
+                                <td>@Model.EstimatedMoveDate.Value.ToShortDateString()</td>
+                            </tr>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<h3>Inventory Items</h3>
+
+<div style="background: white" class="row-fluid container-pad">
+
+<div id="imgContainer1" class="row container-pad">
+    <div id="images" class="row">
+
+        <div id="imgContainer" class="row">
+        </div>
+
+    </div>
+
+</div>
+ </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Images</h4>
+                </div>
+                <div class="modal-body">
+                    <img id="mimg" style="vert-align: middle" class="img-polaroid" src="">
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <script type="text/javascript">
+        $(function () {
+            var id = '@Model.SmartMoveLookUp';
+            var baseurl = "https://api.1800moovers.com/v1/smart";
+            var options = {};
+            options.url = baseurl + "/files?lookup=" + id;
+            options.type = "GET";
+            //options.dataType = "image/png";
+            options.contentType = 'json';
+
+
+            options.success = function (results) {
+                for (var i = 0; i < results.data.length; i++) {
+
+                    var url = baseurl + "/file?lookup=" + id + "&imgName=" + results.data[i];
+
+                    $("#imgContainer").append("<img  onClick='imgClick(this)' class='img-polaroid'  src='" + url + "' />");
+
+                }
+            };
+            options.error = function (jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+            };
+
+
+
+            $.ajax(options);
+
+
+        });
+
+        function imgClick(param) {
+            var sr = param.src;
+            $('#mimg').attr('src', sr);
+            $('#myModal').modal('show');
+        }
+
+    </script>

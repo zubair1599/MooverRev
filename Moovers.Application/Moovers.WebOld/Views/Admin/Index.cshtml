@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Admin Menu";
+}
+
+<div class="center-container">
+    <div class="container-pad">
+        <h5>Admin</h5>
+        <ul>
+            <li>@Html.ActionLink("Add Account", "CreateAccount", "Admin")</li>
+            <li>@Html.ActionLink("Add Employee Login", "AddEmployeeLogin", "Admin")</li>
+            <li>@Html.ActionLink("Error Log", "Errors", "Admin")</li>
+            <li>@Html.ActionLink("Edit Accounts", "EditAccounts", "Admin")</li>
+            <li>@Html.ActionLink("Update Inventory Items", "Inventory", "Admin")</li>
+            <li>@Html.ActionLink("Vehicles", "Vehicles", "Admin")</li>
+            <li>@Html.ActionLink("Credit Card Responses", "CreditCardResponses", "Admin")</li>
+            <li>@Html.ActionLink("Set Max Trucks", "SetMaxTrucks", "Admin")</li>
+            <li>@Html.ActionLink("Increase Daily Trucks", "SetTrucks", "Admin")</li>
+            <li>@Html.ActionLink("Set Holidays", "SetHolidays", "Admin")</li>
+            <li>@Html.ActionLink("Today Moves", "DisplayMoovers", "Admin")</li>
+            <li>@Html.ActionLink("Vaults History", "SearchStorageVaults", "Storage")</li>
+            <li>@Html.ActionLink("User Profiles", "UserProfiles", "Admin")</li>
+            <li>@Html.ActionLink("Profile Access Matrix", "ProfileAccessMatrix", "Admin")</li>
+            <li>@Html.ActionLink("Locations", "Locations", "Admin")</li>
+        </ul>
+    </div>
+</div>

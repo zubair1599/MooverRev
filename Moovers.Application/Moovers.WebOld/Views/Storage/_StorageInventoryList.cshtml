@@ -1,0 +1,39 @@
+﻿@model Business.Models.StorageWorkOrder
+    
+<div class="panel-container">
+    <div class="panel-title">Inventory
+        <span class="subcontrol">
+            @if (!Model.CancellationDate.HasValue)
+            {
+                @Html.ActionLink("manage", "ManageInventory", new { Controller = "Storage",  id = Model.Lookup })
+            }
+        </span>
+    </div>
+    <div class="clearfix">
+        @if (Model.GetInventory().Any())
+        {
+            <ul class="quarters" style="padding-top: 4px;">
+            @foreach (var item in Model.StorageWorkOrder_InventoryItem_Rel.Where(r => !r.IsRemoved).OrderByDescending(i => i.IsOverstuffed).ThenBy(i => i.InventoryItem.Name))
+            {
+                if (item.IsOverstuffed)
+                {
+                    <li class="muted" title="@item.InventoryItem.Name -- @item.StorageZone.Name @item.OverstuffRow-@item.OverstuffShelf)">
+                        @item.Count - @item.InventoryItem.Name -- @item.StorageZone.Name @item.OverstuffRow-@item.OverstuffShelf
+                    </li>
+                }
+                else
+                {
+                    <li>@item.Count - @item.InventoryItem.Name</li>
+                }
+            }
+            </ul>
+        }
+        else
+        {
+            <div class="alert alert-info">
+                No inventory is associated with this work order.
+            </div>
+        }
+    </div>
+</div>
+    

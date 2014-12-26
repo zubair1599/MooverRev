@@ -1,0 +1,402 @@
+﻿@using Business.Enums
+@using Business.Repository.Models
+@using Business.ToClean.QuoteHelpers
+@model Business.Models.Quote
+
+@{
+    if (ViewBag.IsInvoice == null)
+    {
+        ViewBag.IsInvoice = false;
+    }
+}
+
+<!DOCTYPE html>
+    <html>
+    <head>
+        <title>Quote Proposal</title>
+        <style>
+            @Html.RenderFile("~/static/css-plugins/reset.css")
+            @Html.RenderFile("~/static/css/PDF/proposal.css")
+
+        </style>
+    </head>
+    <body>
+        <div class="header container clearfix">
+            @if (ViewBag.IsInvoice != null && ViewBag.IsInvoice)
+            {
+                <h4>Invoice for Quote #@Model.Lookup</h4>
+                <span class="label">Quoted:</span>
+                <span class="desc">@Model.Created.ToShortDateString()</span><br />
+                <span class="label">Invoiced:</span>
+                <span class="desc">@DateTime.Now.ToShortDateString()</span>
+            }
+            else {
+                <div class="summary">
+                    <h4>Quote #@Model.Lookup</h4>
+                    <span class="label">Quoted:</span>
+                    <span class="desc">@Model.Created.ToShortDateString()</span>
+                </div>
+            }
+            
+            <div class="logo">
+                <img src="@Html.FileAsBase64("~/static/img/headerLogoLarge.png", "image/png")" width="200" />
+            </div>
+        </div>
+
+        <div class="body container">
+            @if (Model.GetSchedules().Any())
+            {
+                var schedule = Model.GetSchedules().OrderBy(i => i.Date).First();
+                <div style="font-size: 1.2em;">
+                    @if (Model.IsPackJob)
+                    {
+                        <text>
+                            Moovers will arrive  to pack your house on @schedule.Date.ToShortDateString()<br />
+                        </text>
+                    }
+                    else
+                    {
+                        <text>
+                            You are scheduled to move on @schedule.Date.ToShortDateString()<br />
+                        </text>
+                    }
+                    Arrival Time: @schedule.DisplayTime()
+                </div>
+            }
+
+            <p>
+                Dear @Model.Account.DisplayName,
+            </p>
+            @if (Model.IsPackJob)
+            {
+                <p>
+                    Thank you for contacting Moovers in regards to your upcoming full-service packing job. Based on the information below, we are pleased to provide the following estimate.
+                    Please review the estimate and verify the accuracy of the dates and addresses.  If you discover any errors, 
+                    have any changes or you would like to change the date for your packing job, just call me at 816-795-7283.
+                </p>
+            }
+            else {
+                <p>
+                    Thank you for contacting Moovers in regards to your upcoming move. Based on the information below, we are pleased to provide the following estimate.
+                    Please review the estimate and verify the accuracy of the dates, addresses, and inventory, as well as the conditions listed. 
+                    If you discover any errors, have any changes or you would like to change the date for your move, just call me at
+                    816-795-7283.
+                </p>
+            }
+
+            <div class="table-data clearfix">
+                <h4 class="table-header">
+                    Logistics
+                </h4>
+                @{ var count = 0; }
+                @foreach (var stop in Model.GetStops())
+                {
+                <div class="stop" style="margin-top: 5px;">
+                    <div class="stop-info">
+                        @if (count == 0)
+                        {
+                            <h5>Origin</h5>
+                        }
+                        else
+                        {
+                            <h5>Destination</h5>
+                        }
+                        @Html.Partial("Accounts/_DisplayAddress", stop.Address)
+                    </div>
+                    <div class="condition-info">
+                        <h5>Conditions</h5>
+                        <ul class="clearfix">
+                        @foreach (var condition in stop.GetConditions())
+                        {
+                            <li>@condition</li>
+                        }
+                        </ul>
+                    </div>
+                </div>
+                    count++;
+                }
+            </div>
+
+            <div class="table-data clearfix">
+                <h4 class="table-header">
+                     Inventory To Be 
+                    @if (Model.IsPackJob)
+                    {
+                        <text>Packed</text>
+                    }
+                    else 
+                    {
+                        <text>Moved</text>
+                    }
+                </h4>
+                @foreach (var room in Model.GetStops().SelectMany(i => i.GetRooms()))
+                {
+                    if (!room.IsUnassigned)
+                    {
+                        <h6>@room.Name</h6>
+                    }
+                    else {
+                        <div style="height: 4px;"></div>
+                    }
+                    <ul class="inventory clearfix" style="margin-left: 0;">
+                        @foreach (var item in room.GetItems())
+                        {
+                            if (item.Count > 0)
+                            {
+                                <li>
+                                    @item.Count - @item.Item.Name 
+                                    @if (item.StorageCount > 0)
+                                    {
+                                        @:(store @item.StorageCount)
+                                    }
+                                </li>
+                            }
+                        }
+                    </ul>
+                }
+            </div>
+            @{
+                var valuationRepo = new ReplacementValuationRepository();
+                var minValuation = valuationRepo.GetForWeight(Model.GetWeight()).FirstOrDefault(i => i.Cost > 0);
+                
+                var valuations = new dynamic[] {
+                    new { Selected = (Model.GetReplacementValuationCost() == 0), Name = "Minimum Valuation", Deductible = 0, Limit = Model.CalculateMinimumValuationLimit(), Cost = 0 },
+                    new {
+                        Selected = Model.GetReplacementValuationCost() > 0, 
+                        Name = "Replacement Valuation", Deductible = 500, 
+                        Limit =  Model.ReplacementValuationCost.HasValue && Model.ReplacementValuationCost > 0 ? Model.ReplacementValuation.MaximumValue : (minValuation != null) ? minValuation.MaximumValue : 60000,
+                        Cost = Model.ReplacementValuationCost.HasValue && Model.ReplacementValuationCost > 0 ? Model.ReplacementValuationCost : (minValuation != null) ? minValuation.Cost : 60000
+                    }
+                };
+            }
+
+            @if (!Model.IsPackJob)
+            {
+
+            <div class="table-data clearfix">
+                <table id="valuation">
+                    <tr class="header">
+                        <th colspan="2">Valuation Options</th>
+                        <th>Deductible</th>
+                        <th>Limit</th>
+                        <th>Cost</th>
+                    </tr>
+                    @foreach (var val in valuations)
+                    {
+                        <tr>
+                            <td class="checkbox">
+                                @if (val.Selected) 
+                                {
+                                    <text>X</text>
+                                }
+                            </td>
+                            <td>@val.Name</td>
+                            <td class="price">@String.Format("{0:C}", val.Deductible)</td>
+                            <td class="price">@String.Format("{0:C}", val.Limit)</td>
+                            <td class="price">@String.Format("{0:C}", val.Cost)</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            }
+
+            <div class="table-data clearfix">
+                <h4 class="table-header">Total Cost Summary</h4>
+                <table class="total-cost">
+                    <tr>
+                        <td>
+                            @if (Model.IsPackJob)
+                            {
+                                <text>Packing Services</text>
+                            }
+                            else {
+                                <text>Moving Services</text>
+                            }
+                        </td>
+                        <td style="text-align: right;" class="price">
+                            @if (Model.PricingType == QuotePricingType.Hourly)
+                            {
+                                var data = Model.HourlyData;
+                                <span>
+                                    @String.Format("{0:C}", data.FirstHourPrice) first hour,
+                                    @String.Format("{0:C}", data.HourlyPrice) each additional
+                                </span>
+                            }
+                            else
+                            {
+                                @String.Format("{0:C}", Model.GuaranteeData.GuaranteedPrice)
+                            }
+                        </td>
+                    </tr>
+                    @{ var storageCost = Model.GetStorageCost(); }
+                    @if (storageCost > 0)
+                    {
+                        <tr>
+                            <td>Storage
+                                @if (!Model.HasTemporaryStorage())
+                                {
+                                    <text>(1 month)</text>
+                                }
+
+                            </td>
+                            <td class="text-right price">
+                                @String.Format("{0:C}", storageCost)
+                            </td>
+                        </tr>
+                    }
+                    @if (Model.GetServiceCost(Business.Models.ServiceType.PackingMaterials) > 0)
+                    {
+                        <tr>
+                            <td>Packing Materials</td>
+                            <td class="text-right price">
+                                @String.Format("{0:C}", Model.GetServiceCost(Business.Models.ServiceType.PackingMaterials))
+                            </td>
+                        </tr>
+                    }
+                    @if (Model.ReplacementValuationCost.HasValue && Model.ReplacementValuationCost > 0)
+                    {
+                        <tr>
+                            <td>Replacement Valuation</td>
+                            <td class="text-right price">
+                                @String.Format("{0:C}", Model.ReplacementValuationCost)
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <td>
+                            <strong>
+                                @if (Model.PricingType == QuotePricingType.Hourly && storageCost == 0 && !ViewBag.IsInvoice)
+                                {
+                                    @Smart.Format("Estimated Cost ({0} {0:hour|hours})", Model.HourlyData.CustomerTimeEstimate)
+                                }
+                                else if (Model.CalculateStorageVaults() == 0)
+                                {
+                                    <text>Total Cost</text>
+                                }
+                                else {
+                                    <text>Total Cost (day of move)</text>
+                                }
+                            </strong>
+                        </td>
+                        <td class="text-right price">
+                            
+                            @if (ViewBag.IsInvoice)
+                            {
+                                
+                                @String.Format("{0:C}", Model.GetDisplayPrice())
+                            }
+                            else
+                            {
+                                <strong>
+                                    @String.Format("{0:C}", Model.GetEstimatedPriceWithServices())
+                                </strong>
+                            }
+                        </td>
+                    </tr>
+                    @if (ViewBag.IsInvoice && Model.GetBalance() > 0)
+                    {
+                        <tr>
+                            <td><strong>Amount Owed</strong></td>
+                            <td class="text-right price">
+                                <strong>@String.Format("{0:C}", Model.GetBalance())</strong>
+                            </td>
+                        </tr>
+                    }
+
+                    @if (Model.CalculateStorageVaults() > 0 && !Model.HasTemporaryStorage())
+                    {
+                        <tr>
+                            <td>Monthly Storage</td>
+                            <td class="text-right price">
+                                @String.Format("{0:C}/mo", Model.CalculateMonthlyStorageCost())
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            @if (Model.PricingType == QuotePricingType.Hourly || !String.IsNullOrWhiteSpace(Model.GetCustomContractTerms()) || !String.IsNullOrWhiteSpace(Model.PrintedComments))
+            {
+                <div>
+                    <br />
+                    <h4 class="short">Special Notes:</h4>
+                    @if (Model.PricingType == QuotePricingType.Hourly)
+                    {
+                        <pre class="no-pad">@Smart.Format("{2:Estimated hourly|Hourly} pricing is based on {0} {0:man|men} on {1} {1:truck|trucks}", Model.CrewSize ?? 2, Model.Trucks, !ViewBag.IsInvoice)</pre>
+                    }
+
+                    @if (!String.IsNullOrWhiteSpace(Model.GetCustomContractTerms()))
+                    {
+                        <pre>@Model.GetCustomContractTerms()</pre>
+                    }
+                    <pre>@Model.PrintedComments</pre>
+                </div>
+            }
+
+           @if (!ViewBag.IsInvoice)
+           {
+                if (!Model.IsPackJob)
+                {
+                    <div class="no-break">
+                        <h4 class="short">Bigger, Better Trucks</h4>
+                        <p class="no-pad">
+                            Looks can be deceiving - especially in moving trucks. Most moving trucks hold just 1,200 cubic feet, but our moving trucks hold a whopping
+                            2,200 cubic feet. That's almost twice as much as the other guys!
+                        </p>
+                    </div>
+                }
+
+                <div class="no-break">
+                    <h4 class="short">Free Diassembly and Reassembly</h4>
+                    <p class="no-pad">
+                        Yes, we did say free! All standard beds, washers and dryers, refrigerator waterlines & dressers with mirrors, we have you covered.
+                        Please note that any special tools should be provided by the customer. * Excludes sleigh, canopy, and four post beds.
+                    </p>
+                </div>
+
+                <div class="no-break">
+                    <h4 class="short">What other movers won't show you</h4>
+                    <p class="no-pad">
+                        Their Certificate of Insurance. We'll proudly show you ours. Visit http://www.1800moovers.com and click on the "Contact us" page for more 
+                        info.
+                    </p>
+                </div>
+
+                if (!Model.IsPackJob)
+                {
+                    <div class="no-break">
+                        <h4 class="short">Parking & Walkways</h4>
+                        <p class="no-pad">
+                            Be sure to have <strong>ALL</strong> parking areas and walkways clear of snow and ice, as well as other obstructions. ** In case of rain, snow,
+                            dir, etc, we sell self-adhering, disposalbe floor runners to protect your flooring. **
+                        </p>
+                    </div>
+                }
+
+                <div class="no-break">
+                    <h4 class="short">Arrival Time</h4>
+                    <p class="no-pad">
+                        The arrival time is approximate, depending on other jobs in the day and unexpected circumstances.
+                    </p>
+                </div>
+
+                if (!Model.IsPackJob)
+                {
+                    <div class="no-break">
+                        <h4 class="short">Parking & Elevator Reservations</h4>
+                        <p class="no-pad">
+                            Reserve ample parking for the truck. If parking meters, they must be capped. If elevators are involved, contact your building supervisor to
+                            have it padded and reserved for the day.
+                        </p>
+                    </div>
+                }
+                <div class="no-break">
+                    <h4 class="short">Tips</h4>
+                    <p class="no-pad">
+                        Although tips are welcome and greatly appreciated, they are voluntary and absolutely not required. Do NOT tip if any crew member 
+                        demands a tip. If tipping, a general guideline is $4-6 per man, per hour.
+                    </p>
+                </div>
+           }
+        </div>
+    </body>
+</html>

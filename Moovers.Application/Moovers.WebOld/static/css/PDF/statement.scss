@@ -1,0 +1,129 @@
+$bordercolor: #aaa;
+$bgcolor: #bbb;
+
+body {
+    font-size: 20px;
+    font-family: helvetica;
+}
+
+.locality:after {
+    content: ",";
+}
+
+.pdf-page {
+    padding-top: 50px;
+    width: 1250px;
+    margin: 0 auto;
+    page-break-after: always;
+}
+
+.header {
+    > td { width: 33%; }
+    .middle {
+        margin: 0 auto;
+    }
+}
+
+table.header {
+    width: 100%;
+    border: 0;
+    td {
+        vertical-align: top;
+        width: 33%;
+    }
+}
+
+.text-right {
+    text-align: right;
+}
+
+h4 {
+    line-height: 40px;
+    font-size: 38px;
+    font-weight: normal;
+}
+
+.top-right {
+    float: right;
+    width: 150px;
+    td, th {
+        border: 1px solid $bordercolor;
+        padding: 0 10px;
+        text-align: center;
+    }
+}
+
+.toAddress {
+    width: 450px;
+    table {
+        th { height: 10px; text-align: left; padding-left: 5px; }
+        td {
+            padding: 10px;
+            vertical-align: top;
+        }
+        width: 100%;
+    }
+}
+
+table {
+    border: 1px solid $bordercolor;
+    border-collapse: collapse;
+    td, th{ 
+        border: 0;
+    }
+}
+
+th {
+    font-weight: normal;
+    background-color: $bgcolor;
+}
+
+td.number {
+    text-align: right;
+}
+
+.amount-table {
+    width: 350px;
+    td, th {
+        border: 1px solid $bordercolor;
+        padding: 2px 10px;
+        text-align: left;
+        padding-left: 15px;
+    }
+}
+
+.invoices {
+    height: 900px;
+    width: 100%;
+    td, th {
+        border-left: 1px solid $bordercolor;
+        border-right: 1px solid $bordercolor;
+        white-space: nowrap;
+    }
+    .item td, .item th{
+        padding: 5px 10px;
+        height: 10px;
+    }
+}
+
+.footer table {
+    width: 100%;
+    td, th {
+        text-align: center;
+    }
+}
+
+.detach {
+    border-bottom: 5px dotted black;
+    text-align: center;
+}
+
+.toAddress {
+    margin-left: 30px;
+}
+
+.auto {
+    margin: 0 auto;
+    display: block;
+    font-weight: bold;
+}

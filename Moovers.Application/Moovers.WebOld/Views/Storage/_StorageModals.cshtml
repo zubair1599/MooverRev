@@ -1,0 +1,127 @@
+﻿@model Business.Models.StorageWorkOrder
+
+@if (!Model.CancellationDate.HasValue)
+{
+    using (Html.BeginModal("change-amount-modal", "Change Amount"))
+    {
+        using (Html.BeginForm("ChangeAmount", "Storage", FormMethod.Post))
+        {
+            <h4>Edit Storage</h4>
+            <input type="hidden" name="workorderID" value="@Model.WorkOrderID" />
+    
+            <div class="control-group">
+                <label class="control-label">
+                    Monthly Payment
+                </label>
+                <div class="controls">
+                    <input type="number" step=".01" name="monthlyPayment" value="@Model.MonthlyPayment" required />
+                </div>
+            </div>
+    
+            <div class="control-group">
+                <label class="control-label">
+                    Start Date
+                </label>
+                <div class="controls">
+                    <input type="date" name="startDate" value="@Model.StartDate.ToString("yyyy-MM-dd")" required />
+                </div>
+            </div>
+    
+            <div class="control-group">
+                <label class="control-label">
+                    Next Invoice Date
+                </label>
+                <div class="controls">
+                    <input type="date" name="invoiceDate" value="@Model.NextInvoiceDate.Value.ToString("yyyy-MM-dd")" required />
+                </div>
+            </div>
+    
+            <div class="control-group">
+                <label class="control-label" for="automaticBilling">Automatic Billing</label>
+                <div class="controls">
+                    @Html.CheckBox("automaticBilling", Model.IsAutomaticBilling)
+                </div>
+            </div>
+    
+            <div class="control-group">
+                <label class="control-label" for="paperlessInvoices">Paperless Invoices</label>
+                <div class="controls">
+                    @Html.CheckBox("paperlessInvoices", Model.EmailInvoices)
+                </div>
+            </div>
+    
+            <div class="control-group">
+                <label class="control-label" for="emailReceipt">Email Receipts</label>
+                <div class="controls">
+                    @Html.CheckBox("emailReceipt", Model.EmailReceipts)
+                </div>
+            </div>
+    
+            <div class="clearfix">
+                <div class="end-controls">
+                    <button type="button" class="btn cancel" data-dismiss="modal">Cancel</button>
+                    <input type="submit" class="btn btn-primary" />
+                </div>
+            </div>
+        }
+    }
+}
+
+@using (Html.BeginModal("add-card-modal", "Add Card"))
+{
+    using (Html.BeginForm("AddCard", "Storage", new { id = Model.Lookup }, FormMethod.Post, new { @class = "schedule-form" })) 
+    {
+        <div class="clearfix">
+            <div class="left" style="padding-right: 90px;">
+                <input type="hidden" name="workOrderID" value="@Model.WorkOrderID" />
+                <div class="left">
+                    <h4>Add Credit Card</h4>
+                    <div class="alert alert-error errors" style="display: none;"></div>
+                    <table>
+                        @foreach (var card in Model.Account.GetCreditCards())
+                        {
+                            <tr>
+                                <td>
+                                    <input type="radio" name="paymentType" value="@card.CreditCardID" id="@card.CreditCardID" required />
+                                </td>
+                                <td>
+                                    <label class="radio" style="display: inline-block;" for="@card.CreditCardID">
+                                        <div class="payment-method @card.GetCardType().ToString().ToLower()"></div>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="radio" for="@card.CreditCardID"  style="padding-left: 0;">
+                                        <span class="desc">ending in @card.GetLast4()</span>
+                                    </label>
+                                </td>
+                            </tr>
+                        }
+                        <tr>
+                            <td>
+                                <input type="radio" id="NEW_CARD_RADIO" name="paymentType" value="NEW_CARD" required />
+                            </td>
+                            <td>
+                                <label for="NEW_CARD_RADIO" class="radio" style="margin-top: 15px; padding-left: 0;">
+                                    New Card
+                                </label>
+                            </td>
+                        </tr>
+                    </table>
+                    <div id="new-card">
+                        @Html.Partial("Payment/_CreditCards", new KeyValuePair<string, string>(
+                            Model.Account.DisplayName,
+                            Model.Account.GetAddress(Business.Models.AddressType.Billing).Zip
+                        ))
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix">
+            <div class="end-controls">
+                @Html.AjaxLoader("cc-submit-loader", new { style = "display: none;"})
+                <button type="button" class="btn cancel" data-dismiss="modal">Cancel</button>
+                <input type="submit" class="btn btn-primary" />
+            </div>
+        </div>
+    }
+}

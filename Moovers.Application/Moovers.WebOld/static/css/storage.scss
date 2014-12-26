@@ -1,0 +1,116 @@
+@import "mixins";
+
+.storage {
+    .container-pad {
+        max-width: 1460px;
+    }
+
+    table.table {
+        margin-bottom: 0;
+    }
+
+    .btn-group .btn {
+        margin-right: 10px;
+    }
+
+    .span5 {
+        margin: 0;
+    }
+
+    h3 {
+        border-bottom-style: double;
+        border-bottom-color: #1EA1A7;
+        padding-bottom: 3px;
+    }
+    pre {
+        font-family: inherit;
+        background-color: white;
+        border: 0;
+        padding: 0;
+    }
+}
+
+#job-specifics {
+    background-color: #999;
+    padding: 10px;
+    @include borderbox;
+    margin-bottom: 20px;
+
+    .section {
+        width: 49%;
+        height: 100%;
+        float: left;
+        @include borderbox;
+        background-color: white;
+        padding: 10px;
+        border-radius: 4px;
+    }
+    .section:last-child {
+        margin-left: 2%;
+        width: 49%;
+    }
+
+    th {
+        text-align: left;
+        text-transform: uppercase;
+        font-weight: normal;
+        color: #999;
+        padding-right: 20px;
+    }
+    td {
+    border: 0;
+    }
+
+    h4 {
+        border-bottom-style: double;
+        text-transform: uppercase;
+        font-weight: normal;
+        font-size: 15px;
+        margin-bottom: 0;
+    }
+}
+
+#storage-vaults td:last-child, #storage-vaults th:last-child {
+    text-align: right;
+}
+
+#storage-vaults {
+    .btn-link {
+        color: black;
+
+        &:hover {
+            color: red;
+            text-decoration: none;
+        }
+    }
+}
+
+.section {
+    margin-left: 0;
+
+    h4 {
+        margin-top: 10px;
+    }
+}
+
+.phone-number-display label {
+    font-weight: bold;
+    display: inline-block;
+    color: #555;
+
+    &:not(:first-child) {
+        margin-left: 10px;
+    }
+    &:after {
+        content: ":";
+    }
+}
+
+#invoice-table .icon-remove {
+    color: black;
+}
+
+#invoice-table button:hover .icon-remove {
+    color: red;
+    text-decoration: none;
+}

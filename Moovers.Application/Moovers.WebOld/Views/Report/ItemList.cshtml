@@ -1,0 +1,31 @@
+﻿@model Moovers.WebModels.Reports.InventoryItemReport
+@{
+    ViewBag.Title = "ItemList";
+}
+
+<div class="container-pad">
+
+    <div style="width: 800px">
+        <h4>Standard Items</h4>
+        <table class="table table-verycondensed table-striped">
+            @foreach (var item in Model.Items.OrderByDescending(i => i.Count))
+            {
+                <tr>
+                    <td>@item.item</td>
+                    <td>@item.Count</td>
+                </tr>
+            }
+        </table>
+
+        <h4>Custom Items</h4>
+        <table class="table table-verycondensed table-striped">
+            @foreach (var item in Model.CustomItems.OrderByDescending(i => i.Count))
+            {
+                <tr>
+                    <td>@item.item</td>
+                    <td>@item.Count</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

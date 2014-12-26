@@ -1,0 +1,14 @@
+.payroll-summary {
+    input[type=date] {
+        width: 120px;
+        margin-right: 20px;
+    }
+
+    .subtotal-row {
+        border-top: 2px solid black;
+    }
+
+    tr {
+        page-break-inside: avoid;
+    }
+}

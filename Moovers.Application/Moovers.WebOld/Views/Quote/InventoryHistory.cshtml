@@ -1,0 +1,34 @@
+﻿@model Moovers.WebModels.QuoteOverviewModel
+@{
+    ViewBag.Title = "Quote " + Model.Quote.Lookup;
+    Layout = "~/Views/Quote/AddQuoteLayout.cshtml";
+}
+
+@Html.Partial("Payment/_AddPayment", Model.Quote)
+
+<script type="text/javascript">
+    $(function() {
+        setTimeout(function() {
+            window.data = StateManager.getAll("quote-inventory", Quotes.lookup);
+            _.each(window.data, function(val, key) {
+                log(key);
+                try {
+                    window.data[key] = JSON.parse(val);
+                }
+                catch (e) { }
+            });
+
+            log(data);
+        }, 100);
+    });
+</script>
+
+<script type="text/x-jquery-tmpl" id="tmpl">
+    <div>
+        {{- data }}
+    </div>
+</script>
+
+<div class="container-fluid">
+    <div id="body"></div>
+</div>

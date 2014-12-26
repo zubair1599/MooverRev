@@ -1,0 +1,98 @@
+﻿@model IEnumerable<Business.Models.Payment>
+@{
+    ViewBag.Title = "Deposit";
+}
+
+<style>
+    div.pad {
+        padding-left: 5px;
+        padding-top: 5px;
+    }
+</style>
+
+<div class="container-pad">
+    <h4>Undeposited Funds</h4>
+
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "fund-box" }))
+    {
+        <div class="span10">
+            <table class="table ">
+                <tr>
+                    <th></th>
+                    <th>Transaction ID</th>
+                    <th>Payment Method</th>
+                    <th>Amount</th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><input type="checkbox" name="paymentid" value="@item.PaymentID" data-paymenttype="@item.PaymentType.ToString().ToLower()" data-amount="@item.Amount" /></td>
+                        <td>@item.TransactionID</td>
+                        <td>
+                            <div class="payment-method left @item.PaymentType.ToString().ToLower()"></div>
+                            <div class="left pad">
+                                @item.PaymentType.GetDescription()
+                            </div>&nbsp;
+                            <div class="desc left pad">
+                                @if (!String.IsNullOrEmpty(item.CheckNumber))
+                                {
+                                    <text>#</text>@item.CheckNumber
+                                }
+                            </div>
+                        </td>
+                        <td>
+                            @String.Format("{0:C}", item.Amount)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <input type="submit" class="btn btn-primary" />
+    }
+</div>
+
+<div class="sum">
+    <label>Cash</label>
+    <div id="cash-sum"></div>
+
+    <label>Cashier's Check</label>
+    <div id="cashier-check-sum"></div>
+
+    <label>Personal Check</label>
+    <div id="personal-check-sum"></div>
+</div>
+
+<script type="text/javascript">
+    $(function() {
+        var cashTotal = 0;
+        var cashierCheckTotal = 0;
+        var personalCheckTotal = 0;
+        $(".fund-box input:checkbox").click(function() {
+            var box = $(this);
+            var type = box.data("paymenttype");
+            var amount = parseFloat(box.data("amount"));
+            if (box.is(":checked")) {
+                add(type, amount);
+            } else {
+                add(type, -amount);
+            }
+
+            displayAmount();
+        });
+
+        var add = function(type, amount) {
+            if (type == "cashiercheck") cashierCheckTotal += amount;
+            else if (type == "personalcheck") personalCheckTotal += amount;
+            else cashTotal += amount;
+        };
+
+        var displayAmount = function() {
+            $("#cash-sum").text(Utility.formatCurrency(cashTotal));
+            $("#cashier-check-sum").text(Utility.formatCurrency(cashierCheckTotal));
+            $("#personal-check-sum").text(Utility.formatCurrency(personalCheckTotal));
+
+        };
+
+        displayAmount();
+    });
+</script>

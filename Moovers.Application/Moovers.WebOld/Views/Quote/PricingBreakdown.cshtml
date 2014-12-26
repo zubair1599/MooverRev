@@ -1,0 +1,88 @@
+﻿@model Moovers.WebModels.QuoteOverviewModel
+
+@{
+    Layout = "~/Views/Quote/AddQuoteLayout.cshtml";
+    ViewBag.Title = "Pricing Breakdown";
+
+    var itemList = Model.Quote.GetItemList();
+}
+
+
+<div class="content-pad">
+
+    <h4>Pricing Breakdown - Total: @String.Format("{0:C}", Model.Quote.GetDisplayPrice())</h4>
+    <p>
+        Base Price: @String.Format("{0:C}", Model.Quote.CalculateGuaranteedPrice())
+    </p>
+    <p>
+        Adjustment: @String.Format("{0:C}",  Model.Quote.GetDisplayPrice() - Model.Quote.CalculateGuaranteedPrice())
+    </p>
+    <p>
+        Drive: @String.Format("{0:C}", Model.Quote.CalculateDriveCost())
+    </p>
+
+<div>
+    @foreach (var stop in Model.Quote.GetStops())
+    {
+        <div class="panel-container">
+            <div class="panel-section">
+                <h5>
+                    @stop.Address.DisplayString() - @String.Format("{0:C}", stop.GetCostEstimate())
+                </h5>
+                <div>
+                    <h6>Flat Adds:</h6>
+                    <ul>
+
+
+                        <li>@(String.Format("{0:C}", Business.Models.Quote.StopTime * Model.Quote.GetMinimumMoversRequired() * Business.Models.Quote.ServiceMinuteRate)) - Stop Inspection</li>
+                        <li>@String.Format("{0:C}", stop.GetCostEstimate() - stop.EstimateCostNoConditions()) - Conditions (+@String.Format("{0:P}", stop.GetConditionMultiplier() - 1))</li>
+                    </ul>
+                </div>
+
+                <table class="table-striped" style="max-width: 360px;">
+                    <tr>
+                        <th>Item</th>
+                        <th>Count</th>
+                        <th>Load/Unload</th>
+                        <th>Cost</th>
+                    </tr>
+                    @foreach (var item in stop.GetAllRoomsItems().Where(i => i.Count > 0))
+                    {
+                        <tr>
+                            <td>@item.InventoryItem.Name</td>
+                            <td>@item.Count</td>
+                            <td>@Math.Round(item.GetBaseMoveTime(Model.Quote, itemList)).ToString()</td>
+                            <td>@String.Format("{0:C}", item.GetCost(Model.Quote, itemList))</td>
+                        </tr>
+                    }
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td><strong>Total</strong></td>
+                        <td>@String.Format("{0:C}", stop.GetAllRoomsItems().Sum(i => i.GetCost(stop.Quote, itemList)))</td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+    }
+</div>
+    </div>
+
+
+@*
+
+<h3>Pricing</h3>
+@foreach (var item in new Business.Models.PricingAlgorithmRepository().GetAllForQuote(Model.Quote.QuoteID))
+{
+    <div>
+        <h4>@(((Business.Models.AlgorithmTypes)item.PricingAlgorithm.AlgorithmType).ToString())</h4>
+        <pre>@item.PricingAlgorithm.Text</pre>
+        <pre>
+            @item.VariableList
+        </pre>
+        <pre>
+            @item.ItemList
+        </pre>
+    </div>
+}*@

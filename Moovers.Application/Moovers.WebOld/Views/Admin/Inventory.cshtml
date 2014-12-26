@@ -1,0 +1,97 @@
+﻿@model IEnumerable<Business.Models.InventoryItem>
+
+@{
+    ViewBag.Title = "Inventory Management";
+}
+
+<script type="text/javascript">
+    $(function() {
+        $("#inventory-list-container tr .icon-remove-sign").click(function() {
+            $(this).siblings("form").submit();
+            return false;
+        });
+            $("#inventory-list-container tr .icon-pencil").click(function() {
+            var tr = $(this).closest("tr");
+            var item = JSON.parse(tr.find("[name=itemjson]").val());
+            log(item);
+        });
+    });
+</script>
+
+<div id="content-absolute">
+    <div class="simple-error" id="error-display">
+        @Html.ValidationSummary()
+    </div>
+    <div class="page-container">
+        <div class="page-content">
+            <div id="inventory-list-edit-container">
+                @using (Html.BeginForm("Inventory", "Admin", FormMethod.Post)) {
+                    <table id="inventory-list-edit">
+                        <thead>
+                            <tr>
+                                <th class="w5">Code</th>
+                                <th class="w20">Name</th>
+                                <th class="w20">Plural Name</th>
+                                <th class="w25">Aliases</th>
+                                <th class="w5">Cu/Ft</th>
+                                <th class="w5">Lbs</th>
+                                <th class="w5">Move Time</th>
+                                <th class="w5 text-center">Is Box</th>
+                                <th class="w5"></th>
+                            </tr>
+                            <tr>
+                                <td>@Html.TextBox("KeyCode", "", new { @type="number", required = "required" })</td>
+                                <td>@Html.TextBox("Name", "", new { @type="text", required = "required" })</td>
+                                <td>@Html.TextBox("PluralName", "", new { @type="text", required = "required" })</td>
+                                <td>@Html.TextBox("Aliases", "", new { @type="text", placeholder="Comma separated list (ex. Loveseat, 2 Cushion Couch)", required = "required" })</td>
+                                <td>@Html.TextBox("CubicFeet", "", new { @type="text", required = "required" })</td>
+                                <td>@Html.TextBox("Weight", "", new { @type="text", required = "required" })</td>
+                                <td>@Html.TextBox("CustomMoveTime", "", new { @type = "text", placeholder = "Custom move time" })</td>
+                                <td>@Html.CheckBox("IsBox")</td>
+                                <td class="text-right">
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </td>
+                            </tr>
+                        </thead>
+                    </table>
+                }
+            </div>
+
+            <div id="inventory-list-container">
+                <table id="inventory-list">
+                    <tbody>
+                        @foreach (var item in Model.OrderBy(i => i.KeyCode))
+                        {
+                            <tr>
+                                <td class="w5">
+                                    @Html.Hidden("itemjson", item.ToJsonObject().SerializeToJson())
+                                    @item.KeyCode
+                                </td>
+                                <td class="w20">@Html.ActionLink(item.Name, "AddInventoryQuestions", new { id = item.ItemID })</td>
+                                <td class="w20">@item.PluralName</td>
+                                <td class="w25">@item.AliasString</td>
+                                @*<td class="w5">@item.ToJsonObject().BaseMoveTime</td>*@
+                                <td class="w5">@item.CubicFeet</td>
+                                <td class="w5">@item.Weight</td>
+                                <td class="w5 text-center">
+                                    @if (item.IsBox) 
+                                    {
+                                        <i class="icon-ok icon-large"></i>
+                                    }
+                                </td>
+                                <td class="w5 text-right">
+                                    <i class="icon-pencil icon-large"></i>                                    
+                                        <i class="icon-remove-sign icon-large"></i>
+                                        @using (Html.BeginForm("RemoveItem", "Admin", new { id = item.ItemID }, FormMethod.Post, new { style = "display: none;" }))
+                                        {
+                                            <input type="submit" />
+                                        }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

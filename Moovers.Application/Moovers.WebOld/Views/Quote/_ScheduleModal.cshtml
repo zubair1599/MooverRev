@@ -1,0 +1,107 @@
+﻿@model Moovers.WebModels.QuoteScheduleModel
+
+@using (Html.BeginModal("schedule-modal", "Schedule"))
+{
+    var hasCard = Model.Quote.Account_CreditCard != null;
+    var action = (hasCard) ? "ScheduleJobNoPayment" : "ScheduleJob";
+    using (Html.BeginForm(action, "Quote", FormMethod.Post, new { @class = "schedule-form" })) 
+    {
+        <div class="alert alert-error errors" style="display: none;"></div>
+        <div class="clearfix">
+            <div class="left" style="padding-right: 90px;">
+                <h4>Scheduling</h4>
+                <input type="hidden" name="quoteid" value="@Model.Quote.QuoteID" />
+                <input type="hidden" name="day" value="@Model.Date.ToShortDateString()" />
+                <input type="hidden" name="crew" />
+                <div class="control-group">
+                    <label class="control-label">Arrival Window</label>
+                    <div class="controls">
+                        <select name="rangestart" class="input-small" tabindex="1">
+                            @foreach (var i in Enumerable.Range(5, 16))
+                            {
+                                <option value="@i" @(i == 7 ? "selected" : "")>@Date.DisplayHour(i, true)</option>
+                            }
+                        </select>
+                        -
+                        <select name="rangeend" class="input-small" tabindex="2">
+                            @foreach (var i in Enumerable.Range(5, 16))
+                            {
+                                <option value="@i" @(i == 9 ? "selected" : "")>@Date.DisplayHour(i, true)</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Movers</label>
+                    <select name="movers" tabindex="5">
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </div>
+            </div>
+            @if (!hasCard)
+            {
+                <div class="left">
+                    <h4>Add Credit Card</h4>
+                    <table>
+                        @foreach (var card in Model.Quote.Account.GetCreditCards())
+                        {
+                            <tr>
+                                <td class="radio-container">
+                                    <input type="radio" name="paymentType" value="@card.CreditCardID" id="@card.CreditCardID" required />
+                                </td>
+                                <td class="radio-container">
+                                    <label class="radio" for="@card.CreditCardID">
+                                        <span class="payment-method @card.GetCardType().ToString().ToLower()"></span>
+                                    </label>
+                                    <label class="radio" for="@card.CreditCardID">
+                                        <span class="desc">ending in @card.GetLast4()</span>
+                                    </label>
+                                </td>
+                            </tr>
+                        }
+                        <tr>
+                            <td class="radio-container">
+                                <input type="radio" id="NEW_CARD_RADIO" name="paymentType" value="NEW_CARD" required />
+                            </td>
+                            <td class="radio-container">
+                                <label for="NEW_CARD_RADIO" class="radio">
+                                    New Card
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="radio-container">
+                                <input type="radio" name="paymentType"  id="NO_CARD_RADIO" value="NO_CARD" required />
+                            </td>
+                            <td class="radio-container" rowspan="2">
+                                <label class="radio" for="NO_CARD_RADIO">
+                                    No Credit Card
+                                </label>
+                            </td>
+                        </tr>
+                    </table>
+                    <div id="new-card">
+                        @Html.Partial("Payment/_CreditCards", new KeyValuePair<string, string>(Model.Quote.Account.DisplayName, Model.Quote.Account.GetAddress(Business.Models.AddressType.Billing).Zip))
+                    </div>
+                </div>
+            }
+            else {
+                <div class="left">
+                    <h4>Credit Card</h4>
+                    <div>
+                        Using @Model.Quote.Account_CreditCard.CardType - @Model.Quote.Account_CreditCard.DisplayCard() x@(Model.Quote.Account_CreditCard.DisplayExpiration())
+                    </div>
+                </div>
+            }
+        </div>
+    
+        <div class="clearfix">
+            <div class="end-controls">
+                @Html.AjaxLoader("cc-submit-loader", new { style = "display: none;"})
+                <button type="button" class="btn cancel" data-dismiss="modal">Cancel</button>
+                <input type="submit" class="btn btn-primary" />
+            </div>
+        </div>
+    }
+}

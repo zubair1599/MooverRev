@@ -1,0 +1,176 @@
+﻿@model Business.Models.InventoryItem
+
+@{
+    ViewBag.Title = "Add Inventory Questions";
+}
+<style>
+    input, textarea {
+        width: 100%;
+        padding: 1px;
+    }
+
+    form {
+        width: 400px;
+    }
+
+    .icon-remove:hover {
+        color: red;
+        cursor: pointer;
+    }
+
+    select.mini {
+        padding: 1px;
+        font-size: 0.75em;
+        height: 17px;
+        width: auto;
+    }
+</style>
+
+@using (Html.BeginModal("custom-option", "Custom Option"))
+{
+    using (Html.BeginForm(null, null, FormMethod.Post, new { style = "width: 495px;" }))
+    {
+        <div class="control-group">
+            <label class="control-label" for="option">Name</label>
+            <div class="controls">
+                @Html.TextBox("option", null, new { required = "true" })
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="weight">Weight (optional)</label>
+            <div class="controls">
+                <input type="number" step=".01" name="weight" />
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="cubicfeet">Cubic Feet (optional)</label>
+            <div class="controls">
+                <input type="number" step=".01" name="cubicfeet" />
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="time">Additional Time (optional)</label>
+            <div class="controls">
+                <input type="number" step=".01" name="time" />
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="selected">Selected</label>
+            <div class="controls">
+                @Html.CheckBox("selected")
+            </div>
+        </div>
+        <div class="control-group clearfix">
+            <div class="controls" style="float: right;">
+                <a href="#" data-dismiss="modal" class="btn">Cancel</a>
+                <button type="submit" class="btn btn-primary">Add</button>
+            </div>
+        </div>
+    }
+}
+
+<div class="container-pad">
+    <h3>@Model.Name</h3>
+    @Html.ActionLink("back", "Inventory", null, new { @class = "" }) 
+
+    <div class="panel-container">
+        <h5 class="panel-title">Current Questions</h5>
+        <ol class="panel-section">
+        @foreach (var q in Model.InventoryItemQuestions)
+        {
+            <li>@q.QuestionText
+                @if (q.InventoryItemQuestionOptions.Any())
+                {
+                    <select class="mini">
+                        @foreach (var o in q.InventoryItemQuestionOptions.OrderBy(i => i.Sort))
+                        {
+                            <option @(o.Selected ? "selected":"")>@o.Option</option>
+                        }
+                    </select>
+                }
+                else {
+                    <input type="checkbox" />
+                }
+
+            </li>
+        }
+        </ol>
+    </div>
+
+    @using (Html.BeginForm("AddQuestion", null, FormMethod.Post, new { @class = "" }))
+    {
+        @Html.Hidden("itemid", Model.ItemID)
+        <div class="control-group">
+            <label class="control-label" for="questionText">Question Text</label>
+            <div class="controls">
+                @Html.TextArea("questionText", new { required = "true" })
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="shortName">Display Name</label>
+            <div class="controls">
+                @Html.TextBox("shortName", "", new { required = "true" })
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="additionalCubicFeet">Cubic Feet (optional)</label>
+            <div class="controls">
+                @Html.TextBox("additionalCubicFeet", "", new { @class = "input-mini", @type = "number", step = ".01", min = "0" })
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="additionalTime">Additional Time (optional)</label>
+            <div class="controls">
+                @Html.TextBox("additionalTime", "", new { @class = "input-mini", @type = "number", step = ".01", min = "0" })
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="additionalWeight">Additional Weight (optional)</label>
+            <div class="controls">
+                @Html.TextBox("additionalWeight", "", new { @class = "input-mini", @type = "number", step = ".01", min = "0" })
+            </div>
+        </div>
+        <div class="options">
+            <a href="#" id="add-option">Add Options</a>
+            <ol id="option-container"></ol>
+        </div>
+        
+        <div>
+            @Html.ActionLink("Cancel", "Inventory", null, new { @class = "btn " }) 
+            <input type="submit" class="btn btn-primary" />
+        </div>
+    }
+</div>
+
+<script type="text/x-jquery-tmpl" id="option-template">
+    <li>
+        <input type="hidden" value="{{- json }}" name="options" />
+        {{- option }}
+        <i class="icon-remove"></i>
+    </li>
+</script>
+
+<script type="text/javascript">
+    $(function() {
+        var modal = $("#custom-option").modal({ show: false });
+        var template = _.template($("#option-template").text());
+        $("#add-option").click(function() {
+            modal.modal("show");
+        });
+
+        var sort = 0;
+        modal.find("form").submit(function() {
+            var data = $(this).serializeObject();
+            data.sort = sort++;
+            data.json = JSON.stringify(data);
+            $("#option-container").append(template(data));
+            $(".modal.in").modal("hide");
+            this.reset();
+            return false;
+        });
+
+        $("#option-container").on("click", ".icon-remove", function() {
+            $(this).closest("li").remove();
+        });
+    });
+</script>

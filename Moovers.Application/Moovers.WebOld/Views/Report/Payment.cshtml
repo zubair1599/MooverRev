@@ -1,0 +1,171 @@
+﻿@model Moovers.WebModels.Reports.PaymentReport
+@{
+    ViewBag.Title = "Payment";
+}
+
+<div class="container-pad">
+    <h2>Payments on @Model.Day.ToShortDateString()</h2>
+    @using (Html.BeginForm(null, null, FormMethod.Get))
+    {
+        <p>
+            @Html.DateBox("day", Model.Day)
+            <input type="submit" class="btn" />
+        </p>
+    }
+
+    @Html.Partial("_FranchiseSelector")
+
+    <h4>Amounts</h4>
+    <table class="table table-condensed" style="width: 55%;">
+        <tr>
+            <td>Credit Card</td>
+            <td>@String.Format("{0:C}", Model.GetCreditCardAmount())</td>
+        </tr>
+        <tr>
+            <td>For Deposit</td>
+            <td>@String.Format("{0:C}", Model.GetDepositAmount())</td>
+        </tr>
+        <tr>
+            <td>Other Amount</td>
+            <td>@String.Format("{0:C}", Model.GetOtherAmount())</td>
+        </tr>
+    </table>
+
+    <h4>Credit Card Payments</h4>
+    @if (Model.GetCreditCardPayments().Any())
+    {
+    <table class="table table-condensed" style="width: 55%;">
+        <tr>
+            <th style="width: 25px;"></th>
+            <th style="width: 94px;">Transaction ID</th>
+            <th style="width: 94px;">Quote/Storage</th>
+            <th style="width: 194px;">Amount</th>
+        </tr>
+            
+        @foreach (var item in Model.GetCreditCardPayments())
+        {
+            <tr>
+                <td>
+                    
+                    
+                    @if (item.Account_CreditCard.CardType.ToLower().Equals("american express"))
+                    {
+                        <div class="payment-method american"></div>
+                    }
+                    else
+                    {
+                        <div class="payment-method @item.Account_CreditCard.CardType.ToLower()"></div>
+                    }
+                    
+                </td>
+                <td>@item.TransactionID</td>
+                <td>@Model.GetItemLink(Html, item)</td>
+                <td>@String.Format("{0:C}", item.Amount)</td>
+            </tr>
+        }
+    </table>
+    }
+    else 
+    {
+        <p>No credit card payments on @Model.Day.ToShortDateString()</p>
+    }
+    
+    <h4>Deposit Payments</h4>
+
+    @if (Model.GetForDeposit().Any())
+    {
+        <table class="table table-condensed" style="width: 55%;">
+            <tr>
+                <th style="width: 94px;">Check #</th>
+                <th style="width: 94px;">Transaction ID</th>
+                <th style="width: 94px;">Payment</th>
+                <th style="width: 94px;">Memo</th>
+                <th style="width: 94px;">Quote/Storage</th>
+                <th style="width: 194px;">Amount</th>
+            </tr>
+            @foreach (var item in Model.GetForDeposit())
+            {
+            <tr>
+                <td>@item.CheckNumber</td>
+                <td>@item.TransactionID</td>
+                <td><div class="payment-method @item.PaymentType.ToString().ToLower()" title="@item.PaymentType.GetDescription()"></div></td>
+                <td>@item.Memo</td>
+                <td>@Model.GetItemLink(Html, item)</td>
+                <td>@String.Format("{0:C}", item.Amount)</td>
+            </tr>
+            }
+        </table>
+    }
+    else {
+        <p>No deposit payments on @Model.Day.ToShortDateString()</p>
+    }
+
+    
+    <h4>Other Payments</h4>
+    
+    @if (Model.GetOtherPayments().Any())
+    {
+        <table class="table table-condensed" style="width: 55%;">
+            <tr>
+                <th style="width: 94px;">Quote/Storage</th>
+                <th style="width: 94px;">Transaction ID</th>
+                <th style="width: 94px;">Memo</th>
+                <th style="width: 194px;">Amount</th>
+            </tr>
+            @foreach (var item in Model.GetOtherPayments())
+            {
+            <tr>
+                <td>@Model.GetItemLink(Html, item)</td>
+                <td>@item.TransactionID</td>
+                <td>@item.Memo</td>
+                <td>@String.Format("{0:C}", item.Amount)</td>
+            </tr>
+            }
+        </table>
+    }
+    else {
+        <p>No other payments recieved on @Model.Day.ToShortDateString()</p>
+    }
+
+    <h4>Cancelled/Failed Credit Card Transactions</h4>
+    @if (Model.GetFailedCancelledCreditCardPayments().Any())
+    {
+        <table class="table table-condensed" style="width: 40%;">
+            <tr>
+                <th>Transaction ID</th>
+                <th>Quote</th>
+                <th>Memo</th>
+                <th>Amount</th>
+                <th>Status</th>
+            </tr>
+            @foreach (var item in Model.GetFailedCancelledCreditCardPayments())
+            {
+                <tr>
+                    <td>@item.TransactionID</td>
+                    <td>@Model.GetItemLink(Html, item)</td>
+                    <td>@item.Memo</td>
+                    <td>@String.Format("{0:C}", item.Amount)
+                    </td>
+                    <td>
+                        <span class="red">
+                            @if (item.IsCancelled)
+                            {
+                                <text>Cancelled -</text>@item.CancellationReason
+                            }
+                            else if (!item.Success)
+                            {
+                                <text>Failed</text>
+                            }
+                        </span>
+
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+    else
+    {
+        <p>No failed/cancelled credit card payments on @Model.Day.ToShortDateString()</p>
+    }
+
+</div>

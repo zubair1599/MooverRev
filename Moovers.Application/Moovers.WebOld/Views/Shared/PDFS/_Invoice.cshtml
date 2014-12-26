@@ -1,0 +1,103 @@
+﻿@model Business.Models.StorageInvoice
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=8">
+    <title></title>
+    <style>
+        @Html.RenderFile("~/static/css/PDF/invoice.css")
+    </style>
+</head>
+
+    <body>
+        <div id="page">
+            <div class="header-left">
+                <img src="@Html.FileAsBase64("~/static/img/headerLogoLarge.png", "image/png")" />
+                <p class="addr">
+                    @Model.StorageWorkOrder.Account.Franchise.Address.DisplayString().ToUpper()
+                    <br />
+                    @Model.StorageWorkOrder.Account.Franchise.PhoneNumber
+                </p>
+            </div>
+            <div class="header-right">
+                <div class="container">
+                    <h4>Invoice #@Model.Lookup</h4>
+                    <table>
+                        <tr>
+                            <th>Date</th>
+                            <td>@Model.Date.ToShortDateString()</td>
+                        </tr>
+                        <tr>
+                            <th>Customer</th>
+                            <td>@Model.StorageWorkOrder.Account.Lookup</td>
+                        </tr>
+                        <tr>
+                            <th>Storage Account</th>
+                            <td>@Model.StorageWorkOrder.Lookup</td>
+                        </tr>
+                        <tr><td colspan="2">&nbsp;</td></tr>
+                        <tr class="grey">
+                            <td colspan="2">
+                                DUE: @Model.ForDate.ToString("MMMM dd, yyyy")
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <br style="clear: both;" />
+
+            <div class="addr">
+                @{
+                    var billing = Model.StorageWorkOrder.Account.GetAddress(Business.Models.AddressType.Billing);
+                }
+            
+                <span style="float: left;">BILL TO: </span>
+                <div style="float: left;">
+                    @Model.StorageWorkOrder.Account.DisplayName<br />
+                    @billing.DisplayLine1()<br />
+                    @billing.DisplayCityState()<br />
+                </div>
+            </div>
+
+        <br style="clear: both;" />
+        <table class="cost-table">
+            <tr>
+                <th>Description</th>
+                <th>Qty</th>
+                <th>Unit Cost</th>
+                <th>Amount</th>
+            </tr>
+            <tr>
+                <td>
+                    Storage Fee: Job #@Model.StorageWorkOrder.Lookup Period  @Model.ForDate.ToShortDateString() - @Model.ForDate.AddMonths(1).AddDays(-1).ToShortDateString()
+                </td>
+                <td></td>
+                <td></td>
+                <td>
+                    @String.Format("{0:C}", Model.Amount)
+                </td>
+            </tr>
+            <tr>
+                <td class="blank"></td>
+                <td colspan="2">
+                    <strong>Sub-Total:</strong>
+                </td>
+                <td>
+                    @String.Format("{0:C}", Model.Amount)
+                </td>
+            </tr>
+            <tr>
+                <td class="blank"></td>
+                <td colspan="2">Tax:</td>
+                <td>@String.Format("{0:C}", 0)</td>
+            </tr>
+            <tr class="total">
+                <td class="blank"></td>
+                <td colspan="2">Total:</td>
+                <td>@String.Format("{0:C}", Model.Amount)</td>
+            </tr>
+        </table>
+            </div>
+    </body>
+</html>

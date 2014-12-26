@@ -1,0 +1,109 @@
+﻿@using Business.Enums
+@using Business.ToClean.QuoteHelpers
+@model Moovers.WebModels.PostListModel
+
+<table class="post-list table  table-verycondensed table-striped table-hover">
+    <thead>
+        <tr class="no-hover">
+            <td colspan="8" style="text-align: right; color: #333;">
+                @Html.Partial("Generic/_PageList", Model.Postings)
+            </td>
+        </tr>
+        <tr>
+            @Html.Partial("Generic/_SortableTableHeader", Model)
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var posting in Model.Postings)
+        {
+            var highlight = (posting.Schedule.Date < DateTime.Today) && !posting.IsComplete;
+        <tr class="@(highlight ? "warning" : "")">
+            <td>
+                @posting.Schedule.Date.ToString("ddd, MMM d, yyyy")
+            </td>
+            <td>
+                @if (posting.PostingID == Guid.Empty)
+                {
+                    @Html.ActionLink("Quote " + posting.Schedule.Quote.Lookup, "Overview", new { Controller = "Quote", id = posting.Schedule.Quote.Lookup })
+                }
+                else if (!posting.IsComplete)
+                {
+                    @Html.ActionLink("Quote " + posting.Schedule.Quote.Lookup, "Post", new { Controller = "Posting", id = posting.PostingID }, new { @class = "full-row-link" })
+                }
+                else {
+                    @Html.ActionLink("Quote " + posting.Schedule.Quote.Lookup, "View", new { Controller = "Posting", id = posting.Lookup, referrer = Model.Page }, new { @class = "full-row-link" })
+                }
+            </td>
+            @if (!Model.ColumnSkips.Contains(PostSortColumn.PostingDate))
+            {
+            <td>
+                @if (posting.DateCompleted.HasValue)
+                {
+                    @posting.DateCompleted.Value.ToShortDateString()
+                }
+            </td>
+            }
+            <td>@posting.Schedule.Quote.Account.DisplayNameLastFirst
+                <span class="desc" style="font-size:.8em;">
+                    <a href="@Url.Action("Index", new { Controller = "Accounts", id = posting.Schedule.Quote.Account.Lookup })">
+                        @posting.Schedule.Quote.Account.Lookup <i class="icon-external-link" style="text-decoration: none; width: 0;"></i>
+                    </a>
+                </span>
+            </td>
+            <td>
+                @if (posting.Schedule.Quote.FinalPostedPrice.HasValue && posting.IsComplete)
+                {
+                    @String.Format("{0:C}", posting.Schedule.Quote.FinalPostedPrice.Value)
+                }
+                else if (posting.Schedule.Quote.PricingType == QuotePricingType.Hourly)
+                {
+                    @String.Format("{0:C}/hr", posting.Schedule.Quote.HourlyData.HourlyPrice)
+                }
+                else
+                {
+                    @String.Format("{0:C}", posting.Schedule.Quote.GuaranteeData.GuaranteedPrice)
+                }
+            </td>
+            @if (!Model.ColumnSkips.Contains(PostSortColumn.Employees))
+            {
+            <td>
+                @foreach (var employee in posting.GetEmployees())
+                {
+                    <span class="posting-employee" title="@employee.DisplayName()&#13;@employee.DisplayNumber()">@employee.Lookup</span>
+                }
+            </td>
+            }
+            @if (!Model.ColumnSkips.Contains(PostSortColumn.Vehicles))
+            {
+            <td>
+                @String.Join(", ", posting.GetVehicles().Select(v => v.Lookup))
+            </td>
+            }
+            @if (!Model.ColumnSkips.Contains(PostSortColumn.Balance))
+            {
+            <td>
+                @String.Format("{0:C}", posting.Quote.GetBalance())
+            </td>
+            }
+            @if (!Model.ColumnSkips.Contains(PostSortColumn.Print))
+            {
+                <td>
+                    <a href="@Url.Action("Print", new { Controller = "Schedule", invoice = posting.Schedule.ScheduleID })" target="_blank">
+                        <i class="icon-print" title="print"></i>
+                    </a>
+                </td>
+            }
+            @if (!Model.ColumnSkips.Contains(PostSortColumn.LostDebt))
+            {
+                <td>
+                    @using (Html.BeginForm("MarkAsLostDebt", "Posting", FormMethod.Post))
+                    {
+                        <input type="hidden" name="quoteid" value="@posting.Quote.QuoteID" />
+                        <button class="btn btn-link" type="submit">Mark as lost debt</button>
+                    }
+                </td>
+            }
+        </tr>
+        }
+    </tbody>
+</table>

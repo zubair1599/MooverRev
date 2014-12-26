@@ -1,0 +1,333 @@
+@using Business.Enums
+@model Moovers.WebModels.EditEmployeeModel
+@{
+    ViewBag.Title = Model.firstname + " " + Model.lastname + " - Employee Info";
+}
+<div class="center-container">
+    @using (Html.BeginForm())
+    {
+        <div class="section-container">
+            <div class="section section-white">
+                <div class="section-wrap" style="padding: 10px; padding-left: 210px;">
+                    <h4 class="nomargin">
+                        @Model.firstname @Model.lastname #@Model.lookup
+                        @if (Model.Employee.IsArchived)
+                        {
+                            <span class="red" style="font-weight: normal;">
+                                @if (Model.Employee.TerminationDate.HasValue)
+                                {
+                                    <text>Terminated </text>@Model.Employee.TerminationDate.Value.ToShortDateString()
+                                }
+                                else
+                                {
+                                    <text>INACTIVE</text>
+                                }
+                            </span>
+                        }
+                    </h4>
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.lookup })
+                </div>
+            </div>
+            <div class="section section-light">
+                <div class="section-wrap cfix">
+                    <div class="section-title">
+                        <h5>Personal Information</h5>
+                    </div>
+                    <div class="section-content">
+                        <div class="label-inline">
+                            <label>Name</label>
+                            <label>Birthdate</label>
+                            <label>Gender</label>
+                        </div>
+                        <div class="form-inline">
+                            @Html.ContentFor(m => m.firstname + " " + m.lastname, new { required = "required", placeholder = "First Name", @class = "input-holder" })
+                            @Html.ContentFor(m => (m.birthdate.HasValue ? m.birthdate.Value.ToShortDateString() : ""), new { placeholder = "Date of Birth", @class = "input-holder" })
+                            @Html.ContentFor(m => m.gender, new { @class = "input-holder" })
+                        </div>
+                        <div class="label-inline">
+                            <label>Social Security Number</label>
+                            <label>Driver License</label>
+                        </div>
+                        <div class="form-inline">
+                            <span class="input-holder">
+                                <a href="#" id="ssn-hider">click to view</a>
+                                <span style="display: none;">
+                                    @Html.ContentFor(m => m.ssn, new { placeholder = "Social Security Number" })
+                                </span>
+                            </span>
+                            <span class="input-holder">
+                                @Model.driverlicense
+                                @if (Model.driverLicenseExpirationMonth.HasValue && Model.driverLicenseExpirationYear.HasValue)
+                                {
+                                    <text>exp </text>@Model.driverLicenseExpirationMonth.Value.ToString("00")<text>/</text>@Model.driverLicenseExpirationYear.Value
+                                }
+                            </span>
+                        </div>
+
+
+                        @{ var dl = Model.Employee.GetFile(Employee_File_Type.DriverLicense); }
+                        @if (dl != null)
+                        {
+                            <div class="label-inline">
+                                Driver's License
+                            </div>
+                            <div class="form-inline">
+                                @Html.ActionLink("View", "ViewFile", new { id = dl.FileID }, new { @target = "_blank" })
+                            </div>
+                        }
+                        @{ var dot = Model.Employee.GetFile(Employee_File_Type.DOTCard); }
+                        @if (dot != null)
+                        {
+                            <div class="label-inline">
+                                DOT Card
+                            </div>
+                            <div class="form-inline">
+                                @Html.ActionLink("View", "ViewFile", new { id = dot.FileID }, new { @target = "_blank" })
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+            <div class="section section-dark">
+                <div class="section-wrap cfix">
+                    <div class="section-title">
+                        <h5>Contact Information</h5>
+                    </div>
+                    <div class="section-content">
+                        <div class="label-inline">
+                            <label>Primary Phone</label>
+                        </div>
+                        <div class="form-inline">
+                            @Html.ContentFor(m => m.primaryPhone, new { placeholder = "Primary Phone", @type = "tel", @class = "input-holder" })
+                            @Html.CheckBoxFor(m => m.acceptTextPrimary, new { disabled = "true" })
+                            <label class="checkbox-text" for="acceptTextPrimary">Accept Text Messages</label>
+                        </div>
+                        <div class="label-inline">
+                            <label>Secondary Phone</label>
+                        </div>
+                        <div class="form-inline">
+                            @Html.ContentFor(m => m.secondaryPhone, new { placeholder = "Secondary Phone", @type = "tel", @class = "input-holder" })
+                            @Html.CheckBoxFor(m => m.acceptTextSecondary, new { disabled = "true" })
+                            <label class="checkbox-text" for="acceptTextSecondary">Accept Text Messages</label>
+                        </div>
+                        <div class="label-inline">
+                            <label>Email</label>
+                        </div>
+                        <div class="form-inline">
+                            @Html.ContentFor(m => m.email, new { @type = "email", placeholder = "Email", @class = "span2 input-holder" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section section-light">
+                <div class="section-wrap cfix">
+                    <div class="section-title">
+                        <h5>Address</h5>
+                    </div>
+                    <div class="section-content">
+                        <div class="label-inline">
+                            <label>Address</label>
+                        </div>
+                        <div class="form-inline">
+                            <span class="input-holder">
+                                @Html.ContentFor(m => m.street1, new { @class = "span2", placeholder = "Street" })
+                                @if (!String.IsNullOrEmpty(Model.street2))
+                                {
+                                    <br />
+                                    @Model.street2
+                                }
+                                <br />
+                                @if (!String.IsNullOrEmpty(Model.city) && !String.IsNullOrEmpty(Model.state))
+                                {
+                                    @Model.city<text>, </text>@Model.state @Model.zip
+                                }
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section section-dark">
+                <div class="section-wrap cfix">
+                    <div class="section-title">
+                        <h5>User Profile</h5>
+                    </div>
+                    <div class="section-content">
+                        <div class="label-inline">
+                            <label>Title</label>
+                            <label>Role</label>
+                        </div>
+                        <div class="form-inline">
+                            @Html.ContentFor(m => m.Title, new { @class = "input-holder" })
+                            @if (Model.UserRoles!=null)
+                            {
+                                @Html.ContentFor(m => m.UserRoles.FirstOrDefault(), new { @class = "input-holder" })
+                            }
+                            
+
+                        </div>
+                        <div class="label-inline">
+                            <label>Franchise</label>
+                            <label>Location</label>
+                        </div>
+                        <div class="form-inline">
+                            @Html.ContentFor(m => m.Employee.Franchise.Name, new { @class = "input-holder" })
+                            @Html.ContentFor(m => m.Employee.Location != null ? m.Employee.Location.Name : null, new { @class = "input-holder" })
+                        </div>
+
+                        <div class="label-inline">
+                            <label>Work Type</label>
+                            <label>Class Type</label>
+                        </div>
+                        <div class="form-inline">
+                            
+                            <label class="span1">
+                                @if (Model.Employee.TypeId != null)
+                                {
+                                    var tmp = ((WorkingType)Model.Employee.TypeId);
+                                    @tmp.GetDescription();
+                                }
+                            </label>
+                            <label style="padding-left:1px">
+                                @if (Model.Employee.ClassId != null)
+                                {
+                                    var tmp = ((ClassType)Model.Employee.ClassId);
+                                    @tmp.GetDescription();
+                                }
+                            </label>
+
+
+
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="section section-light">
+                <div class="section-wrap cfix">
+                    <div class="section-title">
+                        <h5>Payroll</h5>
+                    </div>
+                    <div class="section-content">
+                        <div class="label-inline">
+                            <label>Position</label>
+                        </div>
+                        <div class="form-inline">
+                            @Html.ContentFor(m => m.position, new { @class = "input-holder" })
+                        </div>
+                        <div class="label-inline">
+                            <label>Pay</label>
+                        </div>
+                        <div class="form-inline">
+                            <span class="input-holder">
+                                @if (Model.payType == PayType.Hourly)
+                                {
+                                    @String.Format("{0:C} /hr", Model.payRate)
+                                }
+                                else
+                                {
+                                    @String.Format("{0:C} per year", Model.payRate)
+                                }
+                            </span>
+                        </div>
+                        <div class="label-inline">
+                            <label style="margin-right: 55px;">Filing Status</label>
+                            <label>W-4 Allowances</label>
+                        </div>
+                        <div class="form-inline">
+                            @Html.ContentFor(m => m.filingStatus, new { @style = "margin-right: 36px;", @class = "input-holder" })
+                            @Html.ContentFor(m => m.allowance, new { placeholder = "W-4 Allowance" })
+                            <div class="form-field-comment field2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section section-light clearfix">
+                <div class="section-wrap">
+                    <div class="section-title">
+                        <h5>Employment Status</h5>
+                    </div>
+                    <div class="section-content">
+                        @if (Model.hireDate.HasValue)
+                        {
+                            <div class="label-inline">
+                                <label>Hire Date</label>
+                            </div>
+                            <div class="form-inline">
+                                <span class="input-holder">@Model.hireDate.Value.ToShortDateString()</span>
+                            </div>
+                        }
+                        @if (Model.terminationDate.HasValue)
+                        {
+                            <div class="label-inline">
+                                <label>Termination Date</label>
+                                <label>Termination Type</label>
+                            </div>
+                            <div>
+                                <div class="form-inline">
+                                    <span class="input-holder">@Model.terminationDate.Value.ToShortDateString()</span>
+                                    <span class="input-holder">@Model.terminationType.Value.GetDescription()</span>
+                                </div>
+                            </div>
+
+                            <div class="label-inline">
+                                <label>Reason</label>
+                            </div>
+                            <div class="form-inline">
+                                <pre style="font-family: inherit;">@Model.Employee.TerminationReason</pre>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="section section-dark clearfix">
+                <div class="section-wrap cfix">
+                    <div class="section-title">
+                        <h5>Jobs</h5>
+                    </div>
+                    <div class="section-content">
+                        <div class="label-inline">
+                            <label>Job Count</label>
+                        </div>
+                        <div class="form-inline">
+                            @Model.Employee.GetJobCount()
+                        </div>
+                        <div class="label-inline">
+                            <label>Latest Jobs</label>
+                        </div>
+                        <div class="form-inline">
+                            <table class="table">
+                                <tr>
+                                    <th>Quote #</th>
+                                    <th>Amount</th>
+                                    <th>Man Hour Rate</th>
+                                    <th>Hours</th>
+                                </tr>
+                                @foreach (var job in Model.Employee.GetLatestJobs())
+                                {
+                                    <tr>
+                                        <td>@Html.ActionLink("#" + job.Posting.Schedule.Quote.Lookup, "View", new { id = job.Posting.Lookup, Controller = "Posting" })</td>
+                                        <td>@String.Format("{0:C}", job.Posting.Schedule.Quote.FinalPostedPrice)</td>
+                                        <td>@String.Format("{0:0.00}", job.Posting.GetManHourRate())</td>
+                                        <td>@String.Format("{0:0.00}", job.Hours)</td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<script type="text/javascript">
+    $(function () {
+        $("#ssn-hider").click(function () {
+            $(this).hide().siblings().show();
+            return false;
+        });
+    });
+</script>

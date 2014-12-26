@@ -1,0 +1,36 @@
+﻿@model VaultListModel
+@{
+    ViewBag.Title = "Vaults";
+    ViewBag.BodyClass = "storage";
+}
+
+<div class="container-pad">
+    <h3>Vaults</h3>
+    <table class="table table-striped table-verycondensed">
+        @Html.Partial("Generic/_SortableTableHeader", Model)
+        <div class="right">
+            @Html.Partial("Generic/_PageList", Model.Vaults)
+        </div>
+
+        @foreach (var vault in Model.Vaults)
+        {
+            <tr>
+                <td>
+                    @if (vault.GetWorkOrder() != null)
+                    {
+                        @Html.ActionLink(vault.GetWorkOrder().Lookup, "View", new { Controller = "Storage", id = vault.GetWorkOrder().Lookup })
+                    }
+
+                </td>
+                <td>@Html.ActionLink(vault.Lookup, "VaultDetails", new { id = vault.Lookup })</td>
+                <td>@if (vault.StorageZone != null)
+                    {
+                        @vault.StorageZone.Name
+                    }
+                </td>
+                <td>@vault.Row</td>
+                <td>@vault.Shelf</td>
+            </tr>
+        }
+    </table>
+</div>

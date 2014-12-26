@@ -1,0 +1,74 @@
+﻿@model Business.Models.StorageWorkOrder
+
+<div class="panel-container">
+        <div class="panel-title">Invoices</div>
+        @if (Model.GetInvoices().Any())
+        {
+            <table class="table table-verycondensed table-striped" id="invoice-table">
+                <tr class="no-hover">
+                    <th>ID</th>
+                    <th>Due</th>
+                    <th>Amount</th>
+                    <th>Balance</th>
+                    <th>Transaction #</th>
+                    <th></th>
+                </tr>
+                @foreach (var invoice in Model.GetInvoices())
+                {
+                    <tr>
+                        <td>@Html.ActionLink(invoice.Lookup, "ViewInvoice", new { id = invoice.Lookup, Controller = "Storage" }, new { target = "_blank" })</td>
+                        <td>@if (invoice.IsCancelled)
+                            {
+                                @invoice.ForDate.ToShortDateString()
+                                <span class="muted">cancelled</span>
+                            }
+                            else if (invoice.IsDue() && !invoice.IsPaid())
+                            {
+                                <span class="red">@invoice.ForDate.ToShortDateString()</span>
+                            }
+                            else {
+                                @invoice.ForDate.ToShortDateString()
+                            }
+                        </td>
+                        <td>@if (invoice.IsCancelled)
+                            {
+                                <span class="muted">@String.Format("{0:C}", invoice.Amount)</span>
+                            }
+                            else {
+                                @String.Format("{0:C}", invoice.Amount)
+                            }
+                        </td>
+                        <td>
+                            @if (invoice.IsCancelled)
+                            {
+                                <span class="muted">@String.Format("{0:C}", invoice.GetBalance())</span>
+                            }
+                            else {
+                                <span class="@(invoice.GetBalance() > 0 ? "red" : "")">
+                                    @String.Format("{0:C}", invoice.GetBalance())
+                                </span>
+                            }
+                        </td>
+                        <td>
+                            <span>@String.Join(", ", invoice.GetPayments().OrderBy(i => i.StoragePayment.Date).Select(i => i.StoragePayment.TransactionID + String.Format(" ({0:C})", i.Amount)))</span>
+                        </td>
+                        <td style="width: 1px;">
+                           @using (Html.BeginForm("CancelInvoice", "Storage", FormMethod.Post))
+                           {
+                               <input type="hidden" name="invoiceid" value="@invoice.InvoiceID" />
+                               <button class="btn btn-link" type="submit">
+                                   <i class="icon icon-remove"></i>
+                               </button>
+                           }
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-info">
+                This work order has no invoice history.
+            </div>
+        }
+    </div>

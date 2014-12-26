@@ -1,0 +1,96 @@
+﻿@model Business.Models.StorageWorkOrder
+
+<div id="job-specifics" class="clearfix">
+    <div class="section">
+        <h4>Billing</h4>
+        <table>
+            <tr>
+                <th>Card on File</th>
+                <td>@if (Model.Account_CreditCard != null) {
+                        @Model.Account_CreditCard.DisplayCard()
+                        <span class="desc">
+                            @Model.Account_CreditCard.DisplayExpiration()
+                        </span>
+                        <a href="#" id="add-card">change</a>
+                    } else {
+                        <a href="#" id="add-card">add card</a>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <th>Monthly Amount</th>
+                <td>@String.Format("{0:C}", Model.MonthlyPayment)
+                    <a href="#" id="change-monthly-payment">edit</a>
+                </td>
+            </tr>
+            <tr>
+                <th>Start Date</th>
+                <td>@Model.StartDate.ToShortDateString()</td>
+            </tr>
+            <tr>
+                <th>Out Date</th>
+                <td>
+                    @if (Model.CancellationDate.HasValue)
+                    {
+                        @Model.CancellationDate.Value.ToShortDateString()
+                    }
+                    else {
+                        <em>on going</em>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <th>Payment Status</th>
+                <td>
+                    @if (Model.GetOverdueBalance() > 0)
+                    {
+                        <span class="red">Owes @String.Format("{0:C}", Model.GetOverdueBalance())</span>
+                    }
+                    else {
+                        <span class="green">Up to date</span>
+                    }
+                </td>
+            </tr>
+            @if (Model.IsAutomaticBilling)
+            {
+            <tr>
+                <th>Automatic Billing</th>
+                <td>
+                    <i style="font-size: 14px; font-weight: normal; color: #333;" class="icon icon-check "></i>
+                </td>
+            </tr>
+            }   
+            @if (Model.EmailInvoices)
+            {
+            <tr>
+                <th>Paperless Invoices</th>
+                <td>
+                    <i style="font-size: 14px; font-weight: normal; color: #333;" class="icon icon-check "></i>
+                </td>
+            </tr>
+            }  
+            @if (Model.EmailReceipts)
+            {
+            <tr>
+                <th>Email Receipts</th>
+                <td>
+                    <i style="font-size: 14px; font-weight: normal; color: #333;" class="icon icon-check "></i>
+                </td>
+            </tr>
+            }  
+        </table>
+    </div>
+    <div class="section">
+        <h4>Containers</h4>
+        <table>
+            <tr>
+                <th>Vaults</th>
+                <td>@Model.GetVaults().Count()</td>
+            </tr>
+            <tr>
+                <th>Oversized</th>
+                <td>@Model.GetOverstuffed().Count()</td>
+            </tr>
+        </table>
+    </div>
+</div>

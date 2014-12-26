@@ -1,0 +1,23 @@
+﻿@model Moovers.WebModels.WebquoteEmailModel
+@{
+    Layout = "~/Views/Shared/Emails/_MarketingEmail.cshtml";
+}
+
+@section HeaderMessage {
+    Your Account Number: @Model.Quote.Account.Lookup
+}
+
+<p style="list-style-type: none; line-height: 1.4em; margin: 0 0 20px; padding: 0; font-size: 12px; color: #333333;">
+    @Model.Quote.Account.DisplayName,
+    <br><br />
+    Thank you for visiting our website and requesting a quote. We'll be in touch shortly to give you your free moving estimate, or feel free to call us at
+    <strong>1-800-MOOVERS</strong>, and reference quote number 
+    <strong>@Model.Quote.Lookup</strong>.
+
+    <br /><br />
+    We look forward to mooving with you,
+    <br />
+    @Model.AccountManager.DisplayName()
+</p>
+
+@Html.Partial("Emails/_EmailContactFooter", Model)

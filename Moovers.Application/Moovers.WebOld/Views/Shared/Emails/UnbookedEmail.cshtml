@@ -1,0 +1,25 @@
+﻿@model Business.ViewModels.EmailModel
+@{
+    Layout = "~/Views/Shared/Emails/_MarketingEmail.cshtml";
+}
+
+@section HeaderMessage {
+    Your Account Number: @Model.Account.Lookup
+}
+
+<div style="list-style-type: none; line-height: 1.4em; margin: 0 0 20px; padding: 0; font-size: 12px; color: #333333;">
+    Dear @Model.Account.DisplayName,
+    <p>
+        Just wanted to let you know that i’m available to answer any questions you may have in relation to your quote.
+        I am also here to help you book your move. You may call me at @Model.AccountManager.DisplayNumber(). 
+        Also, you can contact me with concerns at 
+        <a href="mailto:@Model.AccountManager.aspnet_Users.aspnet_Membership.Email">@Model.AccountManager.aspnet_Users.aspnet_Membership.Email</a>. 
+    </p>
+    <p>
+        Thank you, and we look forward to working with you.<br />
+        @Model.AccountManager.DisplayName()<br />
+        <a href="mailto:@Model.AccountManager.aspnet_Users.aspnet_Membership.Email">@Model.AccountManager.aspnet_Users.aspnet_Membership.Email</a>
+    </p>
+</div>
+
+@Html.Partial("Emails/_EmailContactFooter", Model)

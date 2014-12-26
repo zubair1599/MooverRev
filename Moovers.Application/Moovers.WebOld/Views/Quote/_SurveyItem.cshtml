@@ -1,0 +1,61 @@
+﻿@model Moovers.WebModels.DisplaySurveyItem
+
+<tr class="@Model.ItemClass" data-surveyid="@Model.SurveyID">
+    <td>
+        <input type="text" class="jank-hide cursor-holder" tabindex="-1" />
+        @if (!Model.IsScheduled()) 
+        {
+            using (Html.BeginForm(null, null, new { id = Model.Quote.QuoteID }, FormMethod.Post))
+            {
+                <input type="hidden" name="timestart" value="@Model.Hour" />
+                <input type="hidden" name="timeend" value="@(Model.Hour + 1)" />
+                <input type="hidden" name="date" value="@Model.Day.ToShortDateString()" />
+                <button type="submit" class="btn-link">
+                    @Model.DisplayTime()
+                </button>
+            }
+        } 
+        else 
+        {
+            @Model.DisplayTime()
+            <span class="desc">Quote @Model.Survey.Quote.Lookup</span>
+        }
+    </td>
+    <td>
+        @if (Model.Stops.Any()) 
+        {
+            @Model.Stops.First().Address.DisplayCityState()
+        }
+    </td>
+    <td>
+        @if (Model.Stops.Any() && Model.HasStop())
+        {
+            <span class="address-@Model.SurveyStop.AddressID">
+                @Math.Round(Model.Stops.First().Address.GetDistanceTo(Model.BaseStop.Address)) miles
+            </span>
+        }
+    </td>
+    <td class="nowrap text-r note">
+        @if (Model.IsScheduled()) 
+        {
+            if (String.IsNullOrWhiteSpace(Model.Survey.Notes) || Model.Survey.Notes == "Add Notes")
+            {
+                <a class="add-note" href="#" title="Add Notes">Add Notes</a>
+            } else {
+                <a class="add-note changed" href="#" title="@Model.Survey.Notes">@Model.Survey.Notes</a>
+            }
+                            
+            <input class="note-text" type="text" />
+        }
+    </td>
+    <td>
+        @if (Model.IsScheduled()) 
+        {
+            using (Html.BeginForm("CancelSurvey", "Quote", new { id = Model.Survey.SurveyID }, FormMethod.Post))
+            {
+                <input type="hidden" name="redirectid" value="@Model.Quote.Lookup" />
+                <button type="submit" class="btn btn-primary btn-mini">cancel</button>
+            }
+        }
+    </td>
+</tr>

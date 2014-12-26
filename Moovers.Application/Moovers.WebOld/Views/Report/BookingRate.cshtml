@@ -1,0 +1,59 @@
+﻿@model Moovers.WebModels.Reports.BookingRate
+
+@{
+    ViewBag.Title = "BookingRate";
+}
+
+<div class="container-pad">
+<h2>Booking Rate</h2>
+
+@using(Html.BeginForm(null, null, FormMethod.Get, new { @class = "form-inline" }))
+{
+    @Html.DateBox("start", Model.Start)
+    @Html.DateBox("end", Model.End)
+    <button class="btn btn-primary">Show Dates</button>
+}
+
+    <table class="table">
+        <tr>
+            <th></th>
+            <th colspan="2">Quoted</th>
+            <th colspan="3">Completed</th>
+            <th colspan="2">Pending</th>
+            <th colspan="3">Totals</th>
+        </tr>
+        <tr>
+            <th>Staff</th>
+            <th>Count</th>
+            <th>Dollars</th>
+            <th>Count</th>
+            <th>Eff %</th>
+            <th>Dollars</th>
+            <th>Count</th>
+            <th>Dollars</th>
+            <th>Count</th>
+            <th>Eff %</th>
+            <th>Dollars</th>
+        </tr>
+        @foreach (var item in Model.GetUsers())
+        {
+            var quoted = Model.GetQuoted(item.UserId).ToList();
+            var completed = Model.GetCompleted(item.UserId).ToList();
+            var pending = Model.GetPending(item.UserId).ToList();
+            var totals = Model.GetTotal(item.UserId).ToList();
+            <tr>
+                <td>@item.LoweredUserName</td>
+                <td>@quoted.Count()</td>
+                <td>@String.Format("{0:C}", quoted.Sum(i => i.GetDisplayPrice()))</td>
+                <td>@completed.Count()</td>
+                <td>@String.Format("{0:P}", (!completed.Any() || !quoted.Any()) ? 0 :  completed.Count() / (decimal)quoted.Count())</td>
+                <td>@String.Format("{0:C}", completed.Sum(i => i.GetDisplayPrice()))</td>
+                <td>@pending.Count()</td>
+                <td>@String.Format("{0:C}", pending.Sum(i => i.GetDisplayPrice()))</td>
+                <td>@totals.Count()</td>
+                <td>@String.Format("{0:P}", (!completed.Any() || !quoted.Any()) ? 0 : (totals.Count() / (decimal)quoted.Count()))</td>
+                <td>@String.Format("{0:C}", totals.Sum(i => i.GetDisplayPrice()))</td>
+            </tr>
+        }
+    </table>
+</div>

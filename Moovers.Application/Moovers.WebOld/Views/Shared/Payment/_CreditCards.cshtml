@@ -1,0 +1,43 @@
+﻿@model object
+
+@{
+    var name = "";
+    var zip = "";
+    
+    if (Model is KeyValuePair<string, string>)
+    {
+        var kvp = (KeyValuePair<string, string>)Model;
+        name = kvp.Key;
+        zip = kvp.Value;
+    }
+}
+
+<div class="control-group">
+    <label class="control-label" for="name">Name</label>
+    <input type="text" name="name" class="input-xlarge" value="@name" />
+</div>
+<div class="control-group">
+    <label class="control-label" for="cardnumber">Card</label>
+    <input type="text" name="cardnumber" class="input-medium" />
+</div>
+<div class="control-group">
+    <label class="control-label" for="billingzip">Billing Zip</label>
+    <input type="text" name="billingzip" class="input-small" value="@zip" />
+</div>
+<div class="control-group">
+    <label class="control-label" for="expirationmonth">Expiration</label>
+    @Html.DropDownList("expirationmonth", Enumerable.Range(1, 12).Select(i => new SelectListItem(){ 
+        Value = (i < 10) ? "0" + i.ToString() : i.ToString(),
+        Text = i.ToString(),
+        Selected = i == DateTime.Now.Month
+    }), new { @class = "input-mini" }) / 
+    @Html.DropDownList("expirationyear", Enumerable.Range(DateTime.Now.Year - 2 , 14).Select(i => new SelectListItem(){ 
+        Text = i.ToString(),
+        Value = i.ToString().Substring(2),
+        Selected = (i == DateTime.Now.Year)
+    }), new { @class = "input-small" })
+</div>
+<div class="control-group">
+    <label class="control-label" for="cvv2">CVV2</label>
+    <input type="text" name="cvv2" class="input-mini" />
+</div>

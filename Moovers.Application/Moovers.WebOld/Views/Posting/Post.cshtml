@@ -1,0 +1,46 @@
+﻿@model PostModel
+@{
+    ViewBag.Title = "Post Quote " + Model.Posting.Quote.Lookup;
+    Layout = "_PostLayout.cshtml";
+    ViewBag.BodyClass = "post-body";
+    ViewBag.Page = ViewBag.Referrer;
+}
+
+@section Buttons 
+{
+    <button id="btn-post" class="btn btn-primary" style="visibility: hidden;">Post</button>
+}
+
+@Html.Partial("Payment/_AddPayment", Model.Posting.Quote)
+
+@Html.Partial("Quotes/_PostingTemplates", Model.Posting)
+
+<div class="col2-right">
+    <div class="section" style="padding-top: 10px; padding-left: 10px;">
+        <h3>Quote @Model.Posting.Quote.Lookup <span class="desc">@Model.Posting.Quote.Account.DisplayNameLastFirst</span></h3>
+        <a href="@Url.Action("Overview", "Quote", new { id = Model.Posting.Quote.Lookup })">
+            View Quote
+        </a>
+
+        @if (Model.Posting.IsComplete)
+        {
+            <br />
+            using (Html.BeginForm("MarkIncomplete", "Posting", FormMethod.Post, new { @class = "inline" }))
+            {
+                <input type="hidden" name="id" value="@Model.Posting.Lookup" />
+                <button class="btn btn-danger" type="submit">Mark Incomplete</button>
+            }
+        }
+            
+        <table id="container" class="w100"></table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function() {
+        window.EMPLOYEES = @Html.Raw(Model.Employees.Select(i => i.ToJsonObject()).SerializeToJson());
+        window.VEHICLES = @Html.Raw(Model.Vehicles.Select(i => i.ToJsonObject()).SerializeToJson());
+        var postid = "@Model.Posting.PostingID";
+        PostingPage.init(postid);
+    });
+</script>

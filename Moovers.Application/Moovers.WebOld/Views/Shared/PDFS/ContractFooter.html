@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            function subst() {
+                // explode the URL query string  
+                var query = document.location.search.substring(1).split('&');
+                window.kvps = {};
+                query.forEach(function(i) {
+                    var tmp = i.split("=");
+                    kvps[tmp[0]] = tmp[1];
+                });
+
+                // each page will have an element with class 'section' from the body of the footer HTML  
+                var footer = document.getElementById('footer-end-section');
+
+                var totalPages = parseInt(kvps["topage"], 10);
+                var curPage = parseInt(kvps["page"], 10);
+                if (totalPages > 1 && (curPage !== totalPages)) {
+                    footer.innerHTML = "Initials ________";
+                }
+            }
+        </script>
+    </head>
+    <body onload="subst()">
+       <div id="footer-end-section" style="text-align: right;">
+       </div>
+    </body>
+</html>

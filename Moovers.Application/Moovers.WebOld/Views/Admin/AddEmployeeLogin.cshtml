@@ -1,0 +1,36 @@
+﻿@model MooversCRM.Views.Admin.ViewModels.EmployeeLoginViewModel
+@{
+    ViewBag.Title = "Add Employee Login";
+}
+
+<div class="center-container home-page">
+    <div class="container-pad">
+        @using (Html.BeginForm())
+        {
+            <div class="form-group">
+                @Html.LabelFor(m => m.Username)
+                @Html.TextBoxFor(m => m.Username, new { @placeholder = "Username...", required = "required", @class = "form-control" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password, new { @placeholder = "Password", required = "required", @class = "form-control" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ConfirmPassword)
+                @Html.PasswordFor(m => m.ConfirmPassword, new { @placeholder = "Confirm Password", required = "required", @class = "form-control" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.EmployeeID)
+                @Html.DropDownListFor(m => m.EmployeeID, Model.Employees.Select(i => new SelectListItem()
+                {
+                    Selected = Model.EmployeeID == i.EmployeeID,
+                    Text = i.DisplayName(),
+                    Value = i.EmployeeID.ToString()
+                }))
+            </div>
+
+            <br />
+            <button class="btn btn-primary">Submit</button>
+        }
+    </div>
+</div>

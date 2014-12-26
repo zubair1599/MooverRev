@@ -1,0 +1,142 @@
+﻿html, body {
+  font: verdana; }
+
+.clearfix:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0; }
+
+h1, h2, h3, h4, h5 {
+  font-family: Lucida sans; }
+
+h3 {
+  font-size: 30px;
+  font-weight: normal; }
+
+h5 {
+  font-weight: bold;
+  font-size: 14px;
+  margin: 0; }
+
+h6 {
+  margin-bottom: 0;
+  margin-top: 5px;
+  text-transform: uppercase; }
+
+.container {
+  width: 800px;
+  margin: 0 auto;
+  position: relative; }
+
+.body {
+  padding: 5px; }
+
+.header {
+  margin-top: 1.33em; }
+  .header h4 {
+    font-size: 20px;
+    margin: 0;
+    margin-bottom: 4px; }
+  .header .label {
+    font-weight: bold; }
+  .header .summary {
+    float: left; }
+  .header .logo {
+    float: right; }
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0; }
+
+.table-header, table .header {
+  background-color: #ccc;
+  color: black;
+  border: 1px solid black;
+  padding: 5px;
+  font-weight: normal;
+  clear: both;
+  margin: 0; }
+
+table .header th {
+  font-weight: normal;
+  text-align: left;
+  padding: 5px 0;
+  padding-left: 3px; }
+
+table .header th:first-child {
+  padding-left: 5px; }
+
+ul.inventory li {
+  float: left;
+  width: 20%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: 12px tahoma; }
+
+.stop {
+  float: left;
+  margin-right: 7px;
+  margin-left: 8px; }
+
+.stop h5 {
+  margin-top: 5px; }
+
+#valuation {
+  width: 100%;
+  clear: both;
+  border-collapse: collapse; }
+  #valuation td {
+    border: 1px solid black;
+    padding: 3px; }
+  #valuation td.checkbox {
+    vertical-align: middle;
+    text-align: center; }
+
+.table-data {
+  margin-top: 10px; }
+
+table.total-cost {
+  width: 100%;
+  border-collapse: collapse; }
+
+table.total-cost td {
+  padding: 2px 9px; }
+
+table.total-cost tr {
+  border: 1px solid black;
+  border-top: none; }
+
+.price {
+  font-family: tahoma; }
+
+div.address {
+  font-size: 0.9em; }
+
+.condition-info ul {
+  font-size: 0.9em; }
+
+pre {
+  font-family: verdana; }
+
+.text-right {
+  text-align: right; }
+
+.no-break {
+  page-break-inside: avoid; }
+
+h4.short {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  font-size: 1.1em;
+  font-family: lucida sans; }
+
+p.no-pad, pre.no-pad {
+  padding-top: 0;
+  margin-top: 0; }
+
+/*# sourceMappingURL=proposal.css.map */

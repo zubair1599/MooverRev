@@ -1,0 +1,28 @@
+﻿@model Business.Models.StorageVault
+@{
+    ViewBag.Title = "Vault " + Model.Lookup + " Details";
+}
+
+<div class="container-pad">
+    <h3>Vault Details</h3>
+
+    <div class="span6">
+        <table class="table table-verycondensed table-hover">
+            <tr>
+                <th>Work Order</th>
+                <th>Date Removed</th>
+            </tr>
+            @foreach (var item in Model.StorageWorkOrder_Vault_Rel.OrderBy(r => r.IsRemoved).ThenBy(r => r.DateRemoved))
+            {
+                <tr>
+                    <td>@Html.ActionLink("#" + item.StorageWorkOrder.Lookup, "View", new { Controller = "Storage", id = item.StorageWorkOrder.Lookup })</td>
+                    <td>@if (item.DateRemoved.HasValue)
+                        {
+                            @item.DateRemoved.Value.ToShortDateString()
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

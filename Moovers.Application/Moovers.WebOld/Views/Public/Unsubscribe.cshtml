@@ -1,0 +1,14 @@
+﻿@model string
+@{
+    ViewBag.Title = "Unsubscribed";
+    Layout = "~/Views/Shared/Public.cshtml";
+    ViewBag.BodyClass = "confirm-move";
+}
+
+<div class="container-pad">
+    <img src="~/static/img/headerLogo.png" />
+    <p>
+        <br />
+        <strong>@Model</strong> has been unsubscribed from our email list.
+    </p>
+</div>

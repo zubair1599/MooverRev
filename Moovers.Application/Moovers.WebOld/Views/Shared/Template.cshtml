@@ -1,0 +1,94 @@
+﻿@model dynamic
+@{
+    Layout = null;
+           }
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="@ViewBag.Description">
+    <meta name="viewport" content="width=device-width" />
+    @if (ViewBag.IsBeta || ViewBag.IsDevelopment) 
+    {
+        <link rel="icon" href="@Url.Content("~/favicon-dev.ico")" type="image/x-icon" />
+    }
+
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <script type="text/javascript">
+        window.SERVER = {
+            baseUrl: "@Url.Content("~")",
+            username: "@User.Identity.Name",
+            userid: "@ViewBag.UserID",
+            isAdministrator: @ViewBag.IsAdministrator.ToString().ToLower(),
+            isDevelopment: @ViewBag.IsDevelopment.ToString().ToLower(),
+            MAX_TRUCK_CUBICFEET: @ViewBag.MaxTruckCubicFeet,
+            MAX_TRUCK_Weight: @ViewBag.MaxTruckWeight,
+            MAX_PRICE_DISCOUNT: @ViewBag.MaxPriceDiscount,
+            DESTINATION_MULTIPLIERS: @Html.Raw(((object)ViewBag.DestinationMultiplier).SerializeToJson()),
+            MAX_HOURLY_SOURCE_TIME: @ViewBag.MaxHourlySourceTime,
+            MAX_HOURLY_TRAVEL_TIME: @ViewBag.MaxHourlyTravelTime,
+        };
+
+        (function(doc) {
+            @*remove the "no-js" class and replace it with "js"*@
+            doc.className = doc.className.replace(/\bno-js\b/, '') + ' js';
+
+            @*add an IE/not-IE css class to doc root*@
+            if (/MSIE\s([\d.]+)/.test(navigator.userAgent)) { 
+                doc.className +=' ie'; 
+            }  else { doc.className +=' not-ie'; }
+        })(document.documentElement);
+    </script>
+
+    <script type="text/x-jquery-tmpl" id="verify-address-template">
+        <div class="address{{ if (verified) { }} verified-address{{ } }}">
+            <label>
+                {{ if (verified) { }}
+                    <input type="radio" class="verified"  name="address-select" value="{{- json }}" />
+                {{}  else { }}
+                    <input type="radio" name="address-select" value="{{- json }}" />
+                {{ } }}
+                {{- displayString() }}
+            </label>
+        </div>
+    </script>    
+
+    @if (ViewBag.IsDevelopment)
+    {
+        foreach (string file in ViewBag.JavascriptFiles)
+        {
+            @Html.Javascript(file)
+        }
+        foreach (string file in ViewBag.ScreenCssFiles)
+        {
+            @Html.Stylesheet(file, "screen")
+        }
+        foreach (string file in ViewBag.PrintCssFiles)
+        {
+            @Html.Stylesheet(file, "print")
+        }
+    }
+    else
+    {
+        @Html.Stylesheet("~/static/compiled/print.css", "print")
+        @Html.Stylesheet("~/static/compiled/site.css", "screen")
+        @Html.Javascript("~/static/compiled/js.js")
+    }
+</head>
+
+<body class="@(ViewBag.BodyClass ?? "") @(ViewBag.IsDevelopmentDB ? "development" : "")">
+    
+    @* Add a flag where we can easily test in JS whether or not it's a mobile device *@
+    <div id="mobile-tester"></div>
+    <script type="text/javascript">
+        SERVER.IsMobile = $("#mobile-tester").is(":visible");
+    </script>
+
+    <div id="overlay" style="display: none;"></div>
+
+        @RenderBody()
+
+</body>
+
+</html>

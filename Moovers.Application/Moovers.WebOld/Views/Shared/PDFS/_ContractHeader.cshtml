@@ -1,0 +1,29 @@
+﻿@model Business.Models.Account
+
+@{
+    var phone = Model.GetPhone(Business.Models.PhoneNumberType.Primary);
+    var cell = Model.GetPhone(Business.Models.PhoneNumberType.Secondary);
+    var fax = Model.GetPhone(Business.Models.PhoneNumberType.Fax);
+}
+<table class="numbers" style="margin-bottom: 2px;">
+    <tr>
+        <td>
+            <span class="label">Primary Phone</span>
+            @if (phone != null) {
+                @phone.DisplayString()
+            }
+        </td>
+        <td>
+            <span class="label">Cell Phone</span>
+            @if (cell != null) {
+                @cell.DisplayString()
+            }
+        </td>
+        <td>
+            <span class="label">Fax</span>
+            @if (fax != null) {
+                @fax.DisplayString()
+            }
+        </td>
+    </tr>
+</table>

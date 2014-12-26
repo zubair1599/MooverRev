@@ -1,0 +1,76 @@
+﻿@model Business.Models.Quote
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=8">
+    <title></title>
+    <style>
+        .storage-access .middle {
+            width: 100%;
+            text-align: center;
+        }
+        .storage-access.right {
+            text-align: right;
+        }
+
+        .storage-access {
+            width: 800px;
+            margin: 0 auto;
+            font-family: Verdana, Geneva, 'DejaVu Sans', sans-serif;
+            line-height: 26px;
+            font-size: 18px;
+            text-align: justify;
+        }
+
+        .storage-access .underline {
+            padding-top: 35px;
+            width: 300px;
+            border-bottom: 1px solid black;
+            display: inline-block;
+        }
+        .storage-access label {
+            font-size: 18px;
+            display: inline-block;
+            
+        }
+        .storage-access label:after {
+            content: ":";
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="storage-access">
+        <div class="right">
+            Quote @Model.Lookup - @Model.Account.DisplayName
+        </div>
+        <br style="clear: both;" />
+        <div class="middle">
+            <img src="@Html.FileAsBase64("~/static/img/headerLogoLarge.png", "image/png")" width="250" />
+        </div>
+        <br />
+        <div>
+            <p>I hereby release Moovers from any and all liability for items stored onsite at Moovers. I have denied Moovers storage access services (billable at $50 per man per hour) and will be accessing storage on my own. I understand I am responsible for the condition of any and all inventory moving forward, as it will not be in Moovers care during the period I am accessing it. Additionally, I waive any liability for accidents or injury that may occur directly caused by or relating to access of storage.</p>
+
+            <p>Please note, all storage pads are property of Moovers. Moovers should be notified of your intent to purchase pads if necessary. Failure to do so will result in billings of $50 per pad.</p>
+
+            <p>I fully understand and agree to the above terms and conditions.</p>
+
+            <div>
+                <label>Print Name</label>
+                <span class="underline"></span>
+            </div>
+            <div>
+                <label>Signature</label>
+                <span class="underline"></span>
+            </div>
+            <div>
+                <label>Date</label>
+                <span class="underline"></span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

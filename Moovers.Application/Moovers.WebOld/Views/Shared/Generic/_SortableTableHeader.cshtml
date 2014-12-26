@@ -1,0 +1,16 @@
+﻿@model Business.Interfaces.ISortableModel
+
+<tr class="sort-col no-hover">
+    @foreach(var item in Model.GetHeaders()) {
+        if (item.Value == null)
+        {
+            <th>@item.Key</th>
+        } else {
+            var sort = item.Value.ToString();
+            var desc = (Model.Sort.ToString() == item.Value.ToString() && !Model.Desc);
+            <th class="@(Model.Desc ? "desc" : "") @(Model.Sort.ToString() == item.Value.ToString() ? "sel" : "")">
+                @Html.ActionLinkPreserveQuery(item.Key, null, new { sort = sort, desc = desc }, new { data_sort = sort, data_desc = desc.ToString().ToLower() })
+            </th>
+        }
+    }
+</tr>

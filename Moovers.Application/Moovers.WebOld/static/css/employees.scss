@@ -1,0 +1,38 @@
+﻿@import "mixins";
+
+#employees {
+    width: 100%;
+    margin: 20px 0;
+
+    .icon-remove {
+        &:hover {
+            text-decoration: none;
+            color: red;
+        }
+    }
+}
+
+    #employees > thead > tr > th {
+        text-align: left;
+        border: 0px none;
+        border-bottom: 2px solid #C8C8C8;
+        color: #333;
+        font-size: 12px;
+        font-weight: bold;
+        height: 27px;
+        padding: 0 5px;
+    }
+
+    #employees > tbody > tr {
+        border-bottom: 1px solid #DEDEDE;
+    }
+
+    #employees > tbody > tr > td {
+        text-align: left;
+        border: 0px none;
+        color: #333;
+        font-size: 12px;
+        height: 25px;
+        padding: 0 5px;
+    }
+

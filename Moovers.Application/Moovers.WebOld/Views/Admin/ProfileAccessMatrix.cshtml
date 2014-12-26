@@ -1,0 +1,131 @@
+﻿@using Business.Models
+@model IEnumerable<Business.Models.Role_App_Rel>
+
+@{
+    ViewBag.Title = "User Access Rights";
+    IEnumerable<Application> tableheaders = Model.Select(model => model.Application).OrderBy(appmodel => appmodel.SortOrder).Distinct();
+    IEnumerable<IGrouping<string, Role_App_Rel>> rolegroups = Model.GroupBy(grp => grp.RoleName);
+
+    if (TempData.ContainsKey("Model"))
+    {
+        TempData.Remove("Model");
+    }
+    TempData.Add("Model", Model);
+}
+
+@if (ViewBag.Success)
+{
+    <div class="alert alert-success">
+        User Access Rights successfully updated.
+    </div>
+}
+
+<div class="center-container">
+    <div class="container-pad">
+        @using (Html.BeginForm("ProfileAccessMatrix", "Admin", FormMethod.Post, new { roleAppRels = Model }))
+        {
+            @Html.AntiForgeryToken()
+            <table id="profileaccessmatrix" class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            Profile Name
+                        </th>
+                        @foreach (Application header in tableheaders)
+                        {
+                            <th>
+                                @header.AppName
+                            </th>
+                        }
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    
+                    @foreach (IGrouping<string, Role_App_Rel> grp in rolegroups)
+                    {
+                        <tr>
+                            <td>
+                                @grp.Key
+                            </td>
+
+                            <td>
+                                @Html.CheckBoxFor(model => model.FirstOrDefault(m => m.AppName == "Accounts" && m.RoleName == grp.Key).IsAllowedAccess, new Dictionary<string, object> { { "data-relid", grp.FirstOrDefault(m => m.AppName == "Accounts" && m.RoleName == grp.Key).Id }, { "data-appid", grp.FirstOrDefault(m => m.AppName == "Accounts" && m.RoleName == grp.Key).AppId }, { "data-roleid", grp.FirstOrDefault(m => m.AppName == "Accounts" && m.RoleName == grp.Key).RoleId }, { "class", "chkbxisaccessalllowed" } })
+                            </td>
+
+                            <td>
+                                @Html.CheckBoxFor(model => model.FirstOrDefault(m => (m.AppName == "Quote" && m.RoleName == grp.Key)).IsAllowedAccess, new Dictionary<string, object> { { "data-relid", grp.FirstOrDefault(m => m.AppName == "Quote" && m.RoleName == grp.Key).Id }, { "data-appid", grp.FirstOrDefault(m => m.AppName == "Quote" && m.RoleName == grp.Key).AppId }, { "data-roleid", grp.FirstOrDefault(m => m.AppName == "Quote" && m.RoleName == grp.Key).RoleId }, { "class", "chkbxisaccessalllowed" } })
+                            </td>
+
+                            <td>
+                                @Html.CheckBoxFor(model => model.FirstOrDefault(m => m.AppName == "Lead" && m.RoleName == grp.Key).IsAllowedAccess, new Dictionary<string, object> { { "data-relid", grp.FirstOrDefault(m => m.AppName == "Lead" && m.RoleName == grp.Key).Id }, { "data-appid", grp.FirstOrDefault(m => m.AppName == "Lead" && m.RoleName == grp.Key).AppId }, { "data-roleid", grp.FirstOrDefault(m => m.AppName == "Lead" && m.RoleName == grp.Key).RoleId }, { "class", "chkbxisaccessalllowed" } })
+                            </td>
+
+                            <td>
+                                @Html.CheckBoxFor(model => model.FirstOrDefault(m => m.AppName == "Schedule" && m.RoleName == grp.Key).IsAllowedAccess, new Dictionary<string, object> { { "data-relid", grp.FirstOrDefault(m => m.AppName == "Schedule" && m.RoleName == grp.Key).Id }, { "data-appid", grp.FirstOrDefault(m => m.AppName == "Schedule" && m.RoleName == grp.Key).AppId }, { "data-roleid", grp.FirstOrDefault(m => m.AppName == "Schedule" && m.RoleName == grp.Key).RoleId }, { "class", "chkbxisaccessalllowed" } })
+                            </td>
+
+                            <td>
+                                @Html.CheckBoxFor(model => model.FirstOrDefault(m => m.AppName == "Case" && m.RoleName == grp.Key).IsAllowedAccess, new Dictionary<string, object> { { "data-relid", grp.FirstOrDefault(m => m.AppName == "Case" && m.RoleName == grp.Key).Id }, { "data-appid", grp.FirstOrDefault(m => m.AppName == "Case" && m.RoleName == grp.Key).AppId }, { "data-roleid", grp.FirstOrDefault(m => m.AppName == "Case" && m.RoleName == grp.Key).RoleId }, { "class", "chkbxisaccessalllowed" } })
+                            </td>
+
+                            <td>
+                                @Html.CheckBoxFor(model => model.FirstOrDefault(m => m.AppName == "Storage" && m.RoleName == grp.Key).IsAllowedAccess, new Dictionary<string, object> { { "data-relid", grp.FirstOrDefault(m => m.AppName == "Storage" && m.RoleName == grp.Key).Id }, { "data-appid", grp.FirstOrDefault(m => m.AppName == "Storage" && m.RoleName == grp.Key).AppId }, { "data-roleid", grp.FirstOrDefault(m => m.AppName == "Storage" && m.RoleName == grp.Key).RoleId }, { "class", "chkbxisaccessalllowed" } })
+                            </td>
+
+                            <td>
+                                @Html.CheckBoxFor(model => model.FirstOrDefault(m => m.AppName == "Accounting" && m.RoleName == grp.Key).IsAllowedAccess, new Dictionary<string, object> { { "data-relid", grp.FirstOrDefault(m => m.AppName == "Accounting" && m.RoleName == grp.Key).Id }, { "data-appid", grp.FirstOrDefault(m => m.AppName == "Accounting" && m.RoleName == grp.Key).AppId }, { "data-roleid", grp.FirstOrDefault(m => m.AppName == "Accounting" && m.RoleName == grp.Key).RoleId }, { "class", "chkbxisaccessalllowed" } })
+                            </td>
+
+                            <td>
+                                @Html.CheckBoxFor(model => model.FirstOrDefault(m => m.AppName == "Employees" && m.RoleName == grp.Key).IsAllowedAccess, new Dictionary<string, object> { { "data-relid", grp.FirstOrDefault(m => m.AppName == "Employees" && m.RoleName == grp.Key).Id }, { "data-appid", grp.FirstOrDefault(m => m.AppName == "Employees" && m.RoleName == grp.Key).AppId }, { "data-roleid", grp.FirstOrDefault(m => m.AppName == "Employees" && m.RoleName == grp.Key).RoleId }, { "class", "chkbxisaccessalllowed" } })
+                            </td>
+
+                            <td>
+                                @Html.CheckBoxFor(model => model.FirstOrDefault(m => m.AppName == "Vehicles" && m.RoleName == grp.Key).IsAllowedAccess, new Dictionary<string, object> { { "data-relid", grp.FirstOrDefault(m => m.AppName == "Vehicles" && m.RoleName == grp.Key).Id }, { "data-appid", grp.FirstOrDefault(m => m.AppName == "Vehicles" && m.RoleName == grp.Key).AppId }, { "data-roleid", grp.FirstOrDefault(m => m.AppName == "Vehicles" && m.RoleName == grp.Key).RoleId }, { "class", "chkbxisaccessalllowed" } })
+                            </td>
+
+                            <td>
+                                @Html.CheckBoxFor(model => model.FirstOrDefault(m => m.AppName == "Report" && m.RoleName == grp.Key).IsAllowedAccess, new Dictionary<string, object> { { "data-relid", grp.FirstOrDefault(m => m.AppName == "Report" && m.RoleName == grp.Key).Id }, { "data-appid", grp.FirstOrDefault(m => m.AppName == "Report" && m.RoleName == grp.Key).AppId }, { "data-roleid", grp.FirstOrDefault(m => m.AppName == "Report" && m.RoleName == grp.Key).RoleId }, { "class", "chkbxisaccessalllowed" } })
+                            </td>
+
+                            <td>
+                                @Html.CheckBoxFor(model => model.FirstOrDefault(m => m.AppName == "Store Admin" && m.RoleName == grp.Key).IsAllowedAccess, new Dictionary<string, object> { { "data-relid", grp.FirstOrDefault(m => m.AppName == "Store Admin" && m.RoleName == grp.Key).Id }, { "data-appid", grp.FirstOrDefault(m => m.AppName == "Store Admin" && m.RoleName == grp.Key).AppId }, { "data-roleid", grp.FirstOrDefault(m => m.AppName == "Store Admin" && m.RoleName == grp.Key).RoleId }, { "class", "chkbxisaccessalllowed" } })
+                            </td>
+
+                            <td>
+                                @Html.CheckBoxFor(model => model.FirstOrDefault(m => m.AppName == "Admin" && m.RoleName == grp.Key).IsAllowedAccess, new Dictionary<string, object> { { "data-relid", grp.FirstOrDefault(m => m.AppName == "Admin" && m.RoleName == grp.Key).Id }, { "data-appid", grp.FirstOrDefault(m => m.AppName == "Admin" && m.RoleName == grp.Key).AppId }, { "data-roleid", grp.FirstOrDefault(m => m.AppName == "Admin" && m.RoleName == grp.Key).RoleId }, { "class", "chkbxisaccessalllowed" } })
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+            @*<input type="submit" class="btn btn-primary" />*@
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(".chkbxisaccessalllowed").change(function(data) {
+
+        var appid = data.currentTarget.dataset["appid"];
+        var roleid = data.currentTarget.dataset["roleid"];
+        var relid = data.currentTarget.dataset["relid"];
+        var checked = data.currentTarget.checked;
+
+        $.post("../Admin/ProfileAccessMatrix", {relid:relid,appid:appid,roleid:roleid,ischecked:checked}, function (data) {
+
+            if (data.result) {
+                toastr.success(data.message);
+            } else {
+                toastr.warning(data.message);
+            }
+        });
+    });
+
+</script>

@@ -1,0 +1,56 @@
+﻿@model Business.ViewModels.StatsModel
+<!DOCTYPE html>
+@{
+    Layout = null;
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Moovers Man Hour Rates</title>
+    <script type="text/javascript" src="//use.typekit.net/rzq4lqg.js"></script>
+    <script type="text/javascript">try { Typekit.load(); } catch (e) { }</script>
+    @Html.Stylesheet("~/static/css/stats.css", "screen")
+    <meta http-equiv="refresh" content="300" />
+    <style>
+        .avg, .avg span, .avg td {
+            color: #ff9b00!important;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div id="header-main">
+            @Model.StartDate - @Model.EndDate
+        </div>
+    </header>
+    <div id="page-content">
+        <table id="leaderboard">
+            <tr>
+                <th style="width:10%">Rank</th>
+                <th>Athlete</th>
+                <th style="width:29%">Score</th>
+            </tr>
+            @{ var count = 0; }
+            @foreach (var item in Model.Stats.Where(m => m.GetAverage() > 0))
+            {
+                count++;
+                <tr @if (item.IsAverage) { <text>class="avg"</text> }>
+                    <td>@count</td>
+                    <td>@Html.Raw(item.Name)</td>
+                    <td class="@item.GetClass()">@item.GetAverage().ToString("f2")
+                        <span class="move-count">@item.Rates.Count() 
+                            @if (item.Rates.Count() == 1)
+                            {
+                                <text>move</text>
+                            } else {
+                                <text>moves</text>
+                            }
+                        </span>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</body>
+</html>
+

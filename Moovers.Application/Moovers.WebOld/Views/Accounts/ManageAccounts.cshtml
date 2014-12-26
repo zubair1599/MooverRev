@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Manage Accounts";
+}
+
+<div class="container-pad">
+    @using (Html.BeginForm("MergeAccounts", "Accounts"))
+    {
+        <h4>Merge Accounts</h4>
+        <input type="text" placeholder="Account 1" name="acct1" />
+        <input type="text" placeholder="Account 2" name="acct2" />
+        <input type="submit" class="btn btn-submit" />
+    }
+    <br /><br /><br />
+    @using (Html.BeginForm("ArchiveAccount", "Accounts"))
+    {
+        <h4>Archive Account</h4>
+        <input type="text" placeholder="Account ID" name="accountid" />
+        <input type="submit" class="btn btn-submit" />
+    }
+</div>

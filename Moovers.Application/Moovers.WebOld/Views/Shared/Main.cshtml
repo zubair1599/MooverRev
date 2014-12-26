@@ -1,0 +1,16 @@
+﻿@{
+    Layout = "~/Views/Shared/Base.cshtml";
+}
+
+@Html.Partial("_Header", new HeaderModel(ViewBag.SingleFranchise, ViewBag.ParentMenu, ViewBag.WebQuoteUserID))
+
+<div class="page-pane">
+    <div style="height: 19px;"></div>
+    <div class="nav-pane">
+        @Html.Partial("_DropdownMenu")
+        @RenderSection("Submenu", false)
+    </div>
+    <div class="content-pane">
+        @RenderBody()
+    </div>
+</div>

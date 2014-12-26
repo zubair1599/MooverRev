@@ -1,0 +1,105 @@
+﻿@model Moovers.WebModels.QuoteSurveyModel
+@{
+    ViewBag.Title = "Quote #" + Model.Quote.Lookup + " - Visual Surveys";
+    Layout = "~/Views/Quote/AddQuoteLayout.cshtml";
+}
+
+<style>
+    .duplicate, .duplicate td {
+        border-top: 2px solid transparent;
+    }
+
+    td:last-child {
+        text-align: right;
+    }
+</style>
+
+<div class="tab-body-section-center">
+    <div class="tab-body-section clearfix">
+        <div class="left"></div>
+        <div class="title-lg left" style="padding-left: 250px;">
+            @Model.Day.ToString("D")
+        </div>
+        <div class="right">
+            @{ var prevDay = Model.Day.AddDays(-1);
+               var nextDay = Model.Day.AddDays(1); }
+
+            <a href="@Url.Action("ScheduleSurvey", new { id = Model.Quote.Lookup, date = prevDay })" class="btn0 btn-prev">
+                <i class="icon-chevron-left"></i>
+            </a>
+            <a href="@Url.Action("ScheduleSurvey", new { id = Model.Quote.Lookup, date = nextDay })" class="btn0 btn-next">
+                <i class="icon-chevron-right"></i>
+            </a>
+
+            @Html.DateBox("survey-day-picker", Model.Day, new { id = "survey-day-picker", @class = "inline" })
+            <br />
+        </div>
+
+        <br class="clear" />
+        <table class="table table-condensed">
+            @* Loop through hours, 7 - 10pm *@
+            @for (var i = 7; i < 22; i++) {
+                @Html.Partial("_SurveyItem", new DisplaySurveyItem(Model, i, Model.Quote.GetStops().FirstOrDefault()))
+            }
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function() {
+        $("#survey-day-picker").bind("change", function() {
+            var date = new Date($(this).val());
+            var useUtc = true;
+            var param = dateFormat(date, "mm/dd/yyyy", useUtc);
+            var baseUrl = window.location.pathname;
+            window.location = baseUrl + "?date=" + param;
+        });
+
+        var defaultText = "Add Note";
+        var dataField = "initial-text";
+        $(".note").on("click", "a.add-note", function() {
+            var a = $(this);
+            var parent = a.parent();
+            var input = parent.find("input.note-text");
+            input.data(dataField, a.text());
+            parent.addClass("edit");
+            input.val(a.text()).focus().select();
+            return false;
+        });
+
+        $(".note").on("blur", "input.note-text", function() {
+            var txt = $(this);
+            var parent = txt.parent();
+            var link = parent.find("a.add-note");
+            var val = $.trim(txt.val());
+
+            if (val === defaultText) {
+                val = "";
+            }
+
+            var id = txt.closest("tr").data("surveyid");
+            $.post(SERVER.baseUrl + "Quote/SetSurveyNotes", { surveyid: id, note: val });
+            txt.removeData(dataField);
+            parent.removeClass("edit");
+
+            var allLinks = $("tr[data-surveyid=" + id + "]").find("a.add-note");
+            allLinks.text(val || defaultText).toggleClass("changed", link.text() !== defaultText);
+        });
+
+        $(".note").on("keyup", "input.note-text", function(e) {
+            var txt = $(this);
+            if (e.keyCode === Keys.ENTER) {
+                txt.blur();
+                txt.closest("tr").find(".cursor-holder").focus();
+                return false;
+            }
+            if (e.keyCode === Keys.ESCAPE) {
+                var initial = txt.data(dataField);
+                txt.val(initial);
+                txt.removeData(dataField);
+                txt.blur();
+                return false;
+            }
+        });
+    });
+</script>

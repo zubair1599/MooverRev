@@ -1,0 +1,119 @@
+﻿@using Business.Enums
+@model PayrollSummaryModel
+@{
+    ViewBag.Title = "Payroll Summary - " + Model.StartDate.ToShortDateString() + " " + Model.EndDate.ToShortDateString();
+    ViewBag.BodyClass = "payroll-summary";
+}
+
+<div class="center-container">
+    @Html.Image("~/static/img/pdf-logo.png", "Logo", new { @class = "printonly", width = "100" })
+@using (Html.BeginForm("GetEmployeesJobList", "Employees", FormMethod.Get))
+            {
+    <div class="content-pad">
+        <h3>Payroll Summary</h3>
+        @Html.ActionLinkPreserveQuery("export", null, new { iscsv = true }, new { @class = "linkicon excel" })
+
+        <div class="controls-pad">
+            <span class="desc">
+                <a href="@Url.Action("LastPayPeriod", "Employees", new { currentStart = Model.StartDate })">&lt;&lt;</a>
+                @Model.StartDate.ToShortDateString() - @Model.EndDate.ToShortDateString()
+                <a href="@Url.Action("NextPayPeriod", "Employees", new { currentEnd = Model.EndDate })">&gt;&gt;</a>
+            </span>
+          
+                @Html.DateBox("start", Model.StartDate)
+                @Html.DateBox("end", Model.EndDate)
+                <input type="submit" class="btn" />
+           
+        </div>
+
+        <table class="table table-condensed table-striped table-hover table-verycondensed w50">
+            @Html.Partial("Generic/_SortableTableHeader")
+            @{
+                var allPosts = new List<Business.Models.Posting_Employee_Rel>();
+            }
+            @foreach (var kvp in Model.Employees)
+            {
+                var postings = kvp.Value;
+                var emp = kvp.Key;
+                allPosts = allPosts.Concat(postings).ToList();
+                <tr>
+                    <td><input type="checkbox" name="selectedNames" value="@emp.Lookup" /></td>
+                    <td>
+                        @Html.ActionLink(emp.NameLast + ", " + emp.NameFirst + " (" + emp.Lookup + ")", "GetJobList",
+                            new { id = emp.Lookup, start = Model.StartDate.ToString("yyyy-MM-dd"), end = Model.EndDate.ToString("yyyy-MM-dd") })
+                    </td>
+
+                    <td>
+                        @{
+                            var thisuser = kvp.Key.GetAspUserID();
+                            var thisvaluation = Model.ValuationQuotes.Where(i => i.AccountManagerID == thisuser);
+                        }
+                        @if (thisvaluation.Any()) { 
+                            @String.Format("{0:C}", Math.Ceiling(thisvaluation.Sum(i => i.GetReplacementValuationCost()) / 10))
+                        }
+                    </td>
+                    <td>
+
+                        @{ var com = (postings.Any()) ? postings.Sum(i => i.Commission) : 0; }
+                        @if (com > 0)
+                        {
+                            @String.Format("{0:C}", com)
+                        }
+                    </td>
+                    <td>
+                        @{var tip = (postings.Any()) ? postings.Sum(i => i.Tip) : 0; }
+                        @if (tip > 0)
+                        {
+                            @String.Format("{0:C}", tip)
+                        }
+                    </td>
+                   
+                    <td>
+                        @{var perDiem = (postings.Any()) ? postings.Sum(i => i.PerDiem) : 0; }
+                        @if (perDiem > 0)
+                        {
+                            @String.Format("{0:C}", perDiem)
+                        }
+                    </td>
+                    <td>@{
+                            var hours = 0m;
+                        }
+                        
+                        @if (postings.Any())
+                        {
+                            hours = postings.Sum(i => (decimal) (decimal?)i.Hours);
+                            @hours
+                        }
+                    </td>
+                    @if (ViewBag.IsDevelopment) { 
+                        <td class="noprint">
+                            @if (hours > 0)
+                            {
+                                var commission = postings.ToList().Where(i => i.Posting.Quote.QuoteType != QuoteType.National)
+                                    .Sum(i => i.GetCommission());
+                                @String.Format("{0:C}", commission) <text>(</text>@String.Format("{0:C}", commission / hours)<text>)</text>
+                            }
+                        </td>
+                    }
+                </tr>
+            }
+            <tr class="subtotal-row">
+                <td><strong>Total</strong></td>
+                <td></td>
+                <td>@if (allPosts.Any())
+                    {
+                        @String.Format("{0:C}", allPosts.Sum(i => (decimal) (decimal?)i.Commission ))
+                    }
+                </td>
+                <td>
+                    @if (allPosts.Any())
+                    {
+                        @String.Format("{0:C}", allPosts.Sum(i => (decimal) (decimal?)i.Tip))
+                    }
+                </td>
+                <td>@allPosts.Sum(i => (decimal) (decimal?)i.Hours)</td>
+            </tr>
+        </table>
+    </div>
+}
+</div>

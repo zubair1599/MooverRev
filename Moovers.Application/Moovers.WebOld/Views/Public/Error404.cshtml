@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Page Not Found";
+    Layout = "~/Views/Shared/Base.cshtml";
+}
+
+
+<div class="box" id="login-box">    
+    <div>
+        <div class="title">Not Found</div>
+        <div class="logo">Moovers CRM</div>
+    </div>
+    <p>
+        The page you're looking for has been renamed, moved, or just never existed.
+
+        @Html.ActionLink("Back to home", "Index", new { Controller = "Home" })
+    </p>
+</div>

@@ -1,0 +1,107 @@
+﻿@using System.ComponentModel
+@using Business.Enums
+@using Business.ToClean.QuoteHelpers
+@model Moovers.WebModels.QuoteStopsModel
+@{
+    ViewBag.Title = "Quote " + Model.Quote.Lookup;
+    ViewBag.Tab = "Page1";
+    Layout = "~/Views/Quote/AddQuoteLayout.cshtml";
+   }
+
+@section Modals 
+{
+    @Html.Partial("_AddStop", Model.Quote)
+
+    @using (Html.BeginModal("add-storage-modal", "Add Storage"))
+    {
+        using (Html.BeginForm("AddStorage", "Quote", FormMethod.Post))
+        {
+            <input type="hidden" name="id" value="@Model.Quote.Lookup" />
+            <div class="control-group">
+                <span class="control-label">
+                    Storage Length
+                </span>
+                <div class="controls">
+                    <select name="days">
+                        <option value="-1">Out of Storage</option>
+                        @for (var i = 1; i < 8; i++)
+                        {
+                            <option value="@i.ToString()">
+                                @i
+                                @if (i > 1)
+                                {
+                                    <text>Days</text>
+                                }
+                                else
+                                {
+                                    <text>Day</text>   
+                                }
+                            </option>
+                        }
+                        <option value="9999">&gt; 7 Days</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group storage-msg hide">
+                <span class="control-label"></span>
+                <div class="controls">
+                    <div class="alert alert-error">
+                        <strong>NOTE:</strong>
+                        Storage for more than 7 days must be booked with separate moves for move in and move out, and the customer will be charged standard rate for monthly storage.
+                    </div>
+                </div>
+            </div>
+            <div class="right">
+                <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+                <button type="submit" class="btn btn-primary">Add Storage</button>
+            </div>
+            <br style="clear:both;" />
+        }
+    }
+
+}
+
+@{ var UserCanEdit = Model.Quote.CanUserEdit(User.Identity.Name); }
+
+@Html.Partial("_StopTemplates", Model)
+
+@if (UserCanEdit)
+{
+    <div class="right btn-toolbar">
+        <button id="add-stop" class="btn0 btn1" tabindex="4">Add Stop</button>
+        <button id="add-storage" class="btn0 btn1" tabindex="5">Moovers Storage</button>
+    </div>
+}
+
+<div class="cfix"></div>
+
+<div class="stop-mileage">
+    Start
+</div>
+
+<div class="stop franchise-stop">
+    <div class="stop-address">
+        @Model.Quote.GetFranchiseAddress().DisplayString()
+    </div>
+</div>
+
+<div id="stop-container"></div>
+
+<div class="stop franchise-stop">
+    <div class="stop-address">
+        @Model.Quote.GetFranchiseAddress().DisplayString()
+    </div>
+</div>
+
+<div class="stop-mileage">
+    End
+</div>
+
+<script type="text/javascript">
+    window.FranchiseAddress = @Html.Raw(Model.Quote.GetFranchiseAddress().ToJsonObject().SerializeToJson());
+    window.AccountAddress = @Html.Raw(Model.Quote.Account.GetAddress(Business.Models.AddressType.Mailing).ToJsonObject().SerializeToJson());
+    window.AddressTypes = @Html.Raw(StopAddressType.House.ToJavascriptObject());
+    window.ParkingTypes = @Html.Raw(ParkingType.Driveway.ToJavascriptObject());
+    window.StairTypes = @Html.Raw(StairType.Flight.ToJavascriptObject());
+    window.ElevatorTypes = @Html.Raw(ElevatorType.Public.ToJavascriptObject());
+</script>

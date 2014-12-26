@@ -1,0 +1,130 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    
+    
+    
+    <JavaScriptFiles Include="$(ProjectDir)Scripts/jquery.min.js" />
+    <JavaScriptFiles Include="$(ProjectDir)Scripts/angular.js" />
+    <JavaScriptFiles Include="$(ProjectDir)Scripts/angular-route.js" />
+    <JavaScriptFiles Include="$(ProjectDir)Scripts/angular-resource.js" />
+    <JavaScriptFiles Include="$(ProjectDir)Scripts/angular-animate.js" />
+    
+    <JavaScriptFiles Include="$(ProjectDir)static/js/plugins/jquery-ui-1.10.2.custom.js" />
+	
+	
+    <CssFiles Include="$(ProjectDir)static/css-plugins/reset.css" />
+    <CssFiles Include="$(ProjectDir)static/css-plugins/bootstrap.css" />
+    <CssFiles Include="$(ProjectDir)static/css-plugins/bootstrap-jasny.css" />
+    <CssFiles Include="$(ProjectDir)static/css-plugins/font-awesome.css" />
+    <CssFiles Include="$(ProjectDir)static/css-plugins/kalendae.css" />
+    <CssFiles Include="$(ProjectDir)static/css-plugins/full-calendar.css" />
+    <CssFiles Include="$(ProjectDir)static/css-plugins/jquery.selectBoxIt.css" />
+    <CssFiles Include="$(ProjectDir)static/css/base.css" />
+    <CssFiles Include="$(ProjectDir)static/css/screen.css" />
+    <CssFiles Include="$(ProjectDir)static/css/accounts.css" />
+    <CssFiles Include="$(ProjectDir)static/css/admin.css" />
+    <CssFiles Include="$(ProjectDir)static/css/employees.css" />
+    <CssFiles Include="$(ProjectDir)static/css/header.css" />
+    <CssFiles Include="$(ProjectDir)static/css/login.css" />
+    <CssFiles Include="$(ProjectDir)static/css/quote.css" />
+    <CssFiles Include="$(ProjectDir)static/css/posting.css" />
+    <CssFiles Include="$(ProjectDir)static/css/confirm.css" />
+    <CssFiles Include="$(ProjectDir)static/css/storage.css" />
+    <CssFiles Include="$(ProjectDir)static/css/payrollsummary.css" />
+    <CssFiles Include="$(ProjectDir)static/css/quote-manager.css" />
+    <CssFiles Include="$(ProjectDir)static/css/claims.css" />
+    <CssFiles Include="$(ProjectDir)static/css/template.css" />
+    <CssFiles Include="$(ProjectDir)static/css/iphone.css" />
+    <CssFiles Include="$(ProjectDir)static/css/hacks.css" />
+    
+    <CssFiles Include="$(ProjectDir)content/toastr.min.css" />
+
+	<CssFiles Include="$(ProjectDir)static/css/custombootstrap.css"/>
+    <PrintCssFiles Include="$(ProjectDir)static/css-plugins/reset.css" />
+    <PrintCssFiles Include="$(ProjectDir)static/css-plugins/font-awesome.css" />
+    <PrintCssFiles Include="$(ProjectDir)static/css-plugins/full-calendar.css" />
+    <PrintCssFiles Include="$(ProjectDir)static/css/accounts.css" />
+    <PrintCssFiles Include="$(ProjectDir)static/css/admin.css" />
+    <PrintCssFiles Include="$(ProjectDir)static/css/employees.css" />
+    <PrintCssFiles Include="$(ProjectDir)static/css/header.css" />
+    <PrintCssFiles Include="$(ProjectDir)static/css/login.css" />
+    <PrintCssFiles Include="$(ProjectDir)static/css/quote.css" />
+    <PrintCssFiles Include="$(ProjectDir)static/css/posting.css" />
+    <PrintCssFiles Include="$(ProjectDir)static/css/print.css" />
+    <PrintCssFiles Include="$(ProjectDir)static/css/claims.css" />
+    
+      <!--<JavaScriptFiles Include="$(ProjectDir)static/js/plugins/jquery.history.js" />-->
+ 
+    
+    <JavaScriptFiles Include="$(ProjectDir)static/js/plugins/jquery.autocomplete.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/plugins/sprintf.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/plugins/dateformat.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/plugins/underscore.js" />
+
+
+
+    <JavaScriptFiles Include="$(ProjectDir)static/js/plugins/civem.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/plugins/bootstrap.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/plugins/bootstrap-select.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/plugins/bootstrap-jasny.js" />
+
+    
+    <JavaScriptFiles Include="$(ProjectDir)static/js/plugins/jquery.compat.js" />
+    
+    
+   
+   
+    <JavaScriptFiles Include="$(ProjectDir)static/js/plugins/jquery.cookie.js" />
+   
+     
+   
+     
+    
+     <JavaScriptFiles Include="$(ProjectDir)static/js/plugins/jquery.ajaxq.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/plugins/jquery.autosearch.js" />
+    
+    <JavaScriptFiles Include="$(ProjectDir)static/js/plugins/jquery.fullcalendar.js" />
+    
+    <JavaScriptFiles Include="$(ProjectDir)static/js/plugins/jquery.toggle-panel.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/plugins/jquery.maskedinput.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/plugins/jquery.plusAsTab.js" />
+  
+    <JavaScriptFiles Include="$(ProjectDir)static/js/plugins/number-polyfill.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/plugins/filereader.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/plugins/kalendae.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/plugins/jquery.selectBoxIt.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/stateManager.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/site.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/repository.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/address-verify.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/maps.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/quote-server-objects.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/post-server-objects.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/account-server-objects.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/accounts.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/storage.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/schedule-map.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/quote-manager.js" />
+    
+    <JavaScriptFiles Include="$(ProjectDir)static/js/quotes.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/stops.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/inventory.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/pricing.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/quote-overview.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/payment.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/post.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/schedule.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/send-email.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/posting-view.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/home.js" />
+    
+    
+
+	
+	
+
+  <JavaScriptFiles Include="$(ProjectDir)Scripts/toastr.min.js" />
+    
+    
+  </ItemGroup>
+</Project>

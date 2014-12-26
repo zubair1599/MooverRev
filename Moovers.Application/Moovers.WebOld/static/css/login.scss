@@ -1,0 +1,56 @@
+﻿@import "mixins";
+
+/*LOGIN*/
+.box {
+    margin: 0 auto;
+    padding: 20px 25px;
+    background: #F1F1F1;
+    border: 1px solid #E5E5E5;
+}
+
+#login-box {
+    margin-top: 100px;
+    width: 300px;
+}
+
+#login-box .title {
+    font-size: 20px;
+    margin: 5px 0 10px;
+    display: inline-block;
+}
+
+#login-box .logo {
+    float: right;
+    background: url('../img/logo-crm-grey.png') no-repeat;
+    width: 72px;
+    height: 40px;
+}
+
+#login-box [type="submit"], #login-box input[type="text"], #login-box input[type="password"] {
+    width: 100%;
+    height: 32px;
+    @include borderbox;
+}
+
+#login-box label {
+    margin-top: 10px;
+    font-size: 12px;
+    line-height: 13px;
+}
+
+/*#login-box label:after {
+    content: ":";
+}
+
+#login-box label.checkbox:after {
+    content: "";
+}*/
+
+#login-box .fieldset {
+    margin: 10px 0 10px;
+}
+
+
+#login-box .forgot-pass {
+    text-align: center;
+}

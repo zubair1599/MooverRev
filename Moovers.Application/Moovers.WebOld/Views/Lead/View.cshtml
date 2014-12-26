@@ -1,0 +1,166 @@
+﻿@model Business.Models.Lead
+@{
+    ViewBag.Title = "View Lead";
+}
+
+@{ var json = Model.GetLeadJson(); }
+
+<style>
+    td:first-child {
+        font-weight: bold;
+    }
+</style>
+
+<script>
+    $(function() {
+        $("#original").click(function() {
+            $("#original-view").slideToggle();
+            return false;
+        });
+    });
+</script>
+<input type="hidden" id="query" value="@json.Name" />
+<div class="center-container" ng-app>
+    <div class="container-pad">
+        <h3>Lead: @json.Name</h3>
+
+
+        <div class="clearfix">
+            <div class="panel-container" style="width: 40%; float: left;">
+                <div class="panel-title">
+                    Contact Details
+                </div>
+                <div class="panel-section">
+                    <table>
+                        <tr>
+                            <th>Name</th>
+                            <td>@json.Name</td>
+                        </tr>
+                        <tr>
+                            <th>Home Phone</th>
+                            <td>@json.HomePhone</td>
+                        </tr>
+                        @if (!String.IsNullOrWhiteSpace(json.WorkPhone))
+                        {
+                            <tr>
+                                <th>Work Phone</th>
+                                <td>@json.WorkPhone</td>
+                            </tr>
+                        }
+                        @if (!String.IsNullOrWhiteSpace(json.MobilePhone))
+                        {
+                            <tr>
+                                <th>Mobile Phone</th>
+                                <td>@json.MobilePhone</td>
+                            </tr>
+                        }
+                        @if (!String.IsNullOrWhiteSpace(json.Email))
+                        {
+                            <tr>
+                                <th>Email</th>
+                                <td><a href="mailto:@json.Email">@json.Email</a></td>
+                            </tr>
+                        }
+                        @if (!String.IsNullOrWhiteSpace(json.ContactPreference))
+                        {
+                            <tr>
+                                <th>Contact Preference</th>
+                                <td>@json.ContactPreference</td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+
+            <div class="panel-container" style="width: 40%; margin-left: 10%; float: left;">
+                <div class="panel-title">
+                    Move Details
+                </div>
+                <div class="panel-section">
+                    <table>
+                        <tr>
+                            <th>Current Location</th>
+                            <td>
+
+                                @if (!String.IsNullOrEmpty(json.CurrentCity))
+                                {
+                                    @json.CurrentCity<text>, </text>@json.CurrentState<text> </text>@json.CurrentZip
+                                }
+                                else
+                                {
+                                    @Html.Raw(json.Origin)
+                                }
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Destination</th>
+                            <td>@Html.Raw(json.Destination)</td>
+                        </tr>
+                        <tr>
+                            <th>Move Size</th>
+                            <td>@json.Weight</td>
+                        </tr>
+                        <tr>
+                            <th>Move Date</th>
+                            <td>@json.MoveDate.Value.ToShortDateString()</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        @if (!String.IsNullOrWhiteSpace(json.Comments))
+        {
+            <h4>Comments</h4>
+            <pre style="width: 90%;">@json.Comments</pre>
+        }
+
+        <a id="original" href="#">View Original</a><br/><br/>
+        
+        <div id="original-view" style="display: none; width: 600px; ">
+            @{
+            }
+
+            @if (Model.MessageText.Contains("<html>"))
+            {
+                @Html.Raw(Model.MessageText.Replace("style", "rem_style").Replace("script", "rem_script").Replace("link", "rem_link"))
+            }
+            else {
+                @Html.Raw(Model.MessageText.Replace("\n", "<br>"))   
+            }
+        </div>
+       
+        <div id="matchingAccounts" class="clearfix">
+
+        </div>
+
+        <div>
+            Not found?  @Html.ActionLink("Add Account", "ToAccount", new { id = Model.LeadID })
+        </div>
+    </div>
+   
+    
+</div>
+<script type="text/javascript">
+    
+    $(function FindAccounts($scope, $http) {
+        $.ajax({
+            url: '@Url.Action("GetMatchingLeadAccount", "Accounts")',
+            type: 'GET',
+            dataType: 'html',
+            data: { id: '@Model.LeadID' },
+            // we set cache: false because GET requests are often cached by browsers
+            // IE is particularly aggressive in that respect
+            cache: false,
+
+            success: function (data) {
+                $('#matchingAccounts').html(data);
+              
+                $scope.friends = data;
+            }
+        });
+    }
+     );
+</script>
