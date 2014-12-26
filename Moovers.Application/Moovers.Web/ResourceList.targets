@@ -9,16 +9,20 @@
     <JavaScriptFiles Include="$(ProjectDir)Scripts/angular-resource.js" />
     <JavaScriptFiles Include="$(ProjectDir)Scripts/angular-animate.js" />
     
-    <JavaScriptFiles Include="$(ProjectDir)static/js/plugins/jquery-ui-1.10.2.custom.js" />
+    <!--<JavaScriptFiles Include="$(ProjectDir)static/js/plugins/jquery-ui-1.10.2.custom.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/plugins/jquery.autocomplete.js" />-->
+
+
+
+    <!--<JavaScriptFiles Include="$(ProjectDir)Scripts/jquery-ui.js" />-->
 	
 	
-  
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+    <CssFiles Include="$(ProjectDir)content/jquery-ui.css" />  
    <CssFiles Include="$(ProjectDir)content/bootstrap.min.css" />
     <CssFiles Include="$(ProjectDir)content/font-awesome.css" />
     <CssFiles Include="$(ProjectDir)content/nanoscroller.css" />
