@@ -7,7 +7,7 @@ function manageSchedule(scheduleFactory, $scope, $element, $window, $timeout) {
     $scope.selectedMonth = null;
     $scope.selectedYear = null;
     $scope.scheduleForQuote = null;
-
+    $scope.scheduleDay = false;
 
 
     $scope.model = new Object();
@@ -92,14 +92,12 @@ function manageSchedule(scheduleFactory, $scope, $element, $window, $timeout) {
         
 
         $scope.GetSchedule();
-
-        $element.find('.fc-event').remove();
         $element.find('#calendar').fullCalendar({
-            
-          
+
+
             eventLimit: true, // allow "more" link when too many events
             //events: $scope.Array,
-            cache:false,
+            cache: false,
             dayClick: function (date, jsEvent, view) {
 
                 $scope.selectedDate = date.date();
@@ -109,7 +107,7 @@ function manageSchedule(scheduleFactory, $scope, $element, $window, $timeout) {
 
             },
             eventSources: {
-                
+
                 url: '/Quote/GetSchedule1',
                 type: 'GET',
                 data: {
@@ -118,14 +116,14 @@ function manageSchedule(scheduleFactory, $scope, $element, $window, $timeout) {
                     franchiseid: 'da5605a7-ce5c-4253-934e-7f7fa72ce12d'//$scope.$parent.franchiseID
                 },
                 success: function (json) {
-                    
+
                     // $element.find('#calendar').fullCalendar('removeEvents', event.id);
                     $element.find('.fc-event').remove();
                     var done = [];
                     for (var i = 0; i < json.length; i++) {
                         var list = {};
                         var survey = {};
-                        
+
                         var otherEvent = {};
 
                         list = {};
@@ -138,7 +136,7 @@ function manageSchedule(scheduleFactory, $scope, $element, $window, $timeout) {
 
                         var a = tmpdate + " " + tmpmonth;
 
-                        if (done.indexOf(a) ==-1) {
+                        if (done.indexOf(a) == -1) {
 
                             done.push(a);
                             for (var j = 0; j < json.length; j++) {
@@ -165,42 +163,41 @@ function manageSchedule(scheduleFactory, $scope, $element, $window, $timeout) {
                             if (list.total > 0) {
                                 list.title = list.total + " Quotes...";
                                 $element.find('#calendar').fullCalendar('renderEvent', list, false);
-                               
+
                             }
                             if (survey.total > 0) {
                                 survey.title = survey.total + " Surveys";
 
-                                
+
                                 $element.find('#calendar').fullCalendar('renderEvent', survey, false);
                                 //$('#calendar').fullCalendar('removeEvents', event.id);
                             }
                             //$('#calendar').fullCalendar('removeEvents', event.id);
-                            
+
 
                         }
-                       
-                        
-                       
-                        
-                        
 
 
 
-                        
+
+
+
+
+
+
                     }
                     //$('#calendar').fullCalendar('removeEvents', event.id);
                     //alert(data);
-                    
+
 
                 },
-                error: function() {
+                error: function () {
                     alert('there was an error while fetching events!');
                 },
                 //color: 'yellow',   // a non-ajax option
                 //textColor: 'black' // a non-ajax option
             }
         });
-
 
 
 
