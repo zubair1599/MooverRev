@@ -5,7 +5,7 @@ function quoteFactory($rootScope, $http, $q) {
     var serviceDefer = new Object();
     serviceDefer.servicePromise = '';
     serviceDefer.searchResults = [];
-    serviceDefer.URL = 'http://localhost:50600';
+    serviceDefer.URL = 'http://localhost:50959';
 
     serviceDefer.GetPeopleJSON = function (searchQuery) {
 
