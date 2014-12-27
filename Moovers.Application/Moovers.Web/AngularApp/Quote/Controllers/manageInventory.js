@@ -177,7 +177,7 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
         inventoryFactory.UpdateInventory(quoteid, roomStr).then(function(updatesJson) {
 
             $scope.$parent.RefreshStops();
-            $scope.Init();
+            //$scope.Init();
             //alert(updatesJson);
             //$scope.ClearRoomBox(); - undo comment to clear dialog
         });

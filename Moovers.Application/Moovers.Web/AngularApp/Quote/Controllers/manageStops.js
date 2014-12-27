@@ -39,6 +39,7 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
 
     $scope.InitEditStop = function() {
         
+        $scope.SearchAddress = '';
         $scope.stopDialog = true;
         addressFactory.GetStates().then(function (states) {
             $.each(JSON.parse(states), function (index, fb) {
@@ -99,6 +100,9 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
             });
             //$scope.$apply();
         });
+
+
+        $scope.SetPreviousSelectedStop();
         $scope.InitMaps();
 
 
@@ -258,32 +262,7 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
 
                     }
 
-                    $element.find('#previouslySelectedResult').empty();
-                    var mainDiv = $('<div style="width:100%"></div>');
-                    mainDiv.appendTo($element.find('#previouslySelectedResult'));
-
-                    var id = "rdo" + i;
-
-                    var radioBtn = $('<input style="float:left" type="radio" name="' + id + '" />');
-                    var divs = $('<label for="' + id + '" >' + $scope.selectedStop.address + '</label>');
-                    radioBtn.click(function () {
-
-                        var ty = $scope.selectedStop.address.split(',');
-                        $scope.selectedStop.street1 = ty[0];
-
-
-                        $scope.selectedStop.city = ty[1];
-
-                        var tt = ty[2].split(' ');
-                        $scope.selectedStop.state = tt[1];
-                        $scope.selectedStop.zip = tt[2];
-                        $scope.$apply();
-                    });
-
-
-                    radioBtn.appendTo($element.find(mainDiv));
-                    divs.appendTo($element.find(mainDiv));
-
+                    $scope.SetPreviousSelectedStop();
 
 
 
@@ -386,33 +365,8 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
 
             }
 
-            $element.find('#previouslySelectedResult').empty();
-            var mainDiv = $('<div style="width:100%"></div>');
-            mainDiv.appendTo($element.find('#previouslySelectedResult'));
 
-            var id = "rdo" + i;
-
-            var radioBtn = $('<input style="float:left" type="radio" name="' + id + '" />');
-            var divs = $('<label for="' + id + '" >' + $scope.selectedStop.address + '</label>');
-            radioBtn.click(function () {
-
-                var ty = $scope.selectedStop.address.split(',');
-                $scope.selectedStop.street1 = ty[0];
-
-
-                $scope.selectedStop.city = ty[1];
-
-                var tt = ty[2].split(' ');
-                $scope.selectedStop.state = tt[1];
-                $scope.selectedStop.zip = tt[2];
-                $scope.$apply();
-            });
-
-
-            radioBtn.appendTo($element.find(mainDiv));
-            divs.appendTo($element.find(mainDiv));
-
-
+            $scope.SetPreviousSelectedStop();
 
 
         });
@@ -420,6 +374,36 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
     };
 
 
+    $scope.SetPreviousSelectedStop = function () {
+
+
+        $element.find('#previouslySelectedResult').empty();
+        var mainDiv = $('<div style="width:100%"></div>');
+        mainDiv.appendTo($element.find('#previouslySelectedResult'));
+
+        var id = "rdo1";
+
+        var radioBtn = $('<input style="float:left" type="radio" name="' + id + '" />');
+        var divs = $('<label for="' + id + '" >' + $scope.selectedStop.address + '</label>');
+        radioBtn.click(function () {
+
+            var ty = $scope.selectedStop.address.split(',');
+            $scope.selectedStop.street1 = ty[0];
+
+
+            $scope.selectedStop.city = ty[1];
+
+            var tt = ty[2].split(' ');
+            $scope.selectedStop.state = tt[1];
+            $scope.selectedStop.zip = tt[2];
+            $scope.$apply();
+        });
+
+
+        radioBtn.appendTo($element.find(mainDiv));
+        divs.appendTo($element.find(mainDiv));
+
+    };
 
 
 };
