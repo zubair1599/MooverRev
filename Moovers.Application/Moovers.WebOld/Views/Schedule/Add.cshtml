@@ -1,0 +1,21 @@
+﻿@model Business.Models.Quote
+
+@{
+    ViewBag.Title = "Add Schedule";
+}
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <div class="control-group">
+        <label class="control-label" for="date">Date</label>
+        <div class="controls">
+            <input type="date" name="date" />
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            @Html.ActionLink("Cancel", "Overview", new { Controller = "Quote", id = Model.Lookup }, new { @class = "cancel" })
+            <button type="submit" class="btn btn-primary">Schedule</button>
+        </div>
+    </div>
+}

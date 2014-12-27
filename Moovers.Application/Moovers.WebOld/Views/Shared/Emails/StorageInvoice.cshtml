@@ -1,0 +1,25 @@
+﻿@model Business.Models.StorageWorkOrder
+@{
+    ViewBag.Title = "StorageInvoice";
+    Layout = "~/Views/Shared/Email.cshtml";
+}
+
+@section HeaderMessage {
+    Your Account Number: @Model.Account.Lookup
+}
+
+<p>Dear @Model.Account.DisplayName</p>
+<p>
+    Your Moovers Storage statement is ready! See the attached file.
+</p>
+@if (Model.IsAutomaticBilling && Model.GetNextPayment().HasValue && !Model.HasPaymentError)
+{
+    <p class="font-weight: bold;">
+        Your card ending in @Model.Account_CreditCard.GetLast4() will be billed @String.Format("{0:C}", Model.MonthlyPayment) on @Model.GetNextPayment().Value.ToShortDateString()
+    </p>
+}
+
+<p>
+    Thank you,<br />
+    Moovers
+</p>

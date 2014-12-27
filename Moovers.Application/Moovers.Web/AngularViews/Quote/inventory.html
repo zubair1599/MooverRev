@@ -25,225 +25,227 @@
             background-color: lightgrey;
         }
 
-    .active {
-        border-left: 3px solid #ff8800;
-    }
+  
 </style>
+<script>
 
-<div id="quote-coordinators" class="container-transparent" ng-controller="manageInventory">
-    <span class="title title2">
-        Manage Inventory <span class="subtitle">Which Items are used for coordinating the move?</span>
-        <span class="pull-right">
-            <input type="button" class="btn btn-primary" value="Add Room" onclick="OpenDialog('roommodal')" ng-click="ClearRoomBox()" />
-        </span>
-    </span>
-    <div class="quote-contacts">
-        <div class="contact">
-            <div class="primary-contact">
-                Inventory
+    function Open() {
+        //$('#modal-room').modal('show');
+        //$('#modal-room').addClass('md-effect-14');
+        $('#modal-room').addClass('md-show');
+        $('#modal-room').removeClass('hide');
+        
+        //alert();
+    };
+
+    function Close() {
+        //$('#modal-room').modal('show');
+
+        $('#modal-room').removeClass('md-show');
+        $('#modal-room').addClass('hide');
+        //alert();
+    };
+
+</script>
+<div ng-controller="manageInventory">
+    <div class="row">
+        <div class="col-lg-12">
+            <ol class="breadcrumb">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Quote</a></li>
+                <li class="active"><span>Inventory</span></li>
+            </ol>
+            <div class="pull-left">
+                <h1>Manage Inventory</h1>    
             </div>
-            <div class="contact-details">
-                <div class="row" style="padding-left: 20px">
-                    <input type="button" style="margin-left: 3px;margin-right: 3px" class="btn btn-default" value="Send all to storage" />
-                    <input type="button" style="margin-left: 3px;margin-right: 3px" class="btn btn-default" value="Remove all storage" />
+            <div class="pull-right">
+                <input type="button" class="btn btn-primary" value="Add Room" data-modal="modal-room" onclick="Open();" ng-click="ClearRoomBox()" />
 
-                    <input type="text" id="searchtxt" ng-model="searchQuery" ng-change="GetItemSuggestions()" placeholder="Search for an item" />
-                    <input type="text" ng-model="searchQuantity" style="width: 50px" placeholder="Qty" />
-                    <input type="text" ng-model="searchStore" style="width: 50px" placeholder="Store" />
-                    <input type="button" class="btn btn-primary" value="Add Item" ng-click="AddItem()" />
+            </div>
+            
+            
+        </div>
+    </div>
 
-                    <input type="button" style="margin-left: 3px;margin-right: 3px" class="btn btn-default" value="Remove All" />
-                    <input type="button" style="margin-left: 3px;margin-right: 3px" class="btn btn-default" value="Undo / Redo" />
-
-                </div>
-                <div class="row" style="padding-left: 20px">
-                    <br />
-
-                    <div class="pull-left" style="width: 350px;">
-                        <div ng-repeat="room in $parent.AllRooms" ui-on-drop="onDrop($event,$data,room)" ui-draggable="false">
-
-                            <div ng-class="{active: selectedRoom.RoomID==room.RoomID}" id="{{room.Id}}" style="margin-top:20px;padding-top: 10px;padding-bottom: 10px " class="thumbnail" ng-click="SetSelectedRoom(room)">
-                                <h5 style="text-align: center">{{room.Type}} - ({{room.Items.length}} Items)</h5>
-                                <p style="text-align: center;margin-top: 20px;" ng-bind="room.StopName"></p>
-
-                            </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="col-lg-4">
+                <input type="button" class="btn btn-default" value="Send all to storage" />
+                <input type="button" class="btn btn-default" value="Remove all storage" />
+            </div>
 
 
-                            <!--<div style="margin-top:20px;padding-top: 10px;padding-bottom: 10px " data-jqyoui-options="optionsList1" jqyoui-droppable="{ multiple: true,placeholder: false,onOver:'ChangeInventoryRoom(room)'}" class="thumbnail" data-drop="true" ng-model='abca' ng-click="SetSelectedRoom(room)">
-                                    <h5 style="text-align: center" ng-bind="room.Type"></h5>
-                                    <p style="text-align: center;margin-top: 20px;" ng-bind="room.StopName"></p>
+                
 
-                                </div>-->
-                        </div>
+            <div class="col-lg-3">
+
+                <input type="text" style="width: 120px;height: 40px" id="searchtxt" ng-model="searchQuery" ng-change="GetItemSuggestions()" placeholder="Search Item" />
+
+                <input type="text" style="width: 50px;height: 40px" ng-model="searchQuantity" placeholder="Qty" />
+                <input type="text" style="width: 50px;height: 40px" ng-model="searchStore" placeholder="Store" />
+            </div>
 
 
+
+            
+        <div class="col-lg-4" style="margin-left: 0;padding-left: 0">
+            <input type="button" class="btn btn-primary" value="Add Item" ng-click="AddItem()" />
+            <input type="button" class="btn btn-default" value="Remove All" />
+            <input type="button" class="btn btn-default" value="Undo / Redo" />
+
+        </div>
+
+        </div>
+    </div>
+    
+    
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="col-lg-4">
+                <div class="main-box clearfix">
+                    <header class="main-box-header clearfix">
+                        <h2>Rooms</h2>
+                    </header>
+                    <div class="main-box-body clearfix">
+                        <ul class="widget-products">
+                            <li ng-repeat="room in $parent.AllRooms" ui-on-drop="onDrop($event,$data,room)" ui-draggable="false">
+                                <a ng-click="SetSelectedRoom(room)">
+
+
+                                    <span class="name">
+                                        {{room.Type}} - ({{room.Items.length}} Items)
+                                        <br />
+                                    </span>
+                                    <span class="warranty" ng-bind="room.StopName">
+                                    </span>
+
+                                </a>
+                            </li>
+
+
+                        </ul>
                     </div>
-
-
-                    <div class="pull-right" style="width:550px;margin-top:20px;padding-top: 10px;">
-
-
+                </div>
+            </div>
+            <div class="col-lg-8">
+               
                         <div class="btn btn-default btn-draggable" ui-draggable="true" drag="itemrel" ng-repeat="itemrel in selectedRoom.Items">
                             {{itemrel.Item.Name}} ({{itemrel.Count}})
                             <i class="icon-remove" ng-click="RemoveItem(itemrel)"></i>
+                       
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="md-modal  hide" id="modal-room">
+        <div class="md-content">
+            <div class="modal-header">
+                <button class="md-close close" onclick="Close();">×</button>
+                <h4 class="modal-title">Add Room</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <label for="roomType">Room Type</label>
+                        <div class="form-inline">
+                        
+                            <select id="roomType" class="form-control" ng-model="selectedRoom.Type">
+                                <option value="Attic">Attic</option>
+                                <option value="Basement">Basement</option>
+                                <option value="Bathroom">Bathroom</option>
+                                <option value="Bedroom">Bedroom</option>
+                                <option value="Dining_Room">Dining Room</option>
+                                <option value="Garage">Garage</option>
+                                <option value="Kitchen">Kitchen</option>
+                                <option value="Living_Room">Living Room</option>
+                                <option value="Laundry_Room">Laundry Room</option>
+                                <option value="Office">Office</option>
+                                <option value="Outdoor">Outdoor</option>
+                                <option value="Other">Other ( Please Specify )</option>
+
+
+
+
+                            </select>
+
+                            <input type="text" class="form-control" ng-show="selectedRoom.Type=='Other'" style="width: 150px" ng-model="selectedRoom.TypeOther" />    
                         </div>
+                        
 
-
-                        <!--<input type="button" value="save" ng-click="TmpSave()"/>-->
+                        
                     </div>
-                </div>
-                <div>
-
-                    <!--<ul class="thumbnails">
-                            <li class="span3" style='margin-left:10px;'>
-                                <div class="thumbnail" data-drop="true" ng-model='list1' data-jqyoui-options="optionsList1" jqyoui-droppable="{multiple:true}">
-                                    <div class="caption">
-                                        <div class="btn btn-info btn-draggable" ng-repeat="item in list1" ng-show="item.title" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list1" jqyoui-draggable="{index: {{$index}},animate:true}">{{item.title}}</div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="span3" style='margin-left:10px;'>
-                                <div class="thumbnail" data-drop="true" ng-model='list2' data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=list2])'}" jqyoui-droppable="{multiple:true}">
-                                    <div class="caption">
-                                        <div class="btn btn-info btn-draggable" ng-repeat="item in list2" ng-show="item.title" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list2" jqyoui-draggable="{index: {{$index}},animate:true}">{{item.title}}</div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="span3" style='margin-left:10px;'>
-                                <div class="thumbnail" data-drop="true" ng-model='list3' data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=list3])'}" jqyoui-droppable="{multiple:true}">
-                                    <div class="caption">
-                                        <div class="btn btn-info btn-draggable" ng-repeat="item in list3" ng-show="item.title" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list3" jqyoui-draggable="{index: {{$index}},animate:true}">{{item.title}}</div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="span3" style='margin-left:10px;'>
-                                <div class="thumbnail" data-drop="true" ng-model='list4' data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=list4])'}" jqyoui-droppable="{multiple:true}">
-                                    <div class="caption">
-                                        <div class="btn btn-info btn-draggable" ng-repeat="item in list4" ng-show="item.title" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list4" jqyoui-draggable="{index: {{$index}},animate:true}">{{item.title}}</div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>-->
+                    <div class="form-group">
+                        <label for="roomDescription">Description</label>
+                        <input ng-model="selectedRoom.Description" class="form-control" id="roomDescription" />
+                    </div>
+                    <div class="form-group">
+                        <label for="roomStopId">Stop</label>
+                        <select class="form-control" ng-model="selectedRoom.StopID" id="roomStopId">
+                            <option ng-repeat="stop in $parent.selectedQuote.Stops" value="{{stop.id}}">{{stop.address}}</option>
 
 
-
-                </div>
-
+                        </select>
+                    </div>
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="UpdateRoom()" onclick="Close();">Save changes</button>
+                <button type="button" class="btn btn-danger" onclick="Close();">Cancel</button>
             </div>
         </div>
-
-
     </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!--Modals for Inventory Below-->
-    <div id="roommodal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
-        <div class="modal-header">
-            <a type="button" class="close-modal" data-dismiss="modal" aria-hidden="true"></a>
-            <h3 id="myModalLabel1">Manage Room</h3>
-        </div>
-        <div id="account-contacts" class="modal-body">
-            <div class="title title7">
-                Select Room :
-            </div>
-            <div class="contact-info">
-                <select ng-model="selectedRoom.Type">
-                    <option value="Attic">Attic</option>
-                    <option value="Basement">Basement</option>
-                    <option value="Bathroom">Bathroom</option>
-                    <option value="Bedroom">Bedroom</option>
-                    <option value="Dining_Room">Dining Room</option>
-                    <option value="Garage">Garage</option>
-                    <option value="Kitchen">Kitchen</option>
-                    <option value="Living_Room">Living Room</option>
-                    <option value="Laundry_Room">Laundry Room</option>
-                    <option value="Office">Office</option>
-                    <option value="Outdoor">Outdoor</option>
-                    <option value="Other">Other ( Please Specify )</option>
-
-
-
-
-                </select>
-
-                <input type="text" ng-show="selectedRoom.Type=='Other'" style="width: 150px" ng-model="selectedRoom.TypeOther" />
-
-            </div>
-            <div class="title title7">
-                Description :
-            </div>
-            <div class="contact-info">
-                <input ng-model="selectedRoom.Description" />
-            </div>
-            <div class="title title7">
-                Stop
-            </div>
-            <div class="contact-info">
-                <select ng-model="selectedRoom.StopID">
-                    <option ng-repeat="stop in $parent.selectedQuote.Stops" value="{{stop.id}}">{{stop.address}}</option>
-
-
-                </select>
-            </div>
-            <div class="contact-info">
-                <button class="btn btn-close pull-right" data-dismiss="modal">Cancel</button>
-                <button class="btn btn-primary pull-right" ng-click="UpdateRoom()" data-dismiss="modal">Submit</button>
-
-            </div>
-
-        </div>
-
-    </div>
-    <div id="additionalQuestions-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
-        <div class="modal-header">
-            <a type="button" class="close-modal" data-dismiss="modal" aria-hidden="true"></a>
-            <h3 id="myModalLabel1">{{selectedItem.Name}}</h3>
-        </div>
-        <div id="account-contacts" class="modal-body">
-            <div id="options" ng-repeat="additem in selectedItem.AdditionalQuestions">
-                <div style="width:500px">
-
-                    <label style="float:left;width:200px">{{additem.QuestionText}}</label>
-                    <div ng-show="additem.Options.length===0">
-                        <input type="checkbox" ng-model="additem.value" id="chk{{$index}}" />
-
-                    </div>
-                    <br />
-                    <div ng-show="additem.Options.length>0">
-                        <button class="btn btn-default" ng-repeat="option in additem.Options" ng-click="ChangeOption(option)">{{option.Option}}</button>
-                    </div>
-
+    <div class="modal fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" style="display: block;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Modal title</h4>
                 </div>
-
-
-
+                <div class="modal-body">
+                    <form role="form">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Email address</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Password</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleTextarea">Textarea</label>
+                            <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+                        </div>
+                        <div class="form-inline form-inline-box">
+                            <div class="form-group">
+                                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control">
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-link"><i class="fa fa-eye"></i> Preview</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
             </div>
-
-
-
-            <div class="contact-info">
-                <button class="btn btn-success pull-right" ng-click="SaveItemOptions()" data-dismiss="modal">Save</button>
-            </div>
-
         </div>
-
     </div>
 </div>
+
+
+
+
 
 
 

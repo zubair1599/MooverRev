@@ -1,0 +1,51 @@
+﻿<div id="shipper-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <a type="button" class="close-modal" data-dismiss="modal" aria-hidden="true"></a>
+        <h3 id="myModalLabel">Add a shipper</h3>
+        <div class="tab-icons">
+            <span class="tab-icon tab-icon-contact active"></span>
+            <span class="tab-icon tab-icon-search"></span>
+        </div>
+    </div>
+    <div id="account-contacts" class="modal-body">
+        <div class="title title7">
+            Account contacts
+        </div>
+        <ul class="contact-list">
+            <li>
+                Elaine Scott
+                <button class="btn btn-default pull-right">Add</button>
+            </li>
+        </ul>
+    </div>
+    <div id="search-contacts">
+        <div class="modal-body">
+            <div class="title title7">
+                Search for a person , email or company
+            </div>
+            <div class="input-inline-container">
+                <div class="input-inline">
+                    <span class="input-name">Search</span>
+                    <span class="input-underline">
+                        <input type="text" class="" name="person" ng-change="searchForCustomer()" ng-model="searchQuery" />
+                    </span>
+                </div>
+
+
+            </div>
+            <div class="btn-container text-center">
+                <!--<button id="contact-search" ng-click="searchForPeople()" class="btn btn-default">Search</button>-->
+            </div>
+        </div>
+        <div id="contact-search-results" class="contact-list-container">
+            <ul class="contact-list">
+
+                <li ng-repeat="person in searchResults">
+                    {{person.Name}} - {{person.City}} , {{person.State}}
+                    <button id="closeModalBtn" data-dismiss="modal" aria-hidden="true" class="btn btn-default pull-right" ng-click="setSelectedCustomer(person.AccountID)">Add</button>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</div>

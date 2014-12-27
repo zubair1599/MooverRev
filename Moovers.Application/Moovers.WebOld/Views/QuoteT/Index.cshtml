@@ -1,0 +1,441 @@
+@{
+
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Template.cshtml";
+}
+
+
+<link href='~/content/fullcalendar/fullcalendar.css' rel='stylesheet' />
+<link href='~/content/fullcalendar/fullcalendar.print.css' rel='stylesheet' media='print' />
+<script src='~/content/fullcalendar/lib/moment.min.js'></script>
+
+<script src='~/content/fullcalendar/fullcalendar.min.js'></script>
+
+
+
+
+<script src="~/static/js/plugins/jquery-ui-1.10.2.custom.js"></script>
+<link href="~/content/loading-bar.css" rel="stylesheet" />
+<script src="~/Scripts/loading-bar.js"></script>
+
+
+<script src="~/Scripts/draganddrop.js"></script>
+
+<script src="~/AngularApp/Quote/quoteApp.js"></script>
+
+<script src="~/AngularApp/Quote/Services/quoteFactory.js"></script>
+<script src="~/AngularApp/Quote/Services/addressFactory.js"></script>
+<script src="~/AngularApp/Quote/Services/inventoryFactory.js"></script>
+<script src="~/AngularApp/Quote/Services/priceFactory.js"></script>
+<script src="~/AngularApp/Quote/Services/scheduleFactory.js"></script>
+<script src="~/AngularApp/Quote/Services/homeFactory.js"></script>
+
+
+
+<script src="~/AngularApp/Quote/Directives/addQuoteDialog.js"></script>
+<script src="~/AngularApp/Quote/Directives/customerSearchDialog.js"></script>
+<script src="~/AngularApp/Quote/Directives/addressStopDialog.js"></script>
+
+
+<script src="~/AngularApp/Quote/Controllers/home.js"></script>
+<script src="~/AngularApp/Quote/Controllers/quoteHome.js"></script>
+<script src="~/AngularApp/Quote/Controllers/manageStops.js"></script>
+<script src="~/AngularApp/Quote/Controllers/manageInventory.js"></script>
+<script src="~/AngularApp/Quote/Controllers/managePricing.js"></script>
+<script src="~/AngularApp/Quote/Controllers/manageSchedule.js"></script>
+
+
+<script src="http://maps.google.com/maps/api/js?sensor=true"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+
+<script type="text/javascript">
+
+    function OpenDialog(id) {
+        $('#' + id).modal('show');
+
+
+    };
+   
+
+  
+   
+    
+
+  $(document).ready(function() {
+
+      $('#calendar').fullCalendar({
+          defaultDate: '2014-11-12',
+          editable: true,
+          eventLimit: true, // allow "more" link when too many events
+          events: [
+              {
+                  title: 'All Day Event',
+                  start: '2014-11-01'
+              },
+              {
+                  title: 'Long Event',
+                  start: '2014-11-07',
+                  end: '2014-11-10'
+              },
+              {
+                  id: 999,
+                  title: 'Repeating Event',
+                  start: '2014-11-09T16:00:00'
+              },
+              {
+                  id: 999,
+                  title: 'Repeating Event',
+                  start: '2014-11-16T16:00:00'
+              },
+              {
+                  title: 'Conference',
+                  start: '2014-11-11',
+                  end: '2014-11-13'
+              },
+              {
+                  title: 'Meeting',
+                  start: '2014-11-12T10:30:00',
+                  end: '2014-11-12T12:30:00'
+              },
+              {
+                  title: 'Lunch',
+                  start: '2014-11-12T12:00:00'
+              },
+              {
+                  title: 'Meeting',
+                  start: '2014-11-12T14:30:00'
+              },
+              {
+                  title: 'Happy Hour',
+                  start: '2014-11-12T17:30:00'
+              },
+              {
+                  title: 'Dinner',
+                  start: '2014-11-12T20:00:00'
+              },
+              {
+                  title: 'Birthday Party',
+                  start: '2014-11-13T07:00:00'
+              },
+              {
+                  title: 'Click for Google',
+                  url: 'http://google.com/',
+                  start: '2014-11-28'
+              }
+          ]
+      });
+		
+  });
+
+    
+ 
+</script>
+
+<style type="text/css">
+    
+    #calendar {
+		max-width: 900px;
+		margin: 0 auto;
+	}
+
+
+
+</style>
+
+<link href='//fonts.googleapis.com/css?family=Roboto:700,400,300' rel='stylesheet' type='text/css'>
+
+
+<div ng-app="quoteApp">
+    
+    
+    <div ng-controller="quoteHome as home" >
+        <div class="page-pane">
+            <div class="content-pane">
+                <div class="quote-actions">
+                    <div class="container">
+                        <button class="btn" type="button">Save & Close</button>
+                        <div class="nav-btns">
+                            <button class="btn" type="button">Back</button>
+                            <button class="btn btn-primary" type="button">Next</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="quote-wizard" class="container">
+                    <div class="pane-container">
+                        <div class="pane-left">
+
+                            <div class="container-white">
+                                <div class="primary-contact">
+                                    Primary contact
+                                </div>
+                                <div id="shipper">
+                                    <div class="title title3" ng-bind="customer.DisplayName"></div>
+                                    <div id="shipper-address">
+                                        <div ng-bind="customer.BillingAddress.Street1"></div>
+                                        <div ng-bind="customer.BillingAddress.Street2"></div>
+                                        <span ng-bind="customer.BillingAddress.City"></span>
+                                        <span ng-bind="customer.BillingAddress.State"></span>
+                                        <span ng-bind="customer.BillingAddress.Zip"></span>
+                                    </div>
+                                    <div id="shipper-contact">
+                                        <div ng-bind="customer.PrimaryEmail"></div>
+                                        <div ng-bind="customer.PrimaryPhone.Display"></div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="container-white">
+                                <div class="primary-contact">
+                                    Secondary Contact
+                                </div>
+                                <div id="shipper">
+                                    <div class="title title3" ng-bind="customer.DisplayName"></div>
+                                    <div id="shipper-address">
+                                        <div ng-bind="customer.MailingAddress.Street1"></div>
+                                        <div ng-bind="customer.MailingAddress.Street2"></div>
+
+                                        <span ng-bind="customer.MailingAddress.City"></span>
+                                        <span ng-bind="customer.MailingAddress.State"></span>
+                                        <span ng-bind="customer.MailingAddress.Zip"></span>
+
+                                    </div>
+
+                                    <div id="shipper-contact">
+                                        <div ng-bind="customer.SecondaryEmail"></div>
+                                        <div ng-bind="customer.SecondaryPhone.Display"></div>
+
+
+                                    </div>
+                                </div>
+
+                                <ul id="quote-nav">
+                                    <li>
+                                        <a href="#/contacts" ng-class="{active: currentTab==0}" ng-click="currentTab=0">Contacts</a>
+                                    </li>
+                                    <li>
+                                        <a href="#/stops" ng-class="{active: currentTab==1}" ng-click="currentTab=1">Stops</a>
+                                    </li>
+                                    <li>
+                                        <a href="#/inventory" ng-class="{active: currentTab==2}" ng-click="currentTab=2">Inventory</a>
+                                    </li>
+                                   
+                                    <li>
+                                        <a href="#/pricing" ng-class="{active: currentTab==3}" ng-click="currentTab=3">Pricing</a>
+                                    </li>
+                                    <li>
+                                        <a href="#/schedule" ng-class="{active: currentTab==4}" ng-click="currentTab=4">Schedule</a>
+                                    </li>
+                                    <li>
+                                        <a href="#/home" ng-class="{active: currentTab==5}" ng-click="currentTab=5">Home</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div id="quote-stops" class="container-white">
+                                <div class="pane-left-title">Stops</div>
+                                <ul>
+                                    <li><span class="street">4201 E 34th St</span>Kansas City, MO 64113</li>
+                                    <li><span class="street">3808 S Marshall Ct</span>Independence, MO 64055</li>
+                                    <li><span class="street">525 Main St</span>Overland Park, KS 66209</li>
+                                </ul>
+                            </div>
+                            <div id="quote-pricing" class="container-white">
+                                <div class="pane-left-title">Pricing</div>
+                                <ul>
+                                    <li>Moving Services <span class="dollars">$642.00</span></li>
+                                    <li>Packing Services <span class="dollars">$95.00/hr</span></li>
+                                    <li>Packing Supplies <span class="dollars">based on use</span></li>
+                                    <li id="promo">Valpak <span class="dollars">- $100.00</span></li>
+                                    <li id="coverage">Min Coverage + Cash <span class="dollars">$79.00</span></li>
+                                    <li id="total-price">Total <span class="dollars">$542.00</span></li>
+                                </ul>
+                            </div>
+                            <div id="quote-schedule" class="container-white">
+                                <div class="pane-left-title">Schedule</div>
+                                <ul>
+                                    <li>Fri, Dec 23, 2013<span class="schedule-detail">Pack</span></li>
+                                    <li>Sat, Dec 24, 2013<span class="schedule-detail">Pickup</span></li>
+                                    <li>Sun, Dec 25, 2013<span class="schedule-detail">Deliver</span></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="pane-right">
+
+
+                            <div id="quote-shipper" class="container-transparent">
+
+                                <div ng-show="selectedQuote.QuoteID==null">
+                                    <span class="title title2">
+                                        Shipper
+                                        <span class="subtitle">Whose goods are we moving?</span>
+                                    </span>
+                                    <div class="quote-contacts">
+                                        <div class="contact">
+                                            <div class="contact-placeholder">
+                                                <div class="contact-title">
+                                                    Add a shipper
+                                                </div>
+                                                <div class="contact-subtitle">
+                                                    The person or company who<br />owns the goods being shipped.
+                                                </div>
+                                                <a onclick="OpenDialog('shipper-modal')" role="button" class="btn btn-primary" data-toggle="modal" data-backdrop="static">Add shipper</a>
+                                                <a onclick="OpenDialog('addQuote-modal')" role="button" class="btn btn-primary" data-toggle="modal" data-backdrop="static">Add Quote</a>
+                                                @*<a onclick="OpenDialog('stopmodal')" role="button" class="btn btn-primary" data-toggle="modal" data-backdrop="static">Stop chk</a>*@
+
+
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+
+                                <div class="quote-contacts" ng-show="selectedQuote.QuoteID!=null">
+
+                                    <div style="width: 100%">
+                                        <div style="width:150px;float:left;margin-left: 2px">
+                                            <div id="quote-stops" class="container-white">
+                                                <div class="pane-left-title" style="text-align: center;padding: 0;margin: 0">Miles</div>
+
+                                                <h5 style="font-weight: bold; text-align: center;margin-top: 10px;padding-bottom: 5px; margin-bottom: 5px;">{{QuoteQuickLook.TotalMiles}}</h5>
+                                                <p style="text-align: center;font-size: 10px;padding:0;margin:0">Base : {{QuoteQuickLook.BaseMiles}} , Move : {{QuoteQuickLook.MoveMiles}} </p>
+
+
+
+
+
+
+                                            </div>
+                                        </div>
+                                        <div style="width:150px;float:left;margin-left: 2px">
+                                            <div id="quote-stops" class="container-white">
+                                                <div class="pane-left-title" style="text-align: center;padding: 0;margin: 0">Pieces</div>
+                                                <h5 style="font-weight: bold; text-align: center;margin-top: 10px;padding-bottom: 5px; margin-bottom: 5px;">{{QuoteQuickLook.Furniture + QuoteQuickLook.Boxes}}</h5>
+
+                                                <p style="text-align: center;font-size: 10px;padding:0;margin:0">Furniture : {{QuoteQuickLook.Furniture}} , Boxes : {{QuoteQuickLook.Boxes}}</p>
+                                                <p style="text-align: center;font-size: 10px;padding:0;margin:0"></p>
+
+                                            </div>
+                                        </div>
+                                        <div style="width:150px;float:left;margin-left: 2px">
+                                            <div id="quote-stops" class="container-white">
+                                                <div class="pane-left-title" style="text-align: center;padding: 0;margin: 0">Cubic Feet</div>
+                                                <h5 class="street" style="font-weight: bold; text-align: center;margin-top: 10px;padding-bottom: 5px; margin-bottom: 5px;">{{QuoteQuickLook.CubicFeet}}</h5>
+                                                <p style="text-align: center;font-size: 10px;padding:0;margin:0">% Of Trucks :{{QuoteQuickLook.CubicFeet / SERVER.MAX_TRUCK_CUBICFEET * 100 }} </p>
+                                                <p style="text-align: center;font-size: 10px;padding:0;margin:0"></p>
+
+                                            </div>
+                                        </div>
+                                        <div style="width:150px;float:left;margin-left: 2px">
+                                            <div id="quote-stops" class="container-white">
+                                                <div class="pane-left-title" style="text-align: center;padding: 0;margin: 0">Pounds</div>
+                                                <h5 class="street" style="font-weight: bold; text-align: center;margin-top: 10px;padding-bottom: 5px; margin-bottom: 5px;">{{QuoteQuickLook.TotalWeight}}</h5>
+                                                <p style="text-align: center;font-size: 10px;padding:0;margin:0">% Of Capacity :{{QuoteQuickLook.TotalWeight / SERVER.MAX_TRUCK_Weight * 100 }} </p>
+                                                <p style="text-align: center;font-size: 10px;padding:0;margin:0"></p>
+                                            </div>
+                                        </div>
+                                        <div style="width:150px;float:left;margin-left: 2px">
+                                            <div id="quote-stops" class="container-white">
+
+                                                <div class="pane-left-title" style="text-align: center;padding: 0;margin: 0">Duration</div>
+                                                <div ng-if="QuoteQuickLook.IsHourly===true">
+                                                    <h5 class="street" style="font-weight: bold; text-align: center;margin-top: 10px;;padding-bottom: 5px; margin-bottom: 5px;">{{ QuoteQuickLook.CustomerTimeEstimate }} {{ QuoteQuickLook.CustomerTimeEstimate > 1 ? "Hours" : "Hour" }}</h5>
+
+
+                                                    <p style="text-align: center;font-size: 10px;padding:0;margin:0">Drive :{{ Utility.formatHours(QuoteQuickLook.DriveDuration, true) }} </p>
+                                                </div>
+                                                <div ng-if="QuoteQuickLook.IsHourly===false">
+                                                    <h5 class="street" style="font-weight: bold;  text-align: center;margin-top: 10px;padding-bottom: 5px; margin-bottom: 5px;">{{ Utility.getEstimateString(QuoteQuickLook.TotalDuration) }}</h5>
+
+
+                                                    <p style="text-align: center;font-size: 9px;padding:0;margin:0">
+                                                        Labour  :{{ Utility.formatHours(QuoteQuickLook.LaborDuration, 15, true) }}
+                                                        <span ng-if="QuoteQuickLook.IsHourly===false">({{QuoteQuickLook.MinimumMovers }} men)</span>
+                                                        Drive  :{{ Utility.formatHours(QuoteQuickLook.DriveDuration, true) }}
+                                                        <span ng-if="QuoteQuickLook.MinimumTrucks>1"> ({{ QuoteQuickLook.MinimumTrucks }} Trucks)</span>
+                                                    </p>
+
+                                                </div>
+
+                                            </div>
+
+
+
+                                        </div>
+                                        <div style="width:150px;float:left;margin-left: 2px">
+                                            <div id="quote-stops" class="container-white">
+                                                <div class="pane-left-title" style="text-align: center;padding: 0;margin: 0">Price</div>
+
+                                                <div ng-if="QuoteQuickLook.FinalPostedPrice!=null">
+                                                    <h5 class="street" style="font-weight: bold; text-align: center;margin-top: 10px;padding-bottom: 0;margin-bottom: 0">{{Utility.formatCurrency(QuoteQuickLook.FinalPostedPrice)}}</h5>
+
+
+                                                    <p style="text-align: center;font-size: 10px;padding:0;margin:0" ng-if="!QuoteQuickLook.IsPaid">Owes :{{ Utility.formatCurrency(QuoteQuickLook.Balance) }} </p>
+                                                </div>
+                                                <div ng-if="QuoteQuickLook.FinalPostedPrice==null">
+                                                    <h5 class="street" style="font-weight: bold;  text-align: center;margin-top: 10px;">{{Utility.formatCurrency(QuoteQuickLook.FinalPrice)}}</h5>
+
+
+                                                    <p style="text-align: center;font-size: 10px;padding:0;margin:0">
+                                                        <span ng-if="QuoteQuickLook.IsHourly">
+                                                            Hourly Move, {{ QuoteQuickLook.HourlyRate | currency }}/hr
+                                                        </span>
+                                                        <span ng-if="(!QuoteQuickLook.IsHourly && !QuoteQuickLook.IsCompleted && !Utility.priceHidden())">
+
+                                                            Original:
+
+                                                            {{ Utility.formatCurrency(QuoteQuickLook.OriginalPrice) }} ({{ QuoteQuickLook.Discount }}%)
+                                                        </span>
+
+
+                                                    </p>
+
+
+
+
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div style="width: 600px">.</div>
+                                <div  ng-view></div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div>
+                <customer-search-dialog></customer-search-dialog>
+            </div>
+            <div>
+                <add-quote-dialog></add-quote-dialog>
+            </div>
+
+
+        </div>
+
+
+
+    </div>
+
+</div>
+
+
+
+
+
+
+

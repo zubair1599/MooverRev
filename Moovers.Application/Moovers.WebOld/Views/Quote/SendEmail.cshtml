@@ -1,0 +1,229 @@
+﻿@model Moovers.WebModels.QuoteSendEmailModel
+@{
+    ViewBag.Title = "Quote " + Model.Quote.Lookup;
+    Layout = "~/Views/Quote/AddQuoteLayout.cshtml";
+}
+
+<style>
+    textarea {
+        padding-top: 4px;
+    }
+    .icon-download {
+        color: black;
+    }
+        .icon-download:hover {
+        text-decoration: none;
+            color: #74AE0C;
+        }
+
+    .file-list {
+        list-style: none;
+        margin: 0;
+    }
+
+    a:hover .icon-plus {
+        color: #74AE0C;
+        text-decoration: none;
+    }
+    a .icon-remove {
+        color: black;
+        text-decoration: none;
+    }
+    a:hover .icon-remove {
+        color: red;
+    }
+
+    .desc {
+        font-size: .7em;
+        text-transform: uppercase;
+    }
+</style>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "" }))
+{
+    <div class="row-fluid">
+        <div class="span4">
+            <div class="controls">
+                <h5 style="margin-bottom: 0;">Send Email
+                    <span class="subcontrol">
+                        @Html.ActionLink("Back", "Overview", new { id = Model.Quote.Lookup })
+                    </span>
+                </h5>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span3">
+            <div class="control-group">
+                <label class="control-label" for="to">To</label>
+                <div class="controls">
+                    <input type="text" name="to" value="@Model.GetDefaultTo()" required autofocus />
+                    @if (Model.GetEmailAddresses().Count() > 1)
+                    {
+                    <ul style="list-style-type: none;">
+                        @foreach (var i in Model.GetEmailAddresses())
+                        {
+                            <li><a class="change-email" data-email="@i.Value" href="#">@i.Value</a> <span class="desc">@i.Key</span></li>
+                        }
+                    </ul>
+                    }
+                </div>
+            </div>
+    
+            <div class="control-group">
+                <label class="control-label" for="cc">CC</label>
+                <div class="controls">
+                    <input type="email" name="cc" multiple />
+                </div>  
+            </div>
+    
+            <div class="control-group">
+                <label class="control-label" for="bcc">BCC</label>
+                <div class="controls">
+                    <input type="email" name="bcc" multiple />
+                </div>
+            </div>
+    
+            <div class="control-group">
+                <label class="control-label" for="from">From</label>
+                <div class="controls">
+                    <input type="text" name="from" value="@Model.UserEmail" required />
+                </div>
+            </div>
+    
+            <div class="control-group">
+                <label class="control-label" for="template">Template</label>
+                <div class="controls">
+                    @Html.DropDownList("template", Model.GetEmailTemplates().Select(i => new SelectListItem() {
+                        Text = i.Name,
+                        Value = i.ToJsonObject().SerializeToJson()
+                    }))
+                </div>
+            </div>
+        </div>
+        <div class="span4">
+            <div class="control-group">
+                <label class="control-label" for="subject">Subject</label>
+                <div class="controls">
+                    <input type="text" name="subject" class="span12" required />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="message">Message</label>
+                <div class="controls">
+                    <textarea class="span12" rows="10" name="message" required></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="span4">
+            <div class="panel-container">
+                <div class="panel-title">
+                    Attached Files
+                </div>
+                <div class="panel-section">
+                    <ul id="added-file-list" class="file-list">
+
+                    </ul>
+                </div>
+
+                <div class="panel-title">
+                    Available Files
+                </div>
+                <div class="panel-section">
+                    <ul id="add-file-list" class="file-list">
+                        <li>
+                            <a href="#" data-fileid="CustomerResponsibilityChecklist" data-name="Customer Responsibility Checklist">
+                                <i class="icon icon-plus"></i>
+                                Customer Responsibility Checklist
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-fileid="YourRightsandProtectionofYourProperty" data-name="Your Rights and Protection of Your Property">
+                                <i class="icon icon-plus"></i>
+                                Your Rights and Protection of Your Property
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-fileid="-New Proposal-" data-name="New Proposal">
+                                <i class="icon icon-plus"></i>
+                                New Proposal
+                            </a>
+                            <a href="@Url.Action("ViewProposal", new { id = Model.Quote.Lookup })" target="_blank">
+                                <i class="icon icon-download"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-fileid="-New SpecialInvoice-" data-name="New Invoice">
+                                <i class="icon icon-plus"></i>New Invoice
+                            </a>
+                            <a href="@Url.Action("ViewSpecialInvoice", new { id = Model.Quote.Lookup })" target="_blank">
+                                <i class="icon icon-download"></i>
+                            </a>
+                        </li>
+                        @if (Model.Quote.GetPayments().Any())
+                        {
+                            <li>
+                                <a href="#" data-fileid="-New Receipt-" data-name="New Receipt">
+                                    <i class="icon icon-plus"></i>New Receipt
+                                </a>
+                                <a href="@Url.Action("ViewReceipt", new { id = Model.Quote.Lookup })" target="_blank">
+                                    <i class="icon icon-download"></i>
+                                </a>
+                            </li>
+                        }
+
+                        @if (Model.Quote.GetSchedules().Any())
+                        {
+                            <li>
+                                <a href="#" data-fileid="-New Contract-" data-name="New Contract">
+                                    <i class="icon icon-plus"></i>
+                                    New Contract
+                                </a>
+                                <a href="@Url.Action("ViewInvoice", new { id = Model.Quote.Lookup })" target="_blank">
+                                    <i class="icon icon-download"></i>
+                                </a>
+                            </li>
+                        }
+
+                        @foreach (var file in Model.Quote.GetFiles())
+                        {
+                            <li><a href="#" data-fileid="@file.FileID" data-name="@file.Name">
+                                    <i class="icon icon-plus"></i>
+                                    @file.Name
+                                </a>
+                                <a href="@Url.Action("ViewFile", new { id = Model.Quote.Lookup, fileid = file.FileID })" target="_blank">
+                                    <i class="icon icon-download"></i>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div style="float: right;">
+            @Html.ActionLink("Cancel", "Overview", new { id = Model.Quote.Lookup }, new { @class = "btn" })
+            <input type="submit" class="btn btn-primary" value="Send" />
+        </div>
+    </div>
+}
+
+<script type="text/x-jquery-tmpl" id="attached-file-template">
+    <ul class="file-list">
+        <li data-fileid="{{- fileid }}">
+            <input type="hidden" name="fileids" value="{{- fileid }}" />
+            {{- name }}
+            <a class="remove-file" href="#" >
+                <i class="icon icon-remove"></i>
+            </a>
+        </li>
+    </ul>
+</script>
+
+<script type="text/javascript">
+    $(function() {
+        SendEmail.init();
+    });
+</script>

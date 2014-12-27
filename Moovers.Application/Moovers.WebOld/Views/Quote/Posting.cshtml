@@ -1,0 +1,67 @@
+﻿@model Moovers.WebModels.QuoteOverviewModel
+@{
+    ViewBag.Title = "Quote " + Model.Quote.Lookup;
+    Layout = "~/Views/Quote/AddQuoteLayout.cshtml";
+    var employees = (IEnumerable<Business.Models.Employee>)ViewBag.Employees;
+    var vehicles = (IEnumerable<Business.Models.Vehicle>)ViewBag.Vehicles;
+}
+
+<style>
+    .post-body #content {
+        overflow-y: visible;
+    }
+</style>
+
+@Html.Partial("Payment/_AddPayment", Model.Quote)
+
+
+@{
+    var selectClass = Model.Quote.Postings.Count() <= 1 ? "hide" : "";
+}
+
+<div>
+    @Html.ActionLink("Back to Overview", "Overview", new { id = Model.Quote.Lookup })
+</div>
+
+<div class="@selectClass">
+    <select id="post-selector" class="@selectClass">
+        @foreach (var post in Model.Quote.Postings.OrderBy(i => i.Schedule.Date))
+        {
+            <option value="@post.PostingID">@post.Schedule.Date.ToShortDateString()
+                @if (post.Schedule.IsCancelled)
+                {
+                    @: (cancelled)
+                }
+
+            </option>
+        }
+    </select>
+    @Html.AjaxLoader("post-selector-loader")
+</div>
+
+@Html.Partial("Quotes/_PostingTemplates", Model.Quote.Schedules.FirstOrDefault(i => i.Postings.Any()).Postings.First())
+
+<div class="post-body">
+    <div id="content">
+        <table id="container"  class="w100">
+
+        </table>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+
+    window.EMPLOYEES = @Html.Raw(employees.Select(i => i.ToJsonObject()).SerializeToJson());
+    window.VEHICLES = @Html.Raw(vehicles.Select(i => i.ToJsonObject()).SerializeToJson());
+
+    $(function() {
+        $("#post-selector").change(function() {
+            var id = $(this).val();
+            PostingPage.changePost(id);
+        });
+
+        PostingPage.init($("#post-selector").val());
+    });
+</script>

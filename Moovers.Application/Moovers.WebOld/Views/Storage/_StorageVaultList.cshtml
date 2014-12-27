@@ -1,0 +1,46 @@
+﻿@model Business.Models.StorageWorkOrder
+
+<div class="panel-container span5">
+    <div class="panel-title">
+        Vaults
+        <span class="subcontrol">
+            @Html.ActionLink("manage", "ManageVault", new { Controller = "Storage",  id = Model.Lookup })
+            -
+            @Html.ActionLink("view history", "VaultHistory", new { Controller = "Storage",  id = Model.Lookup })
+        </span>
+    </div>
+
+    @if (Model.GetVaults().Any()) 
+    {
+        <div class="">
+            <table class="table table-verycondensed table-striped" id="storage-vaults">
+                <tr>
+                    <th>Vault ID</th>
+                    <th>Zone</th>
+                    <th>Row</th>
+                    @*<th>Shelf</th>*@
+                </tr>
+
+                @foreach (var item in Model.GetVaults().OrderWithPadding(i => i.Lookup, 10, false))
+                {
+                    <tr>
+                        <td>@item.Lookup</td>
+                        <td>@if (item.StorageZone != null) 
+                            {
+                                @item.StorageZone.Name
+                            }
+                        </td>
+                        <td>
+                            @item.Row
+                        </td>
+                        @*<td>@item.Shelf</td>*@
+                    </tr>
+                }
+            </table>
+        </div>
+    } else {
+        <div class="alert alert-info">
+            No vaults have been assigned to this work order.
+        </div>
+    }
+</div>

@@ -1,0 +1,32 @@
+﻿@model Business.Models.Account
+
+<div class="phone-number-display">
+    @{
+        var primary = Model.GetPhone(Business.Models.PhoneNumberType.Primary);
+        var secondary = Model.GetPhone(Business.Models.PhoneNumberType.Secondary);
+        var fax = Model.GetPhone(Business.Models.PhoneNumberType.Fax);
+        var email = Model.GetEmail(Business.Models.EmailAddressType.Primary);
+    }
+
+    @if (primary != null)
+    {
+        <label>Primary</label>
+        @primary.DisplayString()
+    }
+    @if (secondary != null)
+    {
+        <label>Secondary</label>
+        @secondary.DisplayString()
+    }
+    @if (fax != null)
+    {
+        <label>Fax</label>
+        @fax.DisplayString()
+    }
+    @if (email != null)
+    {
+        <label>Email</label>
+        <a href="mailto:@email.Email">@email.Email</a>
+    }
+
+</div>

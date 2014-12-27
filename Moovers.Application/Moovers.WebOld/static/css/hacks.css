@@ -1,0 +1,66 @@
+/*
+    We use the "Google Places Autocomplete" from https://developers.google.com/maps/documentation/javascript/places#places_autocomplete
+
+    The autocomplete tool wasn't designed to be used in a modal, so the autocomplete container doesn't work correctly. This makes the autocomplete results
+    show on the highest Z-Index possible in chrome.
+*/
+.pac-container {
+  z-index: 2147483647 !important; }
+
+/*
+    For "input type='date', we use a plugin to polyfill for IE.
+
+    This plugin has a bug where it doesn't properly show in Modals...this fixes that.
+*/
+.calendar {
+  z-index: 2147483647 !important; }
+
+/* Firefox specific css */
+@-moz-document url-prefix() {
+  /** Bootstrap uses Box-sizing border-box when styling selects, I think? Either way, the spacing is all off on the select boxes, this fixes the problem */
+  select {
+    height: 23px; }
+
+  #add-room-modal .controls.tandem input, #add-room-modal .controls.tandem select {
+    height: 23px; }
+
+  /** For some reason, on the inventory page, the spacing is slightly different than anywhere else.*/
+  .inventory-right {
+    width: calc(100% - 380px); }
+
+  #room-list {
+    margin-top: 8px; }
+
+  /** The payments list requires special hacks for every browser. Not sure why */
+  div.overview-payments-list table .desc {
+    position: relative;
+    top: -9px; }
+
+  div.overview-payments-list table tr td {
+    padding-top: 7px; }
+
+  /** Workaround firefox bug: https://bugzilla.mozilla.org/show_bug.cgi?id=649849 */
+  #competitor-select {
+    overflow: hidden;
+    width: 109px; }
+
+  #competitor-select select {
+    width: 150px;
+    text-align: left; }
+
+  .not-ie #competitor-select:after {
+    border-right: 1px solid #ccc;
+    right: 4px;
+    margin-right: -4px; }
+
+  /** We have table-cells as "position relative". Even though this behavior is undefined, it works in all other browsers.
+      For firefox, make the "display" block, and add some browser specific hacks to get it to look right */
+  .schedule-table-container .schedule-table tbody tr td:first-child {
+    display: block;
+    margin-bottom: -1px; }
+    .schedule-table-container .schedule-table tbody tr td:first-child .forcewidth {
+      padding-top: 5px; }
+
+  .schedule-table-container .schedule-table tr td.reorder {
+    height: 27px; } }
+

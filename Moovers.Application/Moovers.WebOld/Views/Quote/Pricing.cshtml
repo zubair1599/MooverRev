@@ -1,0 +1,479 @@
+﻿@using Business.Enums
+@using Business.Models
+@using Business.ToClean.QuoteHelpers
+@model QuotePricingModel
+@{
+    ViewBag.Title = "Quote " + Model.Quote.Lookup;
+    Layout = "~/Views/Quote/AddQuoteLayout.cshtml";
+}
+@{
+    bool UserCanEdit = Model.Quote.CanUserEdit(User.Identity.Name);
+    int vaults = Model.Quote.CalculateStorageVaults();
+    decimal packing = Model.Quote.GetServiceCost(ServiceType.PackingMaterials);
+    bool showOptions = Model.Quote.HasStorage() || packing > 0;
+    decimal guaranteedPrice = (Model.Quote.PricingType == QuotePricingType.Hourly) ? Model.Quote.CalculateGuaranteedPrice() : Model.Quote.GuaranteeData.BasePrice;
+    decimal totalTime = Model.Quote.GetTotalTime();
+}
+
+<div class="tab-container">
+    <div id="price-tabs">
+        <ul class="price-options clearfix">
+            <li>
+                @if (UserCanEdit || Model.Quote.PricingType == QuotePricingType.Binding)
+                {
+                    <a href="#price-guaranteed">Guaranteed</a>
+                }
+            </li>
+            <li>
+                @if (UserCanEdit || Model.Quote.PricingType == QuotePricingType.Hourly)
+                {
+                    <a href="#price-hourly">Hourly</a>
+                }
+            </li>
+        </ul>
+        <div id="price-guaranteed" class="price-options-detail  @(Model.Quote.PricingType == QuotePricingType.Hourly && !UserCanEdit ? "hide" : "")">
+            <div class="section">
+                <strong>Number of Trucks</strong>
+                <div class="section-inside">
+                    <div>
+                        Minimum
+                        <span class="right">@Model.GetMinTrucks()</span>
+                        <input type="text" style="display: none;" class="ui-disable-stupid" />
+                    </div>
+                    <div>
+                        Recommended
+                        <span class="right">@Model.GetRecommendedTrucks()</span>
+                    </div>
+                    <div>
+                        Scheduled
+                        <span class="right">
+                            <select id="Trucks-Hourly" name="Trucks" @(!UserCanEdit ? "disabled" : "") class="input-mini input-compact">
+                                @foreach (int i in Enumerable.Range(1, 4))
+                                {
+                                    if (i == Model.Quote.GetPricingTrucks())
+                                    {
+                                        <option selected>@i</option>
+                                    }
+                                    else
+                                    {
+                                        <option>@i</option>
+                                    }
+                                }
+                            </select>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <strong>Crew Size</strong>
+                <div class="section-inside">
+                    <div>
+                        Minimum
+                        <span class="right">@Model.GetMinCrew()</span>
+                    </div>
+                    <div>
+                        Recommended
+                        <span class="right">@Model.GetRecommendedCrew()</span>
+                    </div>
+                    <div>
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <div>
+                    <strong>Estimate of Time</strong>
+                    <span class="right">@General.GetHourRange(totalTime)</span>
+                </div>
+
+                <div class="section-inside">
+                    <div>
+                        Guaranteed Price
+                        <span class="right">
+                            @guaranteedPrice.ToString("0.00")
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="price-hourly" class="price-options-detail  @(Model.Quote.PricingType == QuotePricingType.Binding && !UserCanEdit ? "hide" : "")">
+            <div class="section">
+                Number of Trucks
+                <select id="Trucks" name="Trucks" @(!UserCanEdit ? "disabled" : "")>
+                    @foreach (int i in Enumerable.Range(1, 4))
+                    {
+                        if (i == Model.Quote.Trucks)
+                        {
+                            <option selected>@i</option>
+                        }
+                        else
+                        {
+                            <option>@i</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="section">
+                Crew Size
+                <select id="CrewSize" name="CrewSize" @(!UserCanEdit ? "disabled" : "")>
+                    @foreach (int i in Enumerable.Range(1, 10))
+                    {
+                        if (i == Model.Quote.CrewSize)
+                        {
+                            <option selected>@i</option>
+                        }
+                        else
+                        {
+                            <option>@i</option>
+                        }
+                    }
+                </select>
+
+                <div class="section-inside">
+                    <div>
+                        First Hour
+                        <span class="right" id="first-hour">$160</span>
+                    </div>
+                    <div>
+                        Extra Hours
+                        <span class="right" id="extra-hours">$85</span>
+                    </div>
+                    @if (ViewBag.IsAdministrator && Model.Quote.PricingType == QuotePricingType.Hourly)
+                    {
+                        <div>
+                            <a href="#" id="change-pricing">Change pricing</a>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="section">
+                @{
+                    HourlyInfo hourlyData = Model.Quote.PricingType == QuotePricingType.Hourly ? Model.Quote.HourlyData : default(HourlyInfo);
+                }
+                Customer's Estimate of Time
+                <select id="Hours" name="Hours" @(!UserCanEdit ? "disabled" : "")>
+                    @foreach (int i in Enumerable.Range(1, 25))
+                    {
+                        if (i == hourlyData.CustomerTimeEstimate)
+                        {
+                            <option selected value="@i">@i Hour@(i > 1 ? "s" : "")</option>
+                        }
+                        else
+                        {
+                            <option value="@i">@i Hour@(i > 1 ? "s" : "")</option>
+                        }
+                    }
+                </select>
+                <div class="section-inside">
+                    <div>
+                        Estimated Price
+                        <span class="right" id="estimated-hourly-price"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="hourly-pricing-summary" class="sect-container @(Model.Quote.PricingType == QuotePricingType.Binding && !UserCanEdit ? "hide" : "")">
+        <div class="sect-pad">
+            <h5>Pricing</h5>
+            <div class="line-item">
+                Move Price
+                <span class="right">
+                    <span id="first-hour-lineprice"></span>,
+                    <span id="hourly-lineprice"></span>
+                </span>
+            </div>
+
+            <div class="line-item">
+                Additional Destination Fee
+                <span class="right">
+                    <input type="number" class="input-mini" step=".01" name="additionalDestination" id="additionalDestination"
+                           value="@(Model.Quote.PricingType == QuotePricingType.Hourly ? Model.Quote.HourlyData.FirstHourPrice - Model.Quote.HourlyData.HourlyPrice - Model.Quote.GetDefaultDestinationFee() : 0m)" />
+                </span>
+            </div>
+            estimated-hourly-price
+
+            <div id="replacementValuationsHourly">
+
+            </div>
+
+            <div class="line-item">
+                Estimated Total
+                <span class="right" id="hourly-total"></span>
+            </div>
+            @if (UserCanEdit)
+            {
+                <div class="cfix">
+                    <button class="btn0 btn1 right quote-save-button">Save</button>
+                    @Html.AjaxLoader("hourly-loader", new { @class = "right", style = "margin: 5px; display: none;" })
+                </div>
+            }
+
+            @if (UserCanEdit && !showOptions)
+            {
+                <a href="#" class="pricing-miscellanous">show options</a>
+            }
+        </div>
+    </div>
+
+    <div id="guaranteed-pricing-summary" class="sect-container @(Model.Quote.PricingType == QuotePricingType.Hourly && !UserCanEdit ? "hide" : "")">
+        <div class="sect-pad">
+            @{
+                GuaranteedInfo guaranteedData = (Model.Quote.PricingType == QuotePricingType.Binding) ? Model.Quote.GuaranteeData : default(GuaranteedInfo);
+                decimal adjustmentAmount = guaranteedData.Adjustments;
+                decimal price = guaranteedPrice;
+            }
+
+            <h5>Move Pricing</h5>
+            <div class="line-item">
+                Move Price
+                <span class="right" id="base-price">@String.Format("{0:C}", price)</span>
+            </div>
+
+            <div class="line-item">
+                Discount Coupon / Voucher
+                
+                <input type="text" id="discountCouponVoucher" class="input-medium pull-right" tabindex="1" />
+                <span id="discountCouponVoucherOk" class="pull-right" style="display: none; margin-right: 5px;"><i class="icon-ok icon-2x green"></i></span>
+                <span id="discountCouponVoucherInvalid" class="pull-right" style="display: none; margin-right: 5px;"><i class="icon-remove icon-2x red"></i></span>
+                <span class="noprint pull-right" style="display: none">
+                    <img alt="Loading..." id="inventory-loading" src="/static/img/ajax-loader-transperent.gif">
+                </span>
+                <span id="discountCouponValidMessage" class="green pull-right" style="display: none; margin-right: 5px; font-size: 11px;">
+                    Valid Coupon
+                </span>
+                <span id="discountCouponInValidMessage" class="red pull-right" style="display: none; margin-right: 5px; font-size: 11px;">
+                    InValid Coupon
+                </span>
+                <span id="discountCouponAlreadyAppliedMessage" class="orange pull-right" style="display: none; margin-right: 5px; font-size: 11px;">
+                    Coupon Already Applied
+                </span>
+            </div>
+
+
+            <div id="adjustments">
+                <div class="line-item">
+                    Adjustment %
+                    @if (UserCanEdit)
+                    {
+                        <input type="number" id="adjustment" class="input-mini" tabindex="1" value="@guaranteedData.CalculateAdjustmentPercent()" min="-@ViewBag.MaxPriceDiscount" max="@ViewBag.MaxPriceDiscount" />
+
+                        <span class="right">
+                            $ <input type="number" style="margin-right: -3px; padding-right: 2px;" tabindex="2" class="input-mini text-right" id="adjustment-amount" value="@guaranteedData.Adjustments" />
+                        </span>
+                    }
+                    else
+                    {
+                        <span>@guaranteedData.CalculateAdjustmentPercent()</span>
+                        <span class="right">@String.Format("{0:C}", adjustmentAmount)</span>
+                    }
+                </div>
+            </div>
+
+            <div id="replacementValuationsGuaranteed">
+                <div class="line-item">
+                    Valuation Coverage
+                    <span class="right">
+                        <select name="valuationTypeGuaranteed" @(!UserCanEdit ? "disabled" : "")>
+                            @foreach (ReplacementValuation item in Model.ReplacementValuationOptionsGuaranteed.OrderBy(i => i.MaximumValue))
+                            {
+                                <option value="@item.ValuationTypeID" data-cost="@item.Cost" @(item.ValuationTypeID == Model.Quote.ValuationTypeID || (!Model.Quote.ValuationTypeID.HasValue && item.Cost == 0) ? "selected" : "")>
+                                    @item.Name (@item.DisplayCost())
+                                </option>
+                            }
+                        </select>
+                    </span>
+                </div>
+            </div>
+
+
+
+            <div class="line-item">
+                Total Move Cost
+                <span class="right clear-right">
+                    @if (UserCanEdit)
+                    {
+                        <span id="total">
+
+                        </span>
+                    }
+                    else
+                    {
+                        @String.Format("{0:C}", guaranteedData.GuaranteedPrice)
+                    }
+                </span>
+            </div>
+
+            @if (!showOptions && UserCanEdit)
+            {
+                <a href="#" class="pricing-miscellanous">show options</a>
+            }
+            @if (UserCanEdit)
+            {
+                <div class="clearfix right">
+                    <button class="btn0 btn1 right quote-save-button" tabindex="3">Save</button>
+                </div>
+                <br class="clear" />
+            }
+        </div>
+    </div>
+
+    <form id="miscellaneous-pricing-form">
+        <div id="miscellaneous-pricing" class="sect-container" @if (!showOptions)
+                                                               {
+                                                                   <text> style="display: none;" </text>
+                                                               }>
+            <div class="sect-pad">
+                <div class="line-item">
+                    Packing Materials
+                    <span class="right clear-right">
+                        @if (!UserCanEdit)
+                        {
+                            @String.Format("{0:F2}", packing)
+                        }
+                        else if (packing > 0)
+                        {
+                            <input type="number" class="input-mini" name="packingMaterials" value="@String.Format("{0:F2}", packing)" />
+                        }
+                        else
+                        {
+                            <input type="number" class="input-mini" name="packingMaterials" />
+                        }
+                    </span>
+                </div>
+
+                @if (Model.Quote.HasOldStorage && Model.Quote.HasTemporaryStorage())
+                {
+                    <div class="line-item clearfix">
+                        Storage
+                    </div>
+                    <span class="right clear-right">
+                        @String.Format("{0:C}", Model.Quote.GetStorageCost())
+                    </span>
+                }
+                else if (Model.Quote.HasTemporaryStorage() && !Model.Quote.HasOldStorage)
+                {
+                    <div class="line-item clearfix">
+                        Overnight Storage
+                        <span class="desc">
+                            $150/night per truck
+                        </span>
+                        <span class="right clear-right text-right" id="temporary-storage">
+                            @String.Format("{0:C}", Model.Quote.GetStorageCost())
+                            @if (UserCanEdit)
+                            {
+                                <a href="#" id="edit-storage-button">edit</a>
+                            }
+                            <span id="edit-storage" style="display: none;">
+                                <br />
+                                @Html.TextBox("force-storage-cost", Model.Quote.ForcedStorageCost, new { placeholder = "Storage Cost", @type = "number", step = "1", min = "0" })
+                            </span>
+                        </span>
+                    </div>
+                }
+                else if (vaults > 0)
+                {
+                    <div class="line-item">
+                        Monthly Storage (@vaults
+                        @if (vaults > 1)
+                        {
+                            <text>Vaults</text>
+                        }
+                        else
+                        {
+                            <text>Vault</text>
+                        }
+                        )
+                        <span class="right clear-right" id="monthly-storage">
+                            @String.Format("{0:C}", Model.Quote.CalculateMonthlyStorageCost())
+                        </span>
+                    </div>
+                }
+
+                <div class="line-item">
+                    Total Cost
+                    <span class="right clear-right">
+                        @if (UserCanEdit)
+                        {
+                            <span id="total-move-price">
+                            </span>
+                        }
+                        else
+                        {
+                            @String.Format("{0:C}", Model.Quote.FinalPostedPrice ?? Model.Quote.GetEstimatedPriceWithServices())
+                        }
+                    </span>
+                </div>
+
+                @if (UserCanEdit)
+                {
+                    <br style="height: 25px; clear: both;" />
+                    <div class="cfix">
+                        <button class="btn0 btn1 right" type="submit" tabindex="3">Save</button>
+                        @Html.AjaxLoader("guaranteed-loader", new { @class = "right", style = "margin: 5px; display: none;" })
+                    </div>
+                }
+            </div>
+        </div>
+    </form>
+</div>
+
+
+@using (Html.BeginModal("change-pricing-modal", "Change Pricing"))
+{
+    using (Html.BeginForm("ChangePricing", "Quote", FormMethod.Post))
+    {
+        @Html.Hidden("quoteid", Model.Quote.QuoteID)
+        <div class="control-group">
+            <label class="control-label" for="firsthour">First Hour (per truck)</label>
+            <div class="controls">
+                @Html.TextBox("firsthour", null, new { @type = "number", step = ".01" })
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="extrahour">Additional Hours (per truck)</label>
+            <div class="controls">
+                @Html.TextBox("extrahour", null, new { @type = "number", step = ".01" })
+            </div>
+        </div>
+        <div class="control-group">
+            <button type="button" class="btn cancel" data-dismiss="modal">cancel</button>
+            <button class="btn btn-primary" type="submit">Save</button>
+        </div>
+    }
+}
+
+<script type="text/javascript">
+
+    $('.input-mini').keyup(function(data) {
+        var val = $(this).val();
+        if (event.keyCode === 38) {
+            $(this).val(Number(val) + 1);
+        } else if (event.keyCode === 40) {
+            $(this).val(Number(val) - 1);
+        }
+
+        // debugger;
+
+    });
+    window.PRICING_VARS = {
+        QUOTEID: "@Model.Quote.QuoteID.ToString()",
+        ESTIMATED_SOURCE_TIME: @(Model.Quote.GetDriveTime() - Model.Quote.GetDriveTime(false)),
+        ESTIMATED_TRAVEL_TIME: @Model.Quote.GetDriveTime(),
+        ESTIMATED_MOVE_TIME: @totalTime,
+        ESTIMATED_MILES: @Model.Quote.GetTotalMileage(),
+
+        PERSON_PRICE_MULTIPLIER: @Model.Quote.GetHourlyPersonMultiplier(),
+        TRUCK_PRICE_MULTIPLIER: @Model.Quote.GetHourlyTruckMultiplier(),
+        PERSON_DESTINATION_MULTIPLIER: @Model.Quote.GetHourlyPersonDestinationMultiplier(),
+        TRUCK_DESTINATION_MULTIPLIER: @Model.Quote.GetHourlyTruckDestinationMultiplier(),
+        CURRENT_HOURS: @(Model.Quote.PricingType == QuotePricingType.Hourly ? Model.Quote.HourlyData.CustomerTimeEstimate : 0),
+        CURRENT_CREW: @(Model.Quote.CrewSize ?? 0),
+        CURRENT_TRUCKS: @(Model.Quote.Trucks ?? 0),
+        TYPE: "@Model.Quote.PricingType.ToString()",
+        CURRENT_FIRST_HOUR: @(Model.Quote.PricingType == QuotePricingType.Hourly ? Model.Quote.HourlyData.FirstHourPrice : 0m),
+        CURRENT_HOUR: @(Model.Quote.PricingType == QuotePricingType.Hourly ? Model.Quote.HourlyData.HourlyPrice : 0m),
+        DISCOUNTCOUPONUSED: @(Model.Quote.DiscountCopounUsed.ToString().ToLower()),
+        DISCOUNTCOUPONCODE: "@(Model.Quote.DiscountCouponCode != null ? Model.Quote.DiscountCouponCode: null)",
+    };
+</script>

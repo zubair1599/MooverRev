@@ -1,0 +1,50 @@
+﻿<div id="addQuote-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+    <div class="modal-header">
+        <a  type="button" class="close-modal" data-dismiss="modal" aria-hidden="true"></a>
+        <h3 id="myModalLabel1">Add Quote</h3>
+    </div>
+    <div id="account-contacts" class="modal-body">
+        <div class="title title7">
+            Shipper Name
+        </div>
+        <div class="contact-info" ng-bind="ShipperName()">
+
+        </div>
+        <div class="title title7">
+            Estimate Move Date
+        </div>
+        <div class="contact-info">
+            <input type="date" ng-model="movedate" />
+        </div>
+        <div class="title title7">
+            How did you hear about us ?
+        </div>
+        <div class="contact-info">
+            <select ng-model="hear">
+                <option value="">-- Select One --</option>
+                <option value="ValPak">ValPak</option>
+                <option value="Billboards">Billboards</option>
+                <option value="Trucks">Trucks</option>
+                <option value="Referral">Referral</option>
+                <option value="Website">Website</option>
+                <option value="Leads">Leads</option>
+                <option value="Phone Book">Phone Book</option>
+                <option value="Facebook">Facebook</option>
+                <option value="Internet">Internet</option>
+                <option value="MyMoovers.com">MyMoovers.com</option>
+                <option value="Moving.com">Moving.com</option>
+                <option value="Movers.com">Movers.com</option>
+                <option value="123Movers.com">123Movers.com</option>
+                <option value="Used before">Used before</option>
+                <option value="Other">Other</option>
+
+
+            </select>
+</div>
+        <div class="contact-info">
+            <button class="btn btn-success pull-right" ng-click="AddQuote()" data-dismiss="modal">Add Quote</button>    
+        </div>
+        
+    </div>
+    
+</div>

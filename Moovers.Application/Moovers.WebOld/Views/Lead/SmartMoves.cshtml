@@ -1,0 +1,46 @@
+﻿@using Business.Enums
+@using Business.ToClean.QuoteHelpers
+@model SmartListModel
+
+
+<h4>Smart Moves</h4>
+@if (Model.SmartMovesQuotes.Any())
+{
+    <table class="table table-condensed table-verycondensed table-striped">
+        <tr>
+            <th></th>
+            <th>Reference #</th>
+            <th>Name</th>
+            <th>Est. Move Date</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Submitted</th>
+        </tr>
+        <tbody>
+            @foreach (var i in Model.SmartMovesQuotes.OrderByDescending(i => i.AddedDate))
+            {
+                <tr>
+                    <td>
+                        <a class="btn btn-primary btn-small" href="@Url.Action("ViewSmartMove", new { id = i.SmartMoveID})">View</a>
+                    </td>
+                    <td>@i.SmartMoveLookUp</td>
+                    <td>@i.Name</td>
+                    <td>@i.EstimatedMoveDate.GetValueOrDefault().ToShortDateString()</td>
+                    <td>
+                        @i.Address1.DisplayString()
+                    </td>
+                    <td>
+                        @i.Address2.DisplayString()
+                    </td>
+                    <td>@i.AddedDate.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert">
+        No smart moves waiting.
+    </div>
+}

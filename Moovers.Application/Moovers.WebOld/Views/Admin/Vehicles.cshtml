@@ -1,0 +1,140 @@
+﻿@model Moovers.WebModels.VehicleListModel
+
+<style>
+    #add-vehicle-modal {
+        width: 489px;
+    }
+
+    #add-vehicle-modal label {
+        width: 70px;
+    }
+
+    #add-vehicle-modal .controls {
+        margin-left: 87px;
+    }
+</style>
+
+<div class="container-pad">
+    @using (Html.BeginModal("add-vehicle-modal", "Add Vehicle"))
+    {
+        using (Html.BeginForm("AddVehicle", "Admin", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            <div class="control-group">
+                <div class="controls">
+                    <h4>Add Vehicle
+                        <span class="small-alert">* = Required</span>
+                    </h4>
+                </div>
+            </div>
+            <div class="control-group required">
+                @Html.Label("lookup", "Keycode", new { @class = "control-label" })
+                <div class="controls">
+                    @Html.TextBox("lookup", null, new { required = true })
+                </div>
+            </div>
+            <div class="control-group required">
+                @Html.Label("truckName", "Name", new { @class = "control-label" })
+                <div class="controls">
+                    @Html.TextBox("truckName", null, new { required = true })
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("cubicFeet", "Cubic Feet", new { @class = "control-label" })
+                <div class="controls">
+                    @Html.TextBox("cubicFeet", null, new { @type = "number" })
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("length", "Length", new { @class = "control-label" })
+                <div class="controls">
+                    @Html.TextBox("length", null, new { @type = "number" })
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("make", "Details", new { @class = "control-label" })
+                <div class="controls">
+                    @Html.TextBox("make", null, new { placeholder = "Make", @class = "input-small" })
+                    @Html.TextBox("model", null, new { placeholder = "Model", @class = "input-small" })
+                    @Html.DropDownList("year", Enumerable.Range(DateTime.Now.Year - 8, 10).Select(i => new SelectListItem() {
+                        Text = i.ToString(),
+                        Value = i.ToString()
+                    }), new { @class = "input-mini" })
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("type", "Type", new { @class = "control-label" })
+                <div class="controls">
+                    @Html.TextBox("type")
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.Label("description", "Description", new { @class = "control-label" })
+                <div class="controls">
+                    @Html.TextArea("description", new { @style = "width: 339px" })
+                </div>
+            </div>
+        
+            <div class="control-group">
+                @Html.Label("franchise", "Franchise", new { @class = "control-label" })
+                <div class="controls">
+                    @Html.DropDownList("franchise", Model.Franchises.Select(f => new SelectListItem() {
+                        Text = f.Name,
+                        Value = f.FranchiseID.ToString()
+                    }))
+                </div>
+            </div>
+
+            <div class="clearfix">
+                <div class="end-controls">
+                    <button type="button" class="btn cancel" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Vehicle</button>
+                </div>
+            </div>
+        }
+    }
+    
+    <h4>Vehicles</h4>
+
+    @Html.ValidationSummary()
+
+    <div>
+        <a id="add-vehicle" href="#">Add Vehicle</a>
+    </div>
+    <br />
+
+    <table class="table table-striped">
+        @Html.Partial("Generic/_SortableTableHeader")
+        @foreach (var v in Model.Vehicles)
+        {
+            <tr>
+                <td>@v.Lookup</td>
+                <td>@v.Name</td>
+                <td>@v.Franchise.Name</td>
+                <td>@v.CubicFeet</td>
+                <td>@v.Length</td>
+                <td>@v.Make</td>
+                <td>@v.Model</td>
+                <td>@v.Year</td>
+                <td>@v.Type</td>
+                <td>@v.Description</td>
+                <td>
+                    @using (Html.BeginForm("RemoveVehicle", "Admin", FormMethod.Post))
+                    {
+                        <input type="hidden" name="lookup" value="@v.Lookup" />
+                        <button type="submit" class="btn btn-mini btn-danger" title="Remove @v.Name"><i class="icon-remove"></i></button>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+<script type="text/javascript">
+    $(function() {
+        var modal = $("#add-vehicle-modal").modal({ show: false });
+        $("#add-vehicle").click(function() {
+            modal.modal("show");
+            return false;
+        });
+    });
+</script>

@@ -1,0 +1,117 @@
+﻿@model IEnumerable<Business.Models.Quote>
+@{
+    ViewBag.Title = "Employee Pay Report";
+
+    var quotes = Model.Select(i => new {
+        quote = i,
+        mileage = i.GetTotalMileage(),
+        hours = i.Postings.Sum(p => p.GetManHours()),
+        price = i.FinalPostedPrice.Value
+    });
+    var groups = quotes.GroupBy(i =>
+        (i.mileage < 100) ? 1
+        : i.mileage < 400 ? 2
+        : 3
+    );
+
+
+    var withCommision = Model.Where(i => i.Postings.Any(p => p.IsComplete && p.Posting_Employee_Rel.Any(r => r.Commission > 0))).Select(i => new {
+        quote = i,
+        mileage = i.GetTotalMileage(),
+        comm = i.Postings.Sum(p =>  p.Posting_Employee_Rel.Sum(r => r.Commission)),
+        price = i.FinalPostedPrice.Value
+    });
+    
+    var commgroups = withCommision.GroupBy(i =>
+        (i.mileage <= 100) ? 1
+        : i.mileage <= 500 ? 2
+        : 3
+    );
+}
+<style>
+    h4 {
+        text-transform: uppercase;
+        color: #aaa;
+        font-weight: normal;
+        font-family: 'Lucida Sans';
+    }
+    .desc {
+        font-size: .75em;
+    }
+</style>
+
+<div class="container-pad storage">
+    <h3>Employee Pay</h3>
+    <h4>Hourly Moves</h4>
+    <table class="table" style="width: 400px;">
+        <tr>
+            <th>Mileage</th>
+            <th>Price</th>
+            <th>Hours</th>
+            <th>%</th>
+        </tr>
+        @foreach (var q in groups.OrderBy(i =>i.Key))
+        {
+            var price = q.Sum(i => i.price);
+            var hours = q.Sum(i => i.hours);
+            <tr>
+                <td>
+                    @if (q.Key == 1)
+                    {
+                        <text>Local </text>
+                    <span class="desc">(< 100 miles)</span>
+                    }
+                    else if (q.Key == 2)
+                    {
+                        <text>Regional</text>
+                        <span class="desc">(< 500 miles)</span>
+                    }
+                    else {
+                        <text>Long Distance</text>   
+                    <span class="desc">(> 500 miles)</span>
+                    }
+                </td>
+                <td>
+                    @String.Format("{0:C}", price)
+                </td>
+                <td>@hours</td>
+                <td>@String.Format("{0:P}", Math.Round(( (hours * 11) / price), 2))</td>
+            </tr>
+        }
+    </table>
+    <br />
+    <h4>Commission Moves</h4>
+    <table class="table" style="width: 400px;">
+        <tr>
+            <th>Mileage</th>
+            <th>Price</th>
+            <th>Commission</th>
+            <th>%</th>
+        </tr>
+        @foreach (var q in commgroups)
+        {
+            var price = q.Sum(i => i.price);
+            var comm = q.Sum(i => i.comm);
+            <tr>
+                <td>
+                    @if (q.Key == 1)
+                    {
+                        <text>Local</text>
+                    }
+                    else if (q.Key == 2)
+                    {
+                        <text>Regional</text>
+                    }
+                    else {
+                        <text>Long Distance</text>   
+                    }
+                </td>
+                <td>
+                    @String.Format("{0:C}", price)
+                </td>
+                <td>@String.Format("{0:C}", comm)</td>
+                <td>@String.Format("{0:P}", Math.Round(comm / price, 2))</td>
+            </tr>
+        }
+    </table>
+</div>

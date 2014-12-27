@@ -1,0 +1,75 @@
+﻿@model Moovers.WebModels.QuoteEdit
+@{
+    ViewBag.Title = "Quote " + Model.Quote.Lookup;
+    Layout = "~/Views/Quote/AddQuoteLayout.cshtml";
+}
+
+<style>
+    .log:hover {
+        cursor: pointer;
+        background-color: #eee;
+    }
+</style>
+
+<h5>Email Log
+    <span class="subcontrol">
+        @Html.ActionLink("Back", "Overview", new { id = Model.Quote.Lookup })
+    </span>
+</h5>
+
+@if (Model.Quote.GetEmails().Any())
+{
+    <table class="table">
+        <tr>
+            <th>Subject</th>
+            <th>To</th>
+            <th>From</th>
+            <th>Attachments</th>
+            <th>Sent</th>
+        </tr>
+        <tbody>
+        @foreach (var item in Model.Quote.GetEmails().OrderByDescending(i => i.DateSent))
+        {
+            <tr class="log">
+                <td>@item.Subject</td>
+                <td>@item.MailTo</td>
+                <td>@item.MailFrom</td>
+                <td>
+                    <ul>
+                    @foreach (var file in item.EmailLog_File_Rel)
+                    {
+                        <li>@Html.ActionLink(file.File.Name, "ViewFile", new { id = Model.Quote.Lookup, fileid = file.FileID })</li>
+                    }
+                    </ul>
+                </td>
+                <td>
+                    @item.DateSent.ToShortDateString() @@@item.DateSent.ToShortTimeString()
+                </td>
+            </tr>
+            <tr class="hide message">
+                <td colspan="5">
+                    <iframe seamless src="about:blank" style="width: 100%;" data-content="@item.Message.SerializeToJson()"></iframe>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else {
+    <div class="alert">No e-mails sent.</div>
+}
+
+<script type="text/javascript">
+    $(function() {
+        $("tr.log").click(function() {
+            $(this).next().toggleClass("hide");
+        });
+
+        $("iframe").each(function() {
+            var content = JSON.parse($(this).data("content"));
+            var doc = this.contentWindow.document;
+            doc.open();
+            doc.write(content);
+        });
+    });
+</script>

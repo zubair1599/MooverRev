@@ -375,9 +375,9 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
         
 
     };
-    //$timeout(function () {
+    $timeout(function () {
         $scope.Init();
        
-   // }, 3000);
+    }, 3000);
     
 };

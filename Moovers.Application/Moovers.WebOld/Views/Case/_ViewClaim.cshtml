@@ -1,0 +1,156 @@
+﻿@using Business.Enums
+@using Business.Repository.Models
+
+@{
+    ViewBag.Title = "_ViewClaim";
+}
+
+@{
+    var id = "";
+    var casenumber = "";
+    var accountname = "";
+    var remarks = "";
+    var created = "";
+    var casestatus = "true";
+    if (ViewData.ContainsKey("CaseID"))
+    {
+        id = ViewData["CaseID"].ToString();
+    }
+    if (ViewData.ContainsKey("CaseNumber"))
+    {
+        casenumber = ViewData["CaseNumber"].ToString();
+    }
+    if (ViewData.ContainsKey("AccountName"))
+    {
+        accountname = ViewData["AccountName"].ToString();
+    }
+    if (ViewData.ContainsKey("CaseStatus"))
+    {
+        casestatus = ViewData["CaseStatus"].ToString();
+    }
+    if (ViewData.ContainsKey("CaseCreated"))
+    {
+        created = ViewData["CaseCreated"].ToString();
+    }
+    if (ViewData.ContainsKey("CaseRemarks"))
+    {
+        if (ViewData["CaseRemarks"] != null)
+        {
+            remarks = ViewData["CaseRemarks"].ToString();
+        }
+
+    }
+    int i = 1;
+}
+
+@using (Html.BeginModal(id, "View Claim", new { @class = "view-claim-modal" }))
+{
+
+    var claimsrepo = new ClaimRespository();
+    var claims = claimsrepo.GetClaims(id);
+    <div id="case-number">
+        Case:  @casenumber
+    </div>
+    <div id="account_detail">
+        <div id="account-name">
+            Account: @accountname
+        </div>
+        <div id="created-date">
+            Created: @created
+        </div>
+    </div>
+    <div style="overflow-y:scroll ;  max-height:300px">
+        <table id="claims" class="table-striped table-hover">
+            <thead>
+
+                <tr>
+
+                    <td>@ClaimFields.ClaimID.GetDescription()</td>
+                    <td>@ClaimFields.Inventory.GetDescription()</td>
+                    <td>@ClaimFields.ClaimType.GetDescription()</td>
+                    <td>@ClaimFields.Created.GetDescription()</td>
+                    <td>@ClaimFields.Remarks.GetDescription()</td>
+                    <td>@ClaimFields.InventoryImages.GetDescription()</td>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in claims)
+                {
+
+                    <tr>
+
+                        <td>
+                            @i
+
+                        </td>
+
+
+                        <td>
+                            @item.Inventroy
+
+                        </td>
+
+                        <td>@if (item.ClaimType != null)
+                            {
+                            @claimsrepo.GetClaimType(item.ClaimType).GetDescription();
+                            }
+                        </td>
+
+
+                        <td>
+                            @item.Created
+
+                        </td>
+                        <td>@if (item.Remarks != null)
+                            {
+                            @item.Remarks
+                            }
+                        </td>
+                        <td>
+
+                            @if (item.Claim_Inventory_Items != null)
+                            {
+                                foreach (var Inventoryimages in item.Claim_Inventory_Items)
+                                {
+                                    var imagepath = System.Configuration.ConfigurationManager.AppSettings["InventoryImageVirtualPath"] + casenumber + "/" + Inventoryimages.ClaimInventoryImage; 
+                                    
+                                 <a href="@imagepath" target="_blank"  > @Inventoryimages.ImageOrignalName </a> <span>, </span>  
+                                }
+                            }
+                        </td>
+
+                    </tr>
+                            i++;
+                }
+            </tbody>
+        </table>
+
+    </div> 
+                using (Html.BeginForm("AddRemarks", "Case", FormMethod.Post, new { @class = "form-horizontal" }))
+                {
+    <input type="hidden"  value="@id" name="id" />
+    <input type="hidden" value="@casestatus.ToString()" name="casestatus"  />
+    <div id="case-remarks">
+        <label>Remarks: </label>
+        <input type="text" style="width: 640px; height: 70px" name="remarks" value="@remarks" />
+
+        <div class="clearfix">
+            <div style="float: left; padding-top: 15px">
+                <label style="float: left; vertical-align:central">Case Status: </label>
+                <select style="float: right" name="ddlcasestatus">
+                    <option value="1">Pending</option>
+                    <option value="2">InProcess</option>
+                    <option value="3">Close</option>
+                </select>
+            </div>
+            <div class="end-controls">
+                <input type="submit" class="btn btn-primary" value="Save" />
+                <button type="button" class="btn cancel" data-dismiss="modal">cancel</button>
+
+            </div>
+        </div>
+
+    </div>
+                }
+}

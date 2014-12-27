@@ -324,11 +324,11 @@ namespace MooversCRM.Controllers
           
         }
         [HttpGet]
-        public ActionResult GetRecentQuoteJson()
+        public ActionResult GetRecentQuoteJson(string lookup)
         {
             var repo = new QuoteRepository();
 
-            var quote = repo.Get("47077");
+            var quote = repo.Get(lookup);
            
             string redirectUrl = Url.Action("Stops", new { id = quote.Lookup });
             

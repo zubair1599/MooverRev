@@ -1,11 +1,14 @@
-﻿quoteApp.factory('homeFactory', ['$rootScope', '$http', '$q', homeFactory]);
+﻿quoteApp.factory('homeFactory', ['$rootScope', '$http', '$q','$location', homeFactory]);
 
-function homeFactory($rootScope, $http, $q) {
+function homeFactory($rootScope, $http, $q, $location) {
 
     var serviceDefer = new Object();
-    serviceDefer.URL = 'http://localhost:50600';
-
-
+  
+    var protpcol = $location.$$protocol + '://';
+    var host = $location.host();
+    var port = ':' + $location.port();
+    var url = protpcol + host +port;
+    serviceDefer.URL = url;
     serviceDefer.GetRecentQuotes = function() {
         
         var test = $q.defer();

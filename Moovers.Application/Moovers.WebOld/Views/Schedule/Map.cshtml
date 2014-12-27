@@ -1,0 +1,39 @@
+﻿@model ScheduleMapModel
+
+@{
+    ViewBag.Title = "Map";
+}
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+
+<div class="container-pad">
+    <div id="map" style="width: 100%; height: 600px;"></div>
+</div>
+
+<div id="key"></div>
+
+@{
+    var plotter = Model.GetPlot().Select(i => new {
+        Origin = i.GetStops().First().Address.GetLatLng(),
+        Dest = i.GetStops().Last().Address.GetLatLng(),
+        Lookup = i.Lookup,
+        Start = i.GetSchedules().Where(s => s.Date == Model.Day).Min(s => s.StartTime),
+        End = i.GetSchedules().Where(s => s.Date == Model.Day).Min(s => s.EndTime),
+        ArrivalWindow = i.GetSchedules().Where(s => s.Date == Model.Day).Select(s => s.DisplayTime()),
+        Crew = i.GetSchedules().Where(s => s.Date == Model.Day).Select(s => s.GetCrews().Select(c => c.Lookup))
+    }).OrderBy(a => a.Start).ThenBy(a => a.End);
+}
+<script type="text/javascript">
+    $(function() {
+        var plots = @Html.Raw(plotter.SerializeToJson());
+        var franchiseAddress = @Html.Raw(Model.FranchiseAddress.GetLatLng().SerializeToJson());
+        ScheduleMap.init(plots, franchiseAddress);
+
+        $(function() {
+            var crews = Utility.range(0, 9);
+            _.each(crews, function(i) {
+                $("#key").append("<div><img src='" + ScheduleMap.getIcon(i, 1) + "' />Crew " + (i + 1) + "</div>");
+            });
+        });
+    });
+</script>

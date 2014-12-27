@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Business.Models.TransactionLog>
+
+@{
+    ViewBag.Title = "CreditCardResponses";
+}
+
+<h2>Credit Card Responses</h2>
+
+
+@*<table>
+    <tr>
+        <th>Date</th>
+        <th>Response Code</th>
+        <th>Quote #</th>
+    </tr>*@
+
+@foreach (var i in Model)
+{
+    @i.ChargeType
+    
+    @i.Date.ToShortDateString() @i.Date.ToShortTimeString()
+    <pre>
+        @i.GetResponse().SerializeToJson()
+    </pre>
+}

@@ -1,0 +1,40 @@
+﻿@{
+    Layout = "~/Views/Shared/Public.cshtml";
+}
+
+<div class="box" id="login-box">
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-horizontal", id = "login-form" }))
+    {
+        <div>
+            <div class="title">Login</div>
+            <div class="logo">Moovers CRM</div>
+        </div>
+        
+        @Html.ValidationSummary();
+
+        if (ViewBag.Reset)
+        {
+            <p class="alert alert-success">
+                Your password has been reset. Use the form below to login.
+            </p>
+        }
+        
+        @Html.Label("username", "Username", new { @style = "margin-bottom: 8px;" })
+        @Html.TextBox("username", (string)ViewBag.Username, new { required = "required", id = "", tabindex = 1, autofocus = "true" })
+
+        @Html.Label("password", "Password", new { @style = "margin-bottom: 8px;" })
+        @Html.Password("password", null, new { required = "required", tabindex = 2 })
+        
+        <div class="fieldset">
+            <label class="checkbox" style="margin-left: 18px;">
+                @Html.CheckBox("rememberMe")
+                Remember Me
+            </label>
+        </div>
+        <button class="btn btn-primary" type="submit" tabindex="3">Login</button>
+    }
+
+    <div class="forgot-pass">
+        @Html.ActionLink("Forgot your password?", "ForgotPassword")
+    </div>
+</div>

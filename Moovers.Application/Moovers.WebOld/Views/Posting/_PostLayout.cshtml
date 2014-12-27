@@ -1,0 +1,58 @@
+﻿@{
+    Layout = "~/Views/Shared/Main.cshtml";
+}
+
+@section Submenu {
+
+    <div class="nav-sublink-container">
+        <span class="nav-sublink @(ViewBag.Page == "unposted" && ViewBag.Page != "unpaid" ? "selected" : "")">
+            @Html.ActionLink("Unposted", "Index", new { Controller = "Posting" })
+        </span>
+        <span class="nav-sublink @(ViewBag.Page == "posted" ? "selected" : "")">
+            @Html.ActionLink("Posted", "Posted", new { Controller = "Posting" })
+        </span>
+        <span class="nav-sublink @(ViewBag.Page == "unpaid" ? "selected" : "")">
+            @Html.ActionLink("Unpaid", "Unpaid", new { Controller = "Posting" })
+        </span>
+    </div>
+}
+
+<div class="layout">
+    <div class="subnav hide">
+        <div class="col-left">
+            <div class="title-dropdown">
+                <h4>@ViewBag.SessionFranchise.Name</h4>
+                @using (Html.BeginForm("SetFranchiseID", "Home", FormMethod.Post, new { style = "display: inline; position: relative;" }))
+                {
+                    <input type="hidden" name="redirect" value="@Request.Url.ToString()" />
+                    if (ViewBag.HasMultipleFranchises)
+                    {
+                        <i class="icon-caret-down dropdown-toggle" data-toggle="dropdown"></i>
+                        <ul class="dropdown-menu franchise-selector">
+                            @foreach (var franchise in ((IEnumerable<Business.Models.Franchise>)ViewBag.AllFranchises).Where(i => i.FranchiseID != ViewBag.SessionFranchise.FranchiseID))
+                            {
+                                <li>
+                                    <button class="btn btn-link" type="submit" value="@franchise.FranchiseID" name="franchiseid">@franchise.Name</button>
+                                </li>
+                            }
+                        </ul>
+                    }
+                }
+            </div>
+        </div>
+        <div class="col2-right">
+            @RenderSection("Buttons")
+        </div>
+    </div>
+    <div class="content-body">
+        <div class="layout">
+            <div class="col-left">
+                <div class="nav-left">
+
+                </div>
+            </div>
+            @RenderBody()
+        </div>
+    </div>
+    <div class="cfix"></div>
+</div>

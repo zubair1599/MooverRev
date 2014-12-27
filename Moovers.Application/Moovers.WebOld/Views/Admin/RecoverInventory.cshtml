@@ -1,0 +1,35 @@
+﻿@using Business.Repository.Models
+@model Business.Models.Quote
+@{
+    ViewBag.Title = "RecoverInventory";
+}
+
+<div class="container-pad">
+    <h4>Recover Inventory</h4>
+
+    @{
+        var historyRepo = new QuoteHistoryRepository();
+        var histories = historyRepo.GetByQuoteID(Model.QuoteID);
+    }
+    
+    @foreach (var item in histories)
+    {
+        @item.ItemJson
+    }
+
+    <ul class="quarters">
+    @foreach (var item in Model.GetInventoryFromExternal(Model.CustomInventoryData))
+    {
+        <li>@item.Count - @item.Item.Name</li>
+    }
+    </ul>
+    <div style="clear: both;">
+    @using (Html.BeginForm(null, null, FormMethod.Post))
+    {
+        <input type="hidden" name="quoteid" value="@Model.QuoteID" />
+        <input type="hidden" name="type" value="FROM-EXTERN" />
+        <input type="submit" class="btn" />
+    }
+    </div>
+
+</div>

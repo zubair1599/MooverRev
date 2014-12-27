@@ -1,0 +1,143 @@
+﻿@model Moovers.WebModels.HomePageViewModel
+@{
+    ViewBag.Title = "Moovers CRM";
+    ViewBag.ParentMenu = "Home";
+}
+
+<div class="center-container home-page">
+    <div class="container-pad">
+        <div class="clearfix">
+            <div class="panel-container" id="recent-quotes">
+                <div class="panel-title">Recent Quotes</div>
+                <table class="table table-condensed" style="margin-bottom: 0;">
+                    @foreach (var quote in Model.Quotes)
+                    {
+                        <tr>
+                            <td>@Html.ActionLink(quote.Lookup, "Overview", new { Controller = "Quote", id = quote.Lookup }, new { @class = "max-size" })</td>
+                            <td>@quote.Account.DisplayName</td>
+                            <td>
+                                @if (quote.GetSchedules().Any())
+                                {
+                                    @quote.GetSchedules().Select(i => i.Date).Min().ToShortDateString()
+                                }
+                                else
+                                {
+                                    @quote.MoveDate.ToShortDateString()
+                                }
+                            </td>
+                            <td>
+                                @if (quote.GetSchedules().Any(s => s.Postings.Any(p => p.IsComplete)))
+                                {
+                                    <text>Won</text>
+                                }
+                                else
+                                {
+                                    @quote.Status.GetDescription()
+                                }
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div class="panel-container" id="moving-today">
+                <div class="panel-title">Moving Today</div>
+                @if (Model.GoingToday.Any())
+                {
+                <table class="table table-verycondensed" style="margin-bottom: 0;">
+                        @{
+                            var moves = Model.GoingToday;
+                            moves = moves.Select(i => new {
+                                        move = i,
+                                        crew = i.GetSchedules().First().GetCrews().FirstOrDefault()   
+                                    }).OrderBy(i => i.crew != null ? i.crew.Lookup : Int32.MinValue).Select(i => i.move);
+                        }
+                        @foreach (var q in moves)
+                        {
+                            var schedule = q.GetSchedules().FirstOrDefault(i => i.Date == DateTime.Today);
+                            <tr class="pointer">
+                                <td>@Html.ActionLink(q.Lookup, "Overview", new { id = q.Lookup, Controller = "Quote" }, new { @class = "full-row-link" })</td>
+                                <td>
+                                    @q.Account.DisplayName
+                                </td>
+                                <td>
+                                    @if (schedule != null)
+                                    {
+                                        @Business.Utility.Date.DisplayHour(schedule.StartTime)<text> - </text>
+                                        @Business.Utility.Date.DisplayHour(schedule.EndTime)
+                                    }
+                                </td>
+                                <td>
+                                    @String.Format("{0:C}", q.GetDisplayPrice())
+                                </td>
+                                <td>
+                                    @foreach (var crew in q.GetSchedules().Where(i => i.Date == DateTime.Today).SelectMany(i => i.GetCrews()))
+                                    {
+                                        foreach (var emp in crew.GetEmployees())
+                                        {
+                                            <span title="@emp.Employee.DisplayName()">
+                                                <i class="icon-user"></i> @emp.Employee.Lookup
+                                            </span>
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                        }
+                </table>
+                }
+                else {
+                    <div class="alert alert-warning">No moves today.</div>   
+                }
+            </div>
+        </div>
+
+        @Html.Partial("Schedule/_Surveys", new SurveyList() {
+            Surveys = Model.Surveys,
+            FranchiseAddress = Model.FranchiseAddress   
+        })
+
+        <div class="messageBox">
+            <h5 class="nomargin" style="text-transform: uppercase;">Messages</h5>
+            <div class="msg">
+                @using (Html.BeginForm("AddMessage", "Home", FormMethod.Post))
+                {
+                    <textarea name="addMessage" required style="width: 100%; height: 40px;" placeholder="Write a message..."></textarea>
+                    <button type="submit" class="btn btn-success jank-hide"><i class="icon-plus"></i></button>
+                }
+            </div>
+            <div class="panel-container small">
+                @foreach (var msg in Model.Messages)
+                {
+                    <div class="panel-title clearfix">
+                        <span class="left">@msg.aspnet_Users.UserName</span>
+                        <span class="right">@msg.Date.ToString("MM/dd hh:mm tt")
+                            <a href="@Url.Action("RemoveMsg", new { id = msg.MessageID, Controller = "Home" })">
+                                <i class="icon icon-remove"></i>
+                            </a>
+                        </span>
+                    </div>
+                    <pre class="panel-section">@msg.Message</pre>
+                }
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function() {
+        HomePage.init();
+        $("#mobile-search-box input").keypress(function(e) {
+            if (e.keyCode === Keys.ENTER) {
+                $(this).closest("form").submit();
+            }
+        });
+
+        $("[name=addMessage]").keypress(function(e) {
+            if (e.keyCode === Keys.ENTER && !e.shiftKey) {
+                $(this).siblings("[type=submit]").click();
+                return false;
+            }
+        });        
+    });
+</script>

@@ -1,0 +1,306 @@
+﻿@using Business.Models
+@model Moovers.WebModels.FieldStatusViewModel
+
+@{
+    ViewBag.Title = "FiledStatus";
+
+}
+
+@{
+    ViewBag.Title = "MVC 3 and Google Maps";
+}
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+
+<script src="~/static/js/plugins/jquery.ui.map.js"></script>
+<script src="~/static/js/gmaps.js"></script>
+<script src="~/static/js/demo.js"></script>
+@{
+    var custSignOff = Model.SignOffs.FirstOrDefault();
+    var inventoryVerification = Model.InventoryVerifications.LastOrDefault();
+    var unloadVerification = Model.UnloadVerifications.LastOrDefault();
+} 
+
+
+<link href='//fonts.googleapis.com/css?family=Roboto:700,400,300' rel='stylesheet' type='text/css'>
+@{
+    var address = Model.Quote.Account.GetAddress(AddressType.Billing);
+    var phone = Model.Quote.Account.GetPhone(PhoneNumberType.Primary);
+    var email = Model.Quote.Account.GetEmail(EmailAddressType.Primary);
+    var index = 1;
+}
+<div class="page-pane">
+    <div class="content-pane">
+
+        <div id="quote-wizard" class="container">
+            <div class="pane-container">
+                <div class="pane-left">
+                    <div class="container-white">
+                        <div class="primary-contact">
+                            Primary contact
+                        </div>
+                        <div id="shipper">
+                            <div class="title title3">@Model.Quote.Account.DisplayName</div>
+                            <div id="shipper-address">
+                                @if (address != null)
+                                {
+                                    <div>@address.Street1</div>
+                                    <div>@address.City, @address.State @address.Zip</div>
+                                }
+                            </div>
+                            <div id="shipper-contact">
+                                @if (phone != null)
+                                {
+                                    <div>@phone.Number</div>
+
+                                }
+                                <div><a href="#">@(email != null ? email.Email : "") </a></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-white">
+
+                        <ul id="quote-nav">
+                            <li>
+                                <a href="#" id="tab_all" class="active tab-icon">All</a>
+                            </li>
+                            <li>
+                                <a href="#" id="tab_quote-status" class="tab-icon">Status</a>
+                            </li>
+                            <li>
+                                <a href="#" class="tab-icon" id="tab_signoff">Sign Off</a>
+                            </li>
+                            <li>
+                                <a href="#" class="tab-icon" id="tab_inventory_verification">Inventory Verification</a>
+                            </li>
+                            <li>
+                                <a href="#" class="tab-icon" id="tab_unload_verification">Unload Verification</a>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                    <div id="quote-stops" class="container-white">
+                        <div class="pane-left-title">Stops</div>
+                        <ul>
+                            @foreach (var stop in Model.Quote.Stops)
+                            {
+                                <li><span class="street">@stop.Address.Street1</span>@stop.Address.City, @stop.Address.State @stop.Address.Zip</li>
+
+                            }
+                        </ul>
+                    </div>
+
+                </div>
+                <div class="pane-right">
+
+                    <div id="quote_status" class="container-transparent">
+                        <span class="title title3">Status</span>
+                        <div class="quote-contacts">
+                            <div class="contact">
+
+                                @for (int i = 0; i < Model.Quote.Stops.Count; i++)
+                                {
+                                    <div id="quote-stops" class="container-white">
+                                        <div class="pane-left-title"><b>Stop @(i + 1) </b>: @Model.Quote.Stops.ToArray()[i].Address.DisplayString()</div>
+
+                                        <table class="table table-striped table-hover">
+
+                                            <thead>
+                                                <tr>
+                                                    <th>Event</th>
+                                                    <th>Time</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var status in @Model.Quote.Stops.ToArray()[i].QuoteStatus)
+                                                {
+                                                    <tr>
+                                                        <td>@Enum.GetName(typeof(Business.Enums.QuoteFieldStatus), @status.Status_Type)</td>
+
+                                                        <td> @status.StatusUpdateTime </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+                    @if (Model.SignOffs.Count > 0)
+                    {
+                     
+                        <div id="customer_signOff" class="container-transparent">
+                            <span>Customer Sign-Off (@Model.SignOffs.OrderBy(c => c.AccountSignature.SignatureTime).LastOrDefault().AccountSignature.SignatureTime)</span>
+                            <div class="quote-contacts">
+                                <div class="contact">
+                                    @Html.Raw(Model.SignOffs.OrderBy(c => c.AccountSignature.SignatureTime).LastOrDefault().AccountSignature.Signature)
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    @if (Model.InventoryVerifications.Count > 0)
+                    {
+                        <div id="inventory_verification" class="container-transparent">
+                            <span>Inventory Verification (@Model.InventoryVerifications.OrderBy(c => c.AccountSignature.SignatureTime).LastOrDefault().AccountSignature.SignatureTime)</span>
+                            <div class="quote-contacts">
+                                <div class="contact">
+                                    @Html.Raw(Model.InventoryVerifications.OrderBy(c => c.AccountSignature.SignatureTime).LastOrDefault().AccountSignature.Signature)
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    @if (Model.UnloadVerifications.Count > 0)
+                    {
+                        <div id="unload_verification" class="container-transparent">
+                            <span>Unload Verification (@Model.UnloadVerifications.OrderBy(c => c.AccountSignature.SignatureTime).LastOrDefault().AccountSignature.SignatureTime)</span>
+                            <div class="quote-contacts">
+                                <div class="contact">
+                                    @Html.Raw(Model.UnloadVerifications.OrderBy(c => c.AccountSignature.SignatureTime).LastOrDefault().AccountSignature.Signature)
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div id="map_canvas" style="width: 100%;height: 400px;" ></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+        var lat1 = '@(custSignOff!=null? custSignOff.Latitude:"")';
+        var lng1 =  '@(custSignOff!=null? custSignOff.Longitude:"")'; 
+
+        var lat2 = '@(inventoryVerification != null ? inventoryVerification.Latitude : "")';
+        var lng2 =  '@(inventoryVerification != null ? inventoryVerification.Longitude : "")'; 
+
+        var lat3 = '@(unloadVerification != null ? unloadVerification.Latitude : "")';
+        var lng3 =  '@(unloadVerification != null ? unloadVerification.Longitude : "")'; 
+
+        var loadver = '@Model.InventoryVerifications.Count';
+        var unload = '@Model.UnloadVerifications.Count';
+
+
+        var map = new GMaps({
+            div: '#map_canvas',
+            lat: 39.174428,
+            lng: -94.636848,
+            zoom: 9,
+            zoomControl: true,
+            zoomControlOpt: {
+                style: 'SMALL',
+                position: 'TOP_LEFT'
+            },
+            panControl: false,
+        });
+
+
+        if (lat1 != '') {
+            map.addMarker({
+                lat: lat1,
+                lng: lng1,
+
+                title: '@Model.Quote.Lookup' + ' Customer Sign Off',
+                click: function(e) {
+                    alert('You clicked in this marker');
+                }
+            });
+        }
+        if (lat2 != '') {
+            map.addMarker({
+                lat: lat2,
+                lng: lng2,
+
+                title: 'Inventory Verification',
+                click: function(e) {
+                    alert('You clicked in this marker');
+                }
+            });
+}
+
+        if (lat3 != '') {
+                map.addMarker({
+                    lat: lat3,
+                    lng: lng3,
+
+                    title: 'Unload Inventory Verification',
+                    click: function(e) {
+                        alert('You clicked in this marker');
+                    }
+                });
+        }
+
+        $('#tab_search-contacts').hide();
+
+        $('#tab_all').click(function () {
+            $('#quote_status').show();
+            $('#inventory_verification').show();
+            $('#unload_verification').show();
+            $('#customer_signOff').show();
+            $('.tab-icon').removeClass('active');
+            $(this).addClass('active');
+        });
+
+        $('#tab_signoff').click(function () {
+            $('#quote_status').hide();
+            $('#inventory_verification').hide();
+            $('#unload_verification').hide();
+            $('#customer_signOff').show();
+            $('.tab-icon').removeClass('active');
+            $(this).addClass('active');
+
+
+        });
+
+        $('#tab_quote-status').click(function () {
+            $('#quote_status').show();
+            $('#customer_signOff').hide();
+            $('#inventory_verification').hide();
+            $('#unload_verification').hide();
+            $('.tab-icon').removeClass('active');
+            $(this).addClass('active');
+        });
+
+        $('#tab_inventory_verification').click(function () {
+            $('#quote_status').hide();
+            $('#customer_signOff').hide();
+            $('#inventory_verification').show();
+            $('#unload_verification').hide();
+            $('.tab-icon').removeClass('active');
+            $(this).addClass('active');
+        });
+
+        $('#tab_unload_verification').click(function () {
+            $('#quote_status').hide();
+            $('#customer_signOff').hide();
+            $('#inventory_verification').hide();
+            $('#unload_verification').show();
+            $('.tab-icon').removeClass('active');
+            $(this).addClass('active');
+        });
+
+        $('#contact-search').click(function () {
+            $('.contact-list-container').addClass('show');
+        });
+
+        $("select").selectBoxIt({
+            showFirstOption: false
+        });
+
+        $('.quote-actions').click(function (e) {
+            console.log(e);
+            console.log(e.target); //whatever is being clicked. where the event originated
+            console.log(this); //whatever the function was applied to. 'this' bubbles up. Refers to the element this handler is bound to.
+        });
+    });
+
+
+</script>

@@ -1,0 +1,99 @@
+﻿@model  Business.Interfaces.IPayable
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title></title>
+    <style>
+        @Html.RenderFile("~/static/css-plugins/reset.css")
+        @Html.RenderFile("~/static/css/base.css")
+        @Html.RenderFile("~/static/css/PDF/statement.css")
+    </style>
+</head>
+<body>
+        <table class="header">
+            <tr>
+                <td>
+                    Moovers<br />
+                    @Html.Partial("Accounts/_DisplayAddress", (Business.Models.Address)ViewBag.Franchise.Address)
+                    <br /><br />
+                    @ViewBag.Franchise.DisplayNumber()
+                    <br />
+                    @ViewBag.Franchise.FranchiseEmail
+                    <br />
+                    http://www.1800moovers.com
+                    <br /><br />
+                </td>
+                <td style="text-align: center;">
+                    <h4>Moovers</h4>
+                </td>
+                <td style="text-align: right;">
+                    <div class="top-right" style="float: right;">
+                        <div class="dark">Date</div>
+                        <div>@DateTime.Now.ToShortDateString()</div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <div class="toAddress">
+            <table>
+                <tr>
+                    <th>To</th>
+                </tr>
+                <tr>
+                    <td>
+                        @Model.Account.DisplayName<br />
+                        @Html.Partial("Accounts/_DisplayAddress", Model.Account.GetAddress(Business.Models.AddressType.Billing))
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <br class="clear" />
+        <br />
+      
+        <table class="invoices">
+            <tr class="item">
+                <th style="text-align: left;">Date</th>
+                <th style="text-align: left;">Activity</th>
+                <th style="text-align: left;">Amount</th>
+                <th style="text-align: left;">Payment Method</th>
+                <th style="text-align: left;">Reference Number</th>
+            </tr>
+            @foreach (var payment in Model.GetPayments().Where(p => p.Success && !p.IsCancelled))
+            {
+            <tr class="item">
+                <td>@payment.Date.ToShortDateString()</td>
+                <td>PAYMENT</td>
+                <td>@String.Format("{0:C}", payment.Amount)</td>
+                <td>
+                    @if (payment.PaymentType == PaymentTypes.Cash)
+                    {
+                        <text>Cash</text>
+                    }
+                    else if (payment.PaymentType == PaymentTypes.CashierCheck)
+                    {
+                        <text>Check</text>
+                        if (!String.IsNullOrEmpty(payment.CheckNumber))
+                        {
+                            <text>&nbsp;</text>@payment.CheckNumber
+                        }
+                    }
+                    else if (payment.PaymentType == PaymentTypes.CreditCard)
+                    {
+                        @payment.Account_CreditCard.DisplayCard()<text>&nbsp;</text>@payment.Account_CreditCard.DisplayExpiration()
+                    }
+                </td>
+                <td>@payment.TransactionID</td>
+            </tr>
+            }
+            <tr class="spacer">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+</body>

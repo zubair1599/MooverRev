@@ -1,0 +1,53 @@
+﻿
+<div id="quote-coordinators" class="container-transparent" ng-controller="home">
+    <span class="title title2">
+        Add Person Account <span class="subtitle">Who is coordinating the move?</span>
+    </span>
+    <div class="quote-contacts">
+        
+
+        <div class="contact">
+            <h4>Recent Quotes</h4>
+            <table class="table table-striped">
+                <tr>
+                    <td>#</td>
+                    <td>Lookup</td>
+                    <td>Name</td>
+                    <td>Stage</td>
+                    <td>Move Date</td>
+                </tr>
+                <tr ng-repeat="quote in Quotes">
+                    
+                    <td>{{$index+1}}</td>
+                    <td>{{quote.Lookup}}</td>
+                    <td>{{quote.AccountName}}</td>
+                    <td>{{quote.Stage}}</td>
+                    <td>{{quote.MoveDate}}</td>
+
+                </tr>
+            </table>
+            
+            <br/>
+            <br/>
+
+            <h4>Moving Today</h4>
+            <table class="table table-striped">
+                <tr>
+                    <td>#</td>
+                    <td>Lookup</td>
+                    <td>Name</td>
+                    <td>Stage</td>
+                    <td>Move Date</td>
+                </tr>
+                <tr ng-repeat="quote in MovingToday">
+                    <td>{{$index}}</td>
+                    <td>{{quote.Lookup}}</td>
+                    <td>{{quote.AccountName}}</td>
+                    <td>{{quote.Stage}}</td>
+                    <td>{{quote.MoveDate}}</td>
+
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

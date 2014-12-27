@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moovers.HtmlToPdf", "Moover
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moovers.WebModels", "Moovers.WebModels\Moovers.WebModels.csproj", "{0E48404B-C3A2-47ED-A1FE-4E3DB1E080C7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moovers.WebOld", "Moovers.WebOld\Moovers.WebOld.csproj", "{531B8C7A-58EF-4B5B-91C0-5A182A197383}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Beta|Any CPU = Beta|Any CPU
@@ -50,6 +52,12 @@ Global
 		{0E48404B-C3A2-47ED-A1FE-4E3DB1E080C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E48404B-C3A2-47ED-A1FE-4E3DB1E080C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E48404B-C3A2-47ED-A1FE-4E3DB1E080C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{531B8C7A-58EF-4B5B-91C0-5A182A197383}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
+		{531B8C7A-58EF-4B5B-91C0-5A182A197383}.Beta|Any CPU.Build.0 = Beta|Any CPU
+		{531B8C7A-58EF-4B5B-91C0-5A182A197383}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{531B8C7A-58EF-4B5B-91C0-5A182A197383}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{531B8C7A-58EF-4B5B-91C0-5A182A197383}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{531B8C7A-58EF-4B5B-91C0-5A182A197383}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

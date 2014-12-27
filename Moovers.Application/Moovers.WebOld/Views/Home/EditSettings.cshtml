@@ -1,0 +1,35 @@
+﻿@model AccountEditModel
+
+@{
+    ViewBag.Title = "Settings";
+    Layout = "~/Views/Shared/Main.cshtml";
+}
+
+<div class="center-container">
+    <div class="container-pad">
+
+        <h5>Account Settings</h5>
+
+        @Html.ValidationSummary()
+
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "account-settings" }))
+        {
+            @Html.Label("email", "Email")
+            @Html.TextBox("email", null, new { @type = "email" })
+
+            @Html.Label("oldpassword", "Current Password")
+            @Html.Password("oldpassword")
+    
+            @Html.Label("password", "Password")
+            @Html.Password("password")
+
+            @Html.Label("confirmpassword", "Confirm Password")
+            @Html.Password("confirmpassword")
+    
+            <div class="controls">
+                @Html.ActionLink("Cancel", "Settings", null, new { @class = "cancel" })
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+        }
+    </div>
+</div>

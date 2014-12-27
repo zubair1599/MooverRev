@@ -1,0 +1,103 @@
+﻿@model Moovers.WebModels.StorageList
+@{
+    ViewBag.Title = "Storage";
+    Layout = "_StorageLayout.cshtml";
+    var storageCount = Model.GetStorageAlerts();
+}
+<div class="container-pad">
+    <h4>Storage</h4>
+    @using (Html.BeginForm(null, null, FormMethod.Get))
+    {
+        <input autofocus="true" id="search" name="search" placeholder="Account Name, Acct #" style="width: 440px; margin-bottom: 10px;" type="search" value="@ViewBag.Search" />
+        <button type="submit" class="btn" style="margin-bottom: 10px;">Submit</button>
+    }
+    <div class="action">
+        <a href="@Url.Action("PrintStatements", "Storage")" class="btn">
+            <i class="icon-print"></i> Print Statements @if (storageCount > 0)
+            {
+                <span class="label label-important @(storageCount >= 10 ? "large" : "") @(storageCount >= 100 ? "very-large" : "")">@storageCount</span>
+            }
+        </a>
+
+        @Html.ActionLink("show " + (ViewBag.Cancelled ? "active" : "inactive"), "Index", new { cancelled = !ViewBag.Cancelled })
+    </div>
+    <table class="table table-striped table-verycondensed table-hover storage-list">
+        @Html.Partial("Generic/_SortableTableHeader")
+        @foreach (var item in Model.WorkOrders)
+        {
+            var lastpayment = item.GetLastSuccessfulPayment();
+            var balance = item.GetBalance();
+            var overdue = item.GetOverdueBalance();
+            <tr>
+                <td>@Html.ActionLink(item.Lookup, "View", new { id = item.Lookup }, new { @class = "max-size" })</td>
+                <td>
+                    <span class="max-size">
+                        @item.Account.DisplayName
+                    @Html.ActionLink(item.Account.Lookup, "Index", new { id = item.Account.Lookup, Controller = "Accounts" })
+                </span>
+            </td>
+            <td>
+                @item.GetVaults().Count()
+            </td>
+            <td>@item.GetOverstuffed().Count()</td>
+            <td>
+                <span class="@(overdue > 0 ? "red" : balance < 0 ? "green" : "")">
+                    @String.Format("{0:C}", balance)
+                </span>
+            </td>
+            <td>
+                <span class="@(overdue > 0 ? "red" : overdue < 0 ? "green" : "")">
+                    @String.Format("{0:C}", overdue)
+                </span>
+            </td>
+            <td>@String.Format("{0:C}", item.MonthlyPayment)</td>
+            <td>
+                @if (item.HasPaymentError)
+                {
+                    <span class="red strikethrough">
+                        @if (lastpayment != null)
+                        {
+                            @String.Format("{0} ({1:C})", lastpayment.Date.ToShortDateString(), lastpayment.Amount)
+                        }
+                        else
+                        {
+                            <text>N/A</text>
+                        }
+                    </span>
+                }
+                else if (lastpayment != null)
+                {
+                    <span>
+                        @String.Format("{0} ({1:C})", lastpayment.Date.ToShortDateString(), lastpayment.Amount)
+                    </span>
+                }
+                else
+                {
+                    <span class="red">N/A</span>
+                }
+            </td>
+            <td>
+                @if (item.GetNextPayment().HasValue)
+                {
+                    @item.GetNextPayment().Value.ToShortDateString()
+                }
+            </td>
+            <td>
+                @if (item.GetDaysOverdue() > 0)
+                {
+                    @item.GetDaysOverdue()
+                }
+            </td>
+            <td>
+                @if (item.IsAutomaticBilling)
+                {
+                    <i class="icon-check"></i>
+                }
+            </td>
+        </tr>
+        }
+    </table>
+    <div class="right">
+        @Html.Partial("Generic/_PageList", Model.WorkOrders)
+    </div>
+</div>

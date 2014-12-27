@@ -1,0 +1,131 @@
+﻿@model Business.ViewModels.BusinessAccountModel
+
+@using (Html.BeginModal("create-business-dialog", "Create Business"))
+{
+    using (Html.BeginForm("CreateBusiness", "Accounts", FormMethod.Post, new { id = "business-account", @class = "form-horizontal add-account", autocomplete = "off" }))
+    {
+        <div class="page page1 account-box">
+            <div class="title-bar">Account Information</div>
+            <div class="alert alert-error errors" style="margin-bottom: -1em; display: none;"></div>
+            <input type="hidden" name="accountid" data-field="AccountID" />
+
+            <div class="row-fluid">
+                <div class="span6">
+                    <div class="subtitle-bar">&nbsp;</div>
+                    <div class="control-group">
+                        @Html.LabelFor(m => m.Account.Name, "Name", new { @class = "control-label" })
+                        <div class="controls">
+                            @Html.TextBoxFor(m => m.Account.Name, new { required = "required", data_field = "Name" })
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        @Html.LabelFor(m => m.Account.Type, "Type", new { @class = "control-label" })
+                        <div class="controls">
+                            @Html.DropDownListFor(m => m.Account.Type, Business.Models.BusinessTypes.Commercial.ToSelectList(), new { data_field = "BusinessType" })
+                        </div>
+                    </div>
+
+                    <div class="subtitle-bar">
+                        Phone Numbers
+                    </div>
+
+                    <div class="control-group">
+                        @Html.LabelFor(m => m.PrimaryPhone.Number, "Primary Phone", new { @class = "control-label" })
+                        <div class="controls">
+                            @Html.TextBoxFor(m => m.PrimaryPhone.Number, null, new { required = "required", @type = "tel", pattern = @"\(?\d{3}[)-]?\d{3}\-?\d{4}", data_errormessage = "Please enter a phone number", data_field = "PrimaryPhone.Number" })
+                            @Html.TextBoxFor(m => m.PrimaryPhone.Extension, null, new { @type = "tel", @class = "extension", placeholder = "Ext.", data_field = "PrimaryPhone.Extension" })
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        @Html.LabelFor(m => m.SecondaryPhone.Number, "Secondary Phone", new { @class = "control-label" })
+                        <div class="controls">
+                            @Html.TextBoxFor(m => m.SecondaryPhone.Number, null, new { @type = "tel", pattern = @"\(?\d{3}[)-]?\d{3}\-?\d{4}", data_errormessage = "Please enter a phone number", data_field = "SecondaryPhone.Number" })
+                            @Html.TextBoxFor(m => m.SecondaryPhone.Extension, null, new { @type = "tel", @class = "extension", placeholder = "Ext.", data_field = "SecondaryPhone.Extension" })
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        @Html.LabelFor(m => m.FaxPhone.Number, "Fax", new { @class = "control-label" })
+                        <div class="controls">
+                            @Html.TextBoxFor(m => m.FaxPhone.Number, null, new { @type = "tel", pattern = @"\(?\d{3}[)-]?\d{3}\-?\d{4}", data_errormessage = "Please enter a phone number", data_field = "FaxPhone.Number" })
+                            @Html.TextBoxFor(m => m.FaxPhone.Extension, null, new { @type = "tel", @class = "extension", placeholder = "Ext.", data_field = "FaxPhone.Extension" })
+                        </div>
+                    </div>
+
+                    <div class="subtitle-bar">
+                        Emails
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Primary Email</label>
+                        <div class="controls">
+                            @Html.TextBoxFor(m => m.PrimaryEmail.Email, new { @type = "email", data_field = "PrimaryEmail" })
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Billing Email</label>
+                        <div class="controls">
+                            @Html.TextBoxFor(m => m.SecondaryEmail.Email, new { @type = "email", data_field = "SecondaryEmail" })
+                        </div>
+                    </div>
+                </div>
+                <!--/span6-->
+
+                <div class="span6 address-container">
+                    <div class="subtitle-bar">
+                        Mailing Address
+                    </div>
+                    @Html.Partial("Accounts/_Address", new AddressModel(Business.Models.AddressType.Mailing, false))
+
+                    <div class="subtitle-bar">
+                        Billing Address
+                        <span class="mailing">Same as Mailing 
+                            @Html.CheckBoxFor(m => m.CopyMailing, new { @class = "copy-mailing", @checked = false })
+                        </span>
+                    </div>
+
+                    @Html.Partial("Accounts/_Address", new AddressModel(Business.Models.AddressType.Billing, false))
+                </div>
+                <!--span6-->
+            </div>
+                
+            <div class="clearfix">
+                <div class="end-controls">
+                    @Html.AjaxLoader("business-loader", new { style = "margin-right: 10px; ", @class = "ajax-loader" })
+                    <a class=" btn" href="#" data-dismiss="modal">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Next</button>
+                </div>
+            </div>
+        </div>
+    
+        <div class="page page2">
+            <div class="account-box">
+                <div class="row-fluid">
+                    <div class="find-address-container">
+                    <h3>Verify Address</h3>
+                        <div class="selected-address" style="display: none;">
+                            <label>
+                                <input type="radio" name="address-select" value="CURRENT_SELECTED" />
+                                <span id="selected-display"></span>
+                            </label>
+                        </div>
+                        <div class="search-results">
+                            <div class="address-title">Verified Addresses</div>
+                            <div class="verified-address-container"></div>
+                            <div class="address-title">Unverified Addresses</div>
+                            <div class="unverified-address-container"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <div class="end-controls">
+                        @Html.AjaxLoader("business-address-loader", new { style = "margin-right: 10px; ", @class = "ajax-loader" })
+                        <button type="button" class="btn back">Back</button>
+                        <button type="button" class="btn btn-primary save-form">Save &amp; Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

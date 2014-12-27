@@ -1,0 +1,66 @@
+﻿@model Business.Models.Franchise
+
+@{
+    ViewBag.Title = "Create";
+}
+<div class="center-container">
+    <div class="container-pad">
+
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+            <fieldset>
+                <legend>New Franchise</legend>
+
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Name)
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.Name)
+                    @Html.ValidationMessageFor(model => model.Name)
+                </div>
+
+                @Html.Partial("Accounts/_Address", new AddressModel(Business.Models.AddressType.Mailing, false))
+
+
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.PhoneNumber)
+                </div>
+                <div class="editor-field">
+                 @Html.EditorFor(model => model.PhoneNumber)
+                    @Html.ValidationMessageFor(model => model.PhoneNumber)
+                </div>
+
+                <div class="editor-label">
+                    Email: 
+                </div>
+                <div class="editor-field">
+                   @Html.EditorFor(model => model.FranchiseEmail)
+                    @Html.ValidationMessageFor(model => model.FranchiseEmail)
+                </div>
+
+                <div class="editor-label">
+                    Storage? 
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(model => model.HasStorage)
+                    @Html.ValidationMessageFor(model => model.HasStorage)
+                </div>
+
+
+
+
+                <p>
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </p>
+            </fieldset>
+        }
+
+       
+        </div>
+    </div>
+
+

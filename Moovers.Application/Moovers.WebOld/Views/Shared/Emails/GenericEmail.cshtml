@@ -1,0 +1,16 @@
+﻿@model Business.ViewModels.EmailModel
+
+@{
+    ViewBag.Title = "GenericEmail";
+    Layout = "~/Views/Shared/Email.cshtml";
+}
+
+@section HeaderMessage {
+    Your Account Number: @Model.Account.Lookup
+}
+
+<p style="list-style-type: none; line-height: 1.4em; margin: 0 0 20px; padding: 0; font-size: 12px; color: #333333;">
+    @Html.Raw(Model.Message)
+</p>
+
+@Html.Partial("Emails/_EmailContactFooter", Model)

@@ -7,37 +7,38 @@ function addressFactory($rootScope, $http, $q, $resource) {
 
 
     serviceDefer.GetStates = function () {
-        serviceDefer.servicePromise = $q.defer();
+        var test  = $q.defer();
         $http.get(serviceDefer.URL + '/Address/GetAllStates/').
               success(function (data, status, headers, config) {
 
                   //serviceDefer.servicePromise = $q.defer();
-                  serviceDefer.servicePromise.resolve(data);
+                 test.resolve(data);
 
               }).
               error(function (data, status, headers, config) {
                   //serviceDefer.servicePromise = $q.defer();
-                  serviceDefer.servicePromise.reject();
+                  test.reject();
               });
-      
+        return test.promise;
     };
 
 
     serviceDefer.GetBuildingType = function (type) {
-        serviceDefer.servicePromise = $q.defer();
+        var test = $q.defer();
         $http.get(serviceDefer.URL + '/Address/AddressTypes/?type='+type).
               success(function (data, status, headers, config) {
 
                   //serviceDefer.servicePromise = $q.defer();
-                serviceDefer.servicePromise.resolve(data);
+                test.resolve(data);
                 //return serviceDefer.servicePromise.promise;
 
             }).
               error(function (data, status, headers, config) {
-                  serviceDefer.servicePromise.reject(data);
+                  test.reject(data);
                   //return serviceDefer.servicePromise.promise;
               });
-        
+        return test.promise;
+
     };
 
     serviceDefer.GetDistanceTime = function(id1, id2) {

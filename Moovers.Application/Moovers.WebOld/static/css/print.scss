@@ -1,0 +1,154 @@
+﻿body {
+    font-family: Verdana;
+}
+
+#header-tab-panel {
+    display: none!important;
+}
+
+.forceprint {
+    display: block!important;
+}
+
+.red {
+    color: red;
+}
+
+.panel-right, .col-left {
+    display: none;
+}
+
+.post-body #content .layout .col2-right {
+    margin-left: 0;
+}
+
+.room-header {
+    clear: left;
+}
+
+.shipper-info {
+    font-size: 12px;
+    line-height: 20px;
+    font-family: Verdana, Geneva, 'DejaVu Sans', sans-serif;
+}
+
+.nav-secondary, div.menu, div.dropdown, #competitor-select, #toggle-shipping-info, .competitors {
+    display: none!important;
+}
+
+h5 {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+ul.quarters {
+    margin-top: 0; 
+    padding-top: 0;
+    padding-left: 0;
+}
+
+ul.quarters li {
+    float: left;
+    list-style-type: none;
+    width: 20%;
+}
+
+.panel-title {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    font-size: 15px;
+    text-transform: uppercase;
+    clear: both;
+}
+
+.panel-container {
+    margin-top: 30px;
+}
+
+a {
+    text-decoration: none!important;
+    color: black;
+}
+
+table.table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th {
+        text-align: left;
+    }
+    td, th{
+        border: 1px solid black;
+        padding: 3px;
+    }
+    tr:nth-child(even)  td{
+        background-color: white;
+    }
+}
+
+input {
+    display: none!important;
+}
+
+.btn {
+    display: none!important;
+}
+
+.noprint {
+    display: none!important;
+}
+
+.printonly {
+    display: block!important;
+}
+
+.printonly-inline {
+    display: inline!important;
+}
+
+.modal {
+    display: none!important;
+}
+
+.hide {
+    display: none;
+}
+
+table.schedule-table {
+    margin-bottom: 40px;
+    page-break-inside: avoid;
+}
+
+table.schedule-table tr td:nth-child(2) {
+    width: 25px;
+}
+
+table.schedule-table td {
+    white-space: nowrap;
+}
+
+table.schedule-table tr td:nth-child(5) {
+}
+
+table.schedule-table tr td:nth-child(6) {
+    width: 25px;
+}
+
+.add-note:not(.changed) {
+    display: none;
+}
+
+thead td, thead th {
+    font-weight: bold;
+}
+
+
+/*** Stylesheet for quote-manager.scss ***/
+#table-stats { display: none; }
+.filter-group { display: none; }
+
+#quote-table td:nth-child(11), #quote-table th:nth-child(11) { display: none; }
+#quote-table td { page-break-inside: avoid; }
+.pagination { display: none!important; }
+.filters-applied { display: inline-block; }
+.filters-applied li { display: inline-block; border: 1px solid black; border-radius: 4px; margin-right: 10px; padding: 1px;  }

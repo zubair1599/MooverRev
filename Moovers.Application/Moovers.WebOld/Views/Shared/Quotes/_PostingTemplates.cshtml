@@ -1,0 +1,499 @@
+﻿@model Business.Models.Posting
+
+<script type="text/x-jquery-tmpl" id="vehicle-template">
+    <div class="container-h40 vehicle" data-vehicleid="{{- VehicleID }}">
+        <i class="icon-img tire-img"></i>
+        <span class="vehicle-name">{{- Lookup }} - {{- Name }}</span>
+        <i class="icon-remove"></i>
+    </div>
+</script>
+
+<script type="text/x-jquery-tmpl" id="moving-service-template">
+    <tr class="service-line">
+        <td>
+            {{ if (IsCurrent) { }}
+                <strong>
+            {{ } }}
+            {{- dateFormat(Date, "mm/dd/yyyy") }}
+            {{ if (IsCurrent) { }}
+                </strong>
+            {{ } }}
+        </td>
+        <td>
+            {{ if (IsCancelled) { }}
+                <span class="posting-status red">cancelled</span>
+            {{ } else if (IsComplete) { }}
+                <span class="posting-status green">posted</span>
+            {{ } }}
+        </td>
+        <td>
+            {{= _.partial("hourly-service-display", {
+                IsEditable: isEditable(),
+                IsHourly: IsHourly,
+                Field: "HourlyPricing.FirstHourPrice",
+                Value: HourlyPricing.FirstHourPrice
+            }) }}
+        </td>
+        <td>
+            {{= _.partial("hourly-service-display", {
+                IsEditable: isEditable(),
+                IsHourly: IsHourly,
+                Field: "HourlyRate",
+                Value: HourlyRate
+            }) }}
+        </td>
+        {{ if (isEditable()) { }}
+            <td>
+                <input type="number" class="input-mini hours" step=".25" min="0" name="duration" placeholder="Hours"
+                    value="{{- Utility.formatCurrency(PostingHours, "", "") }}" data-field="PostingHours" />
+            </td>
+            <td>
+                <input type="number" class="input-mini hours" step=".25" min="0" name="driveHours" placeholder="Hours"
+                    value="{{- Utility.formatCurrency(DriveHours, "","") }}" data-field="DriveHours" />
+            </td>
+        {{ } else { }}
+            <td>
+                <span class="textbox-align hours" data-field="PostingHours">
+                    {{- Utility.formatCurrency(PostingHours, "", "") }}
+                </span>
+            </td> 
+            <td>
+                <span class="textbox-align hours" data-field="DriveHours">
+                    {{- Utility.formatCurrency(DriveHours, "", "") }}
+                </span>
+            </td>
+        {{ } }}
+    </tr>
+</script>
+
+<script type="text/x-jquery-tmpl" id="hourly-service-display-partial">
+    {{ if (IsHourly) { }}
+        {{ if (IsEditable) { }}
+            <input type="number" class="input-mini price firstHour" step=".01" min="0" name="firstHourRate" 
+                value="{{- Utility.formatCurrency(Value, "", "") }}" data-field="{{- Field }}" />
+        {{ } else { }}
+            <span class="textbox-align currentRate" data-field="HourlyRate">
+                {{- Utility.formatCurrency(Value) }}
+            </span>
+        {{ } }}
+    {{ } }}
+</script>
+
+<script type="text/x-jquery-tmpl" id="posting-template">
+    <td colspan="5" class="posting-container" data-postingid="{{- PostingID }}" style="text-align: left; border-bottom: 0;" data-plus-as-tab="true">
+        <div class="tr-section">
+            {{ if (HasMonthlyStorage || HasTemporaryStorage || StorageAccount) { }}
+                <div class="alert alert-error">
+                    <strong>Storage Move</strong>
+                    {{ if (HasTemporaryStorage && !HasOldStorage && StorageDays > 0) { }}
+                         {{- StorageDays }} Days Overnight
+                    {{ } }}
+
+                    <br />
+                    {{if (!StorageAccount && HasStorageAccounts && HasMonthlyStorage) { }}
+                        @using (Html.BeginForm("AddPosting", "Storage", FormMethod.Post, new { @class = "inline" }))
+                        {
+                            <input type="hidden" value="{{- Lookup }}" name="postid" />
+                            <button class="btn btn-primary" type="submit" style="margin-left: 10px;">Add Storage Account</button>
+                        }
+                    {{ } else if (HasStorageAccounts && StorageAccount) { }}
+                        <a href="{{- SERVER.baseUrl }}Storage/View/{{- StorageAccount.Lookup }}">Account #{{- StorageAccount.Lookup }}</a> 
+                    {{ } }}
+                </div>
+            {{ } }}
+
+            <div class="row-fluid">
+                <div style="text-align: left;">
+                    <label>
+                        {{ if (IsHourly) { }}
+                            Final Price:
+                        {{ } else { }}
+                            Guaranteed Price:
+                        {{ } }}
+                    </label>
+                    {{ if (IsHourly) { }}
+                        {{ if (isEditable()) { }}
+                        <input type="number" name="totalMovePrice" value="{{- Utility.formatCurrency(FinalPostedPrice, "", "") }}" data-field="FinalPostedPrice"
+                            class="price input-mini" step=".01" min="0" autofocus  />
+                        {{ } else { }}
+                            {{- Utility.formatCurrency(FinalPostedPrice) }}
+                        {{ } }}
+                    {{ } else { }}
+                        <span name="totalMovePrice" data-field="GuaranteedPricing.GuaranteedPrice">{{- Utility.formatCurrency(GuaranteedPricing.GuaranteedPrice) }}</span>
+                    {{ } }}
+                </div>
+
+                <div class="clearfix">
+                    <h5 style="padding: 10px 0;">Moving Services</h5>
+                    <input type="hidden" name="postingID" value="{{- PostingID }}" data-field="PostingID" />
+                    <table class="half-left">
+                        <tr>
+                            <th>Date</th>
+                            <th></th>
+                            <th>
+                                {{ if (IsHourly) { }}
+                                    <span class="textbox-align">First Hour</span>
+                                {{ } }}
+                            </th>
+                            <th>{{ if (IsHourly ) { }}
+                                    <span class="textbox-align">Rate</span>
+                                {{ } }}
+                            </th>
+                            <th>Billing Hours</th>
+                            <th>Drive</th>
+                        </tr>
+                        {{= RenderMovingServices() }}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                Total Billing : <span class="hour-display"></span>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <input type="hidden" name="postingID" value="{{- PostingID }}" />
+                    <table class="half-right services-table quote-services">
+                        <tr>
+                            <th>Description</th>
+                            <th>Amount</th>
+                        </tr>
+                        <tr>
+                            <td>Packing Materials</td>
+                            <td>
+                                {{ if (isEditable()) { }}
+                                    <input type="number" class="price input-mini" step=".01"  name="packingMaterialsPrice" data-field="PackingMaterialsCost" value="{{- Utility.formatCurrency(PackingMaterialsCost, "", "") }}" />
+                                {{ } else { }}
+                                    {{- Utility.formatCurrency(PackingMaterialsCost) }}
+                                {{ } }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Packing Services</td>
+                            <td>
+                                {{ if (isEditable()) { }}
+                                    <input type="number" class="price input-mini" step=".01" name="packingServicesPrice" data-field="PackingServiceCost" value="{{- Utility.formatCurrency(PackingServiceCost, "", "") }}" />
+                                {{ } else { }}
+                                    {{- Utility.formatCurrency(PackingServiceCost) }}
+                                {{ } }}
+                            </td>
+                        <tr>
+                            <td>Moving Services</td>
+                            <td class="moving-services-cost">
+                                {{ if (IsHourly) { }}
+                                <span class="moving-services-price price" title="{{- getHourlyPricingDescription() }}">
+                                    {{- Utility.formatCurrency(calculateMovingCost()) }}
+                                </span>
+                                {{ } else { }}
+                                    <span class="moving-services-guaranteed-price price" data-field="GuaranteedPricing.GuaranteedPrice">
+                                        {{- Utility.formatCurrency(GuaranteedPricing.GuaranteedPrice) }}
+                                    </span>
+                                    <span class="desc">
+                                        Orig: {{- Utility.formatCurrency(GuaranteedPricing.BasePrice) }} 
+                                        (
+                                        {{- Utility.formatCurrency(GuaranteedPricing.Adjustments * 100 / GuaranteedPricing.BasePrice, "%", "", 0) }}
+                                        )
+                                    </span>
+                                {{ } }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Storage Fees</td>
+                            <td>
+                                {{ if (isEditable()) { }}
+                                    <input type="number" class="price input-mini" step=".01" name="storageFeesPrice" data-field="StorageFeesCost" value="{{- Utility.formatCurrency(StorageFeesCost, "", "") }}" />
+                                {{ } else { }}
+                                    {{- Utility.formatCurrency(StorageFeesCost) }}
+                                {{ } }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Valuation Coverage</td>
+                            <td>
+                                {{ if (isEditable()) { }}
+                                    <input type="number" class="price input-mini" step=".01" name="valuationCost" data-field="ValuationCost" value="{{- Utility.formatCurrency(ValuationCost, "", "") }}" />
+                                {{ } else { }}
+                                    {{- Utility.formatCurrency(ValuationCost) }}
+                                {{ } }}
+                            </td>
+                        </tr>
+                        {{= RenderCustomServices() }}
+                        {{ if (isEditable()) { }}
+                            <tr>
+                                <td>
+                                    <input type="text" placeholder="Custom fee" class="custom-description" />
+                                </td>
+                                <td>
+                                    <button class="btn add-custom-service" type="button">Add Custom</button>
+                                </td>
+                            </tr>
+                        {{ } }}
+                        <tr class="subtotal-row">
+                            <td>
+                                {{ if (isEditable()) { }}
+                                    Total
+                                {{ } else { }}
+                                    Subtotal
+                                {{ } }}
+                            </td>
+                            <td><span class="total-display">
+                                    {{- Utility.formatCurrency(calculateTotalCost()) }}
+                                </span>
+                            </td>
+                        </tr>
+                        {{ if (isEditable()) { }}
+                        <tr>
+                            <td>Balance</td>
+                            <td>
+                                <span class="balance-display">
+                                    {{- Utility.formatCurrency(calculateBalance()) }}
+                                </span>
+                            </td>
+                        </tr>
+                        {{ } else { }}
+                            <tr>
+                                <td>Tip</td>
+                                <td>
+                                    {{- Utility.formatCurrency(calculateTip()) }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Total</td>
+                                <td>
+                                    {{- Utility.formatCurrency(calculateCostWithTip()) }}
+                                </td>
+                            </tr>
+                        <tr>
+
+                        </tr>
+                        {{ } }}
+                    </table>
+                </div>
+            </div>
+
+            <div style="height: 40px;"></div>
+
+            <div class="tr-section">
+                <h5 style="margin-bottom: 10px;" class="noprint">Receive Payment</h5>
+                <div class="main-posting-payment">
+                    @Html.Partial("Payment/_PaymentsList", Model.Quote)
+                </div>
+            </div>
+
+            <div style="height: 40px;"></div>
+            
+            <input type="hidden" name="id" value="{{- PostingID }}" />
+        
+            <div class="tr-section tr-section-nested-table">
+                {{ if (isEditable()) { }}
+                    <div class="input-row">
+                        <input type="text" placeholder="Add Employees" name="add-employee" autocomplete="off">
+                        <button class="btn btn-icon-only add-employee-post" type="button"><i class="icon-plus"></i></button>
+                    </div>
+                {{ } }}
+                <table class="nested-table employee-job-post">
+                    <thead>
+                        <tr>
+                            <td style="text-align: left; padding-left: 0;">
+                            <h5>Employees</h5></td>
+                            <td>Driver</td>
+                            <td>Hours</td>
+                            <td>Comm. %</td>
+                            <td>Comm.</td>
+                            <td>Tip</td>
+                            <td>Per Diem</td>
+                            {{ if (!IsHourly) { }}
+                                <td>
+                                    <abbr title="Man Hour Rate">MHR</abbr>
+                                </td>
+                            {{ } }}
+                            <td style="width: 35px;"></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{= RenderEmployees() }}
+
+                        {{ if (_.any(Siblings)) { }} 
+                            {{ _.each(Siblings, function(s) { }}
+                                <tr>
+                                    <td style="text-align: left; padding-left: 0;">
+                                        <h5 class="sibling-show-employees">{{- dateFormat(s.Date, "mm/dd/yyyy") }}
+                                            <i style="line-height: 15px; color: black; font-size: 12px;" class=" icon-double-angle-down " data-postingid="{{- s.PostingID }}"></i>
+                                        </h5>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    {{ if (!IsHourly) { }}
+                                        <td></td>
+                                    {{ } }}
+                                    <td style="width: 35px;"></td>
+                                    {{= s.RenderEmployees(true) }}
+                                </tr>
+                            {{ }); }}
+                        {{ } }}
+                    </tbody>
+                </table>
+
+                {{ if (isEditable()) { }}
+                <div class="input-row">
+                    <input type="text" placeholder="Add Vehicles" name="add-vehicle" autocomplete="off">
+                    <button class="btn btn-icon-only add-vehicle-post" type="button"><i class="icon-plus"></i></button>
+                </div>
+                {{ } }}
+                <table class="nested-table vehicle-job-post">
+                    <thead>
+                        <tr>
+                            <td><h5>Vehicle</h5></td>
+                            <td style="width: 30px;"></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{= RenderVehicles() }}
+                    </tbody>
+                </table>
+            </div>
+            <div class="tr-footer">
+                {{ if (isEditable()) { }}
+                    <div class="container text-right right">
+                        @Html.AjaxLoader("ajax-loader", new { @class="ajax-loader", style = "display: none;" })
+                        <a href="#" class="btn">Post Later</a>
+                        {{ if (HasStorageAccounts && HasMonthlyStorage && !StorageAccount) { }}
+                            <button class="btn btn-primary btn-post" type="submit" disabled>Enter storage before posting</button>
+                        {{ } else {}}
+                            <button class="btn btn-primary btn-post" type="submit">Post Job</button>
+                        {{ } }}
+                    </div>
+                {{ } }}
+                <div class="cfix"></div>
+            </div>
+        </div>
+    </td>
+</script>
+
+<script type="text/x-jquery-tmpl" id="vehicle-rel-template">
+    <tr class="{{- IsRemoved ? "strikeout" : "" }}" data-vehicleid="{{- VehicleID }}">
+        <td>
+            <input type="hidden" name="vehicleid" value="{{- VehicleID }}" />
+            {{- Vehicle.Lookup }} - {{- Vehicle.Name }}
+        </td>
+        <td class="action-column">
+            {{ if (Posting.isEditable()) { }}
+            <i class="icon-remove vehicle"></i>
+            {{ } }}
+        </td>
+    </tr>
+</script>
+
+<script type="text/x-jquery-tmpl" id="employee-rel-template">
+    <tr class="{{- rel.hide ? "hide" : "" }} {{- rel.IsRemoved ? "strikeout" : "" }}" data-employeeid="{{- rel.EmployeeID }}" data-postingid="{{- rel.Posting.PostingID }}">
+        <td>{{- rel.Employee.Lookup }} - {{- rel.Employee.displayName() }}</td>
+        {{ if (rel.Posting.isEditable()) { }}
+            {{= _.partial("editable-employee-template", rel) }}
+        {{ } else { }}
+            {{= _.partial("non-editable-employee-template", rel) }}
+        {{ } }}
+    </tr>
+</script>
+
+<script type="text/x-jquery-tmpl" id="editable-employee-template-partial">
+    {{ var attributes = IsRemoved ? "disabled" : ""; }}
+    <td class="{{- Posting.getTdClass() }}">
+        <input type="checkbox" data-field="IsDriver" data-employeeid="{{- EmployeeID }}" 
+            name="IsDriver" {{= (IsDriver) ? "checked" : "" }} {{= attributes }} />
+    </td>
+    <td class="{{- Posting.getTdClass() }}">
+        <input type="number"  min="0" step=".25" name="Hours" 
+            data-field="Hours" data-employeeid="{{- EmployeeID }}" placeholder="Hours" {{= attributes }} value="{{- Hours || 0 }}" />
+    </td>
+    <td class="{{- Posting.getTdClass() }}">
+        <input type="number" step=".01" placeholder="Comm. %" 
+            name="Commission_Percent" value="" {{= attributes }} />
+    </td>
+    <td class="{{- Posting.getTdClass() }}">
+        <input type="number" step=".01" class="price" placeholder="Comm. $" 
+            data-field="Commission" data-employeeid="{{- EmployeeID }}" name="Commission" value="{{- Utility.formatCurrency(Commission, "", "") }}" {{= attributes }}/>
+    </td>
+    <td class="{{- Posting.getTdClass() }}">
+        <input type="number" step=".01" class="price" placeholder="Tip" data-field="Tip" 
+            data-employeeid="{{- EmployeeID }}" name="Tip" value="{{- Utility.formatCurrency(Tip, "", "") }}" {{= attributes }}/>
+    </td>
+    <td class="{{- Posting.getTdClass() }}">
+        <input type="number" step="1" class="price" placeholder="Per Diem" data-field="PerDiem"
+               data-employeeid="{{- EmployeeID }}" name="PerDiem" value="{{- Utility.formatCurrency(PerDiem, " ", " ") }}" {{=attributes }} />
+    </td>
+    {{ if (!Posting.IsHourly) { }}
+        <td class="total-column">
+            <span class="man-hour-rate"></span>
+        </td>
+    {{ } }}
+    <td class="action-column">
+        <i class="icon-remove employee"></i>
+    </td>
+</script>
+
+<script type="text/x-jquery-tmpl" id="non-editable-employee-template-partial">
+    <td class="{{- Posting.getTdClass() }}">
+        {{ if (IsDriver) { }}
+            <i class="icon-check"></i>
+        {{ } }}
+    </td>
+    <td class="{{- Posting.getTdClass() }}">
+        <span class="display">
+            {{- Utility.formatCurrency(Hours, "", "") }}
+        </span>
+    </td>
+    <td class="{{- Posting.getTdClass() }}">
+        <span class="display">
+            {{- Utility.formatCurrency(getCommissionPercent(), "", "") }}%
+        </span>
+    </td>
+    <td class="{{- Posting.getTdClass() }}">
+        <span class="display">
+            {{- Utility.formatCurrency(Commission) }}
+        </span>
+    </td>
+    <td class="{{- Posting.getTdClass() }}">
+        <span class="display">
+            {{- Utility.formatCurrency(Tip) }}
+        </span>
+    </td>
+    <td class="{{- Posting.getTdClass() }}">
+        <span class="display">
+            {{- Utility.formatCurrency(Tip) }}
+        </span>
+    </td>
+    <td class="{{- Posting.getTdClass() }}">
+        <span class="display">
+            {{- Utility.formatCurrency(PerDiem) }}
+        </span>
+    </td>
+    {{ if (!Posting.IsHourly) { }}
+        <td class="total-column">
+            <span class="man-hour-rate"></span>
+        </td>
+    {{ } }}
+    <td class="action-column"></td>
+</script>
+
+<script type="text/x-jquery-tmpl" id="posting-service-template">
+    <tr class="custom-service">
+        <td>{{- Description }}</td>
+        <td>
+            {{ if (Posting.isEditable()) { }}
+            <input type="hidden" name="description" value="{{- Description }}"  />
+            <input type="hidden" name="serviceid" value="{{- ServiceID }}" />
+                <input type="number" class="price input-mini" step=".01" name="customPrice" value="{{- Utility.formatCurrency(Price, "", "") }}" data-field="{{- ServiceID }}" data-iscustom="true">
+                <i class="icon-remove"></i>
+            {{ } else { }}
+                {{- Utility.formatCurrency(Price) }}
+            {{ } }}
+        </td>
+    </tr>
+</script>

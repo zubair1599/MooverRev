@@ -1,0 +1,11 @@
+﻿@model Business.Models.Posting
+
+@{
+    ViewBag.Title = "AddPosting";
+}
+
+<div class="container-pad">
+    <p>This quote must be posted before you can send it to storage.</p>
+
+    @Html.ActionLink("Post Quote " + Model.Schedule.Quote.Lookup, "Post", new { id = Model.PostingID, Controller = "Posting" })
+</div>

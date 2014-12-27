@@ -1,0 +1,211 @@
+﻿@using System.Linq
+@using Business.Repository.Models
+@using LinqKit
+@model Moovers.WebModels.QuoteScheduleModel
+@{
+    ViewBag.Title = "Quote " + Model.Quote.Lookup;
+    ViewBag.BodyClass = "schedule-day";
+    Layout = "~/Views/Quote/AddQuoteLayout.cshtml";
+    string emps = "";
+}
+
+@Html.Partial("_ScheduleModal")
+@Html.Partial("Schedule/_ResourcesModal", Model.Date)
+
+@{ var UserCanEdit = Model.Quote.CanUserEdit(User.Identity.Name); }
+
+@using (Html.BeginModal("change-card-on-file-modal", "Edit Credit Card"))
+{
+    <h4>
+        @if (Model.Quote.Account_CreditCard != null)
+        {
+            <text>Update Card on File</text>
+        }
+        else
+        {
+            <text>Add Credit Card</text>
+        }
+    </h4>
+    
+    <div id="error-change-card" style="display: none; color: red;"></div>
+    
+    using (Html.BeginForm("UpdateCard", "Quote", FormMethod.Post))
+    {
+        <input type="hidden" name="quoteid" value="@Model.Quote.QuoteID" />
+        if (Model.Quote.Account_CreditCard != null)
+        {
+                <span class="align-with-payment">Currently using: </span>
+                <span class="payment-method @Model.Quote.Account_CreditCard.GetCardType().ToString().ToLower()"></span>
+                <span class="desc align-with-payment">ending in @Model.Quote.Account_CreditCard.GetLast4()</span>
+        }
+        
+        @Html.Partial("Payment/_CreditCards")
+
+        <div class="clearfix">
+            <div class="end-controls">
+                <button type="button" class="btn cancel" data-dismiss="modal">Cancel</button>
+                <input type="submit" class="btn btn-primary" />
+            </div>
+        </div>
+    }
+}
+
+@using (Html.BeginModal("edit-schedule", "Edit Time"))
+{
+    using (Html.BeginForm("UpdateSchedule", "Quote", FormMethod.Post))
+    {
+        <div class="control-group">
+            <label class="control-label">Arrival Window</label>
+            <input type="hidden" name="scheduleid" />
+            <input type="hidden" name="truck" />
+            <div class="controls">
+                <select name="rangestart" class="input-small" tabindex="1">
+                    @foreach (var i in Enumerable.Range(5, 16))
+                    {
+                        <option value="@i" @(i == 7 ? "selected" : "")>@Date.DisplayHour(i, true)</option>
+                    }
+                </select>
+                -
+                <select name="rangeend" class="input-small">
+                    @foreach (var i in Enumerable.Range(5, 16))
+                    {
+                        <option value="@i" @(i == 9 ? "selected" : "")>@Date.DisplayHour(i, true)</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="contorl-label">Movers</label>
+            <select name="movers">
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+        </div>
+        <div class="clearfix">
+            <div class="end-controls">
+                <button type="button" class="btn cancel" data-dismiss="modal">Cancel</button>
+                <input type="submit" class="btn btn-primary" />
+            </div>
+        </div>
+    }
+}
+
+@{
+    var schedules = Model.Quote.GetSchedules();
+}
+@if (schedules.Any())
+{
+    <div class="current-quote tab-body-section-center">
+        <table class="table table-condensed schedule-table">
+            <tr>
+                <th>Crew</th>
+                <th>Date</th>
+                <th>Arrival</th>
+                <th>Movers</th>
+                <th>Notes</th>
+                <th></th>
+            </tr>
+            @foreach (var schedule in schedules.OrderBy(i => i.Date).ThenBy(i => i.StartTime))
+            {
+                <tr class="quote warning"  data-scheduleid="@schedule.ScheduleID">
+                    <td>
+                        @String.Join(",", schedule.GetCrews().Select(i => i.Lookup))
+                        <div style="width: 0; overflow: hidden; position: absolute; opacity: 0;">
+                            <input type="text" class="cursor-holder" tabindex="-1" />
+                        </div>
+                    </td>
+                    <td>
+                        @Html.ActionLink(schedule.Date.ToShortDateString(), "ScheduleDay", new { id = Model.Quote.Lookup, day = schedule.Date.Day, month = schedule.Date.Month, year = schedule.Date.Year })
+                    </td>
+                    <td>
+                        @schedule.DisplayTime()
+                        @if (UserCanEdit)
+                        {
+                        <i class="icon-edit edit-schedule" 
+                            data-scheduleid="@schedule.ScheduleID" 
+                            data-start="@schedule.StartTime" 
+                            data-end="@schedule.EndTime" 
+                            data-movers="@schedule.Movers" 
+                            data-minutes="@schedule.Minutes"
+                            data-crew="@(String.Join(",", schedule.GetCrews().Select(i => i.Lookup)))"
+                        ></i>
+                        }
+                    </td>
+                    <td title="@schedule.GetCrewEmployeeNames()">
+
+                        @schedule.Movers
+             
+                    </td>
+                    <td class="text-r note">
+                        <a class="add-note @(!String.IsNullOrEmpty(schedule.Note) ? "changed" : "")" href="#">@(String.IsNullOrEmpty(schedule.Note) ? "Add Note" : schedule.Note)</a>
+                        <input class="note-text" type="text" />
+                    </td>
+                    <td style="width: 1px;">
+                        @if (UserCanEdit)
+                        {
+                            @Html.ActionLink("Reschedule", "Reschedule", new { scheduleid = schedule.ScheduleID, redirect = Request.Url.PathAndQuery }, new { @class = "btn btn-small btn-warning" })
+                            <button class="btn btn-small btn-primary" id="change-card-on-file">
+                            @if (Model.Quote.Account_CreditCard != null) {
+                                <text>Change Card</text>
+                            }
+                            else {
+                                <text>Add Card</text>
+                            }
+                            </button>
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+
+<div class="tab-body-section-center">
+    <div class="tab-body-section  clearfix">
+        <div class="left">
+            <a href="@Url.Action("Schedule", new { Controller = "Quote", id = Model.Quote.Lookup, month = Model.Date.Month, force = true })" class="btn0 btn-margin-left">
+                <i class="icon-table"></i> View Month
+            </a>
+        </div>
+        <div class="title-lg left" style="padding-left: 250px;">
+            @Model.Date.ToString("D")
+        </div>
+        <div class="right">
+            @{ var prevDay = Model.Date.AddDays(-1);
+               var nextDay = Model.Date.AddDays(1); }
+
+            <a href="@Url.Action("ScheduleDay", new { id = Model.Quote.Lookup, day = prevDay.Day, month = prevDay.Month, year = prevDay.Year })" class="btn0 btn-prev">
+                <i class="icon-chevron-left"></i>
+            </a>
+            <a href="@Url.Action("ScheduleDay", new { id = Model.Quote.Lookup, day = nextDay.Day, month = nextDay.Month, year = nextDay.Year })" class="btn0 btn-next">
+                <i class="icon-chevron-right"></i>
+            </a>
+
+            @Html.DateBox("schedule-day-picker", Model.Date, new { id = "schedule-day-picker", @class = "inline" })
+            <br />
+
+            <div style="margin-top: 15px; text-align: right;">
+                <button type="submit" id="save-day" class="btn btn-primary" style="display: none;">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        @Html.Partial("Schedule/_Surveys", new SurveyList() {
+            Surveys = Model.Surveys,
+            FranchiseAddress = new FranchiseRepository().Get(Model.FranchiseID).Address
+        })
+    </div>
+
+    @Html.Partial("Schedule/_ScheduleDay", Model)
+</div>
+
+<script>
+    $(function() {
+        if (!SERVER.IsMobile) {
+            window.EMPLOYEE_JSON = @Html.Raw(Model.Employees.Select(i => i.ToJsonObject()).SerializeToJson());
+            window.VEHICLE_JSON = @Html.Raw(Model.Vehicles.Select(i => i.ToJsonObject()).SerializeToJson());
+            QuoteScheduleDay.init(SERVER.baseUrl + "Quote/ScheduleDay/@Model.Quote.Lookup");
+        }
+    });
+</script>

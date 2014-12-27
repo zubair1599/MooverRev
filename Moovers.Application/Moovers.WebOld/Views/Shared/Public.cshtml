@@ -1,0 +1,46 @@
+﻿@model dynamic
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="@ViewBag.Description">
+    <meta name="viewport" content="width=device-width" />
+    @if (ViewBag.IsBeta || ViewBag.IsDevelopment)
+    {
+        <link rel="icon" href="@Url.Content("~/favicon-dev.ico")" type="image/x-icon" />
+    }
+    <title>@ViewBag.Title</title>
+    <script type="text/javascript">
+        window.SERVER = {
+            baseUrl: "@Url.Content("~")"
+        };
+
+        @*remove the "no-js" class and replace it with "js"*@
+        document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/, '') + ' js';
+    </script>
+    @if (ViewBag.IsDevelopment) {
+        foreach (string file in ViewBag.ScreenCssFiles)
+        {
+            @Html.Stylesheet(file, "screen")
+        }
+        foreach (string file in ViewBag.PrintCssFiles)
+        {
+            @Html.Stylesheet(file, "print")
+        }
+    }
+    else
+    {
+        @Html.Stylesheet("~/static/compiled/print.css", "print")
+        @Html.Stylesheet("~/static/compiled/site.css", "screen")
+    }
+</head>
+
+<body class="@(ViewBag.BodyClass ?? "") @(ViewBag.IsDevelopmentDB ? "development" : "")">
+    <div id="overlay" style="display: none;"></div>
+
+    <div id="main-body">
+        @RenderBody()
+    </div>
+</body>
+
+</html>

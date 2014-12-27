@@ -1,0 +1,21 @@
+﻿@using RestSharp.Extensions
+@model IEnumerable<Business.Models.ReplacementValuation>
+
+@{
+    var UserCanEdit = ViewBag.IsAllowEdit;
+    var ValuationTypeID = ViewBag.SelectValuation as Guid?;
+}
+
+<div class="line-item">
+    Valuation Coverage
+    <span class="right">
+        <select name="valuationTypeHourly" @(!UserCanEdit ? "disabled" : "")>
+            @foreach (var item in Model.OrderBy(i => i.Type))
+            {
+                <option value="@item.ValuationTypeID" data-cost="@item.Cost" @(item.ValuationTypeID == ValuationTypeID || (!ValuationTypeID.HasValue && item.Cost == 0) ? "selected" : "")>
+                    @item.Name (@item.DisplayCost())
+                </option>
+            }
+        </select>
+    </span>
+</div>

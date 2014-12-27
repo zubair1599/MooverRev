@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "Add Franchise";
+}
+
+@if (ViewBag.Success)
+{
+    <div class="alert alert-success">
+        Franchise successfully added.
+    </div>
+}
+
+<div class="center-container">
+    <div class="container-pad">
+        @using (Html.BeginForm())
+        {
+            <h2>Add Franchise</h2>
+
+            <div>
+                @Html.Label("name", "Name:")
+                @Html.TextBox("name")
+            </div>
+
+            @Html.Partial("Accounts/_Address", new AddressModel(Business.Models.AddressType.Billing, true))
+
+            <input type="submit" class="btn btn-primary" />
+        }
+    </div>
+</div>

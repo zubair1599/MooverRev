@@ -1,0 +1,74 @@
+﻿@model SurveyList
+@{
+    var showCookie = Request.Cookies["survey-toggled"];
+    bool hidePanel = (showCookie != null && showCookie.Value == "true");
+}
+<div class="panel-container survey-panel" data-cookie-name="survey-toggled">
+    <div class="panel-title clickable">
+        <i class="icon-toggle icon-chevron-right icon-chevron-down"></i>
+        Visual Surveys (@Model.Surveys.Count())
+    </div>
+
+    @if (Model.Surveys.Any())
+    {
+        var lastAddress = Model.FranchiseAddress;
+        var surveys = Model.Surveys.OrderBy(i => i.TimeStart);
+        var startTime = surveys.First().TimeStart;
+        var endTime = surveys.Last().TimeStart;
+        <div style="@(hidePanel ? "display: none;" : "")">
+            <table class="table" style="margin-bottom: 0;">
+            @for (var i = startTime.Hours; i <= endTime.Hours; i++)
+            {
+                var survey = surveys.FirstOrDefault(s => s.TimeStart.Hours == i);
+                if (survey == null) 
+                {
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>@Date.DisplayTimeSpan(i, i + 1)</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                } 
+                else 
+                {
+                    var address = (survey.Quote.GetStops().Any()) ? survey.Quote.GetStops().First().Address : null;
+                    <tr>
+                        <td>
+                            @Html.ActionLink("Quote " + survey.Quote.Lookup, "Overview", new { id = survey.Quote.Lookup, Controller = "Quote" })
+                        </td>
+                        <td>
+                            @survey.Quote.Account.DisplayName
+                        </td>
+                        <td>@survey.DisplayTime()</td>
+                        <td>@if (address != null)
+                            {
+                                @address.DisplayLine1()
+                            }
+                        </td>
+                        <td>@if (address != null)
+                            {
+                                @address.DisplayCityState()<text>, </text>@address.Zip
+                            }
+                        </td>
+                        <td>@survey.Notes</td>
+                        <td>
+                            @if (address != null && lastAddress != null)
+                            {
+                                @Math.Round(address.GetDistanceTo(lastAddress)) <text> miles</text>
+                            }
+                        </td>
+                    </tr>
+                    lastAddress = address;
+                }
+            }
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info" style="@(hidePanel ? "display: none;" : "")">
+            No visual surveys scheduled today
+        </div>
+    }
+</div>

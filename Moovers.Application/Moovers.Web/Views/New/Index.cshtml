@@ -106,7 +106,7 @@
 
 
 
-                        <div class="row">
+                        <div class="row" >
                             <div class="col-lg-6">
                                 <div class="main-box clearfix">
                                     <header class="main-box-header clearfix">
@@ -131,7 +131,7 @@
                                                 <tbody>
                                                     <tr ng-repeat="quote in RecentQuotes">
                                                         <td>
-                                                            <a href="#" ng-bind="quote.Lookup"></a>
+                                                            <a href="~/new/quote?lookup={{quote.Lookup}}" ng-bind="quote.Lookup"></a>
                                                         </td>
                                                         <td>
                                                             {{quote.MoveDate}}

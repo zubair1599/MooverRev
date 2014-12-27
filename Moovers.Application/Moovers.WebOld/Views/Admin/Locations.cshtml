@@ -1,0 +1,33 @@
+﻿@using Business.Enums
+@using Business.Models
+@model LocationListModel
+
+@{
+    ViewBag.Title = "Locations";
+}
+
+<div class="center-container">
+    <div class="container-pad">
+        <div>
+            @Html.ActionLink("New Location", "Locations", new { Controller = "Admin" }, new { @class = "btn btn-primary" })
+        </div>
+
+        <table id="locations" class="table table-bordered table-striped table-hover" style="margin-top: 20px;margin-bottom: 20px;width: 50%;border-left-width: 1px;border-left-style: solid; border-left-color: rgb(222,222,222)">
+            <thead>
+                @Html.Partial("Generic/_SortableTableHeader")
+            </thead>
+            <tbody>
+                @foreach (Location item in Model.Locations)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.LocationType.GetDescription()</td>
+                        <td>
+                            @item.StoreId
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

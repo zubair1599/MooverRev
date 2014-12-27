@@ -1,0 +1,38 @@
+﻿@model  IEnumerable<Business.Models.Account>
+            @{
+                var leadid = @ViewBag.LeadID;
+            }
+<h5>@Model.Count()  Matching Accounts</h5>
+@if (Model.Count() > 0)
+{
+    <table class="table table-condensed table-verycondensed table-striped">
+        <thead>
+            <tr class="sort-col no-hover">
+                <td></td>
+                <td>Lookup</td>
+                <td>Name</td>
+                <td>Phone</td>
+                <td>Email</td>
+                <td>City</td>
+                <td>State</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td><a href="@Url.Action("LinkAccount", "Lead", new { accountid = @item.AccountID, lookup = @item.Lookup, leadid = leadid})">Link</a> </td>
+                    <td>@item.Lookup</td>
+                    <td>@item.DisplayName </td>
+                    <td>@item.GetPhone(Business.Models.PhoneNumberType.Primary).DisplayString() </td>
+                    <td>@(item.GetEmail(Business.Models.EmailAddressType.Primary) !=null ? item.GetEmail(Business.Models.EmailAddressType.Primary).Email : string.Empty)</td>
+
+                    <td>@item.GetAddress(Business.Models.AddressType.Billing).City </td>
+                    <td>@item.GetAddress(Business.Models.AddressType.Billing).State </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}

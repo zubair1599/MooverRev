@@ -1,0 +1,38 @@
+﻿@model PostListModel
+@{
+    ViewBag.Title = "Unposted Quotes";
+    Layout = "_PostLayout.cshtml";
+    ViewBag.BodyClass = "post-body";
+    ViewBag.Page = "unposted";
+}
+
+@section Buttons 
+{
+    <button id="btn-post" class="btn btn-primary" style="visibility: hidden;">Post</button>
+}
+
+<div class="col2-right">
+    <div class="section">
+        <div class="post-search">
+            @using (Html.BeginForm("Search", "Posting", FormMethod.Get))
+            {
+                <input type="search"  name="q" placeholder="Search..." />
+                <button type="submit" class="btn">Search</button>
+            }
+        </div>
+
+        @if (!Model.Postings.Any())
+        {
+            <div class="alert alert-info">
+                No quotes are ready for posting.
+            </div>
+        }
+        else
+        {            
+            using (Html.BeginForm("Post", "Posting", FormMethod.Get))
+            {
+                @Html.Partial("_PostList")
+            }
+        }
+    </div>
+</div>

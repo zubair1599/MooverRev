@@ -1,0 +1,61 @@
+﻿@using Business.Models
+@model dynamic
+
+@{
+    if (Model is IEnumerable<aspnet_User>)
+    {
+        ViewBag.Title = "View User Accounts";
+    }
+    else
+    {
+        ViewBag.Title = "Edit User Account";
+    }
+
+    ViewBag.SubMenu = "EditAccount";
+}
+
+
+<div class="center-container">
+    <div class="container-pad">
+        @if (Model is IEnumerable<aspnet_User>)
+        {
+            <table class="table table-striped, table-hover">
+                <thead>
+                    <tr>
+                        <th>UserName</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                
+                    @foreach (aspnet_User user in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.ActionLink(user.UserName, "EditAccounts", new { id = user.UserId })
+                            </td>
+                            <td>
+                                @Html.ActionLink("Delete", "DeleteUserAccount", new { username = user.UserName }, new { @class = "remove-employee" })
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        }
+                @*@if (Model is IEnumerable<aspnet_User>)
+        {
+            <ul>
+                @foreach (aspnet_User user in Model)
+                {
+                    <li>@Html.ActionLink(user.UserName, "EditAccounts", new { id = user.UserId })</li>
+                }
+            <i class='icon-remove'></i>
+            </ul>
+        }*@
+        else
+        {
+            @Html.Partial("_AccountEdit", new AccountEditModel(Model))
+        }
+    </div>
+</div>

@@ -1,0 +1,38 @@
+﻿@model Business.Models.StorageWorkOrder
+
+<div class="panel-container">
+    <div class="panel-title">
+        Quotes
+    </div>
+    @if (Model.GetQuotes().Any())
+    {
+    <table class="table table-verycondensed table-hover">
+        @foreach (var item in Model.GetQuotes())
+        {
+            <tr>
+                <td>@Html.ActionLink(item.Lookup, "Overview", new { id = item.Lookup, Controller = "Quote" })</td>
+                <td>@if (item.GetSchedules().Any())
+                    {
+                        @item.GetSchedules().First().Date.ToShortDateString()
+                    }
+                    else
+                    {
+                        <span class="red">UNSCHEDULED</span>
+                    }
+                </td>
+                <td>
+                    @String.Format("{0:C}", item.GetDisplayPrice())
+                </td>
+                <td>
+                    @item.StorageWorkOrder_Quote_Rel.First(i => i.QuoteID == item.QuoteID).StorageQuoteType.GetDescription()
+                </td>
+            </tr>
+        }
+    </table>
+    }
+    else {
+        <div class="alert alert-info">
+            No quotes
+        </div>
+    }
+</div>

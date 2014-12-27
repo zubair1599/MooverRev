@@ -1,0 +1,251 @@
+﻿@using Business.FirstData
+@model Business.Interfaces.IPayable
+
+@{
+    var id = "add-payment-modal";
+    if (ViewData.ContainsKey("ID"))
+    {
+        id = ViewData["ID"].ToString();
+    }
+}
+@using (Html.BeginModal(id, "Add Payment", new { @class = "add-payment-modal", data_scheduleid = ViewData["scheduleid"] }))
+{
+    using (Html.BeginForm("AddPayment", "Payment", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+    <input type="hidden" value="@Request.RawUrl" name="redirect" />
+        
+    if (Model is Business.Models.Quote) {
+        <input type="hidden" value="@Model.ID" name="quoteid" />
+    }
+    else if (Model is Business.Models.StorageWorkOrder)
+    {
+        <input type="hidden" value="@Model.ID" name="workOrderID" />
+    }
+    
+    <h4>Receive Payment 
+        <span class="desc">
+        @if (Model is Business.Models.Quote) {
+            <text>Quote </text>@(((Business.Models.Quote)Model).Lookup)
+        } else if (Model is Business.Models.StorageWorkOrder) {
+            <text>Storage Account </text>@(((Business.Models.StorageWorkOrder)Model).Lookup)
+        }
+        </span>
+    </h4>
+    
+    <div class="page1">    
+        <ul class="errors" style="display: none;">
+        </ul>
+    
+        <div class="clearfix">
+            <div class="left" style="width: 315px;">
+                <table class="payment-selector">
+                    <tr>
+                        <td>
+                            <input name="method" type="radio" id="cash-@Model.ID.ToString()" value="cash" required />
+                            <label class="radio" for="cash-@Model.ID.ToString()">
+                                <div class="payment-method cash"></div>
+                            </label>
+                        </td>
+                        <td>
+                            <label class="radio" for="cash-@Model.ID.ToString()">
+                                Cash
+                            </label>
+                        </td>
+                        <td></td>
+                    </tr>    
+                    @if (Model.Account_CreditCard != null)
+                    {
+                        <tr>
+                            <td>
+                                <input style="margin-top: -18px;" name="method" type="radio" id="@Model.Account_CreditCard.CreditCardID" value="@Model.Account_CreditCard.CreditCardID" required />
+                                <label class="radio" style="display: inline-block;" for="@Model.Account_CreditCard.CreditCardID">
+                                    <div class="payment-method @Model.Account_CreditCard.GetCardType().ToString().ToLower()"></div>
+                                </label>
+                            </td>
+                            <td>
+                                <label class="radio" for="@Model.Account_CreditCard.CreditCardID">
+                                    <span class="desc">ending in @Model.Account_CreditCard.GetLast4()</span>
+                                </label>
+                            </td>
+                            <td style="padding-top: 7px;">exp @Model.Account_CreditCard.DisplayExpiration()</td>
+                        </tr>
+                    }                
+                    <tr>
+                        <td>
+                            <input name="method" type="radio" id="cashiercheck-@Model.ID.ToString()" value="cashiercheck" required />
+                            <label class="radio" for="cashiercheck-@Model.ID.ToString()">
+                                <div class="payment-method cashiercheck"></div>
+                            </label>
+                        </td>
+                        <td>
+                            <label class="radio" for="cashiercheck-@Model.ID.ToString()">
+                                Cashier's Check
+                            </label>
+                        </td>
+                        <td class="sibling-box">
+                            @Html.TextBox("checkNumber", null, new { placeholder = "Check #", style = "width: 86px;" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input name="method" type="radio" id="personal-@Model.ID.ToString()" value="personalcheck" required />
+                            <label class="radio" for="personal-@Model.ID.ToString()">
+                                <div class="payment-method personalcheck"></div>
+                            </label>
+                        </td>
+                        <td>
+                            <label class="radio" for="personal-@Model.ID.ToString()">
+                                Personal Check
+                            </label>
+                        </td>
+                        <td class="sibling-box">
+                            @Html.TextBox("personalCheckNumber", null, new { placeholder = "Check #", style = "width: 86px;" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input name="method" type="radio" id="other-@Model.ID.ToString()" value="other" required />
+                            <label class="radio" for="other-@Model.ID.ToString()">
+                                <div class="payment-method other"></div>
+                            </label>
+                        </td>
+                        <td>
+                            <label class="radio" for="other-@Model.ID.ToString()">
+                                Other
+                            </label>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input name="method" type="radio" id="new-card-payment-@Model.ID" class="new-card-payment" value="@Business.ViewModels.AddPaymentViewModel.NewCardRadio" required />
+                            <label class="radio" for="new-card-payment-@Model.ID">
+                                <div class="payment-method new-card"></div>
+                            </label>
+                        </td>
+                        <td>
+                            <label class="radio" for="new-card-payment-@Model.ID">
+                                New Credit Card
+                            </label>
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
+                <table class="new-card-form">
+                    <tr>
+                        <td>
+                            <label for="name">Name</label>
+                        </td>
+                        <td colspan="2">
+                            <input type="text" name="name" class="input-medium" />
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="provider">Type</label></td>
+                        <td>
+                            <select name="provider" class="input-medium">
+                                @foreach (var item in FirstDataCardTypes.Visa.ToDictionary())
+                                {
+                                    if (item.Key != FirstDataCardTypes.JCB.ToString() && item.Key != FirstDataCardTypes.DinersClub.ToString())
+                                    {
+                                        <option value="@item.Key">@item.Value</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="cardnumber">Card</label>
+                        </td>
+                        <td colspan="2">
+                            <input type="text" name="cardnumber" class="input-medium" />
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="expirationmonth">Expiration</label>
+                        </td>
+                        <td colspan="2">
+                            @Html.DropDownList("expirationmonth", Enumerable.Range(1, 12).Select(i => new SelectListItem() {
+                           Text = i.ToString(),
+                           Value = i.ToString().PadLeft(2, '0')
+                       }), new { @class = "input-mini" })
+                            @Html.DropDownList("expirationyear", Enumerable.Range(DateTime.Now.Year, 10).Select(i => new SelectListItem() {
+                           Text = i.ToString(),
+                           Value = i.ToString().Substring(2)
+                       }), new { @class = "input-small" })
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="cvv2">CVV2</label>
+                        </td>
+                        <td colspan="2">
+                            <input type="text" name="cvv2" class="input-mini" />
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="zip">Billing Zip</label>
+                        </td>
+                        <td colspan="2">
+                            <input type="text" name="billingzip" class="input-mini" />
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+            <table class="left" style="width: 183px;">
+                <tr>
+                    <td style="width: 73px;">
+                        <label for="amount" style="margin-top: 0;">Amount</label>
+                    </td>
+                    <td>
+                        <input type="number" step=".01" name="amount" max="@Model.GetTotalDue()- @Model.GetTotalPayments()" class="input-small price" required />
+                    </td>
+                </tr>
+                @if (Model.GetBalance() != 0)
+                {
+                    <tr>
+                        <td colspan="2"><span class="red desc">Balance: @String.Format("{0:C}", Model.GetBalance())</span></td>
+                    </tr>
+                }
+                <tr><td colspan="2"></td></tr><tr></tr>
+                <tr>
+                    <td>
+                        <label style="margin-top: 0;">Memo</label>
+                    </td>
+                    <td>
+                        @Html.TextBox("memo", null, new { @style = "width: 121px; " })
+                    </td>
+                </tr>
+            </table>              
+        </div>
+        <div class="clearfix">
+            <div style="float: right;">
+                @Html.AjaxLoader("add-payment-loader", new { style = "display: none;" })
+                <button type="button" class="btn" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Add Payment</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="page2">
+        <span class="green">SUCCESS</span>
+        Confirmation Code: <span class="confirmation-code"></span>
+        <div class="clearfix">
+            <div style="float: right">
+                <button type="button" class="btn btn-primary reload-button">Close</button>
+            </div>
+        </div>
+    </div>
+
+    }
+}

@@ -1,0 +1,170 @@
+﻿@model Business.Models.StorageWorkOrder
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style>
+        @Html.RenderFile("~/static/css-plugins/bootstrap.css")
+        @Html.RenderFile("~/static/css/PDF/workorder.css")
+    </style>
+</head>
+<body>
+    <div id="page_1">
+        <div class="dclr"></div>
+        <h1>
+            <span class="left">
+                <strong>Printed:</strong>
+                @DateTime.Now.ToShortDateString() @DateTime.Now.ToShortTimeString()
+            </span>
+            <span class="center">
+                Warehouse Work Order
+            </span>
+        </h1>
+
+        <div class="section">
+            <h4>Job: @Model.Lookup</h4>
+            <h3>Contact Information</h3>
+            <div class="contact-info">
+                <span class="line">
+                    <span>
+
+                    <label>Name</label>
+                    @Model.Account.DisplayName
+                        </span>
+                    <span>
+
+                    <label>Account</label>
+                    @Model.Account.Lookup
+                        </span>
+
+                    <span>
+                    <label>PO</label>
+                        </span>
+                </span>
+                <span class="line">
+                    <label>Address</label>
+                    @Model.Account.GetAddress(Business.Models.AddressType.Billing).DisplayString()
+                </span>
+                <span class="line">
+                    <span>
+                    <label>Email</label>
+                    @{ var email = Model.Account.GetEmail(Business.Models.EmailAddressType.Primary); }
+                    @if (email != null)
+                    {
+                        @email.Email
+                    }
+                        </span>
+
+                    <span>
+                    <label>Phone</label>
+                    @{ var phone = Model.Account.GetPhone(Business.Models.PhoneNumberType.Primary); }
+                    @if (phone != null)
+                    {
+                        @phone.DisplayString()
+                    }
+                        </span>
+
+                    <span>
+                    <label>Fax</label>
+                    @{ var fax = Model.Account.GetPhone(Business.Models.PhoneNumberType.Fax); }
+                    @if (fax != null)
+                    {
+                        @fax.DisplayString()
+                    }
+                    </span>
+
+                    <span>
+                        <label>Alt. Phone</label>
+                        @{ var alt = Model.Account.GetPhone(Business.Models.PhoneNumberType.Secondary); }
+                        @if (alt != null)
+                        {
+                            @alt.DisplayString()
+                        }
+                    </span>
+                </span>
+
+        </div>
+
+        <div class="section">
+            <h4>Job Details</h4>
+            <table class="table-bordered">
+                <tr>
+                    <td>Vaults</td>
+                    <td>@Model.GetVaults().Count()</td>
+                </tr>
+                <tr>
+                    <td>Oversized</td>
+                    <td>@Model.GetOverstuffed().Count()</td>
+                </tr>
+                <tr>
+                    <td>Billing Amount</td>
+                    <td>
+                        @String.Format("{0:C}", Model.MonthlyPayment)
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h4>Oversized</h4>
+            <table class="table-bordered">
+                <tr>
+                    <th>Number</th>
+                    <th>Alias</th>
+                    <th>Zone</th>
+                    <th>Row</th>
+                    <th>Shelf</th>
+                </tr>
+                @foreach (var i in Model.GetOverstuffed().OrderBy(i => i.StorageZone.Name))
+                {
+                    <tr>
+                        <td>@i.OverstuffID</td>
+                        <td>                            
+                            @i.InventoryItem.Name
+                            @if (!String.IsNullOrEmpty(i.OverstuffDescription))
+                            {
+                                <text>- </text>@i.OverstuffDescription
+                            }
+                            @if (i.Count > 1)
+                            {
+                                <text>(</text>@i.Count<text> pieces)</text>
+                            }
+
+                        </td>
+                        <td>@i.StorageZone.Name</td>
+                        <td>@i.OverstuffRow</td>
+                        <td>
+                            @if (!String.IsNullOrEmpty(i.OverstuffShelf))
+                            {
+                                @i.OverstuffShelf.ToUpper()
+                            }
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+        <div class="section">
+            <h4>Vaults</h4>
+            <table class="table-bordered">
+                <tr>
+                    <th>Number</th>
+                    <th>Zone</th>
+                    <th>Row</th>
+                    @*<th>Shelf</th>*@
+                </tr>
+                @foreach (var i in Model.GetVaults())
+                {
+                    <tr>
+                        <td>@i.Lookup</td>
+                        <td>@i.StorageZone.Name</td>
+                        <td>@i.Row</td>
+                        @*<td>@i.Shelf</td>*@
+                    </tr>
+                }
+            </table>
+        </div>
+
+        </div>
+    </div>
+</html>

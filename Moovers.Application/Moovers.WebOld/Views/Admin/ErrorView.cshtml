@@ -1,0 +1,39 @@
+﻿@model Business.Models.Error
+
+@{
+    ViewBag.Title = "Errors";
+}
+
+<h5>@Model.Message</h5>
+<br /><br />
+<table class="table">
+    <tr>
+        <th>Url:</th>
+        <td>@Model.URL</td>
+    </tr>
+    <tr>
+        <th>Date:</th>
+        <td>@Model.Created.Value.ToShortDateString() @@@Model.Created.Value.ToShortTimeString()</td>
+    </tr>
+
+</table>
+
+<h5>Stack Trace</h5>
+<br />
+<pre>
+@Model.StackTrace
+</pre>
+
+
+<h5>Server Vars:</h5>
+<br />
+<table class="table">
+    @foreach (var item in General.DeserializeJson<IEnumerable<KeyValuePair<string, string>>>(Model.ServerVariables))
+    {
+        <tr>
+            <th>@item.Key</th>
+            <td>@item.Value</td>
+        </tr>
+    }
+</table>
+

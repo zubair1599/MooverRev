@@ -1,0 +1,47 @@
+﻿@using Business.Repository.Models
+@model IEnumerable<Business.Models.CustomCrewCount>
+@{
+    ViewBag.Title = "Set Trucks";
+    var franchises = new FranchiseRepository().GetAll();
+}
+
+<div class="container">
+    <br />
+<h4>Set Trucks</h4>
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-inline" }))
+    {
+        @Html.DropDownList("franchiseid", franchises.Select(i => new SelectListItem() {
+            Text = i.Name,
+            Value = i.FranchiseID.ToString()
+        }))
+        <input type="date" placeholder="Date" name="day" required value="@DateTime.Now.ToShortDateString()" />
+        <input type="number" name="trucks" step="1" placeholder="Crews" required />
+        <button type="submit" class="btn">Add</button>
+    }
+    <table>
+        <tr>
+            <th>Day</th>
+            <th>Crews</th>
+            <th>Franchise</th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model.OrderBy(i => i.ToDate()))
+        {
+            <tr>
+                <td>@item.ToDate().ToShortDateString()
+                </td>
+                <td>
+                    @item.Count
+                </td>
+                <td>
+                    @(new FranchiseRepository().Get(item.FranchiseID).Name)
+                </td>
+                <td>
+                    @Html.ActionLink("X", "RemoveCrewCount", new { id = item.CustomCrewID })
+                </td>
+                
+            </tr>
+        }
+    </table>
+
+</div>

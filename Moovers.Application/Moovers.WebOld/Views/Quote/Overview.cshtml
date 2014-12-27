@@ -1,0 +1,278 @@
+﻿@using Business.Enums
+@using Business.ToClean.QuoteHelpers
+@model Moovers.WebModels.QuoteOverviewModel
+@{
+    ViewBag.Title = "Quote " + Model.Quote.Lookup;
+    Layout = "~/Views/Quote/AddQuoteLayout.cshtml";
+}
+
+@Html.Partial("Payment/_AddPayment", Model.Quote)
+
+@{
+    var subscripts = new Dictionary<int, string>();
+}
+
+<div class="container-fluid">
+    <div class="menu span2">
+        <ul class="nav nav-list" style="border-bottom: 1px solid #ccc">
+            <li>@Html.ActionLink("Files", "Files", new { id = Model.Quote.Lookup })</li>
+            <li>@Html.ActionLink("Send Email", "SendEmail", new { id = Model.Quote.Lookup })</li>
+            <li>@Html.ActionLink("Email Log", "EmailLog", new { id = Model.Quote.Lookup })</li>
+
+            @if (Model.Quote.Status != QuoteStatus.Open && Model.Quote.Postings.Any())
+            {
+                <li>@Html.ActionLink("Posting", "Posting", new { Controller = "Quote", id = Model.Quote.Lookup })</li>
+            }
+            @if (ViewBag.IsAdministrator)
+            {
+                <li>@Html.ActionLink("Access Log", "AccessLog", new { id = Model.Quote.Lookup })</li>
+            }
+        </ul>
+        <br style="height: 15px;" />
+        <ul class="nav nav-list" style="font-size: .95em;">
+            @{ var lastAccess = Model.Quote.GetLastAccess(); }
+            
+            <li>Last Access: <br />
+                
+                <span class="desc">
+                    @if (lastAccess != null)
+                    {
+                        @lastAccess.Date.ToShortDateString() <text>by</text> @lastAccess.aspnet_Users.LoweredUserName
+                    }
+                    else
+                    {
+                        <text>None</text>
+                    }
+                </span>
+                    
+            </li>
+            <li>Scheduled: <br />
+                @if (Model.Quote.DateScheduled.HasValue)
+                {
+                    <span class="desc">@Model.Quote.DateScheduled.Value.ToShortDateString()</span>
+                }
+                else
+                {
+                    <span class="desc">Not scheduled</span>
+                }
+            </li>
+        </ul>
+    </div>
+    <div class="span8">
+        <div class="overview-payments-list noprint" >
+            @Html.Partial("Payment/_PaymentsList", Model.Quote)
+        </div>
+        @if (Model.Quote.GetWebComments() != null)
+        {
+            <div class="panel-container">
+                <div class="panel-title">
+                    Web Comments
+                </div>
+                <div class="panel-section">
+                    @Model.Quote.GetWebComments()
+                </div>
+            </div>
+        }
+        @if (Model.Quote.GetCustomInventory().Any())
+        {
+            <div class="panel-container">
+                <div class="panel-title">
+                    Custom Inventory
+                </div>
+                @foreach (var item in Model.Quote.GetCustomInventory())
+                {
+                    <div class="panel-section">
+                        @item
+                    </div>
+                }
+            </div>
+        }
+        @if (Model.Quote.GetSurveys().Any())
+        {
+            <div class="panel-container">
+                <div class="panel-title">Visual Surveys</div>
+                <div class="panel-section">
+                    <table class="table">
+                        @foreach (var s in Model.Quote.GetSurveys())
+                        {
+                            <tr>
+                                <td>@s.Date.ToShortDateString()</td>
+                                <td>@s.DisplayTime()</td>
+                                <td>@s.Notes</td>
+                            </tr>    
+                        }
+                    </table>
+                </div>
+            </div>
+        }
+
+        <div class="panel-container">
+            <div class="panel-title">
+                Stops
+            </div>
+            <table>
+                @foreach (var stop in Model.Quote.GetStops())
+                {
+                    <tr>
+                        <td>@stop.Address.DisplayString()</td>
+                        <td style="width: 50px;">
+                            <span style="font-size: .9em; color: #999;">
+                                @Smart.Format("{0} {0:flight|flights}", stop.InsideStairsCount)
+                            </span>
+                        </td>
+                    </tr>
+                    @*<div class="panel-section">
+                        @stop.Address.DisplayString()
+
+                        <span class="desc" style="font-size: .9em; color: #aaa;">
+                             @stop.InsideStairType.GetDescription()
+                        </span>
+                    </div>
+                    </tr>*@
+                }
+            </table>
+        </div>
+
+        @if (Model.Quote.GetAlerts().Any())
+        {
+            <div class="panel-container">
+                <div class="panel-title">
+                    Alerts
+                </div>
+                @foreach (var alert in Model.Quote.GetAlerts())
+                {
+                    <div class="panel-section">
+                        <strong>@alert.Key</strong>
+                        @alert.Value
+                    </div>
+                }
+            </div>
+        }
+
+        <div class="panel-container">
+            <div class="panel-title">
+                Inventory
+            </div>
+            <div class="panel-section">
+                @if (Model.Quote.GetMovepointInventory().Any())
+                {
+                    <ul class="clearfix quarters">
+                        @foreach (var item in Model.Quote.GetMovepointInventory())
+                        {
+                            <li>@item</li>
+                        }
+                    </ul>
+                }
+                else 
+                {
+                    foreach (var stop in Model.Quote.GetStops())
+                    {
+                        foreach (var room in stop.GetRooms())
+                        {
+                            if (!room.IsUnassigned)
+                            {
+                                <h5 class="room-header">@room.Name
+                                    @if (!String.IsNullOrEmpty(room.Description))
+                                    {
+                                        @:(@room.Description)
+                                    }
+                                    <span class="subcontrol">@stop.Address.Street1</span>
+                                </h5>
+                            }
+                            <ul class="clearfix quarters" style="margin-left: 0;">
+                                @foreach (var item in room.GetItems().Where(i => i.Count > 0))
+                                {
+                                    var displayString = item.Count + " - " + item.Item.Name;
+                                    if (item.StorageCount > 0)
+                                    {
+                                        displayString += "(store " + item.StorageCount + ")";
+                                    }
+                                    <li>
+                                        @if (item.IsSpecialItem)
+                                        {
+                                            <strong class="red">@displayString</strong>
+                                        }
+                                        else
+                                        {
+                                            @displayString
+                                        }
+
+                                        @if (item.AdditionalInfo != null && item.AdditionalInfo.Any())
+                                        {
+                                            foreach (var i in item.AdditionalInfo)
+                                            {
+                                                if (i.DisplayName != "None" && i.DisplayName != "Frame")
+                                                {
+                                                    var ss = subscripts.Any() ? subscripts.Keys.Max() + 1 : 1;
+                                                    subscripts.Add(ss, i.DisplayName);
+                                                    <sup>@ss</sup>
+                                                }
+                                            }
+                                        }
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    }
+                    <div>
+                        @foreach (var item in subscripts)
+                        {
+                            <sub style="padding-right: 8px;">@item.Key. @item.Value</sub>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+        @if (Model.Quote.CalculateStorageVaults() > 0)
+        {
+            <div class="panel-container">
+                <div class="panel-title">
+                    Estimated Storage
+                </div>
+                <div class="panel-section">
+                    Monthly Storage: @String.Format("{0:C}", Model.Quote.CalculateMonthlyStorageCost())
+                </div>
+                <div class="panel-section">
+                    Vaults: @Model.Quote.CalculateStorageVaults()
+                </div>
+            </div>
+        }
+
+        <div class="panel-container noprint">
+            <div class="panel-title">
+                Event Log
+            </div>
+            @foreach (var item in Model.Quote.GetStatusLogs())
+            {
+                <div class="panel-section">
+                    @item
+                </div>
+            }
+        </div>
+
+        <div class="panel-container">
+            <div class="panel-title">
+                <span class="noprint">Printed </span>Comments
+            </div>
+            <div class="panel-section clearfix noprint">
+                @using (Html.BeginForm("SavePrintedComments", "Quote", new { id = Model.Quote.Lookup }, FormMethod.Post))
+                {
+                    <textarea class="no-overflow comments" rows="7" name="comments">@Model.Quote.PrintedComments</textarea>
+                    <div style="float: right; padding-top: 10px;">
+                        @Html.ActionLink("Cancel", "Overview", new { Controller = "Quote", id = Model.Quote.Lookup }, new { @class = "btn" })
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                }
+            </div>
+            <div class="printonly">
+                <pre>@Model.Quote.PrintedComments</pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function() {
+        QuoteOverview.init();
+    });
+</script>

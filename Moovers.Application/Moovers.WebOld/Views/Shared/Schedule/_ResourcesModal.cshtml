@@ -1,0 +1,51 @@
+﻿@model DateTime
+
+<script type="text/x-jquery-tmpl" id="crew-assign-template">
+    <div class="crew-assign">
+        <input type="hidden" name="employeeid" value="{{- EmployeeID }}" />
+        <input type="checkbox" name="driver" id="driver-{{- EmployeeID }}" value="{{- EmployeeID }}" title="Driver?" {{ if (isdriver) { }} checked {{ } }} />
+        <label class="checkbox" for="driver-{{- EmployeeID }}">
+            {{- getDisplayValue() }}
+        </label>
+        <i class="icon-remove"></i>
+    </div>
+</script>
+
+<script type="text/x-jquery-tmpl" id="vehicle-assign-template">
+    <div class="crew-assign">
+        <input type="hidden" name="vehicleid" value="{{- VehicleID }}" />
+        {{- getDisplayValue() }}
+        <i class="icon-remove"></i>
+    </div>
+</script>
+
+@using (Html.BeginModal("assign-resources-modal", "Assign Resources"))
+{
+    using (Html.BeginForm("ScheduleEmployees", "Schedule", FormMethod.Post))
+    {
+        <input name="day" type="hidden" value="@Model.ToShortDateString()" />
+        <input name="crewlookup" type="hidden" />
+        <input name="redirect" type="hidden" value="@Request.Url.AbsoluteUri" />
+
+        <div>
+            <h5>Add Employees</h5>
+            <input type="text" id="add-employee" />
+            <button id="btn-add-employee" class="btn btn-add" type="button">+</button>
+            <div id="crew-assignment"></div>
+        </div>
+    
+        <div style="padding-top: 10px;">
+            <h5>Add Trucks</h5>
+            <input type="text" id="add-vehicle" />
+            <button id="btn-add-vehicle" class="btn btn-add" type="button">+</button>
+            <div id="vehicle-assignment"></div>
+        </div>
+    
+        <div class="clearfix" style="padding-top: 10px;">
+            <div style="float: right;">
+                <button class="btn" data-dismiss="modal" type="button">Cancel</button>
+                <button class="btn btn-primary" type="submit">Add Resources</button>
+            </div>
+        </div>
+    }
+}

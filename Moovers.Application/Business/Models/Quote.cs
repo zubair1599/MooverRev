@@ -749,7 +749,8 @@ namespace Business.Models
                     Stops = Stops.Select(i => i.ToJsonObject(includeItems)),
                     Schedules = GetSchedules().Select(s => s.ToJsonObject()),
                     IsCompleted = !Schedules.Any(i => i.Postings.Any(p => p.IsComplete)),
-                    AccountName = Account.DisplayName
+                    AccountName = Account.DisplayName,
+                    FranchiseLogo = Franchise.GetIconUrl()
                 };
         }
 

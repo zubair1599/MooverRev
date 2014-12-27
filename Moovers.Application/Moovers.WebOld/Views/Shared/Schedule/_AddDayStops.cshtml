@@ -1,0 +1,62 @@
+﻿@model Business.Models.Schedule
+           
+@{
+    var id = "add-daystops-modal";
+    if (ViewData.ContainsKey("ID"))
+    {
+        id = ViewData["ID"].ToString();
+    }
+}
+
+@using (Html.BeginModal(id, "Add Day Stops", new {@class = "add-daystops-modal", data_scheduleid = ViewData["scheduleid"]}))
+{
+    using (Html.BeginForm("AddDayStops", "Schedule", FormMethod.Post, new {@class = "form-horizontal"}))
+    {
+        <input type="hidden" value="@Request.RawUrl" name="redirect" />
+        <input type="hidden" value="@Model.ScheduleID" name="ScheduleID" />
+    
+        <table>
+            <tr>
+                <td style="width: 185px;">
+                    <label>Start Stop</label>
+                </td>
+                <td>
+                    @Html.DropDownListFor(m => m.StartStopId, Model.Quote.GetStops().Select(i => new SelectListItem()
+                    {
+                        Text = i.Address.Street1 + ", " + i.Address.City + ", " + i.Address.State,
+                        Value = i.StopID.ToString(),
+                        Selected = Model.StartStopId != null ? i.StopID == Model.StartStopId : i.StopID == Model.Quote.GetStops().First().StopID
+                    }))
+                </td>
+            </tr>
+
+            <tr>
+                <td style="width: 185px;">
+                    <label>End Stop</label>
+                </td>
+                <td>
+                    @Html.DropDownListFor(m => m.EndStopId, Model.Quote.GetStops().Select(i => new SelectListItem()
+                    {
+                        Text = i.Address.Street1 + ", " + i.Address.City + ", " + i.Address.State,
+                        Value = i.StopID.ToString(),
+                        Selected = Model.EndStopId != null ? i.StopID == Model.EndStopId : i.StopID == Model.Quote.GetStops().Last().StopID
+                    }))
+                </td>
+            </tr>
+        
+            <tr>
+                <td style="width: 185px;"></td>
+                <td>
+                    <div class="clearfix">
+                        <div style="float: right; margin-top: 20px;">
+                            @Html.AjaxLoader("add-payment-loader", new {style = "display: none;"})
+                            <button type="button" class="btn" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Add Day Stops</button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    }
+}

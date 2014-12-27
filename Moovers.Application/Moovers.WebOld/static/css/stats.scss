@@ -1,0 +1,101 @@
+﻿@import "mixins";
+
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    color: white;
+    background: #131415;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #C4FC00;
+
+}
+
+h1 {
+    font-size: 48px;
+    font-weight: 800;
+    font-family: "futura-pt",sans-serif;
+font-style: normal;
+font-weight: 700;
+}
+
+h2 {
+    font-size: 70px;
+    font-family: "futura-pt-condensed",sans-serif;
+    font-style: normal;
+    font-weight: 800;
+    letter-spacing: -2px;
+}
+
+.text-green {
+    color: #C4FC00;
+}
+
+.text-red {
+    border-color:  #C4FC00;
+    color: #FA6060;
+}
+
+.move-count {
+    color: #d5d5d5;
+    font-size: 20px;
+    margin-left: 10px;
+
+}
+
+#header-main {
+    height: 45px;
+    color: white;
+    background: transparent url(../img/header_bg_slice.jpg) 0 0 repeat-x;
+    font-size: 20px;
+    text-align: center;
+    font-family: "futura-pt-condensed",sans-serif;
+    font-style: normal;
+    font-weight: 800;
+    letter-spacing: 0px;
+    text-transform: uppercase;
+    color: #666;
+    vertical-align: middle;
+    line-height: 45px;
+}
+
+#page-content {
+
+}
+
+#leaderboard {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    #leaderboard > tbody > tr > th {
+        font-size: 20px;
+        font-family: "futura-pt-condensed",sans-serif;
+        font-style: normal;
+        font-weight: 800;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        text-align: left;
+        padding: 10px 20px;
+        border-bottom: 1px solid #C4FC00;
+    }
+
+
+    #leaderboard > tbody > tr > td {
+        font-size: 39px;
+        font-family: "futura-pt-condensed",sans-serif;
+        font-style: normal;
+        font-weight: 800;
+        letter-spacing: -1px;
+        text-transform: uppercase;
+        padding: 4px 20px;
+        border-bottom: 1px solid #C4FC00;
+    }

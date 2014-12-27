@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "employees.css",
+  "sources": [
+    "employees.scss",
+    "mixins.scss"
+  ],
+  "names": [],
+  "mappings": "AAEA;EACI,OAAO;EACP,QAAQ;EAEZ,WAAW,YAAY;IAEX,iBAAiB;IACjB,OAAO;;AAKnB,aAAa,QAAQ,KAAK;EAClB,YAAY;EACZ,QAAQ;EACR,eAAe;EACf,OAAO;EACP,WAAW;EACX,aAAa;EACb,QAAQ;EACR,SAAS;;AAGjB,aAAa,QAAQ;EACb,eAAe;;AAGvB,aAAa,QAAQ,KAAK;EAClB,YAAY;EACZ,QAAQ;EACR,OAAO;EACP,WAAW;EACX,QAAQ;EACR,SAAS"
+}

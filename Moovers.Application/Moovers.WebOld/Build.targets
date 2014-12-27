@@ -1,0 +1,34 @@
+﻿<Project DefaultTargets="BeforeBuild" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Target Name="BeforeBuild" Condition="'$(CopyAfterDeploy)'=='TRUE'">
+        <Message Text="Clean temporary deployment directory"></Message>
+        <Exec Condition="'$(CopyAfterDeploy)'=='TRUE'" Command="rmdir &quot;$(TemporaryDir)&quot; /s /q"></Exec>
+        <Exec Condition="'$(CopyAfterDeploy)'=='TRUE'" Command="mkdir &quot;$(TemporaryDir)&quot;"></Exec>
+        <Message Text="Compress CSS and Javascript" Importance="High"></Message>
+
+        <JavaScriptCompressorTask
+            SourceFiles="@(JavaScriptFiles)"
+            OutputFile="$(JavaScriptOutputFile)"
+        />
+
+        <CssCompressorTask
+              SourceFiles="@(PrintCssFiles)"
+              OutputFile="$(PrintCssOutputFile)"
+       />
+
+        <CssCompressorTask
+              SourceFiles="@(CssFiles)"
+              OutputFile="$(CssOutputFile)"
+        />
+    </Target>
+    <Target Name="CopyFiles" AfterTargets="CopyAllFilesToSingleFolderForPackage">
+        <Message Text="Copying files to deployment directories" Importance="High">
+        </Message>
+        <Time Format="yyyy.MM.dd-HHmmss">
+            <Output TaskParameter="FormattedTime" PropertyName="CurrentTime" />
+        </Time>
+        <Exec Condition="'$(CopyAfterDeploy)'=='TRUE'" Command="robocopy &quot;$(TemporaryDir)&quot; &quot;$(DeploymentDir)$(CurrentTime)&quot; /mir" IgnoreExitCode="true">
+        </Exec>
+        <Exec Condition="'$(CopyAfterDeploy)'=='TRUE'" Command="robocopy &quot;$(TemporaryDir)&quot; &quot;$(DeploymentDir)Latest&quot; /mir" IgnoreExitCode="true">
+        </Exec>
+    </Target>
+</Project>

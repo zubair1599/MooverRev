@@ -1,0 +1,44 @@
+﻿@model AddressModel
+<div class="@Model.Class @Model.Type">
+    @Html.Hidden("addr_type", Model.Type)
+    <div class="control-group">
+        @Html.Label("street1", "Street", new { @class = "control-label" })
+        <div class="controls">
+            <input name="street1" type="text" data-field="@(Model.Type)Address.Street1" @(Model.Required ? "required" : "") />
+        </div>
+    </div>
+
+    <div class="control-group">
+        @Html.Label("street2", "Apt / Ste", new { @class = "control-label" })
+        <div class="controls">
+            <input name="street2" type="text" data-field="@(Model.Type)Address.Street2" />
+        </div>
+    </div>
+
+    <div class="control-group">
+        @Html.Label("city", "City", new { @class = "control-label" })
+        <div class="controls">
+            <input name="city" type="text" data-field="@(Model.Type)Address.City" @(Model.Required ? "required" : "") />
+        </div>
+    </div>
+
+    <div class="control-group">
+        @Html.Label("state", "State", new { @class = "control-label" })
+        <div class="controls">
+            @if (Model.Required)
+            {
+                @Html.DropDownList("state", General.SelectStateList, "--- Select State ---", new { id = "", required = "required", data_field = Model.Type + "Address.State" })
+            }
+            else {
+                @Html.DropDownList("state", General.SelectStateList, "--- Select State ---", new { id = "", data_field = Model.Type + "Address.State" })
+            }
+        </div>
+    </div>
+
+    <div class="control-group">
+        @Html.Label("zip", "Zip", new { @class = "control-label" })
+        <div class="controls">
+            <input name="zip" type="text" @(Model.Required ? "required" : "") pattern="\d{5}(\-\d{4})?" title="12345 (optional zip+ 4)" data-errormessage="Please enter a valid zip" data-field="@(Model.Type)Address.Zip" />
+        </div>
+    </div>
+</div>
