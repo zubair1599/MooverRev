@@ -11,6 +11,7 @@ using System.Web.Security;
 
 namespace MooversCRM.Controllers
 {
+    using Business.Models;
     using System.Web.Script.Serialization;
 
     [MenuDescription("Dashboard")]
@@ -43,6 +44,31 @@ namespace MooversCRM.Controllers
 
             var model = new HomePageViewModel(msgs, quotes, surveys, todays, franchise.Address);
             return View(model);
+        }
+        public ActionResult GetDashboardJson()
+        {
+            var msgRepo = new FrontPageMessageRepository();
+            var msgs = msgRepo.GetLatest().Select(m=>new{Id = m.MessageID, date = m.Date.ToLongDateString(), user=m.aspnet_Users.UserName,text=m.Message });
+
+            var quoteRepo = new QuoteRepository();
+            var quotes = quoteRepo.GetLastAccessed(AspUserID).Select(m=>m.ToJsonObject()).ToList();
+
+            var scheduled = new ScheduleRepository();
+            var todays = scheduled.GetForDay(SessionFranchiseID, DateTime.Today.AddMonths(-2)).Select(i => i.Quote).Distinct().Select(m => m.ToJsonObject());
+           
+            var surveyRepo = new QuoteSurveyRepository();
+            var surveys = surveyRepo.GetForDay(SessionFranchiseID, DateTime.Today).Select(s => new { quote = s.Quote.Lookup, account = s.Quote.Account.DisplayName, time = s.DisplayTime(), text = s.Notes });
+
+
+            var franchiseRepo = new FranchiseRepository();
+            Guid? franchise = null;
+            if (AspUser.HasMultipleFranchises())
+               franchise = franchiseRepo.GetStorage().FranchiseID;
+            else
+                franchise = franchiseRepo.GetSingleFranchise();
+
+          
+            return Json(new { todays = todays, quotes = quotes, surveyJson = surveys, franchise = franchise, msgs =msgs}, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

@@ -9,10 +9,10 @@ function homeFactory($rootScope, $http, $q, $location) {
     var port = ':' + $location.port();
     var url = protpcol + host +port;
     serviceDefer.URL = url;
-    serviceDefer.GetRecentQuotes = function() {
+    serviceDefer.GetDashboardData = function () {
         
         var test = $q.defer();
-        $http.get(serviceDefer.URL + '/Home/QuoteTodayJson/').
+        $http.get(serviceDefer.URL + '/Home/GetDashboardJson/').
               success(function (data, status, headers, config) {
 
                   //serviceDefer.servicePromise = $q.defer();

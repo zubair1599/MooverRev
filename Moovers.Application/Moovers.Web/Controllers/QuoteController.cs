@@ -729,7 +729,18 @@ namespace MooversCRM.Controllers
 
             return HttpNotFound();
         }
+        public ActionResult GetQuicklookByLookup(string lookup)
+        {
+            var repo = new QuoteRepository();
+            Quote quote = repo.Get(lookup);
+            if (VerifyRead(quote))
+            {
+                return Json(quote.GetQuicklook(), JsonRequestBehavior.AllowGet);
+            }
 
+            return HttpNotFound();
+        }
+      
         // GET /Quote/Stops/{lookup}
         public ActionResult Stops(string id)
         {

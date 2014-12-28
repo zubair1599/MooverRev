@@ -108,18 +108,15 @@ function quoteFactory($rootScope, $http, $q) {
     };
 
 
-    serviceDefer.Quicklook = function (quoteId) {
+    serviceDefer.Quicklook = function (lookup) {
         var test = $q.defer();
         serviceDefer.servicePromise = $q.defer();
-        $http.post(serviceDefer.URL + '/Quote/GetQuickLook/', {quoteid : quoteId}).
+        $http.post(serviceDefer.URL + '/Quote/GetQuicklookByLookup/', { lookup: lookup }).
               success(function (data, status, headers, config) {
-                  test.resolve(data);
-               
+                  test.resolve(data);              
                   serviceDefer.servicePromise.resolve(data);
               }).
               error(function (data, status, headers, config) {
-                  //test.reject(data);
-                  
                   serviceDefer.servicePromise.reject();
               });
             return test.promise;

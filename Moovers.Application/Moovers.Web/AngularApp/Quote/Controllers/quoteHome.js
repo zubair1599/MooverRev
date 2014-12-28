@@ -57,12 +57,13 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory, $scope, $window
         if (typeof quote == 'undefined' && param.indexOf("lookup=") > -1 && lookup != undefined) {
 
             $scope.selectedQuote.Lookup = lookup;
-            quoteFactory.GetRecentQuote(lookup).then(function (quickLookdata) {
-                $scope.selectedQuote = quickLookdata.quote;
-                $scope.UpdateQuicklook();
-                $scope.GetFranchise();
-                $scope.SetAllRooms();
-                $scope.InventoryItems();
+            $scope.UpdateQuicklook();
+            quoteFactory.GetRecentQuote(lookup).then(function (data) {
+                $scope.selectedQuote = data.quote;
+                
+                //$scope.GetFranchise();
+                //$scope.SetAllRooms();
+                //$scope.InventoryItems();
                
             });
         } else if (typeof quote !== 'undefined') {
@@ -81,7 +82,7 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory, $scope, $window
     };
 
     $scope.UpdateQuicklook = function() {
-        quoteFactory.Quicklook($scope.selectedQuote.QuoteID).then(function(quickLookdata) {
+        quoteFactory.Quicklook($scope.selectedQuote.Lookup).then(function (quickLookdata) {
             $scope.QuoteQuickLook = quickLookdata;
         });
         //quoteFactory.servicePromise.promise.then(function(quickLookdata) {

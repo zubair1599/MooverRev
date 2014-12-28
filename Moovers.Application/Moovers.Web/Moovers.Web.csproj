@@ -227,6 +227,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="AngularApp\Quote\Controllers\dashboard.js" />
     <Content Include="AngularApp\Quote\Controllers\home.js" />
     <Content Include="AngularApp\Quote\Controllers\manageContact.js" />
     <Content Include="AngularApp\Quote\Controllers\manageInventory.js" />
