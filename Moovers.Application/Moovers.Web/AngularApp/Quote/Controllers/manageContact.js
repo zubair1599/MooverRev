@@ -5,7 +5,11 @@ function manageContact(quoteFactory, $scope, $element, $window, $timeout) {
 
     $scope.searchQuery = '';
     $scope.searchResults = [];
-
+    $scope.GetCustomerFromQuote = function (lookup) {
+        quoteFactory.GetCustomerFromQuote(lookup).then(function (customerData) {
+            $scope.selectedCustomer = customerData;
+        });
+    }
 
     $scope.SearchForCustomer = function () {
         $scope.searchResults = null;
@@ -61,7 +65,8 @@ function manageContact(quoteFactory, $scope, $element, $window, $timeout) {
         
 
     };
-
-
-
+    $scope.Init = function () {
+        $scope.GetCustomerFromQuote($scope.$parent.selectedQuote.Lookup);
+    }
+    $scope.Init();
 };

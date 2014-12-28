@@ -54,15 +54,18 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory, $scope, $window
         var param = document.URL.substring(document.URL.indexOf('?') + 1);
         var lookup = param.substring(param.indexOf('=') + 1);
 
-        if (typeof quote == 'undefined' && lookup!=undefined) {
+        if (typeof quote == 'undefined' && param.indexOf("lookup=") > -1 && lookup != undefined) {
+
+            $scope.selectedQuote.Lookup = lookup;
             quoteFactory.GetRecentQuote(lookup).then(function (quickLookdata) {
                 $scope.selectedQuote = quickLookdata.quote;
                 $scope.UpdateQuicklook();
                 $scope.GetFranchise();
                 $scope.SetAllRooms();
                 $scope.InventoryItems();
+               
             });
-        } else {
+        } else if (typeof quote !== 'undefined') {
             $scope.selectedQuote = quote;
             $scope.UpdateQuicklook();
             $scope.GetFranchise();

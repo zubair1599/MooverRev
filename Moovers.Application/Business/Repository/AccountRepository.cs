@@ -55,7 +55,10 @@ namespace Business.Repository
         {
             return CompiledGetByLookup(db, lookup);
         }
-
+        public Account GetAccountFromQuote(string lookup)
+        {
+            return db.Quotes.Where(q=>q.Lookup == lookup).FirstOrDefault().Account;
+        }
         public void RemoveEmail(Account account, EmailAddressType type)
         {
             var rel = account.Account_EmailAddress_Rel.FirstOrDefault(i => i.Type == (int)type);

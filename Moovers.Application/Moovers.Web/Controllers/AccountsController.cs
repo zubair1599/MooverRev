@@ -110,6 +110,19 @@ namespace MooversCRM.Controllers
 
             return Json(account.ToJsonObject(), JsonRequestBehavior.AllowGet);
         }
+        public ActionResult GetFromQuote(string Id)
+        {
+            var repo = new AccountRepository();
+
+            Account account = repo.GetAccountFromQuote(Id.ToString());
+
+            if (account == null)
+            {
+                return HttpNotFound();
+            }
+
+            return Json(account.ToJsonObject(), JsonRequestBehavior.AllowGet);
+        }
 
         // POST: /Accounts/Person/Add
         [HttpPost]

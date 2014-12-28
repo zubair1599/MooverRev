@@ -1213,6 +1213,9 @@ h1 small, h2 small, h3 small, h1 .small, h2 .small, h3 .small {
 /* line 5, /Applications/MAMP/htdocs/ikoma3/scss/theme/imports/utilities */
 .red-bg {
   background-color: #e84e40 !important; }
+.orange-bg {
+  background-color: #F7941C  !important; }
+
 
 /* line 8, /Applications/MAMP/htdocs/ikoma3/scss/theme/imports/utilities */
 .yellow-bg {

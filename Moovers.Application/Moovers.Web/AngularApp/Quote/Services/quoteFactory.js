@@ -70,6 +70,21 @@ function quoteFactory($rootScope, $http, $q) {
 
         return test.promise;
     };
+    serviceDefer.GetCustomerFromQuote = function (lookup) {
+
+        var test = $q.defer();
+
+        serviceDefer.servicePromise = $q.defer();
+        $http.get(serviceDefer.URL + '/Accounts/GetFromQuote?Id='+lookup).success(function (returnedData) {
+            test.resolve(returnedData);
+
+        }).
+        error(function (data, status, headers, config) {
+            test.reject();
+        });
+
+        return test.promise;
+    };
     
     serviceDefer.AddQuote = function(quoteBasicInfo) {
         var test = $q.defer();

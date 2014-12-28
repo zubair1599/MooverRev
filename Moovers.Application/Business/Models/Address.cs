@@ -286,7 +286,8 @@ namespace Business.Models
                 City = this.City,
                 State = this.State,
                 Zip = this.Zip,
-                Verified = this.IsVerified()
+                Verified = this.IsVerified(),
+                DisplayAddress = this.DisplayString()
             };
         }
 
