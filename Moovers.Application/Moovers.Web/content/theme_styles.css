@@ -3705,8 +3705,8 @@ input[type="radio"] {
     display: block; } }
 /* line 141, /Applications/MAMP/htdocs/ikoma3/scss/theme/imports/user_profile */
 #user-profile .table tbody tr td {
-  padding-bottom: 20px;
-  padding-top: 20px; }
+  padding-bottom: 5px;
+  padding-top: 5px; }
 /* line 145, /Applications/MAMP/htdocs/ikoma3/scss/theme/imports/user_profile */
 #user-profile .table tbody tr:first-child td {
   border-top: none; }
