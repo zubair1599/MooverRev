@@ -10,6 +10,8 @@ namespace MooversCRM.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.Dynamic;
+    using System.Globalization;
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
@@ -621,8 +623,8 @@ namespace MooversCRM.Controllers
          [OutputCache(Location = OutputCacheLocation.ServerAndClient, Duration = 600, VaryByParam = "start;end;franchiseid")]
          public ActionResult GetSchedule1(string start, string end, Guid franchiseid)
         {
-            DateTime startTime = DateTime.Parse(start);//Date.UnixTimestampToDateTime(start);
-            DateTime endTime = DateTime.Parse(end);//Date.UnixTimestampToDateTime(end);
+            DateTime startTime = Convert.ToDateTime(start);//Date.UnixTimestampToDateTime(start);
+            DateTime endTime = Convert.ToDateTime(end);//Date.UnixTimestampToDateTime(end);
 
              var repo = new ScheduleRepository();
              List<Schedule> scheduled = repo.GetBetween(franchiseid, startTime, endTime).ToList();

@@ -726,7 +726,8 @@ namespace Business.Models
                     HasSurveys = GetSurveys().Any(),
                     IsHourly = PricingType == QuotePricingType.Hourly,
                     Unassigned = AccountManager.LoweredUserName == General.WebQuoteUser.ToLower(),
-                    FranchiseLogo = Franchise.GetIconUrl()
+                    FranchiseLogo = Franchise.GetIconUrl(),
+                    FranchiseID = this.Franchise.FranchiseID
                 };
         }
 
@@ -750,7 +751,9 @@ namespace Business.Models
                     Schedules = GetSchedules().Select(s => s.ToJsonObject()),
                     IsCompleted = !Schedules.Any(i => i.Postings.Any(p => p.IsComplete)),
                     AccountName = Account.DisplayName,
-                    FranchiseLogo = Franchise.GetIconUrl()
+                    
+                    FranchiseLogo = Franchise.GetIconUrl(),
+                    FranchiseID = this.Franchise.FranchiseID
                 };
         }
 

@@ -77,7 +77,7 @@
     <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery.hotkeys.js" />
     <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/bootstrap-wysiwyg.js" />
     <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery-ui.custom.min.js" />
-    <JavaScriptFiles Include="$(ProjectDir)content/fullcalendar/fullcalendar.min.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/fullcalendar.min.js" />
     <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery-jvectormap-1.2.2.min.js" />
     <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery-jvectormap-world-merc-en.js" />
     <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/gdp-data.js" />
@@ -136,7 +136,9 @@
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/manageStops.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/quoteHome.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/manageContact.js" />
+    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/dashboard.js" />
     
+	
     
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Directives/addQuoteDialog.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Directives/addressStopDialog.js" />
