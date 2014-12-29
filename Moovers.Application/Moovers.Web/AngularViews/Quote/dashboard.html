@@ -1,0 +1,270 @@
+﻿<div ng-controller="dashboard">
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="content-header" class="clearfix">
+                <div class="pull-left">
+                    <ol class="breadcrumb">
+                        <li><a href="#">Home</a></li>
+                        <li class="active"><span>Dashboard</span></li>
+                    </ol>
+
+                    <h1>Dashboard</h1>
+                </div>
+
+                <div class="pull-right hidden-xs">
+                    <div class="xs-graph pull-left">
+                        <div class="graph-label">
+                            <b><i class="fa fa-shopping-cart"></i> 838</b> Orders
+                        </div>
+                        <div class="graph-content spark-orders"><canvas width="125" height="25" style="display: inline-block; width: 125px; height: 25px; vertical-align: top;"></canvas></div>
+                    </div>
+
+                    <div class="xs-graph pull-left mrg-l-lg mrg-r-sm">
+                        <div class="graph-label">
+                            <b>$12.338</b> Revenues
+                        </div>
+                        <div class="graph-content spark-revenues"><canvas width="132" height="25" style="display: inline-block; width: 132px; height: 25px; vertical-align: top;"></canvas></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 col-sm-6 col-xs-12">
+            <div class="main-box infographic-box">
+                <i class="fa fa-envelope-o red-bg"></i>
+                <span class="headline">Notifications</span>
+                <span class="value">
+
+                    <span style="font-size: 13px">
+                        {{LeadCount}} Leads / {{StorageCount}} Storage Bills
+
+                    </span>
+                </span>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-xs-12">
+            <div class="main-box infographic-box">
+                <i class="fa fa-bars emerald-bg"></i>
+                <span class="headline">Quotes</span>
+                <span class="value">
+                    <!--<span style="font-size: 13px">
+                        {{QuotesStats.Open.Count}} Open <br />
+                        {{QuotesStats.Scheduled.Count}} Scheduled
+                    </span>-->
+                    <span style="font-size: 13px">
+                        {{QuotesStats.Open.Count}} Open / {{QuotesStats.Scheduled.Count}} Scheduled
+
+                    </span>
+
+                </span>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-xs-12">
+            <div class="main-box infographic-box">
+                <i class="fa fa-money green-bg"></i>
+                <span class="headline">Income</span>
+                <span class="value">
+                    <span style="font-size: 13px">
+                        {{QuotesStats.Won.Count}} Won / {{QuotesStats.Lost.Count}} Lost
+                    </span>
+                </span>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-xs-12">
+            <div class="main-box infographic-box">
+                <i class="fa fa-database yellow-bg"></i>
+                <span class="headline">My Jobs ( This month )</span>
+                <span class="value">
+                    <span style="font-size: 13px">
+                        {{Jobs.Booked}} Booked / {{Jobs.Posted}} Posted
+                    </span>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2 class="pull-left">Recent Quotes</h2>
+
+
+                </header>
+
+                <div class="main-box-body clearfix">
+                    <div class="table-responsive clearfix">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th><a href="#"><span>Lookup</span></a></th>
+                                    <th><a href="#" class="desc"><span>Date</span></a></th>
+                                    <th><a href="#" class="asc"><span>Customer</span></a></th>
+                                    <th class="text-center"><span>Status</span></th>
+                                    <!--<th class="text-right"><span></span></th>-->
+                                    <th>&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="quote in RecentQuotes">
+                                    <td>
+                                        <a href="~/new/quote?lookup={{quote.Lookup}}" ng-bind="quote.Lookup"></a>
+                                    </td>
+                                    <td>
+                                        {{quote.MoveDate}}
+                                    </td>
+                                    <td>
+                                        <a href="#" ng-bind="quote.AccountName"></a>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="label label-success" ng-bind="quote.Stage"></span>
+                                    </td>
+
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2 class="pull-left">Moving Today</h2>
+
+
+                </header>
+
+                <div class="main-box-body clearfix">
+                    <div class="table-responsive clearfix">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th><a href="#"><span>Lookup</span></a></th>
+                                    <th><a href="#" class="desc"><span>Name</span></a></th>
+                                    <th><a href="#" class="asc"><span>Time Span</span></a></th>
+                                    <th><span>Price</span></th>
+                                    <th class="text-right"><span></span></th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="quote in MovingToday">
+                                    <td>
+                                        <a href="#" ng-bind="quote.Lookup"></a>
+                                    </td>
+                                    <td>
+                                        <a href="#" ng-bind="quote.AccountName"></a>
+                                    </td>
+                                    <td>
+                                        <a href="#">{{quote.StartTime}} - {{quote.EndTime}}</a>
+                                    </td>
+                                    <td>
+                                        <a href="#">${{quote.Price}}</a>
+                                    </td>
+                                    <td>
+                                        <i class="fa fa-user"></i>
+                                        <a href="#">{{quote.Movers}}</a>
+                                    </td>
+
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2>Messages</h2>
+                </header>
+                <div class="main-box-body clearfix">
+                    <div class="conversation-wrapper">
+                        <div class="conversation-content">
+                            <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; ">
+                                <div class="conversation-inner" style="overflow: hidden; width: auto;">
+                                    <div class="conversation-item item-left clearfix" ng-repeat="msg in Messages">
+                                        <div class="conversation-user">
+                                            <img src="../../static/img/user-small.jpg" alt="">
+                                        </div>
+                                        <div class="conversation-body">
+                                            <div class="name">
+                                                {{msg.user}}
+                                            </div>
+                                            <div class="time hidden-xs">
+                                                {{msg.date}}  &nbsp;<i class="fa fa-scissors" ng-click="removeMessage(msg.Id)"></i>
+                                            </div>
+                                            <div class="text">
+                                                {{msg.text}}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div><div class="slimScrollBar" style="width: 7px; position: absolute; top: 48px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 159.259640102828px; background: rgb(0, 0, 0);"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; border-radius: 7px; opacity: 0.2; z-index: 90; right: 1px; display: none; background: rgb(51, 51, 51);"></div>
+                            </div>
+                        </div>
+                        <div class="conversation-new-message">
+                            <form class="ng-pristine ng-valid">
+                                <div class="form-group">
+                                    <textarea class="form-control" rows="2" placeholder="Enter your message..." ng-model="newMessage"></textarea>
+                                </div>
+                                <div class="clearfix">
+                                    <button type="submit" class="btn btn-success pull-right" ng-click="addNewMessage(newMessage)">Send message</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2 class="pull-left">Surveys Today</h2>
+
+
+                </header>
+
+                <div class="main-box-body clearfix">
+                    <div class="table-responsive clearfix">
+                        <table class="table table-condensed">
+                            
+                            <tbody>
+                                <tr ng-repeat="s in Surveys">
+                                    <td>
+                                        <a href="#" ng-bind="s.quote"></a>
+                                    </td>
+                                    <td>
+                                        <a href="#" ng-bind="s.account"></a>
+                                    </td>
+                                    <td>
+                                        <a href="#">{{s.time}}</a>
+                                    </td>
+                                    <td>
+                                        <a href="#">{{s.text}}</a>
+                                    </td>
+
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <div ng-hide="Surveys.length>0">
+                            No visual surveys today!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

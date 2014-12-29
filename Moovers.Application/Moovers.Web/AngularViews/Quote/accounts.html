@@ -1,0 +1,216 @@
+﻿
+<div ng-controller="manageContact">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <ol class="breadcrumb">
+                <li><a href="#">Home</a></li>
+                <li class="active"><span>Accounts</span></li>
+            </ol>
+
+            <h1>Accounts</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="main-box clearfix">
+
+                <div class="main-box-body clearfix">
+                    <div class="table-responsive">
+                       
+                        <div id="table-example_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+
+                            <div id="table-example_filter" class="dataTables_filter">
+                                <label>Search:<input type="search" placeholder="Search for a Person or Business" autofocus class="form-control input-sm" ng-model="searchQuery" ng-change="SearchForCustomer()" aria-controls="table-example"></label>
+                            </div>
+                            <div class="DTTT btn-group" style="margin-top:0px;">
+                                <div class="DTTT btn-group">
+                                   <a class="btn btn-primary DTTT_button_collection" id="ToolTables_table-example_0"><span><i class="fa fa-plus"></i>&nbsp;<i class="fa fa-user"></i>&nbsp;&nbsp;&nbsp;<i class="fa fa-caret-down"></i></span></a>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="slimScrollDiv" style="height:600px">
+
+                                    <table id="table-example" class="table table-hover dataTable no-footer slimScrollDiv" role="grid">
+                                       
+                                        <tbody>
+                                            <tr role="row" class="odd" ng-repeat="person in searchResults" ng-click="SetSelectedCustomer(person.AccountID)">
+                                                <!--<td>{{$index}}</td>-->
+                                                <td class="sorting_1" ng-bind="person.Lookup"></td>
+                                                <td ng-bind="person.Name"></td>
+                                                
+                                                <!--td ng-bind="person.City"></td>
+                    <td ng-bind="person.State"></td>
+                    <td ng-bind="person.Type"></td>-->
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                   
+                                </div>
+                                       </div>
+                            </div>
+                            </div>
+                        </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+
+            <div class="row" id="user-profile">
+                <div class="col-lg-12 col-md-5 col-sm-6">
+                    <div class="main-box clearfix profile-box-stats">
+                        <div class="main-box-body clearfix">
+                            <div class="profile-box-header orange-bg clearfix">
+                                <h2>{{selectedCustomer.DisplayName}}</h2>
+                                <div class="job-position">
+                                    {{selectedCustomer.Type}}
+                                </div>
+                                <img src="/static/img/user.jpg" alt="" class="profile-img img-responsive">
+                            </div>
+                            <div class="profile-box-footer clearfix">
+                                <a href="#">
+                                    <span class="value">{{selectedCustomer.Opportunities.length}}</span>
+                                    <span class="label">Quotes</span>
+                                </a>
+                                <a href="#">
+                                    <span class="value">{{selectedCustomer.WorkOrders.length}}</span>
+                                    <span class="label">Storages</span>
+                                </a>
+                                <a href="#">
+                                    <span class="value">{{selectedCustomer.Leads.length}}</span>
+                                    <span class="label">Leads</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-7 col-sm-7">
+                    <div class="main-box clearfix">
+                        <div id="newsfeed">
+                            <div class="story">
+                                <dl class="dl-horizontal">
+                                    <dt style="text-align:left">Email</dt>
+                                    <dd style="margin-left:0px">{{selectedCustomer.PrimaryEmail}} {{selectedCustomer.SecondaryEmail}}</dd>
+                                    <dt style="text-align:left">Primary Phone</dt>
+                                    <dd style="margin-left:0px">{{selectedCustomer.PrimaryPhone.Display}}</dd>
+                                    <dt style="text-align:left">Secondary Phone</dt>
+
+                                    <dd style="margin-left:0px">{{selectedCustomer.SecondaryPhone.Display}}</dd>
+                                    <dt style="text-align:left">Fax</dt>
+                                    <dd style="margin-left:0px">{{selectedCustomer.Fax}}</dd>
+                                    <dt style="text-align:left">Billing Address</dt>
+                                    <dd style="margin-left:0px">
+                                        {{selectedCustomer.BillingAddress.DisplayAddress}}
+                                    </dd>
+                                    <dt style="text-align:left">Mailing Address</dt>
+                                    <dd style="margin-left:0px">
+                                        {{selectedCustomer.MailingAddress.DisplayAddress}}
+                                    </dd>
+                                </dl>
+                            </div>
+                            <div class="story">
+                                <dl class="dl-horizontal">
+                                    <dt style="text-align:left">Quotes</dt>
+                                    <dd style="margin-left:0px">
+                                        <div class="table-responsive clearfix">
+                                            <table class="table table-condensed" style="margin-bottom:0px">
+                                                <thead>
+                                                    <tr>
+                                                        <th><a href="#"><span>Lookup</span></a></th>
+                                                        <th><a href="#" class="desc"><span>Move Date</span></a></th>
+                                                        <th><a href="#" class="asc"><span>Created</span></a></th>
+                                                        <th class="text-center"><span>Status</span></th>
+                                                        <th class="text-right"><span>Price</span></th>
+                                                        <th>&nbsp;</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="quote in selectedCustomer.Opportunities">
+                                                        <td>
+                                                            <a href="#" ng-bind="quote.Lookup"></a>
+                                                        </td>
+                                                        <td>
+                                                            {{quote.MoveDate}}
+                                                        </td>
+                                                        <td>
+                                                            <a href="#" ng-bind="quote.Created"></a>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <span ng-bind="quote.Stage"></span>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <span ng-bind="quote.Price"></span>
+                                                        </td>
+
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </dd>
+                                </dl>
+                            </div>
+                            <div class="story">
+                                <dl class="dl-horizontal">
+                                    <dt style="text-align:left">Work Orders</dt>
+                                    <dd style="margin-left:0px">
+                                        <div class="table-responsive clearfix">
+                                            <table class="table table-condensed" style="margin-bottom:0px">
+                                                <thead>
+                                                    <tr>
+                                                        <th><a href="#"><span>Lookup</span></a></th>
+                                                        <th><a href="#" class="desc"><span>Next Payment</span></a></th>
+                                                        <th><a href="#" class="asc"><span>Balance</span></a></th>
+
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="quote in selectedCustomer.WorkOrders">
+                                                        <td>
+                                                            <a href="#" ng-bind="quote.Lookup"></a>
+                                                        </td>
+
+                                                        <td>
+                                                            <a href="#" ng-bind="quote.NextPayment | date:'MM/dd/yyyy'"></a>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <span ng-bind="quote.Balance"></span>
+                                                        </td>
+
+
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="shipper">
+    <div class="title title3" ng-bind="customer.DisplayName"></div>
+    <div id="shipper-address">
+        <div ng-bind="customer.BillingAddress.Street1"></div>
+        <div ng-bind="customer.BillingAddress.Street2"></div>
+        <span ng-bind="customer.BillingAddress.City"></span>
+        <span ng-bind="customer.BillingAddress.State"></span>
+        <span ng-bind="customer.BillingAddress.Zip"></span>
+    </div>
+    <div id="shipper-contact">
+        <div ng-bind="customer.PrimaryEmail"></div>
+        <div ng-bind="customer.PrimaryPhone.Display"></div>
+
+
+    </div>
+</div>
+

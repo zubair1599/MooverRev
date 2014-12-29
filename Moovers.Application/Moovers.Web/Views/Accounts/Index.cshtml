@@ -27,7 +27,7 @@
             </div>
             <div id="account-menu-container">
                 <div id="account-menu-header">
-                    <input id="account-menu-search" type="search" placeholder="Search for a Person or Business" autofocus />
+                    <input id="account-menu-search" ng-model="searchQuery" ng-change="SearchForCustomer" type="search" placeholder="Search for a Person or Business" autofocus />
                 </div>
                 <div id="account-menu-scroll">
                     <table id="account-menu"></table>
