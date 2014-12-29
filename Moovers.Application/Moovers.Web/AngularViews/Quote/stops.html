@@ -11,127 +11,131 @@
         </div>
     </div>
     <div class="row" ng-show="stopDialog === false">
-        <div class="col-lg-12">
-            <div class="main-box clearfix">
-                <header class="main-box-header clearfix">
-                    <!--<h2>Collapse</h2>-->
-                    <div class="pull-right">
-                        <button type="button" class="btn btn-primary" ng-click="InitEditStop()">Add Stop</button>
-                    </div>
-                </header>
-                <div class="main-box-body clearfix">
-                    <div class="panel-group accordion" id="accordion">
-                        <div class="panel panel-default">
-                            <div class="panel-heading" role="tab" id="headingThree">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapseOne">
-                                        {{franchiseAddress}}
-                                    </a>
-                                </h4>
-                            </div>
+        <div class="main-box clearfix col-lg-12">
+            <div class="col-lg-9 center">
 
+
+               
+                    <header class="main-box-header clearfix">
+                        <!--<h2>Collapse</h2>-->
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-primary" ng-click="InitEditStop()">Add Stop</button>
                         </div>
-
-
-
-                        <div class="panel panel-default" ng-repeat="stop in $parent.selectedQuote.Stops">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-
-                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion">
-                                        {{stop.street1}} {{stop.street2}} {{stop.city}} {{stop.state}} {{stop.zip}} - {{stop.distanceFromPrevious}} Miles ({{stop.timeFromPrevious}} Minutes)
-                                    </a>
-
-                                </h4>
-                            </div>
-                            <div id="collapseOne" class="panel-collapse collapse in">
-                                <div class="pull-right">
-                                    <img src="../../static/img/edit.png" ng-click="ScopeDialogInitialize(stop.id)" style="width: 20px;margin-right: 30px;margin-top: 10px" class="pull-right" />
+                    </header>
+                    <div class="main-box-body clearfix">
+                        <div class="panel-group accordion" id="accordion">
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingThree">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapseOne">
+                                            {{franchiseAddress}}
+                                        </a>
+                                    </h4>
                                 </div>
-                                <div class="panel-body">
 
-                                    <table class="table table-condensed">
-                                        <tr>
-                                            <td>
-                                                Type
-                                            </td>
-                                            <td>
-                                                <span style="font-weight: bold" ng-bind="stop.addressType">
-
-                                                </span>
-
-                                            </td>
-                                            <td>
-                                                Stairs Outside
-                                            </td>
-                                            <td>
-                                                <span style="font-weight: bold">
-                                                    {{stop.outsideStairsCount}} {{stop.outsideStairsType}}
-                                                </span>
-
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                Parking
-                                            </td>
-                                            <td>
-                                                <span style="font-weight: bold">
-                                                    {{stop.parkingType}}
-                                                </span>
-
-                                            </td>
-                                            <td>
-                                                Stairs Inside
-                                            </td>
-                                            <td>
-                                                <span style="font-weight: bold">
-                                                    {{stop.insideStairsCount}} {{stop.insideStairsType}}
-                                                </span>
+                            </div>
 
 
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                Walk
-                                            </td>
-                                            <td>
-                                                <span style="font-weight: bold">
-                                                    < {{stop.walkDistance}} Feet
-                                                </span>
 
-                                            </td>
-                                            <td>
-                                                Elevator
-                                            </td>
-                                            <td>
-                                                <span style="font-weight: bold">
-                                                    {{stop.elevatorType}}
-                                                </span>
+                            <div class="panel panel-default" ng-repeat="stop in $parent.selectedQuote.Stops">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
 
-                                            </td>
-                                        </tr>
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion">
+                                            {{stop.street1}} {{stop.street2}} {{stop.city}} {{stop.state}} {{stop.zip}} - {{stop.distanceFromPrevious}} Miles ({{stop.timeFromPrevious}} Minutes)
+                                        </a>
 
-                                    </table>
+                                    </h4>
+                                </div>
+                                <div id="collapseOne" class="panel-collapse collapse in">
+                                    <div class="pull-right">
+                                        <img src="../../static/img/edit.png" ng-click="ScopeDialogInitialize(stop.id)" style="width: 20px;margin-right: 30px;margin-top: 10px" class="pull-right" />
+                                    </div>
+                                    <div class="panel-body">
+
+                                        <table class="table table-condensed">
+                                            <tr>
+                                                <td>
+                                                    Type
+                                                </td>
+                                                <td>
+                                                    <span style="font-weight: bold" ng-bind="stop.addressType">
+
+                                                    </span>
+
+                                                </td>
+                                                <td>
+                                                    Stairs Outside
+                                                </td>
+                                                <td>
+                                                    <span style="font-weight: bold">
+                                                        {{stop.outsideStairsCount}} {{stop.outsideStairsType}}
+                                                    </span>
+
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Parking
+                                                </td>
+                                                <td>
+                                                    <span style="font-weight: bold">
+                                                        {{stop.parkingType}}
+                                                    </span>
+
+                                                </td>
+                                                <td>
+                                                    Stairs Inside
+                                                </td>
+                                                <td>
+                                                    <span style="font-weight: bold">
+                                                        {{stop.insideStairsCount}} {{stop.insideStairsType}}
+                                                    </span>
 
 
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Walk
+                                                </td>
+                                                <td>
+                                                    <span style="font-weight: bold">
+                                                        < {{stop.walkDistance}} Feet
+                                                    </span>
+
+                                                </td>
+                                                <td>
+                                                    Elevator
+                                                </td>
+                                                <td>
+                                                    <span style="font-weight: bold">
+                                                        {{stop.elevatorType}}
+                                                    </span>
+
+                                                </td>
+                                            </tr>
+
+                                        </table>
+
+
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading" role="tab" id="headingThree">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapseOne">
-                                        {{franchiseAddress}} - {{DistanceFromLastStop}} Miles ({{TimeFromLastStop}} Minutes )
-                                    </a>
-                                </h4>
-                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingThree">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapseOne">
+                                            {{franchiseAddress}} - {{DistanceFromLastStop}} Miles ({{TimeFromLastStop}} Minutes )
+                                        </a>
+                                    </h4>
+                                </div>
 
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+           
         </div>
     </div>
 

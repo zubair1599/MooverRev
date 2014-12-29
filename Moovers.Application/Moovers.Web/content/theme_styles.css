@@ -1721,7 +1721,11 @@ a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.acti
   outline: none;
   text-decoration: none;
   color: #FFFFFF;
-  padding-right: 15px; }
+  padding-right: 15px;
+  font-size: 13px;
+font-weight: bold;
+text-align: center;
+}
   /* line 395, /Applications/MAMP/htdocs/ikoma3/scss/theme/imports/bootstrap_elem_overrides */
   .accordion .panel-title > a:hover {
     text-decoration: none;
@@ -6796,7 +6800,7 @@ svg {
   border-top-color: #e84e40; }
 /* line 221, /Applications/MAMP/htdocs/ikoma3/scss/theme/imports/skins/red */
 .theme-red .panel-default > .panel-heading, .theme-red .notifications-list .item-footer {
-  background-color: #e84e40; }
+  background-color: #272d33; }
 /* line 224, /Applications/MAMP/htdocs/ikoma3/scss/theme/imports/skins/red */
 .theme-red .notifications-list .item-footer a:hover {
   background-color: #dd191d; }
@@ -7658,5 +7662,12 @@ svg {
   .theme-turquoise .navbar > .container .navbar-brand {
     background-color: #1abc9c; }
  }
+
+.center {
+    margin-left: 0;
+    margin-right: 0;
+                  float:none;
+}
+
 
 /*# sourceMappingURL=theme_styles.css.map */
