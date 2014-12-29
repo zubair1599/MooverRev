@@ -1,242 +1,147 @@
 ﻿
 
-
-<div id="quote-coordinators" class="container-transparent" ng-controller="manageSchedule">
-    <span class="title title2">
-        Schedule <span class="subtitle">Scheduling for the move?</span>
-    </span>
-    <div class="quote-contacts">
-        <div class="contact">
-            <div class="primary-contact">
-                Schedule Information
+<div ng-controller="manageSchedule">
+    <div class="row">
+        <div class="col-lg-12">
+            <ol class="breadcrumb">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Quote</a></li>
+                <li class="active"><span>Schedule</span></li>
+            </ol>
+            <div class="pull-left">
+                <h1>Manage Schedules</h1>
             </div>
-            <div class="contact-details">
-
-
-                <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="headingTwo">
-                        <h4 class="panel-title">
-                            <a class="collapsed" style="font-size: 14px;" data-toggle="collapse" data-parent="#accordion" data-target="#calendarDiv" aria-expanded="false" aria-controls="collapseTwo">
-                                Guranteed
-                            </a>
 
 
 
-                        </h4>
-                    </div>
-                    <div id="calendarDiv" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
-                        <div class="panel-body">
-                            <div id='calendar'></div>
-                        </div>
-                    </div>
+        </div>
+    </div>
 
-                    <div class="panel-heading" role="tab" id="headingTwo">
-                        <h4 class="panel-title">
-                            <a class="collapsed" style="font-size: 14px;" data-toggle="collapse" data-parent="#accordion" data-target="#scheduleDay" aria-expanded="false" aria-controls="collapseTwo">
-                                Schedule Day
-                            </a>
+    <div class="row" ng-show="scheduleDay===false">
 
+        <div class="col-lg-12">
 
+            <div style="border:1px solid red">
+                <div id="calendar">
+                </div>
+            </div>
+        </div>
 
-                        </h4>
-                    </div>
-                    <div id="scheduleDay" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
-                        <div class="panel-body">
-                            <div ng-repeat="crew in scheduleForQuote.Crews">
-                                <div ng-hide="(crew > scheduleForQuote.MaxCrewToDisplay) &&(scheduleForQuote.Crews[$index].Schedules.length>0)&&(scheduleForQuote.Crews[$index].CrewDetail.ID!=null)">
+    </div>
 
 
+    <div class="row" ng-show="scheduleDay===true">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2>Schedule</h2>
+                </header>
+                <div class="main-box-body clearfix">
+                    <div class="col-lg-6">
+                        <div class="main-box clearfix">
+                            <header class="main-box-header clearfix">
+                                <h2>Hover &amp; Stripped table</h2>
+                            </header>
+                            <div class="main-box-body clearfix">
+                                <div class="table-responsive" ng-repeat="crew in scheduleForQuote.Crews" ng-hide="(crew > scheduleForQuote.MaxCrewToDisplay) &&(scheduleForQuote.Crews[$index].Schedules.length>0)&&(scheduleForQuote.Crews[$index].CrewDetail.ID!=null)">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    <span ng-show="scheduleForQuote.Crews[$index].Number===0">Move Pool </span>
+                                                    <span ng-show="scheduleForQuote.Crews[$index].Number>0">
+                                                        Crew {{scheduleForQuote.Crews[$index].Number}}
+                                                    </span>
+                                                    
+                                                        <span ng-repeat="emp in scheduleForQuote.Crews[$index].CrewDetail.GetEmployees" ng-if="scheduleForQuote.Crews[$index].CrewDetail!=null">
+                                                            <span ng-style="emp.IsDriver ?'font-weight: bold;' : 'color: red;'" ng-bind="emp.NameLast"></span>
+                                                        </span>
+                                                    <span ng-if="scheduleForQuote.Crews[$index].Number!=0">
+                                                        <span class="inline a150"></span>
+                                                        <select class="text-r noprint" style="width:100px" ng-model="scheduleForQuote.Crews[$index].Status">
 
-                                    <div class="schedule-table-container" ng-class="{'scheduleForQuote.Crews[$index].CrewDetail': scheduleForQuote.Crews[$index].CrewDetail!=null}">
-                                        <table class="schedule-table table" ng-class="{'noprint': scheduleForQuote.Crews[$index].CrewDetail.Schedules.length>0 && scheduleForQuote.Crews[$index].CrewDetail.GetEmployees.length>0 }">
-                                            <thead>
-                                                <tr>
-                                                    <td style="width: 200px" class="no-mobile">
-
-                                                        <h5 ng-show="scheduleForQuote.Crews[$index].Number===0" class="inline a150" style="margin-top: 0;">Move Pool</h5>
-
-                                                        <h5 ng-show="scheduleForQuote.Crews[$index].Number>0" class="inline nomargin a150" style="margin-top: 0;">Crew {{scheduleForQuote.Crews[$index].Number}}</h5>
+                                                            <option value="Default">-- status --</option>
+                                                            <option value="OutOfTown">Out of Town</option>
+                                                            <option value="CleanUp">Clean Up</option>
+                                                            <option value="Van">Van</option>
+                                                            <option value="Pickup">Pickup</option>
+                                                            <option value="Delivery">Delivery</option>
+                                                            <option value="Unavailable">Unavailable</option>
 
 
+                                                        </select>
+                                                    </span>
+                                                    
 
-                                                        <span class="printonly-inline">
-                                                            <span ng-repeat="emp in scheduleForQuote.Crews[$index].CrewDetail.GetEmployees" ng-if="scheduleForQuote.Crews[$index].CrewDetail!=null">
-                                                                <span ng-style="emp.IsDriver ?'font-weight: bold;' : 'color: red;'" ng-bind="emp.NameLast"></span>
+
+
+                                                </th>
+                                                <th><span>Arrival</span></th>
+                                                <th class="text-center">Price : <span ng-bind="scheduleForQuote.Crews[$index].SchedulesPricePerTruck"></span></th>
+                                                <th class="text-center"><span>Origin / Destination</span></th>
+                                                <th class="text-center">
+
+                                                    <span ng-show="scheduleForQuote.Crews[$index].Number!=0">
+                                                        <span>
+                                                            <span class="emp-holder">
+                                                                <span ng-show="scheduleForQuote.Crews[$index].CrewDetail!=null">
+
+                                                                    <span ng-repeat="empl in scheduleForQuote.Crews[$index].CrewDetail.GetEmployees" class="spacer text-norm cursor-default" title="{{empl.Employee.DisplayName - empl.Employee.DisplayNumber}}" data-employeeid="{{empl.Employee.ID}}" data-isdriver="{{empl.Employee.IsDriver}}">
+                                                                        <span class="noprint nowrap inline">
+                                                                            {{empl.Employee.Lookup}}
+                                                                            <i class="icon-user" ng-class="{'driver': empl.IsDriver}"></i>
+                                                                        </span>
+                                                                    </span>
+                                                                </span>
                                                             </span>
                                                             <span class="printonly"></span>
-                                                        </span>
-                                                        <span ng-if="scheduleForQuote.Crews[$index].Number!=0">
-                                                            <span class="inline a150"></span>
-                                                            <select class="text-r noprint" style="width:100px" ng-model="scheduleForQuote.Crews[$index].Status">
-
-                                                                <option value="Default">-- status --</option>
-                                                                <option value="OutOfTown">Out of Town</option>
-                                                                <option value="CleanUp">Clean Up</option>
-                                                                <option value="Van">Van</option>
-                                                                <option value="Pickup">Pickup</option>
-                                                                <option value="Delivery">Delivery</option>
-                                                                <option value="Unavailable">Unavailable</option>
-
-
-                                                            </select>
-                                                        </span>
-
-
-
-
-                                                    </td>
-                                                    <td>Arrival</td>
-                                                    <td class="price" style="width: 100px">
-                                                        <span class="printonly">Price</span>
-                                                        <span class="noprint" ng-bind="scheduleForQuote.Crews[$index].SchedulesPricePerTruck">
-                                                        </span>
-                                                    </td>
-
-                                                    <td class="stops">Origin / Destination</td>
-                                                    <td colspan="3" style="width:200px" class="text-r wrap">
-
-                                                        <span ng-show="scheduleForQuote.Crews[$index].Number!=0">
-                                                            <span>
-                                                                <span class="emp-holder">
-                                                                    <span ng-show="scheduleForQuote.Crews[$index].CrewDetail!=null">
-
-                                                                        <span ng-repeat="empl in scheduleForQuote.Crews[$index].CrewDetail.GetEmployees" class="spacer text-norm cursor-default" title="{{empl.Employee.DisplayName - empl.Employee.DisplayNumber}}" data-employeeid="{{empl.Employee.ID}}" data-isdriver="{{empl.Employee.IsDriver}}">
-                                                                            <span class="noprint nowrap inline">
-                                                                                {{empl.Employee.Lookup}}
-                                                                                <i class="icon-user" ng-class="{'driver': empl.IsDriver}"></i>
-                                                                            </span>
-                                                                        </span>
-                                                                    </span>
-                                                                </span>
-                                                                <span class="printonly"></span>
-                                                                <span class="vehicle-holder">
-                                                                    <span ng-show="scheduleForQuote.Crews[$index].CrewDetail!=null">
-                                                                        <span ng-repeat="veh in scheduleForQuote.Crews[$index].CrewDetail.GetVehicles" class="spacer text-norm nowrap inline" title="veh.Name" data-vehicleid="veh.ID">
-                                                                            {{veh.Lookup }}
-                                                                            <i class="icon-truck"></i>
-                                                                        </span>
-
+                                                            <span class="vehicle-holder">
+                                                                <span ng-show="scheduleForQuote.Crews[$index].CrewDetail!=null">
+                                                                    <span ng-repeat="veh in scheduleForQuote.Crews[$index].CrewDetail.GetVehicles" class="spacer text-norm nowrap inline" title="veh.Name" data-vehicleid="veh.ID">
+                                                                        {{veh.Lookup }}
+                                                                        <i class="icon-truck"></i>
                                                                     </span>
 
                                                                 </span>
-
-
-
 
                                                             </span>
 
 
-                                                            <a href="#" ng-show="scheduleForQuote.Quote.QuoteID!=null" class="btn btn-mini btn-assign noprint no-mobile">Assign Staff</a>
-                                                            <a class="schedule-job" onclick="OpenDialog('schedule')" ng-click="OpenSchedule($index)" data-crew="scheduleForQuote.Crews[$index].Number">Schedule Job</a>
+
+
                                                         </span>
 
 
-
-                                                    </td>
-                                            </thead>
-                                            <tbody>
-
-                                                <tr ng-repeat="sc in scheduleForQuote.Crews[$index].Schedules">
-
-                                                    <td>{{sc.CustomerName }}-({{sc.QuoteNumber}})</td>
-                                                    <td>
-                                                        {{sc.StartTime}}
-                                                        {{sc.EndTime}}
-                                                    </td>
-                                                    <td>{{sc.PricePerTruck}}</td>
-                                                    <td style="width: 200px">{{sc.Origin}} <br />{{sc.Destination}}</td>
-                                                    <td></td>
-
-                                                </tr>
+                                                        <a href="#" ng-show="scheduleForQuote.Quote.QuoteID!=null" class="btn btn-mini btn-assign noprint no-mobile">Assign Staff</a>
+                                                        <a class="schedule-job" onclick="OpenDialog('schedule')" ng-click="OpenSchedule($index)" data-crew="scheduleForQuote.Crews[$index].Number">Schedule Job</a>
+                                                    </span>
 
 
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="sc in scheduleForQuote.Crews[$index].Schedules">
 
-                                            </tbody>
-                                        </table>
+                                                <td>{{sc.CustomerName }}-({{sc.QuoteNumber}})</td>
+                                                <td>
+                                                    {{sc.StartTime}}
+                                                    {{sc.EndTime}}
+                                                </td>
+                                                <td>{{sc.PricePerTruck}}</td>
+                                                <td style="width: 200px">{{sc.Origin}} <br />{{sc.Destination}}</td>
+                                                <td></td>
 
-                                    </div>
-
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
         </div>
     </div>
-
-
-    <div id="schedule" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
-        <div class="modal-header">
-            <a type="button" class="close-modal" data-dismiss="modal" aria-hidden="true"></a>
-            <h3 id="myModalLabel1">Scheduling</h3>
-        </div>
-        <div id="account-contacts" class="modal-body">
-            <div class="row" style="margin-left: 20px">
-                <div class="pull-left">
-
-                    <p>Arrival Window</p>
-                    <select ng-model="rangestart">
-                        <option value="5">5:00AM</option>
-                        <option value="6">6:00AM</option>
-                        <option value="7">7:00AM</option>
-                        <option value="8">8:00AM</option>
-                        <option value="9">9:00AM</option>
-                        <option value="10">10:00AM</option>
-                        <option value="11">11:00AM</option>
-                        <option value="12">12:00AM</option>
-                        <option value="13">1:00PM</option>
-                        <option value="14">2:00PM</option>
-                        <option value="15">3:00PM</option>
-                        <option value="16">4:00PM</option>
-                        <option value="17">5:00PM</option>
-                        <option value="18">6:00PM</option>
-                        <option value="19">7:00PM</option>
-                        <option value="20">8:00PM</option>
-                    </select>
-
-                    -
-                    <select ng-model="rangeend">
-                        <option value="5">5:00AM</option>
-                        <option value="6">6:00AM</option>
-                        <option value="7">7:00AM</option>
-                        <option value="8">8:00AM</option>
-                        <option value="9">9:00AM</option>
-                        <option value="10">10:00AM</option>
-                        <option value="11">11:00AM</option>
-                        <option value="12">12:00AM</option>
-                        <option value="13">1:00PM</option>
-                        <option value="14">2:00PM</option>
-                        <option value="15">3:00PM</option>
-                        <option value="16">4:00PM</option>
-                        <option value="17">5:00PM</option>
-                        <option value="18">6:00PM</option>
-                        <option value="19">7:00PM</option>
-                        <option value="20">8:00PM</option>
-                    </select>
-                    <p>Movers</p>
-                    <select ng-model="movers">
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-
-                    </select>
-                </div>
-                <div class="pull-right">
-                    <input type="radio" ng-model="scheduleQuote.HasCard" value="false" />New Card
-                    <input type="radio" ng-model="scheduleQuote.HasCard" value="true" />No Credit Card
-
-                </div>
-            </div>
-            <div class="row" style="margin-left: 20px">
-                <button class="pull-right btn btn-action" ng-click="ScheduleQuote()">Save</button>
-            </div>
-        </div>
-    </div>
-
-
-
 
 </div>

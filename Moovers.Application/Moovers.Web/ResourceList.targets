@@ -9,20 +9,16 @@
     <JavaScriptFiles Include="$(ProjectDir)Scripts/angular-resource.js" />
     <JavaScriptFiles Include="$(ProjectDir)Scripts/angular-animate.js" />
     
-    <!--<JavaScriptFiles Include="$(ProjectDir)static/js/plugins/jquery-ui-1.10.2.custom.js" />
-    <JavaScriptFiles Include="$(ProjectDir)static/js/plugins/jquery.autocomplete.js" />-->
-
-
-
-    <!--<JavaScriptFiles Include="$(ProjectDir)Scripts/jquery-ui.js" />-->
+    <!--<JavaScriptFiles Include="$(ProjectDir)static/js/plugins/jquery-ui-1.10.2.custom.js" />-->
+	<JavaScriptFiles Include="$(ProjectDir)static/js/site.js" />
 	
-	
-
-
-
-
-
-    <CssFiles Include="$(ProjectDir)content/jquery-ui.css" />  
+  
+    
+    
+    
+    
+    
+    
    <CssFiles Include="$(ProjectDir)content/bootstrap.min.css" />
     <CssFiles Include="$(ProjectDir)content/font-awesome.css" />
     <CssFiles Include="$(ProjectDir)content/nanoscroller.css" />
@@ -36,8 +32,8 @@
     <CssFiles Include="$(ProjectDir)content/daterangepicker.css" />
     <CssFiles Include="$(ProjectDir)content/bootstrap-timepicker.css" />
     <CssFiles Include="$(ProjectDir)content/jquery.nouislider.css" />
-    <CssFiles Include="$(ProjectDir)content/fullcalendar.css" />
-    <CssFiles Include="$(ProjectDir)content/fullcalendar.print.css" />
+    <CssFiles Include="$(ProjectDir)content/fullcalendar/fullcalendar.css" />
+    <CssFiles Include="$(ProjectDir)content/fullcalendar/fullcalendar.print.css" />
     <CssFiles Include="$(ProjectDir)content/calendar.css" />
     <CssFiles Include="$(ProjectDir)content/morris.css" />
     <CssFiles Include="$(ProjectDir)content/jquery-jvectormap-1.2.2.css" />
@@ -81,7 +77,7 @@
     <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery.hotkeys.js" />
     <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/bootstrap-wysiwyg.js" />
     <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery-ui.custom.min.js" />
-    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/fullcalendar.min.js" />
+    <JavaScriptFiles Include="$(ProjectDir)content/fullcalendar/fullcalendar.min.js" />
     <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery-jvectormap-1.2.2.min.js" />
     <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery-jvectormap-world-merc-en.js" />
     <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/gdp-data.js" />
@@ -140,6 +136,7 @@
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/manageStops.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/quoteHome.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/manageContact.js" />
+    
     
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Directives/addQuoteDialog.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Directives/addressStopDialog.js" />

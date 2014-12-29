@@ -191,12 +191,13 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
     $scope.GetItemSuggestions = function() {
 
         $element.find('#searchtxt').autocomplete({
-            lookup: inventoryFactory.searchItems,
-            onSelect: function(val, originalEvent) {
+            source: inventoryFactory.searchItems,
+            select: function(originalEvent,val) {
                 for (var i = 0; i < inventoryFactory.searchItems.length; i++) {
-                    if (val == inventoryFactory.InventoryList[i].Name) {
+                    if (val.item.value == inventoryFactory.InventoryList[i].Name) {
                         $scope.selectedItem = inventoryFactory.InventoryList[i];
                         //$scope.ItemAdditionalOptions();
+                        $scope.searchQuery = val.item.value;
                         $timeout(function() {
                             $scope.$apply();
 
