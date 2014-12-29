@@ -27,6 +27,7 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
     };
 
 
+
     $scope.Init = function() {
        
         $scope.ClearRoomBox();
@@ -34,9 +35,16 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
         $scope.searchQuery = '';
         $scope.searchQuantity = '';
         $scope.searchStore = '';
+        $scope.InventoryItems();
     };
 
 
+
+    $scope.InventoryItems = function () {
+
+        inventoryFactory.GetInventoryItems($scope.selectedQuote.Lookup).then(function () {
+        }, function (e) { alert("Error in quote home - loading inventory"); });
+    };
 
 
     $scope.onDrop = function($event, $data,room) {
@@ -81,7 +89,7 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
         inventoryFactory.UpdateInventory(quoteid, roomStr).then(function (updatesJson) {
 
             //$scope.$parent.RefreshStops();
-            $scope.Init();
+            //$scope.Init();
             //alert(updatesJson);
             //$scope.ClearRoomBox(); - undo comment to clear dialog
         }, function(e) {
@@ -125,7 +133,7 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
                         inventoryFactory.UpdateInventory(quoteid, roomStr).then(function (updatesJson) {
 
                             //$scope.$parent.RefreshStops();
-                            $scope.Init();
+                            //$scope.Init();
                             //alert(updatesJson);
                             //$scope.ClearRoomBox(); - undo comment to clear dialog
                         }, function (e) {
@@ -177,7 +185,7 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
         inventoryFactory.UpdateInventory(quoteid, roomStr).then(function(updatesJson) {
 
             $scope.$parent.RefreshStops();
-            //$scope.Init();
+            $scope.Init();
             //alert(updatesJson);
             //$scope.ClearRoomBox(); - undo comment to clear dialog
         });
@@ -185,30 +193,33 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
 
     };
 
+   
+  
+    $scope.GetItemSuggestions = function() {
 
   
 
-    $scope.GetItemSuggestions = function() {
-
+        
         $element.find('#searchtxt').autocomplete({
             source: inventoryFactory.searchItems,
-            select: function(originalEvent,val) {
+            select: function (originalEvent,val) {
                 for (var i = 0; i < inventoryFactory.searchItems.length; i++) {
                     if (val.item.value == inventoryFactory.InventoryList[i].Name) {
                         $scope.selectedItem = inventoryFactory.InventoryList[i];
-                        //$scope.ItemAdditionalOptions();
                         $scope.searchQuery = val.item.value;
+                        $scope.ItemAdditionalOptions();
                         $timeout(function() {
                             $scope.$apply();
 
                         });
 
-                        $('#additionalQuestions-modal').modal('show');
-                        break;
+                        //$element.find('#additionalQuestions-modal').modal('show');
+                        return false;
+                        
                     }
                 }
 
-                return false;
+               
             }
            
         });
@@ -270,37 +281,50 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
 
     $scope.ItemAdditionalOptions = function() {
 
-        //$element.find('#options').empty();
-        //for (var i = 0; i < $scope.selectedItem.AdditionalQuestions.length; i++) {
-        //    var questionId = 'divQuestion_' + i;
-        //    var questionDiv = $('<div style="width:500px" id="' + questionId + '"> </div>');
-        //    questionDiv.appendTo($element.find('#options'));
-        //    var questionName = $('<label style="float:left;width:200px" for="' + i + '" >' + $scope.selectedItem.AdditionalQuestions[i].QuestionText + ': </label>');
-        //    questionName.appendTo($element.find('#' + questionId));
-        //    if ($scope.selectedItem.AdditionalQuestions[i].Options.length>0) {
+
+       
+
+        if ($scope.selectedItem.AdditionalQuestions.length > 0) {
+        $element.find('#options').empty();
+        for (var i = 0; i < $scope.selectedItem.AdditionalQuestions.length; i++) {
+            var questionId = 'divQuestion_' + i;
+            var questionDiv = $('<div style="width:500px" id="' + questionId + '"> </div>');
+            questionDiv.appendTo($element.find('#options'));
+            var questionName = $('<label style="float:left;width:200px" for="' + i + '" >' + $scope.selectedItem.AdditionalQuestions[i].QuestionText + ': </label>');
+            questionName.appendTo($element.find('#' + questionId));
+            if ($scope.selectedItem.AdditionalQuestions[i].Options.length>0) {
                 
-        //        //list 
-        //        var list = $('<select>').appendTo('#' + questionId);
-        //        for (var j = 0; j < $scope.selectedItem.AdditionalQuestions[i].Options.length; j++) {
-        //            list.append($("<option>").attr('value', j).text($scope.selectedItem.AdditionalQuestions[i].Options[j].Option));
+                //list 
+                var list = $('<select>').appendTo('#' + questionId);
+                for (var j = 0; j < $scope.selectedItem.AdditionalQuestions[i].Options.length; j++) {
+                    list.append($("<option>").attr('value', j).text($scope.selectedItem.AdditionalQuestions[i].Options[j].Option));
 
-        //        }
-        //    } else {
-        //        //check box
-        //        var radioBtn = $('<input type="checkbox" name="check' + i + '" id="check' + i + '" />');
-        //        radioBtn.appendTo($element.find('#' + questionId));
-        //    }
-        //    var newLine= $('<br/>');
-        //    newLine.appendTo($element.find('#options'));
-        //}
-
-        $('#additionalQuestions-modal').modal('show');
+                }
+            } else {
+                //check box
+                var radioBtn = $('<input type="checkbox" name="check' + i + '" id="check' + i + '" />');
+                radioBtn.appendTo($element.find('#' + questionId));
+            }
+            var newLine= $('<br/>');
+            newLine.appendTo($element.find('#options'));
+           
+        }
+        
+        //$element.find('#additionalQuestions-modal').removeClass('hide');
+            //$element.find('#additionalQuestions-modal').addClass('in');
+                $window.OpenDialogT('additionalQuestions-modal');
+        }
+        
+        //$('#additionalQuestions-modal').modal('show');
 
 
     };
 
-    $scope.SaveItemOptions = function() {
+    $scope.SaveItemOptions = function () {
 
+        //$element.find('#additionalQuestions-modal').removeClass('in');
+        //$element.find('#additionalQuestions-modal').addClass('hide');
+        $window.CloseDialogT('additionalQuestions-modal');
 
         for (var i = 0; i < $scope.selectedItem.AdditionalQuestions.length; i++) {
 
@@ -360,7 +384,7 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
                 inventoryFactory.UpdateInventory(quoteid, roomStr).then(function (updatesJson) {
 
                     //$scope.$parent.RefreshStops();
-                    $scope.Init();
+                   // $scope.Init();
                     //alert(updatesJson);
                     //$scope.ClearRoomBox(); - undo comment to clear dialog
                 }, function (e) {

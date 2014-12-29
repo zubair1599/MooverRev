@@ -67,8 +67,8 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory, $scope, $window
                 $scope.selectedQuote = data.quote;
                 
                 //$scope.GetFranchise();
-                //$scope.SetAllRooms();
-                //$scope.InventoryItems();
+                $scope.SetAllRooms();
+               
                
             });
         } else if (typeof quote !== 'undefined') {
@@ -76,7 +76,7 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory, $scope, $window
             $scope.UpdateQuicklook();
             $scope.GetFranchise();
             $scope.SetAllRooms();
-            $scope.InventoryItems();
+           
             //$scope.SetDistanceTimes();
         }              
     };
@@ -169,11 +169,7 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory, $scope, $window
     };
 
 
-    $scope.InventoryItems = function () {
-
-        inventoryFactory.GetInventoryItems($scope.selectedQuote.Lookup).then(function () {
-        }, function(e) { alert("Error in quote home - loading inventory"); });
-    };
+   
 
 
 

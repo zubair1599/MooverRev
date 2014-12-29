@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 html {
   font-family: sans-serif;
@@ -6792,4 +6792,9 @@ button.close {
   .hidden-print {
     display: none !important;
   }
+}
+.center {
+    margin-left: 0;
+    margin-right: 0;
+    float: none;
 }
