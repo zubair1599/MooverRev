@@ -24,29 +24,8 @@
             font-weight: bold;
             background-color: lightgrey;
         }
-
-  
 </style>
-<script>
 
-    function Open() {
-        //$('#modal-room').modal('show');
-        //$('#modal-room').addClass('md-effect-14');
-        $('#modal-room').addClass('md-show');
-        $('#modal-room').removeClass('hide');
-        
-        //alert();
-    };
-
-    function Close() {
-        //$('#modal-room').modal('show');
-
-        $('#modal-room').removeClass('md-show');
-        $('#modal-room').addClass('hide');
-        //alert();
-    };
-
-</script>
 <div ng-controller="manageInventory">
     <div class="row">
         <div class="col-lg-12">
@@ -56,14 +35,14 @@
                 <li class="active"><span>Inventory</span></li>
             </ol>
             <div class="pull-left">
-                <h1>Manage Inventory</h1>    
+                <h1>Manage Inventory</h1>
             </div>
             <div class="pull-right">
                 <input type="button" class="btn btn-primary" value="Add Room" data-modal="modal-room" onclick="OpenDialogT('modal-room');" ng-click="ClearRoomBox()" />
 
             </div>
-            
-            
+
+
         </div>
     </div>
 
@@ -75,7 +54,7 @@
             </div>
 
 
-                
+
 
             <div class="col-lg-3">
 
@@ -87,18 +66,18 @@
 
 
 
-            
-        <div class="col-lg-4" style="margin-left: 0;padding-left: 0">
-            <input type="button" class="btn btn-primary" value="Add Item" ng-click="AddItem()" />
-            <input type="button" class="btn btn-default" value="Remove All" />
-            <input type="button" class="btn btn-default" value="Undo / Redo" />
 
-        </div>
+            <div class="col-lg-4" style="margin-left: 0;padding-left: 0">
+                <input type="button" class="btn btn-primary" value="Add Item" ng-click="AddItem()" />
+                <input type="button" class="btn btn-default" value="Remove All" />
+                <input type="button" class="btn btn-default" value="Undo / Redo" />
+
+            </div>
 
         </div>
     </div>
-    
-    
+
+
     <div class="row">
         <div class="col-lg-12">
 
@@ -129,13 +108,30 @@
                 </div>
             </div>
             <div class="col-lg-8">
-               
-                        <div class="btn btn-default btn-draggable" ui-draggable="true" drag="itemrel" ng-repeat="itemrel in selectedRoom.Items">
-                            {{itemrel.Item.Name}} ({{itemrel.Count}})
-                            <i class="icon-remove" ng-click="RemoveItem(itemrel)"></i>
-                       
+
+                <!--<div class="btn btn-default btn-draggable" ui-draggable="true" drag="itemrel" ng-repeat="itemrel in selectedRoom.Items">
+                        ({{itemrel.Count}})
+                        <i class="icon-remove" ng-click="RemoveItem(itemrel)"></i>
+
+
+
+
+                    </div>-->
+
+                <div class="dd-item dd-item-list col-lg-4" data-id="14" ui-draggable="true" drag="itemrel" ng-repeat="itemrel in selectedRoom.Items">
+                    <div class="dd-handle-list" style="top:5px"><i class="fa fa-bars"></i></div>
+                    <div class="dd-handle">
+                        {{itemrel.Item.Name}}
+                        <div class="nested-links">
+                            <span class="badge badge-danger">{{itemrel.Count}}</span>
+                            <i class="glyphicon glyphicon-remove" ng-click="RemoveItem(itemrel)"></i>
+
+                        </div>
+                    </div>
                 </div>
             </div>
+
+
         </div>
 
     </div>
@@ -228,9 +224,9 @@
                 <button type="button" class="btn btn-primary" ng-click="SaveItemOptions()" onclick="CloseDialogT('additionalQuestions-modal');">Save changes</button>
                 <button type="button" class="btn btn-danger" onclick="CloseDialogT('additionalQuestions-modal');">Cancel</button>
             </div>
-            
+
         </div>
-        </div>
+    </div>
     <div class="md-overlay"></div>
 </div>
 
