@@ -5,6 +5,7 @@ function manageContact(quoteFactory, $scope, $element, $window, $timeout) {
 
     $scope.searchQuery = '';
     $scope.searchResults = [];
+    $scope.selectedCustomer = '';
     $scope.GetCustomerFromQuote = function (lookup) {
         quoteFactory.GetCustomerFromQuote(lookup).then(function (customerData) {
             $scope.selectedCustomer = customerData;
@@ -27,9 +28,7 @@ function manageContact(quoteFactory, $scope, $element, $window, $timeout) {
 
         quoteFactory.GetCustomerShortInformation(id).then(function (json) {
 
-            $scope.$parent.SetCustomer(json, id);
-
-
+            $scope.selectedCustomer = json;
 
         }, function (error) {
             alert("Error : GetCustomerShortInformation");
@@ -66,7 +65,9 @@ function manageContact(quoteFactory, $scope, $element, $window, $timeout) {
 
     };
     $scope.Init = function () {
-        $scope.GetCustomerFromQuote($scope.$parent.selectedQuote.Lookup);
+        //if ($scope.$parent.selectedQuote.Lookup !== undefined) {
+        //    $scope.GetCustomerFromQuote($scope.$parent.selectedQuote.Lookup);
+        //}
     }
     $scope.Init();
 };

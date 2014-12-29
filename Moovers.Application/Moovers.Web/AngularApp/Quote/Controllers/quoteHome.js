@@ -9,6 +9,7 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory, $scope, $window
 
     $scope.selectedQuote = {};
     $scope.selectedQuote.FranchiseLogo = '/static/img/logos/none.png';
+
     $scope.QuoteQuickLook = '';
     
     $scope.franchiseAddress = '';
@@ -52,8 +53,12 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory, $scope, $window
     $scope.Init = function (quote) {
 
         var param = document.URL.substring(document.URL.indexOf('?') + 1);
+       
         var lookup = param.substring(param.indexOf('=') + 1);
-
+        if (param.indexOf('NewQuote') > -1) {
+            $scope.currentTab = -1;
+            
+        }
         if (typeof quote == 'undefined' && param.indexOf("lookup=") > -1 && lookup != undefined) {
 
             $scope.selectedQuote.Lookup = lookup;
