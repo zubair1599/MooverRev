@@ -54,7 +54,7 @@
                             </header>
                             <div class="main-box-body clearfix">
                                 <div ng-repeat="crew in scheduleForQuote.Crews" ng-hide="(crew > scheduleForQuote.MaxCrewToDisplay) &&(scheduleForQuote.Crews[$index].Schedules.length>0)&&(scheduleForQuote.Crews[$index].CrewDetail.ID!=null)">
-                                    <table class="table table-striped">
+                                    <table class="table user-list table-striped">
                                         <thead>
                                             <tr>
                                                 <th style="width: 350px">
@@ -124,7 +124,7 @@
 
                                                         <a href="#" ng-show="scheduleForQuote.Quote.QuoteID!=null" class="btn btn-mini btn-assign noprint no-mobile">Assign Staff</a>
                                                         
-                                                        <a style="font-style: italic;" ng-click="OpenSchedule($index)" onclick="$('#modal-14').addClass('md-show')">Schedule Job</a>
+                                                        <a style="font-style: italic;" ng-click="OpenSchedule($index)" onclick="OpenDialogT('modal-14')">Schedule Job</a>
                                                         
                                                     </span>
 
@@ -133,14 +133,14 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr ng-repeat="sc in scheduleForQuote.Crews[$index].Schedules">
+                                            <tr ng-repeat="sc in scheduleForQuote.Crews[$index].Schedules" >
 
-                                                <td>{{sc.CustomerName }}-({{sc.QuoteNumber}})</td>
+                                                <td class="success">{{sc.CustomerName }}-({{sc.QuoteNumber}})</td>
                                                 <td>
                                                     {{sc.StartTime}} - {{sc.EndTime}}
                                                 </td>
                                                 <td style="text-align: center">{{sc.PricePerTruck | currency : '$' : 2}}</td>
-                                                <td style="width: 200px">{{sc.Origin}} <br />{{sc.Destination}}</td>
+                                                <td class="danger" style="width: 200px">{{sc.Origin}} <br />{{sc.Destination}}</td>
                                                 <td></td>
 
                                             </tr>
@@ -226,7 +226,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" ng-click="ScheduleQuote()" onclick="$('#modal-14').removeClass('md-show'); $('#modal-14').addClass('md-hide');">Save</button>
+                    <button type="button" class="btn btn-primary" ng-click="ScheduleQuote()" onclick="CloseDialogT('modal-14')">Save</button>
                 </div>
             </div>
         </div>
@@ -236,5 +236,5 @@
 
 
 
-
+    <div class="md-overlay"></div>
 </div>

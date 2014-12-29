@@ -19,6 +19,7 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
     $scope.BuildingType = ['Residential', 'Commercial', 'Government'];
     $scope.Buildings = [];
     $scope.BuildingsCodes = [];
+    $scope.loadFirstTime = true;
     
     
     
@@ -47,6 +48,12 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
                 $scope.statesCodes = $scope.statesCodes.concat(fb);
                 $scope.states = $scope.states.concat(index);
             });
+
+
+
+            var uri = encodeURI($scope.selectedStop.address.replace(/[#?$+,\/:&;=@%{}|\\\[\]\^~]/g, ""));
+            var url = "http://maps.googleapis.com/maps/api/streetview?size=400x300&location=" + uri + "&sensor=false";
+            $element.find('#mapImg').attr("src", url);
 
 
             $timeout(function () {
@@ -205,7 +212,7 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
                 quoteFactory.servicePromise.promise.then(function (verifiedAddress) {
 
 
-
+                    $scope.loadFirstTime = false;
 
 
 
@@ -223,7 +230,7 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
 
                             var id = "rdo" + i;
 
-                            var radioBtn = $('<input style="float:left" type="radio" data-index="' + i + '" name="' + id + '" />');
+                            var radioBtn = $('<input style="float:left" type="radio" data-index="' + i + '" name="address" id="' + id + '" />');
                             var divs = $('<label for="' + id + '" >' + $scope.verifiedAddress[i].displayString() + '</label>');
 
 
@@ -254,7 +261,7 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
 
                         var id = "rdo" + i;
 
-                        var radioBtn = $('<input style="float:left" type="radio" name="' + id + '" />');
+                        var radioBtn = $('<input style="float:left" type="radio" name="address" id="' + id + '" />');
                         var divs = $('<label for="' + id + '" >' + vals.street1 + " , " + vals.city + " , " + vals.state + " , " + vals.zip + '</label>');
 
                         radioBtn.appendTo($element.find(mainDiv));
@@ -289,6 +296,8 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
 
     $scope.FindAddress = function () {
 
+        $scope.loadFirstTime = false;
+
         var address = new Object();
         address.street1 = $scope.selectedStop.street1;
         address.street2 = $scope.selectedStop.street2;
@@ -314,6 +323,8 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
 
             if (verifiedAddress.length > 0) {
 
+                $scope.loadFirstTime = false;
+
                 $scope.verifiedAddress = verifiedAddress;
                 // alert();
 
@@ -326,7 +337,7 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
 
                     var id = "rdo" + i;
 
-                    var radioBtn = $('<input style="float:left" type="radio" data-index="' + i + '" name="' + id + '" />');
+                    var radioBtn = $('<input style="float:left" type="radio" data-index="' + i + '" name="address" id="' + id + '" />');
                     var divs = $('<label for="' + id + '" >' + $scope.verifiedAddress[i].displayString() + '</label>');
 
 
@@ -357,7 +368,7 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
 
                 var id = "rdo" + i;
 
-                var radioBtn = $('<input style="float:left" type="radio" name="' + id + '" />');
+                var radioBtn = $('<input style="float:left" type="radio" name="address" id="' + id + '" />');
                 var divs = $('<label for="' + id + '" >' + vals.street1 + " , " + vals.city + " , " + vals.state + " , " + vals.zip + '</label>');
 
                 radioBtn.appendTo($element.find(mainDiv));
@@ -373,35 +384,48 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
 
     };
 
+    $scope.ShowMap = function(address) {};
+
 
     $scope.SetPreviousSelectedStop = function () {
 
 
-        $element.find('#previouslySelectedResult').empty();
-        var mainDiv = $('<div style="width:100%"></div>');
-        mainDiv.appendTo($element.find('#previouslySelectedResult'));
+        if ($scope.selectedStop.address) {
+            $element.find('#previouslySelectedResult').empty();
+            var mainDiv = $('<div style="width:100%"></div>');
+            mainDiv.appendTo($element.find('#previouslySelectedResult'));
 
-        var id = "rdo1";
+            var id = "rdo1";
+            var radioBtn = null;
+            if ($scope.loadFirstTime == true) {
 
-        var radioBtn = $('<input style="float:left" type="radio" name="' + id + '" />');
-        var divs = $('<label for="' + id + '" >' + $scope.selectedStop.address + '</label>');
-        radioBtn.click(function () {
+                radioBtn = $('<input style="float:left" type="radio" name="address" id="' + id + '" checked/>');
+            }
+            else {
+                radioBtn = $('<input style="float:left" type="radio" name="address" id="' + id + '" />');
+            }
 
-            var ty = $scope.selectedStop.address.split(',');
-            $scope.selectedStop.street1 = ty[0];
+            var divs = $('<label for="' + id + '" >' + $scope.selectedStop.address + '</label>');
+            radioBtn.click(function () {
 
-
-            $scope.selectedStop.city = ty[1];
-
-            var tt = ty[2].split(' ');
-            $scope.selectedStop.state = tt[1];
-            $scope.selectedStop.zip = tt[2];
-            $scope.$apply();
-        });
+                var ty = $scope.selectedStop.address.split(',');
+                $scope.selectedStop.street1 = ty[0];
 
 
-        radioBtn.appendTo($element.find(mainDiv));
-        divs.appendTo($element.find(mainDiv));
+                $scope.selectedStop.city = ty[1];
+
+                var tt = ty[2].split(' ');
+                $scope.selectedStop.state = tt[1];
+                $scope.selectedStop.zip = tt[2];
+                $scope.$apply();
+            });
+
+
+            radioBtn.appendTo($element.find(mainDiv));
+            divs.appendTo($element.find(mainDiv));
+        }
+
+        
 
     };
 

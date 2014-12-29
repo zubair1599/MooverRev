@@ -38,13 +38,13 @@
                             <div class="panel-heading">
                                 <h4 class="panel-title">
 
-                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" >
+                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion">
                                         {{stop.street1}} {{stop.street2}} {{stop.city}} {{stop.state}} {{stop.zip}} - {{stop.distanceFromPrevious}} Miles ({{stop.timeFromPrevious}} Minutes)
                                     </a>
 
                                 </h4>
                             </div>
-                            <div id="collapseOne" class="panel-collapse collapse in" >
+                            <div id="collapseOne" class="panel-collapse collapse in">
                                 <div class="pull-right">
                                     <img src="../../static/img/edit.png" ng-click="ScopeDialogInitialize(stop.id)" style="width: 20px;margin-right: 30px;margin-top: 10px" class="pull-right" />
                                 </div>
@@ -145,10 +145,10 @@
                         <header class="main-box-header clearfix">
                             <h2>Edit Stop</h2>
                             <div class="pull-right">
-                                <button type="button" class="btn btn-default" ng-click="Clear()">Back</button>    
-                                <button type="button" class="btn btn-danger" ng-show="selectedStop.id!=null" ng-click="DeleteStop()">Delete Stop</button>   
+                                <button type="button" class="btn btn-default" ng-click="Clear()">Back</button>
+                                <button type="button" class="btn btn-danger" ng-show="selectedStop.id!=null" ng-click="DeleteStop()">Delete Stop</button>
                             </div>
-                            
+
                         </header>
 
                         <div class="col-lg-12">
@@ -215,28 +215,23 @@
 
                                     </div>
                                 </div>
+                                <button type="button" class="btn btn-danger" ng-show="selectedStop.id==null" ng-click="showConditions=true">Next</button>
                             </div>
 
                         </div>
-                       
+
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" ng-show="selectedStop.id!=null || showConditions==true">
             <div class="col-lg-12">
                 <div class="main-box clearfix">
                     <div class="main-box-body clearfix">
                         <header class="main-box-header clearfix">
                             <h2>Conditions</h2>
                         </header>
-
-
-
-
-
-
 
                         <div class="pull-left col-lg-5">
 

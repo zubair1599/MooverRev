@@ -47,6 +47,28 @@
 
 
         };
+
+        function OpenDialogT(id) {
+
+            $('#' + id).removeClass('md-hide');
+            $('#' + id).addClass('md-show');
+            $('.md-overlay').css('visibility', 'visible');
+            $('.md-overlay').css('opacity', '1');
+
+        };
+
+        function CloseDialogT(id) {
+            
+            
+            $('#' + id).addClass('md-hide');
+            $('.md-overlay').css('visibility', 'hidden');
+            $('.md-overlay').css('opacity', '0');
+            $('#' + id).removeClass('md-show');
+
+
+        };
+
+
     </script>
 </head>
 <body class="pace-done theme-red">
