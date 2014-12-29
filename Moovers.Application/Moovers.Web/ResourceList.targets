@@ -14,10 +14,11 @@
 	
   
     
+	
     
+   <CssFiles Include="$(ProjectDir)content/jquery-ui.custom_ZATIAL_SA_NEPOUZIVA.css" /> 
     
-    
-    
+    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery-ui.custom.min.js" />
     
    <CssFiles Include="$(ProjectDir)content/bootstrap.min.css" />
     <CssFiles Include="$(ProjectDir)content/font-awesome.css" />
@@ -76,7 +77,7 @@
     <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery.nestable.js" />
     <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery.hotkeys.js" />
     <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/bootstrap-wysiwyg.js" />
-    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery-ui.custom.min.js" />
+    
     <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/fullcalendar.min.js" />
     <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery-jvectormap-1.2.2.min.js" />
     <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery-jvectormap-world-merc-en.js" />

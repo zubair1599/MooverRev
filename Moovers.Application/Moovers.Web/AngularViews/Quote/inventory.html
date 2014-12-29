@@ -109,7 +109,7 @@
                     </header>
                     <div class="main-box-body clearfix">
                         <ul class="widget-products">
-                            <li ng-repeat="room in $parent.AllRooms" ui-on-drop="onDrop($event,$data,room)" ui-draggable="false">
+                            <li ng-class="room===selectedRoom?'active':''" ng-repeat="room in $parent.AllRooms" ui-on-drop="onDrop($event,$data,room)" ui-draggable="false">
                                 <a ng-click="SetSelectedRoom(room)">
 
 

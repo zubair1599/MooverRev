@@ -4041,7 +4041,7 @@ input[type="radio"] {
   .widget-products li {
     border-bottom: 2px solid #ebebeb; }
     /* line 10, /Applications/MAMP/htdocs/ikoma3/scss/theme/imports/widgets/recent_products */
-    .widget-products li > a {
+    .widget-products li > a  {
       height: 88px;
       display: block;
       width: 100%;
@@ -4054,7 +4054,7 @@ input[type="radio"] {
           height: auto;
           padding-bottom: 10px; } }
       /* line 24, /Applications/MAMP/htdocs/ikoma3/scss/theme/imports/widgets/recent_products */
-      .widget-products li > a:hover {
+      .widget-products li > a:hover ,  .widget-products .active {
         color: #212121;
         text-decoration: none;
         background-color: #f6f6f6; }
