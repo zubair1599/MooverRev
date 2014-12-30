@@ -142,6 +142,7 @@
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/quoteHome.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/manageContact.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/dashboard.js" />
+    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/manageOverview.js" />
     
 	
     
