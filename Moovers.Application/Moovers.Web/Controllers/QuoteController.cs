@@ -321,7 +321,7 @@ namespace MooversCRM.Controllers
             string lookup = repo.Get(quote.QuoteID).Lookup;
             string redirectUrl = Url.Action("Stops", new { id = lookup });
 
-            return Json(new { quote = quote.ToJsonObject(true) }, JsonRequestBehavior.AllowGet);
+            return Json(new { lookup = lookup }, JsonRequestBehavior.AllowGet);
 
           
         }
