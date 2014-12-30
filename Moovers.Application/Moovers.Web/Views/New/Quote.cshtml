@@ -6,24 +6,25 @@
 
 <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+
 <div id="page-wrapper" ng-controller="quoteHome" class="container">
     <div class="row">
-        
+
         <div id="nav-col">
             <section id="col-left" class="col-left-nano">
                 <div id="col-left-inner" class="col-left-nano-content">
                     <div id="user-left-box" class="clearfix hidden-sm hidden-xs dropdown profile2-dropdown">
                         <img alt="" src="{{selectedQuote.FranchiseLogo}}" style="border-radius:0px">
-                        
+
                         <div class="user-box">
                             <span class="name" style="font-size:2em;">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     {{selectedQuote.Lookup}}
-                                   
+
                                 </a>
-                                
+
                             </span>
-                            
+
                         </div>
                     </div>
                     <span style="margin-left:25px; font-size:1.5em; color:whitesmoke" ng-bind="selectedQuote.AccountName"></span>
@@ -32,7 +33,7 @@
                             <li class="nav-header nav-header-first hidden-sm hidden-xs">
                                 Navigation
                             </li>
-                          
+
                             <li ng-class="{'active': currentTab==0}">
                                 <a href="#/contacts" ng-click="currentTab=0">
                                     <i class="fa fa-dashboard"></i>
@@ -43,25 +44,39 @@
                             <li ng-class="{active: currentTab==1}">
                                 <a href="#/stops" ng-click="currentTab=1">
                                     <i class="fa fa-dashboard"></i>
-                                    <span>Stops {{selectedQuote.Stops.length}}</span>
+                                    <span>Stops</span>
                                     <span class="label label-primary label-circle pull-right">{{selectedQuote.Stops.length}}</span>
                                 </a>
                             </li>
-                            <li  ng-class="{active: currentTab==2}" ng-click="currentTab=2">
+                            <li ng-class="{active: currentTab==2}" ng-click="currentTab=2">
                                 <a href="#/inventory">
                                     <i class="fa fa-dashboard"></i>
                                     <span>Inventory</span>
-                                    <span class="label label-primary label-circle pull-right">28</span>
+                                    @*<span class="label label-primary label-circle pull-right">28</span>*@
                                 </a>
                             </li>
                             <li ng-class="{active: currentTab==3}" ng-click="currentTab=3">
-                                <a href="index.html">
+                                <a href="#/schedule">
                                     <i class="fa fa-dashboard"></i>
                                     <span>Schedule</span>
-                                    <span class="label label-primary label-circle pull-right">28</span>
+                                    @*<span class="label label-primary label-circle pull-right">28</span>*@
                                 </a>
                             </li>
-                           
+                            <li ng-class="{active: currentTab==4}" ng-click="currentTab=4">
+                                <a href="#/pricing">
+                                    <i class="fa fa-dashboard"></i>
+                                    <span>Pricing</span>
+                                    @*<span class="label label-primary label-circle pull-right">28</span>*@
+                                </a>
+                            </li>
+                            <li ng-class="{active: currentTab==5}" ng-click="currentTab=5">
+                                <a href="#/overview">
+                                    <i class="fa fa-dashboard"></i>
+                                    <span>Overview</span>
+                                    @*<span class="label label-primary label-circle pull-right">28</span>*@
+                                </a>
+                            </li>
+
                         </ul>
                     </div>
                 </div>
@@ -71,6 +86,7 @@
 
 
         <div id="content-wrapper">
+
             <div class="row">
                 <div class="col-lg-12">
                     <div class="row ng-scope" style="background:white;">
@@ -87,11 +103,11 @@
                                         <li>
                                             Base : {{QuoteQuickLook.BaseMiles}} , Move : {{QuoteQuickLook.MoveMiles}}
                                         </li>
-                                       
+
                                     </ul>
                                 </div>
                             </div>
-                          
+
                         </div>
                         <div class="col-md-2 col-sm-4 col-xs-12 pricing-package simple" style="padding-top:5px; padding-bottom:5px">
                             <div class="pricing-package-inner">
@@ -155,26 +171,20 @@
                                 <div class="package-header">
                                     <h3>Duration</h3>
                                 </div>
-                                <div class="package-content">
-                                    <div class="package-price" ng-if="QuoteQuickLook.IsHourly===true">
-                                        {{ QuoteQuickLook.CustomerTimeEstimate }} {{ QuoteQuickLook.CustomerTimeEstimate > 1 ? "Hours" : "Hour" }}
+                                <div class="package-content" >
+                                    <div class="package-price">
+                                        <span ng-if="QuoteQuickLook.IsHourly===true">{{ QuoteQuickLook.CustomerTimeEstimate }} {{ QuoteQuickLook.CustomerTimeEstimate > 1 ? "Hours" : "Hour" }}</span>
+                                        <span ng-if="QuoteQuickLook.IsHourly===false">{{ QuoteQuickLook.TotalDuration }}</span>
                                     </div>
-                                    <ul class="package-top-features" ng-if="QuoteQuickLook.IsHourly===true">
+                                    <ul class="package-top-features">
                                         <li>
-                                            Drive :{{ QuoteQuickLook.TotalDuration }}
-                                        </li>
-
-                                    </ul>
-                                    <div class="package-price" ng-if="QuoteQuickLook.IsHourly===false">
-                                        {{ QuoteQuickLook.TotalDuration }}
-                                    </div>
-                                    <ul class="package-top-features" ng-if="QuoteQuickLook.IsHourly===false">
-                                        <li>
-                                            Labour  :{{ QuoteQuickLook.LaborDuration }} Drive  :{{ QuoteQuickLook.DriveDuration }}
+                                            Drive : <span ng-if="QuoteQuickLook.IsHourly===true">  {{ QuoteQuickLook.TotalDuration }}</span>
+                                            <span ng-if="QuoteQuickLook.IsHourly===false">  :{{ QuoteQuickLook.DriveDuration }}  Labour  :{{ QuoteQuickLook.LaborDuration }} </span>
                                         </li>
 
                                     </ul>
                                 </div>
+                               
                             </div>
 
                         </div>
@@ -198,7 +208,7 @@
                                     </div>
                                     <ul class="package-top-features" ng-if="QuoteQuickLook.FinalPostedPrice==null">
                                         <li>
-                                            Original:{{ QuoteQuickLook.OriginalPrice | currency }} {{ QuoteQuickLook.Discount }}% 
+                                            Original:{{ QuoteQuickLook.OriginalPrice | currency }} {{ QuoteQuickLook.Discount }}%
                                         </li>
 
                                     </ul>
@@ -206,7 +216,7 @@
                             </div>
 
                         </div>
-   
+
                     </div>
                     <div class="slide-main-container" style="margin-top:15px;">
                         <div ng-view class="slide-main-animation"></div>
@@ -214,7 +224,7 @@
 
                 </div>
             </div>
-
+          
             <div ng-include='"views/common/footer.html"'></div>
         </div>
     </div>
@@ -223,7 +233,7 @@
 
 
 
-  
+
 
 
 </div>

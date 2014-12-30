@@ -1,375 +1,372 @@
 ﻿
-<div id="quote-coordinators" class="container-transparent" ng-controller="managePricing">
-    <span class="title title2">
-        Quote Pricing <span class="subtitle">..</span>
-    </span>
-    <div class="quote-contacts">
 
-
-
-
-        <div class="contact">
-
-
-
-
-
-            <div class="primary-contact">
-                Account infor
+<div ng-controller="managePricing">
+    <div class="row">
+        <div class="col-lg-12">
+            <ol class="breadcrumb">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Quote</a></li>
+                <li class="active"><span>Pricing</span></li>
+            </ol>
+            <div class="pull-left">
+                <h1>Manage Pricing</h1>
             </div>
-            <div class="contact-details">
 
 
 
-                <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="headingTwo">
-                        <h4 class="panel-title">
-                            <a class="collapsed" style="font-size: 14px;" data-toggle="collapse" data-parent="#accordion" data-target="#Guranteed" aria-expanded="false" aria-controls="collapseTwo">
-                                Guranteed
-                            </a>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
 
 
+                    <h2 class="heading" style="font-weight: bold;">Guranteed Price</h2>
+                </header>
+                <div class="col-lg-12">
 
-                        </h4>
-                    </div>
-                    <div id="Guranteed" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
-                        <div class="panel-body">
-                            <table class="table">
-                                <tr>
-                                    <td>
-                                        <h5>Numbers Of Trucks</h5>
-                                        <br />
-                                        <div class="pull-left">
-                                            <p>Minimum</p>
-                                            <p>Recommended</p>
-                                            <p>Scheduled</p>
-                                        </div>
-                                        <div class="pull-right">
-                                            <p ng-bind="PricingDetails.MinTrucks"></p>
-                                            <p ng-bind="PricingDetails.RecommendedTrucks"></p>
-                                            <select style="width: 100px" ng-model="PricingDetails.QuotePriceDetails.PricingTrucks">
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                            </select>
-                                        </div>
+                    <div id="invoice-companies" class="row">
+                        <div class="col-sm-4 invoice-box">
 
-                                    </td>
-                                    <td>
-                                        <h5>Crew Size</h5>
-                                        <br />
-                                        <div class="pull-left">
-                                            <p>Minimum</p>
-                                            <p>Recommended</p>
-                                            <br />
-                                            <br />
-                                        </div>
-                                        <div class="pull-right">
-                                            <p ng-bind="PricingDetails.MinCrew"></p>
-                                            <p ng-bind="PricingDetails.RecommendedCrew"></p>
-                                            <br />
-                                            <br />
-                                        </div>
-
-                                    </td>
-                                    <td>
-                                        <br />
-
-                                        <div class="pull-left">
-                                            <h5>Estimated Of Time</h5>
-                                            <h5>Guaranteed Price</h5>
-                                        </div>
-                                        <div class="pull-right">
-                                            <p ng-bind="PricingDetails.QuotePriceDetails.TotalTime"></p>
-                                            <p ng-bind="PricingDetails.QuotePriceDetails.GuaranteedPrice"></p>
-
-                                        </div>
-
-                                    </td>
-                                </tr>
-
-                            </table>
-                            <div class="panel panel-default">
-
-                                <div class="panel-body">
-                                    <div style="width: 100%;height: 250px">
-
-                                        <h5>Move Pricing</h5>
-                                        <div class="pull-left">
-                                            <p>Move Price</p>
-                                            <p>Discount Coupon / Voucher</p>
-                                            <span>Adjustment %</span><input type="text" ng-model="discountP" ng-blur="SetDiscountPriority('percent',discountP)" style="width: 50px" />
-                                            <p>Valuation Coverage</p>
-                                            <p>Total Move Cost</p>
-                                        </div>
-
-                                        <div class="pull-right">
-
-                                            <p ng-bind="PricingDetails.QuotePriceDetails.GuaranteedPrice | currency:$"></p>
-                                            <input type="text" style="width: 100px" /><br />
-                                            <input type="text" style="width: 100px" placeholder="$" ng-model="discountV" ng-blur="SetDiscountPriority('value',discountV)" /><br />
-                                            <select style="width: 200px" ng-model="valuationID" ng-change="ChangeValuation()">
-
-
-                                                <option ng-repeat="item in PricingDetails.ReplacementValuationOptionsGuaranteed" ng-selected="($index==1)" value="{{item.ValuationTypeID}}"> {{item.Name}} ({{item.DisplayCost}})</option>
-
-                                            </select><br />
-                                            <p ng-bind="PricingDetails.QuotePriceDetails.GuaranteeData.GuaranteedPriceDiscount | currency:$"></p>
-
-
-                                        </div>
-                                    </div>
-                                    <div style="height: 30px;">
-                                        <div class="pull-right" style="width: 100px;">
-
-                                            <button class="btn btn-primary" ng-click="SaveGuranteed()">Save</button>
-
-
-                                        </div>
-                                    </div>
-
+                            <div class="col-sm-12 invoice-company">
+                                
+                                <h4>No. Of Trucks</h4>
+                                <div class="pull-left ">
+                                   
+                                    <p>Minimum</p>
+                                    <p>Recommended</p>
+                                    <p>Scheduled</p>
+                                </div>
+                                <div class="pull-right">
+                                    <!--<p style="position: relative;top: -10px">
+                                            <i class="fa fa-truck"></i>
+                                        </p>-->
+                                    <p ng-bind="PricingDetails.MinTrucks"></p>
+                                    
+                                    <p ng-bind="PricingDetails.RecommendedTrucks"></p>
+                                    <select class="form-control" style="width: 70px" ng-model="PricingDetails.QuotePriceDetails.PricingTrucks">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                    </select>
                                 </div>
                             </div>
-
-                            <!--<div class="panel panel-default">
-
-                                    <div class="panel-body">
-                                        <div style="width: 100%;height: 200px">
-
-
-                                            <div class="pull-left">
-                                                <p>Packing Materials</p>
-                                                <p ng-show="PricingDetails.QuotePriceDetails.HasOldStorage && PricingDetails.QuotePriceDetails.HasTemporaryStorage">Storage</p>
-
-                                                <p>Monthly Storage (1 Vault )</p>
-
-                                                <p>Total Cost</p>
-
-                                            </div>
-
-                                            <div class="pull-right">
-
-                                                <input type="text" ng-bind="PricingDetails.QuotePriceDetails.ServiceCost" /><br/>
-                                                <p ng-show="PricingDetails.QuotePriceDetails.HasOldStorage && PricingDetails.QuotePriceDetails.HasTemporaryStorage" ng-bind="PricingDetails.QuotePriceDetails.StorageCost"></p>
-                                                <p ng-bind="PricingDetails.QuotePriceDetails.MonthlyStorageCost"></p>
-
-
-                                                <p ng-show="PricingDetails.QuotePriceDetails.FinalPostedPrice!=null" ng-bind="PricingDetails.QuotePriceDetails.FinalPostedPrice"></p>
-                                                <p ng-hide="PricingDetails.QuotePriceDetails.FinalPostedPrice!=null" ng-bind="PricingDetails.QuotePriceDetails.EstimatedPriceWithServices"></p>
-
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>-->
-
-
                         </div>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="headingTwo">
-                        <h4 class="panel-title">
-                            <a class="collapsed" style="font-size: 14px;" data-toggle="collapse" data-parent="#accordion" data-target="#hourly" aria-expanded="false" aria-controls="collapseTwo">
-                                Hourly
-                            </a>
-
-
-
-                        </h4>
-                    </div>
-                    <div id="hourly" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
-                        <div class="panel-body">
-                            <table class="table">
-                                <tr>
-                                    <td>
-                                        <h5>Numbers Of Trucks</h5>
-                                        <br />
-                                        <select ng-model="PricingDetails.QuotePriceDetails.Trucks" ng-change="HourlyTruckChange()">
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            
-
-
-                                        </select>
-                                       
-                                        <br/>
-                                        <br/>
-
-                                        <br />
-                                        <br />
-
-                                        <br />
-                                        <br />
-
-                                        <br />
-                                        
-                                    </td>
-                                    <td>
-                                        <h5>Crew Size</h5>
-                                        <br />
-                                        <select ng-model="PricingDetails.QuotePriceDetails.CrewSize" ng-change="HourlyCrewChange()">
-
-                                            <option ng-repeat="ar in crewArray" ng-selected="(ar==PricingDetails.QuotePriceDetails.CrewSize)" value="{{ar}}">{{ar}}</option>
-
-                                        </select>
-                                        <br />
-                                        <br/>
-                                        <div class="pull-left">
-                                            
-                                            <p>First Hour</p>
-                                            <p>Extra Hours</p>
-                                            <br />
-                                            <br />
-                                        </div>
-                                        <div class="pull-right">
-                                           
-
-
-                                            <p ng-bind="firstHour">$160</p>
-                                            <p ng-bind="extraHours">$85</p>
-                                            <br />
-                                            <br />
-                                        </div>
-
-                                    </td>
-                                    <td>
-                                        <h5>Customer's Estimated Of Time</h5>
-                                        <br />
-                                        <select ng-model="PricingDetails.QuotePriceDetails.HourlyData.CustomerTimeEstimate"  ng-change="HourlyEstimatedChange()">
-                                            <option value="1">1 Hour</option>
-                                            <option value="2">2 Hours</option>
-                                            <option value="3">3 Hours</option>
-                                            <option value="4">4 Hours</option>
-                                            <option value="5">5 Hours</option>
-                                            <option value="6">6 Hours</option>
-                                            <option value="7">7 Hours</option>
-                                            <option value="8">8 Hours</option>
-                                            <option value="9">9 Hours</option>
-                                            <option value="10">10 Hours</option>
-                                            <option value="11">11 Hours</option>
-                                            <option value="12">12 Hours</option>
-                                            <option value="13">13 Hours</option>
-                                            <option value="14">14 Hours</option>
-                                            <option value="15">15 Hours</option>
-                                            <option value="16">16 Hours</option>
-                                            <option value="17">17 Hours</option>
-                                            <option value="18">18 Hours</option>
-                                            <option value="19">19 Hours</option>
-                                            <option value="20">20 Hours</option>
-                                            <option value="21">21 Hours</option>
-                                            <option value="22">22 Hours</option>
-                                            <option value="23">23 Hours</option>
-                                            <option value="24">24 Hours</option>
-                                            <option value="25">25 Hours</option>
-                                        </select>
-                                        <br />
-                                        <br />
-
-                                        <div class="pull-left">
-
-                                            <p>Estimated Price</p>
-                                        </div>
-                                        <div class="pull-right">
-
-
-
-
-
-                                            <p ng-bind="estimatedHourlyPrice"></p>
-                                        </div>
-                                        <br />
-                                        <br/>
-                                        <br />
-                                        <br />
-                                        <br />
-                                        <br />
-                                    </td>
-                                </tr>
-
-                            </table>
-                            <div class="panel panel-default">
-
-                                <div class="panel-body">
-                                    <div style="width: 100%;height: 250px">
-
-                                        <h5>Pricing</h5>
-                                        <div class="pull-left">
-                                            <p>Move Price</p>
-                                            <br />
-                                            <p>Additional Destination Fee</p>
-
-                                            <p>Estimated Total</p>
-                                            <p>Total Move Cost</p>
-                                        </div>
-
-                                        <div class="pull-right">
-
-                                            <p ng-bind="firstHourLinePrice"></p>
-                                            <p ng-bind="hourlyLinePrice"></p>
-                                            <input ng-model="additionalFee" ng-change="CalculateHourly()" />
-                                            <p ng-bind="estimatedTotal"></p>
-                                        </div>
-                                    </div>
-                                    <div style="height: 30px;">
-                                        <div class="pull-right" style="width: 100px;">
-
-                                            <button class="btn btn-primary" ng-click="SaveHourly()">Save</button>
-
-
-                                        </div>
-                                    </div>
-
+                        <div class="col-sm-4 invoice-box">
+                            <div class="invoice-icon hidden-sm">
+                                <i class="fa fa-home"></i>
+                            </div>
+                            <div class="col-sm-8 invoice-company">
+                                <h4>Crew Size</h4>
+                                <div class="pull-left">
+                                    <p>Minimum</p>
+                                    <p>Recommended</p>
+                                    <br />
+                                    <br />
+                                </div>
+                                <div class="pull-right">
+                                    <p ng-bind="PricingDetails.MinCrew"></p>
+                                    <p ng-bind="PricingDetails.RecommendedCrew"></p>
+                                    <br />
+                                    <br />
                                 </div>
                             </div>
-
-                            <!--<div class="panel panel-default">
-
-                <div class="panel-body">
-                    <div style="width: 100%;height: 200px">
-
-
-                        <div class="pull-left">
-                            <p>Packing Materials</p>
-                            <p ng-show="PricingDetails.QuotePriceDetails.HasOldStorage && PricingDetails.QuotePriceDetails.HasTemporaryStorage">Storage</p>
-
-                            <p>Monthly Storage (1 Vault )</p>
-
-                            <p>Total Cost</p>
-
                         </div>
+                        <div class="col-sm-4 invoice-box invoice-box-dates">
+                            <div class="invoice-dates">
+                                <div class="invoice-number clearfix">
+                                    <strong>Estimated Of Time</strong>
 
-                        <div class="pull-right">
-
-                            <input type="text" ng-bind="PricingDetails.QuotePriceDetails.ServiceCost" /><br/>
-                            <p ng-show="PricingDetails.QuotePriceDetails.HasOldStorage && PricingDetails.QuotePriceDetails.HasTemporaryStorage" ng-bind="PricingDetails.QuotePriceDetails.StorageCost"></p>
-                            <p ng-bind="PricingDetails.QuotePriceDetails.MonthlyStorageCost"></p>
-
-
-                            <p ng-show="PricingDetails.QuotePriceDetails.FinalPostedPrice!=null" ng-bind="PricingDetails.QuotePriceDetails.FinalPostedPrice"></p>
-                            <p ng-hide="PricingDetails.QuotePriceDetails.FinalPostedPrice!=null" ng-bind="PricingDetails.QuotePriceDetails.EstimatedPriceWithServices"></p>
+                                    <span class="pull-right" style="font-size: 22px;top:5px;position: relative" ng-bind="PricingDetails.QuotePriceDetails.TotalTime">20140566</span>
 
 
+                                </div>
+                                <div class="invoice-date clearfix">
+                                    <strong>Guaranteed Price:</strong>
 
+                                    <span class="pull-right" >${{PricingDetails.QuotePriceDetails.GuaranteedPrice}}</span>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
+
+
+
                 </div>
-            </div>-->
+
+                <div class="col-lg-12">
+                    <table class="table table-responsive">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <p style="font-size: 14px">Move Price</p>
+                                </td>
+                                <td>
+                                    <p class="pull-right" >${{PricingDetails.QuotePriceDetails.GuaranteedPrice}}</p>
+
+                                </td>
 
 
-                        </div>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p style="font-size: 14px"> Discount Coupon / Voucher</p>
+                                </td>
+                                <td>
+                                    <input class="pull-right form-control" type="text" style="width: 100px" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="font-size: 14px" class="form-inline">
+                                        <span>Adjustment %</span><input type="text" ng-model="discountP | number : 2" ng-blur="SetDiscountPriority('percent',discountP)" style="width: 100px" class="form-control" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <input class="pull-right form-control" type="text" style="width: 100px" placeholder="$" ng-model="discountV" ng-blur="SetDiscountPriority('value',discountV)" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p style="font-size: 14px">  Valuation Coverage</p>
+                                </td>
+                                <td>
+                                    <select class="pull-right form-control" style="width:250px" ng-model="valuationID" ng-change="ChangeValuation()">
+
+
+                                        <option ng-repeat="item in PricingDetails.ReplacementValuationOptionsGuaranteed" ng-selected="($index==1)" value="{{item.ValuationTypeID}}"> {{item.Name}} ({{item.DisplayCost}})</option>
+
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p style="font-size: 14px">   Total Move Cost</p>
+                                </td>
+                                <td>
+                                    <p class="pull-right" >${{PricingDetails.QuotePriceDetails.GuaranteeData.GuaranteedPriceDiscount}}</p>
+
+                                </td>
+                            </tr>
+                        </tbody>
+
+
+
+                    </table>
+                </div>
+                <div class="col-lg-12">
+                    <div class="pull-right">
+
+                        <button class="btn btn-primary" ng-click="SaveGuranteed()">Save Changes</button>
                     </div>
+                    <br />
+                    <br />
+                    <br />
+                    <br />
                 </div>
-
-
-
 
             </div>
         </div>
     </div>
+    
+    
+    
+    
+    
+    
+    <div class="row">
+
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+
+
+                    <h2 class="heading" style="font-weight: bold;">Hourly Price</h2>
+                </header>
+                <div class="col-lg-12">
+
+                    <div id="invoice-companies" class="row">
+                        <div class="col-sm-4 invoice-box">
+                            <div class="col-sm-4 invoice-icon hidden-sm">
+                                <i class="fa fa-truck"></i>
+                            </div>
+                            <div class="invoice-company">
+
+                                <h4>No. Of Trucks</h4>
+                                <select class="form-control" ng-model="PricingDetails.QuotePriceDetails.Trucks" ng-change="HourlyTruckChange()">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+
+
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 invoice-box">
+                            <div class="col-sm-2 invoice-icon hidden-sm">
+                                <i class="fa fa-home"></i>
+                            </div>
+                            <div class="col-sm-8 invoice-company">
+                                <h4>Crew Size</h4>
+                                <select class="form-control" ng-model="PricingDetails.QuotePriceDetails.CrewSize" ng-change="HourlyCrewChange()">
+
+                                    <option ng-repeat="ar in crewArray" ng-selected="(ar==PricingDetails.QuotePriceDetails.CrewSize)" value="{{ar}}">{{ar}}</option>
+
+                                </select>
+                                <div class="pull-left">
+                                    <p>First Hour</p>
+                                    <p>Extra Hours</p>
+                                    
+                                </div>
+                                <div class="pull-right">
+                                    <p ng-bind="firstHour">$160</p>
+                                    <p ng-bind="extraHours">$85</p>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 invoice-box invoice-box-dates">
+                            <div class="invoice-dates">
+                                <div class="invoice-number clearfix">
+                                    <h4>Customer's Estimated Of Time</h4>
+                                    
+
+                                    <select class="form-control" ng-model="PricingDetails.QuotePriceDetails.HourlyData.CustomerTimeEstimate" ng-change="HourlyEstimatedChange()">
+                                        <option value="1">1 Hour</option>
+                                        <option value="2">2 Hours</option>
+                                        <option value="3">3 Hours</option>
+                                        <option value="4">4 Hours</option>
+                                        <option value="5">5 Hours</option>
+                                        <option value="6">6 Hours</option>
+                                        <option value="7">7 Hours</option>
+                                        <option value="8">8 Hours</option>
+                                        <option value="9">9 Hours</option>
+                                        <option value="10">10 Hours</option>
+                                        <option value="11">11 Hours</option>
+                                        <option value="12">12 Hours</option>
+                                        <option value="13">13 Hours</option>
+                                        <option value="14">14 Hours</option>
+                                        <option value="15">15 Hours</option>
+                                        <option value="16">16 Hours</option>
+                                        <option value="17">17 Hours</option>
+                                        <option value="18">18 Hours</option>
+                                        <option value="19">19 Hours</option>
+                                        <option value="20">20 Hours</option>
+                                        <option value="21">21 Hours</option>
+                                        <option value="22">22 Hours</option>
+                                        <option value="23">23 Hours</option>
+                                        <option value="24">24 Hours</option>
+                                        <option value="25">25 Hours</option>
+                                    </select>
+
+
+                                </div>
+                                <div class="invoice-date clearfix">
+                                    <strong>Estimated Price:</strong>
+
+                                    <span class="pull-right" ng-bind="estimatedHourlyPrice"></span>
+                                    
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+                <div class="col-lg-12">
+                    <table class="table table-responsive">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <p style="font-size: 14px">Move Price</p>
+                                </td>
+                                <td>
+                                    <p class="pull-right" ng-bind="firstHourLinePrice"></p>
+                                    
+                                </td>
+
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    
+                                </td>
+                                <td>
+                                    <p class="pull-right" ng-bind="hourlyLinePrice"></p>
+
+                                </td>
+                            </tr>
+                            
+
+                            <tr>
+                                <td>
+                                    <p style="font-size: 14px">Additional Fee Price</p>
+                                </td>
+                                <td>
+                                    <input class="form-control pull-right" style="width: 100px" ng-model="additionalFee" ng-change="CalculateHourly()" />
+                                </td>
+
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p style="font-size: 14px">Estimated Total</p>
+                                </td>
+                                <td>
+                                    <p class="pull-right" ng-bind="hourlyLinePrice"></p>
+
+                                </td>
+
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p style="font-size: 14px">Total Move Cost</p>
+                                </td>
+                                <td>
+                                    <p class="pull-right" ng-bind="estimatedTotal"></p>
+
+                                </td>
+
+
+                            </tr>
+                         
+                        </tbody>
+
+
+
+                    </table>
+                </div>
+                <div class="col-lg-12">
+                    <div class="pull-right">
+                        <button class="btn btn-primary" ng-click="SaveHourly()">Save Changes</button>
+                        
+                    </div>
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    
 </div>
->
+
+

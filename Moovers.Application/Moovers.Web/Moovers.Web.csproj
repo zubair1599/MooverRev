@@ -231,6 +231,7 @@
     <Content Include="AngularApp\Quote\Controllers\home.js" />
     <Content Include="AngularApp\Quote\Controllers\manageContact.js" />
     <Content Include="AngularApp\Quote\Controllers\manageInventory.js" />
+    <Content Include="AngularApp\Quote\Controllers\manageOverview.js" />
     <Content Include="AngularApp\Quote\Controllers\managePricing.js" />
     <Content Include="AngularApp\Quote\Controllers\manageSchedule.js" />
     <Content Include="AngularApp\Quote\Controllers\manageStops.js" />
@@ -251,10 +252,13 @@
     <Content Include="AngularApp\Template\app.js" />
     <Content Include="AngularApp\Template\controllers.js" />
     <Content Include="AngularApp\Template\directives.js" />
+    <Content Include="AngularViews\Quote\accounts.html" />
     <Content Include="AngularViews\Quote\contacts.html" />
+    <Content Include="AngularViews\Quote\dashboard.html" />
     <Content Include="AngularViews\Quote\home.html" />
-    <Content Include="AngularViews\Quote\inventory - Copy.html" />
     <Content Include="AngularViews\Quote\inventory.html" />
+    <Content Include="AngularViews\Quote\NewQuote.html" />
+    <Content Include="AngularViews\Quote\overview.html" />
     <Content Include="AngularViews\Quote\pricing.html" />
     <Content Include="AngularViews\Quote\schedule.html" />
     <Content Include="AngularViews\Quote\stops.html" />

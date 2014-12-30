@@ -61,6 +61,26 @@ function scheduleFactory($rootScope , $http , $q , $resource) {
         return promiseWrapper.promise;
     };
 
+    serviceDefer.GetScheduleForMonth = function (start , end , franchiseId) {
+        var promiseWrapper = $q.defer();
+
+        $http.get(serviceDefer.URL + '/Quote/GetSchedule1/?start=' + start + '&end=' + end + '&franchiseid='+franchiseId).
+            success(function (data, status, headers, config) {
+
+                //serviceDefer.servicePromise = $q.defer();
+                promiseWrapper.resolve(data);
+                //return serviceDefer.servicePromise.promise;
+
+            }).
+            error(function (data, status, headers, config) {
+                promiseWrapper.reject(data);
+                //return serviceDefer.servicePromise.promise;
+            });
+        return promiseWrapper.promise;
+    };
+
+
+
 
     return serviceDefer;
 

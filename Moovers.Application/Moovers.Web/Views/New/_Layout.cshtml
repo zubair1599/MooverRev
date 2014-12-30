@@ -3,9 +3,11 @@
     Layout = null;
 }
 
+
 <!DOCTYPE html>
 <html ng-app="quoteApp">
 <head>
+    @*<base href="/">*@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -47,6 +49,28 @@
 
 
         };
+
+        function OpenDialogT(id) {
+
+            $('#' + id).removeClass('md-hide');
+            $('#' + id).addClass('md-show');
+            $('.md-overlay').css('visibility', 'visible');
+            $('.md-overlay').css('opacity', '1');
+
+        };
+
+        function CloseDialogT(id) {
+            
+            
+            $('#' + id).addClass('md-hide');
+            $('.md-overlay').css('visibility', 'hidden');
+            $('.md-overlay').css('opacity', '0');
+            $('#' + id).removeClass('md-show');
+
+
+        };
+
+
     </script>
 </head>
 <body class="pace-done theme-red">

@@ -103,6 +103,10 @@ namespace Moovers.WebModels
                 CrewSize = this.CrewSize,
                 Hours = this.Hours,
                 Trucks = this.Trucks,
+                DiscountType = this.Quote.DiscountPriority,
+                AdjustmentPercentage = this.Quote.AdjustmentPercentage,
+                
+
                 ReplacementValuationOptionsGuaranteed = this.ReplacementValuationOptionsGuaranteed.OrderBy(i => i.MaximumValue).Select(m=>new { Cost = m.Cost , 
                     DisplayCost =  m.DisplayCost() , MaximumValue= m.MaximumValue ,
                     Name = m.Name , PerPound= m.PerPound , Type = m.Type , ValuationTypeID= m.ValuationTypeID}),

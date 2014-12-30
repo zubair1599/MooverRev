@@ -10,6 +10,8 @@ namespace MooversCRM.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.Dynamic;
+    using System.Globalization;
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
@@ -319,7 +321,7 @@ namespace MooversCRM.Controllers
             string lookup = repo.Get(quote.QuoteID).Lookup;
             string redirectUrl = Url.Action("Stops", new { id = lookup });
 
-            return Json(new { quote = quote.ToJsonObject(true) }, JsonRequestBehavior.AllowGet);
+            return Json(new { lookup = lookup }, JsonRequestBehavior.AllowGet);
 
           
         }
@@ -330,7 +332,7 @@ namespace MooversCRM.Controllers
 
             var quote = repo.Get(lookup);
            
-            string redirectUrl = Url.Action("Stops", new { id = quote.Lookup });
+            //string redirectUrl = Url.Action("Stops", new { id = quote.Lookup });
             
             return Json(new {quote= quote.ToJsonObject(true) },JsonRequestBehavior.AllowGet);
         }
@@ -621,8 +623,8 @@ namespace MooversCRM.Controllers
          [OutputCache(Location = OutputCacheLocation.ServerAndClient, Duration = 600, VaryByParam = "start;end;franchiseid")]
          public ActionResult GetSchedule1(string start, string end, Guid franchiseid)
         {
-            DateTime startTime = DateTime.Parse(start);//Date.UnixTimestampToDateTime(start);
-            DateTime endTime = DateTime.Parse(end);//Date.UnixTimestampToDateTime(end);
+            DateTime startTime = Convert.ToDateTime(start);//Date.UnixTimestampToDateTime(start);
+            DateTime endTime = Convert.ToDateTime(end);//Date.UnixTimestampToDateTime(end);
 
              var repo = new ScheduleRepository();
              List<Schedule> scheduled = repo.GetBetween(franchiseid, startTime, endTime).ToList();

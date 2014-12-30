@@ -24,29 +24,8 @@
             font-weight: bold;
             background-color: lightgrey;
         }
-
-  
 </style>
-<script>
 
-    function Open() {
-        //$('#modal-room').modal('show');
-        //$('#modal-room').addClass('md-effect-14');
-        $('#modal-room').addClass('md-show');
-        $('#modal-room').removeClass('hide');
-        
-        //alert();
-    };
-
-    function Close() {
-        //$('#modal-room').modal('show');
-
-        $('#modal-room').removeClass('md-show');
-        $('#modal-room').addClass('hide');
-        //alert();
-    };
-
-</script>
 <div ng-controller="manageInventory">
     <div class="row">
         <div class="col-lg-12">
@@ -56,14 +35,14 @@
                 <li class="active"><span>Inventory</span></li>
             </ol>
             <div class="pull-left">
-                <h1>Manage Inventory</h1>    
+                <h1>Manage Inventory</h1>
             </div>
             <div class="pull-right">
-                <input type="button" class="btn btn-primary" value="Add Room" data-modal="modal-room" onclick="Open();" ng-click="ClearRoomBox()" />
+                <input type="button" class="btn btn-primary" value="Add Room" data-modal="modal-room" onclick="OpenDialogT('modal-room');" ng-click="ClearRoomBox()" />
 
             </div>
-            
-            
+
+
         </div>
     </div>
 
@@ -75,7 +54,7 @@
             </div>
 
 
-                
+
 
             <div class="col-lg-3">
 
@@ -87,18 +66,18 @@
 
 
 
-            
-        <div class="col-lg-4" style="margin-left: 0;padding-left: 0">
-            <input type="button" class="btn btn-primary" value="Add Item" ng-click="AddItem()" />
-            <input type="button" class="btn btn-default" value="Remove All" />
-            <input type="button" class="btn btn-default" value="Undo / Redo" />
 
-        </div>
+            <div class="col-lg-4" style="margin-left: 0;padding-left: 0">
+                <input type="button" class="btn btn-primary" value="Add Item" ng-click="AddItem()" />
+                <input type="button" class="btn btn-default" value="Remove All" />
+                <input type="button" class="btn btn-default" value="Undo / Redo" />
+
+            </div>
 
         </div>
     </div>
-    
-    
+
+
     <div class="row">
         <div class="col-lg-12">
 
@@ -109,7 +88,7 @@
                     </header>
                     <div class="main-box-body clearfix">
                         <ul class="widget-products">
-                            <li ng-repeat="room in $parent.AllRooms" ui-on-drop="onDrop($event,$data,room)" ui-draggable="false">
+                            <li ng-class="room===selectedRoom?'active':''" ng-repeat="room in $parent.AllRooms" ui-on-drop="onDrop($event,$data,room)" ui-draggable="false">
                                 <a ng-click="SetSelectedRoom(room)">
 
 
@@ -128,22 +107,31 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-8">
-               
-                        <div class="btn btn-default btn-draggable" ui-draggable="true" drag="itemrel" ng-repeat="itemrel in selectedRoom.Items">
-                            {{itemrel.Item.Name}} ({{itemrel.Count}})
-                            <i class="icon-remove" ng-click="RemoveItem(itemrel)"></i>
-                       
+            <div class="col-lg-11">
+
+
+                <div class="dd-item dd-item-list col-lg-3" ng-repeat="itemrel in selectedRoom.Items">
+                    <div class="dd-handle-list" style="top:5px"><i class="fa fa-bars"></i></div>
+                    <div class="dd-handle">
+                        {{itemrel.Item.Name}}
+                        <div class="nested-links">
+                            <span class="badge badge-danger">{{itemrel.Count}}</span>
+                            <i class="glyphicon glyphicon-remove" ng-click="RemoveItem(itemrel)"></i>
+
+                        </div>
+                    </div>
                 </div>
             </div>
+
+
         </div>
 
     </div>
 
-    <div class="md-modal  hide" id="modal-room">
+    <div class="md-modal md-effect-14" id="modal-room">
         <div class="md-content">
             <div class="modal-header">
-                <button class="md-close close" onclick="Close();">×</button>
+                <button class="md-close close" onclick="CloseDialogT('modal-room');">×</button>
                 <h4 class="modal-title">Add Room</h4>
             </div>
             <div class="modal-body">
@@ -151,7 +139,7 @@
                     <div class="form-group">
                         <label for="roomType">Room Type</label>
                         <div class="form-inline">
-                        
+
                             <select id="roomType" class="form-control" ng-model="selectedRoom.Type">
                                 <option value="Attic">Attic</option>
                                 <option value="Basement">Basement</option>
@@ -171,11 +159,11 @@
 
                             </select>
 
-                            <input type="text" class="form-control" ng-show="selectedRoom.Type=='Other'" style="width: 150px" ng-model="selectedRoom.TypeOther" />    
+                            <input type="text" class="form-control" ng-show="selectedRoom.Type=='Other'" style="width: 150px" ng-model="selectedRoom.TypeOther" />
                         </div>
-                        
 
-                        
+
+
                     </div>
                     <div class="form-group">
                         <label for="roomDescription">Description</label>
@@ -189,17 +177,49 @@
 
                         </select>
                     </div>
-                    
+
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" ng-click="UpdateRoom()" onclick="Close();">Save changes</button>
-                <button type="button" class="btn btn-danger" onclick="Close();">Cancel</button>
+                <button type="button" class="btn btn-primary" ng-click="UpdateRoom()" onclick="CloseDialogT('modal-room');">Save changes</button>
+                <button type="button" class="btn btn-danger" onclick="CloseDialogT('modal-room');">Cancel</button>
             </div>
         </div>
     </div>
+    <div id="additionalQuestions-modal" class="md-modal md-effect-14">
+        <div class="md-content">
+            <div class="modal-header">
+                <button class="md-close close" onclick="CloseDialogT('additionalQuestions-modal');">×</button>
+                <h4 class="modal-title">{{selectedItem.Name}}</h4>
+            </div>
+            <div class="modal-body">
+                <div id="options" ng-repeat="additem in selectedItem.AdditionalQuestions">
+                    <div style="width:500px">
 
-    
+                        <label style="float:left;width:200px">{{additem.QuestionText}}</label>
+                        <div ng-show="additem.Options.length===0">
+                            <input type="checkbox" ng-model="additem.value" id="chk{{$index}}" />
+
+                        </div>
+                        <br />
+                        <div ng-show="additem.Options.length>0">
+                            <button class="btn btn-default" ng-repeat="option in additem.Options" ng-click="ChangeOption(option)">{{option.Option}}</button>
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="SaveItemOptions()" onclick="CloseDialogT('additionalQuestions-modal');">Save changes</button>
+                <button type="button" class="btn btn-danger" onclick="CloseDialogT('additionalQuestions-modal');">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+    <div class="md-overlay"></div>
 </div>
 
 

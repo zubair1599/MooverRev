@@ -1,0 +1,129 @@
+﻿<div ng-controller="manageOverview">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <ol class="breadcrumb">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Quote</a></li>
+                <li class="active"><span>Overview</span></li>
+            </ol>
+            <div class="pull-left">
+                <h1>Quote Overview</h1>
+            </div>
+
+
+
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+
+
+                    <h2 class="heading" style="font-weight: bold;">Payments</h2>
+                </header>
+                <div class="col-lg-6 center-block alert alert-info fade in">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                    <strong>No Payment!</strong> Payment not added / linked with the quote.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+
+
+                    <h2 class="heading" style="font-weight: bold;">Stops</h2>
+                </header>
+
+                <div class="col-lg-11 center-block list-group">
+
+                    <a href="#" class="list-group-item" ng-repeat="stop in $parent.selectedQuote.Stops">
+                        <div class="pull-right">
+                            ( {{stop.outsideStairsCount}} {{stop.outsideStairsType}} )
+                        </div>
+                        <h4 class="list-group-item-heading">{{stop.street1}} {{stop.street2}} {{stop.city}} {{stop.state}} {{stop.zip}}</h4>
+
+                    </a>
+
+                </div>
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+
+
+                    <h2 class="heading" style="font-weight: bold;">Inventory</h2>
+                </header>
+                
+               
+                <div class="dd-item dd-item-list col-lg-3" data-id="14" ng-repeat="item in AllInventories">
+                    <div class="dd-handle-list" style="top:5px"><i class="fa fa-bars"></i></div>
+                    <div class="dd-handle">
+                        {{item.Name}}
+                        <div class="nested-links">
+                            <span class="badge badge-danger">{{item.Count}}</span>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+
+
+                    <h2 class="heading" style="font-weight: bold;">Event Log</h2>
+                </header>
+                <div class="col-lg-6">
+                    <table class="table table-responsive">
+                        <tr ng-repeat="item in quoteStatus track by $index">
+                            <td>{{item.Name}} - {{item.Date}}</td>
+                        </tr>
+                    </table>    
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+
+
+                    <h2 class="heading" style="font-weight: bold;">Printed Comments</h2>
+                </header>
+            </div>
+        </div>
+    </div>
+</div>
