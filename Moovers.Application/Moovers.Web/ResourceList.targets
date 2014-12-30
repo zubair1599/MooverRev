@@ -3,22 +3,14 @@
     
     
     
-    <JavaScriptFiles Include="$(ProjectDir)Scripts/jquery.min.js" />
-    <JavaScriptFiles Include="$(ProjectDir)Scripts/angular.js" />
-    <JavaScriptFiles Include="$(ProjectDir)Scripts/angular-route.js" />
-    <JavaScriptFiles Include="$(ProjectDir)Scripts/angular-resource.js" />
-    <JavaScriptFiles Include="$(ProjectDir)Scripts/angular-animate.js" />
-    
-    <!--<JavaScriptFiles Include="$(ProjectDir)static/js/plugins/jquery-ui-1.10.2.custom.js" />-->
-	<JavaScriptFiles Include="$(ProjectDir)static/js/site.js" />
-	
+   
   
     
 	
     
    <CssFiles Include="$(ProjectDir)content/jquery-ui.custom_ZATIAL_SA_NEPOUZIVA.css" /> 
     
-    <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery-ui.custom.min.js" />
+    
     
    <CssFiles Include="$(ProjectDir)content/bootstrap.min.css" />
     <CssFiles Include="$(ProjectDir)content/font-awesome.css" />
@@ -58,6 +50,17 @@
     <CssFiles Include="$(ProjectDir)content/summernote.min.css" />
     <CssFiles Include="$(ProjectDir)content/hopscotch.css" />
    
+    
+    
+     <JavaScriptFiles Include="$(ProjectDir)Scripts/jquery.min.js" />
+    <JavaScriptFiles Include="$(ProjectDir)Scripts/angular.js" />
+    <JavaScriptFiles Include="$(ProjectDir)Scripts/angular-route.js" />
+    <JavaScriptFiles Include="$(ProjectDir)Scripts/angular-resource.js" />
+    <JavaScriptFiles Include="$(ProjectDir)Scripts/angular-animate.js" />
+    
+    <!--<JavaScriptFiles Include="$(ProjectDir)static/js/plugins/jquery-ui-1.10.2.custom.js" />-->
+
+	<JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery-ui.custom.min.js" />
 
      <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/bootstrap.js" />
        <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery.nanoscroller.min.js" />
@@ -120,7 +123,8 @@
     <!--<JavaScriptFiles Include="$(ProjectDir)AngularApp/Template/app.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Template/directives.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Template/controllers.js" />-->
-    
+    	<JavaScriptFiles Include="$(ProjectDir)static/js/site.js" />
+    <JavaScriptFiles Include="$(ProjectDir)static/js/pricing.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/quoteApp.js" />
     
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Services/addressFactory.js" />

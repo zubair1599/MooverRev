@@ -59,6 +59,9 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory, $scope, $window
             $scope.currentTab = -1;
             
         }
+        if (lookup.indexOf('#')>-1) {
+            lookup = lookup.substring(0, lookup.indexOf('#'));
+        }
         if (typeof quote == 'undefined' && param.indexOf("lookup=") > -1 && lookup != undefined) {
 
             $scope.selectedQuote.Lookup = lookup;

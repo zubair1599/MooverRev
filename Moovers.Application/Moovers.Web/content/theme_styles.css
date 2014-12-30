@@ -7692,5 +7692,8 @@ svg {
                   float:none;
 }
 
+table .table-noborder hr , td {
+   border-top: none;
+}
 
 /*# sourceMappingURL=theme_styles.css.map */

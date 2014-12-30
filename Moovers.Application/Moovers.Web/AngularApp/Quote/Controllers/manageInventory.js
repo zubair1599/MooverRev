@@ -131,7 +131,7 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
                     var roomStr = JSON.stringify($scope.$parent.AllRooms);
                         var quoteid = $scope.$parent.selectedQuote.QuoteID;
                         inventoryFactory.UpdateInventory(quoteid, roomStr).then(function (updatesJson) {
-
+                            $scope.$parent.UpdateQuicklook();
                             //$scope.$parent.RefreshStops();
                             //$scope.Init();
                             //alert(updatesJson);
@@ -183,7 +183,7 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
         var roomStr = JSON.stringify($scope.$parent.AllRooms);
         var quoteid = $scope.$parent.selectedQuote.QuoteID;
         inventoryFactory.UpdateInventory(quoteid, roomStr).then(function(updatesJson) {
-
+            //$scope.$parent.UpdateQuicklook();
             $scope.$parent.RefreshStops();
             $scope.Init();
             //alert(updatesJson);
@@ -382,13 +382,14 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
                 var roomStr = JSON.stringify($scope.$parent.AllRooms);
                 var quoteid = $scope.$parent.selectedQuote.QuoteID;
                 inventoryFactory.UpdateInventory(quoteid, roomStr).then(function (updatesJson) {
-
+                    //$scope.$parent.RefreshStops();
+                    $scope.$parent.UpdateQuicklook();
                     //$scope.$parent.RefreshStops();
                    // $scope.Init();
                     //alert(updatesJson);
                     //$scope.ClearRoomBox(); - undo comment to clear dialog
                 }, function (e) {
-                    $scope.$parent.RefreshStops();
+                   
                     alert("Error");
 
                 });

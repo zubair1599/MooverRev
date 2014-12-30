@@ -251,9 +251,12 @@
     <Content Include="AngularApp\Template\app.js" />
     <Content Include="AngularApp\Template\controllers.js" />
     <Content Include="AngularApp\Template\directives.js" />
+    <Content Include="AngularViews\Quote\accounts.html" />
     <Content Include="AngularViews\Quote\contacts.html" />
+    <Content Include="AngularViews\Quote\dashboard.html" />
     <Content Include="AngularViews\Quote\home.html" />
     <Content Include="AngularViews\Quote\inventory.html" />
+    <Content Include="AngularViews\Quote\NewQuote.html" />
     <Content Include="AngularViews\Quote\pricing - old.html" />
     <Content Include="AngularViews\Quote\pricing.html" />
     <Content Include="AngularViews\Quote\schedule.html" />
