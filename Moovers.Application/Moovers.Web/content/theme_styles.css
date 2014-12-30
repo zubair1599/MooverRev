@@ -4606,6 +4606,17 @@ input[type="radio"] {
   position: relative;
   background-repeat: no-repeat;
   background-size: cover; }
+
+.profile-box-stats .profile-box-header-left {
+  border-radius: 3px 3px 0 0;
+  background-clip: padding-box;
+  /* stops bg color from leaking outside the border: */
+  padding: 10px 30px 30px;
+  color: #fff;
+  text-align: left;
+  position: relative;
+  background-repeat: no-repeat;
+  background-size: cover; }
 /* line 14, /Applications/MAMP/htdocs/ikoma3/scss/theme/imports/widgets/profile_box_stats */
 .profile-box-stats .profile-img {
   border-radius: 18%;
@@ -4616,6 +4627,18 @@ input[type="radio"] {
   float: left;
   height: 90px;
   left: 50%;
+  margin-left: -45px;
+  position: absolute;
+  width: 90px; }
+.profile-box-stats .profile-img-left {
+  border-radius: 18%;
+  background-clip: padding-box;
+  /* stops bg color from leaking outside the border: */
+  border: 5px solid #fff;
+  bottom: -45px;
+  float: left;
+  height: 90px;
+  left: 10%;
   margin-left: -45px;
   position: absolute;
   width: 90px; }

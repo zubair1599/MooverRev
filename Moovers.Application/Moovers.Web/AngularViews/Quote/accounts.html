@@ -66,12 +66,31 @@
                 <div class="col-lg-12 col-md-5 col-sm-6">
                     <div class="main-box clearfix profile-box-stats">
                         <div class="main-box-body clearfix">
-                            <div class="profile-box-header orange-bg clearfix">
-                                <h2>{{selectedCustomer.DisplayName}}</h2>
-                                <div class="job-position">
-                                    {{selectedCustomer.Type}}
+                            <div class="profile-box-header-left orange-bg clearfix">
+                                <div class="row">
+                                    <h2 class="col-lg-3">{{selectedCustomer.DisplayName}}</h2>
+                                    <span class="col-lg-9 pull-right" style="margin-left:0px"><b>Email: </b>{{selectedCustomer.PrimaryEmail}} &nbsp;&nbsp; {{selectedCustomer.SecondaryEmail}}</span>
                                 </div>
-                                <img src="/static/img/user.jpg" alt="" class="profile-img img-responsive">
+                                <div class="row">
+                                    <div class="job-position col-lg-3">
+                                        {{selectedCustomer.Type}}
+                                    </div>
+                                    <span class="col-lg-9 pull-right" style="margin-left:0px"><b>Phone: </b>{{selectedCustomer.PrimaryPhone.Display}}  &nbsp;&nbsp; {{selectedCustomer.SecondaryPhone.Display}}</span>
+                                </div>
+                                <div class="row">
+                                    <div class="job-position col-lg-3">
+                                  
+                                    </div>
+                                    <span class="col-lg-9 pull-right" style="margin-left:0px"><b>Billing Address: </b>{{selectedCustomer.BillingAddress.DisplayAddress}}  &nbsp;&nbsp; {{selectedCustomer.SecondaryPhone.Display}}</span>
+                                </div>
+                                <div class="row">
+                                    <div class="job-position col-lg-3">
+                                       
+                                    </div>
+                                    <span class="col-lg-9 pull-right" style="margin-left:0px"><b>Mailing Address: </b>{{selectedCustomer.MailingAddress.DisplayAddress}}  &nbsp;&nbsp; {{selectedCustomer.SecondaryPhone.Display}}</span>
+                                </div>
+                               
+                                <img src="/static/img/user.jpg" alt="" class="profile-img-left img-responsive">
                             </div>
                             <div class="profile-box-footer clearfix">
                                 <a href="#">
@@ -95,27 +114,7 @@
                 <div class="col-lg-12 col-md-7 col-sm-7">
                     <div class="main-box clearfix">
                         <div id="newsfeed">
-                            <div class="story">
-                                <dl class="dl-horizontal">
-                                    <dt style="text-align:left">Email</dt>
-                                    <dd style="margin-left:0px">{{selectedCustomer.PrimaryEmail}} {{selectedCustomer.SecondaryEmail}}</dd>
-                                    <dt style="text-align:left">Primary Phone</dt>
-                                    <dd style="margin-left:0px">{{selectedCustomer.PrimaryPhone.Display}}</dd>
-                                    <dt style="text-align:left">Secondary Phone</dt>
-
-                                    <dd style="margin-left:0px">{{selectedCustomer.SecondaryPhone.Display}}</dd>
-                                    <dt style="text-align:left">Fax</dt>
-                                    <dd style="margin-left:0px">{{selectedCustomer.Fax}}</dd>
-                                    <dt style="text-align:left">Billing Address</dt>
-                                    <dd style="margin-left:0px">
-                                        {{selectedCustomer.BillingAddress.DisplayAddress}}
-                                    </dd>
-                                    <dt style="text-align:left">Mailing Address</dt>
-                                    <dd style="margin-left:0px">
-                                        {{selectedCustomer.MailingAddress.DisplayAddress}}
-                                    </dd>
-                                </dl>
-                            </div>
+                           
                             <div class="story">
                                 <dl class="dl-horizontal">
                                     <dt style="text-align:left">Quotes</dt>
@@ -127,8 +126,8 @@
                                                         <th><a href="#"><span>Lookup</span></a></th>
                                                         <th><a href="#" class="desc"><span>Move Date</span></a></th>
                                                         <th><a href="#" class="asc"><span>Created</span></a></th>
-                                                        <th class="text-center"><span>Status</span></th>
-                                                        <th class="text-right"><span>Price</span></th>
+                                                        <th class=""><span>Status</span></th>
+                                                        <th class=""><span>Price</span></th>
                                                         <th>&nbsp;</th>
                                                     </tr>
                                                 </thead>
@@ -143,10 +142,10 @@
                                                         <td>
                                                             <a href="#" ng-bind="quote.Created"></a>
                                                         </td>
-                                                        <td class="text-center">
+                                                        <td>
                                                             <span ng-bind="quote.Stage"></span>
                                                         </td>
-                                                        <td class="text-center">
+                                                        <td>
                                                             <span ng-bind="quote.Price"></span>
                                                         </td>
 
@@ -182,8 +181,50 @@
                                                         <td>
                                                             <a href="#" ng-bind="quote.NextPayment | date:'MM/dd/yyyy'"></a>
                                                         </td>
-                                                        <td class="text-center">
+                                                        <td class="">
                                                             <span ng-bind="quote.Balance"></span>
+                                                        </td>
+
+
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </dd>
+                                </dl>
+                            </div>
+                            <div class="story">
+                                <dl class="dl-horizontal">
+                                    <dt style="text-align:left">Leads</dt>
+                                    <dd style="margin-left:0px">
+                                        <div class="table-responsive clearfix">
+                                            <table class="table table-condensed" style="margin-bottom:0px">
+                                                <thead>
+                                                    <tr>
+                                                       
+                                                        <th><a href="#" class="desc"><span>Source</span></a></th>
+                                                        <th><a href="#" class="asc"><span>Date</span></a></th>
+                                                        <th><a href="#" class="desc"><span>Franchise</span></a></th>
+                                                        <th><a href="#" class="asc"><span>Owner</span></a></th>
+
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="quote in selectedCustomer.Leads">
+                                                        <td>
+                                                            <a href="#" ng-bind="quote.Source"></a>
+                                                        </td>
+
+                                                        <td>
+                                                            <a href="#" ng-bind="quote.AddedDate"></a>
+                                                        </td>
+                                                        <td>
+                                                            <span ng-bind="quote.Franchise"></span>
+                                                        </td>
+                                                        <td>
+                                                            <span ng-bind="quote.Owner"></span>
                                                         </td>
 
 
