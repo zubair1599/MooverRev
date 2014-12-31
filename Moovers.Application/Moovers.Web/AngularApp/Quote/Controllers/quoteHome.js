@@ -63,7 +63,6 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory, $scope, $window
 
     };
 
-
     $scope.SetCustomer = function(json, id) {
         $scope.customer = json;
         $scope.DisplayName = $scope.customer.DisplayName;
@@ -97,10 +96,11 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory, $scope, $window
             lookup = lookup.substring(0, lookup.indexOf('#'));
         }
         if (typeof quote == 'undefined' && param.indexOf("lookup=") > -1 && lookup != undefined) {
-
+            $scope.currentTab = 0;
             $scope.selectedQuote.Lookup = lookup;
             $scope.UpdateQuicklook();
             quoteFactory.GetRecentQuote(lookup).then(function (data) {
+         
                 $scope.selectedQuote = data.quote;
                 
                 //$scope.GetFranchise();
@@ -204,11 +204,6 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory, $scope, $window
         });
 
     };
-
-
-   
-
-
 
     ////Initial functions
     $scope.Init();
