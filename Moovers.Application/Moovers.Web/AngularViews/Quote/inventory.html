@@ -107,10 +107,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-11">
+            <div class="col-lg-8">
 
 
-                <div class="dd-item dd-item-list col-lg-3" ng-repeat="itemrel in selectedRoom.Items">
+                <div class="dd-item dd-item-list col-lg-5 " ui-draggable="true" drag="itemrel" ng-repeat="itemrel in selectedRoom.Items">
                     <div class="dd-handle-list" style="top:5px"><i class="fa fa-bars"></i></div>
                     <div class="dd-handle">
                         {{itemrel.Item.Name}}
