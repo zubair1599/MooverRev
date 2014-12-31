@@ -76,8 +76,7 @@ function quoteFactory($rootScope, $http, $q) {
     
     serviceDefer.GetCustomerFromQuote = function (lookup) {
 
-        canceler.resolve("cancel other requests");
-
+        canceler = $q.defer();
         serviceDefer.servicePromise = $q.defer();
         $http.get(serviceDefer.URL + '/Accounts/GetFromQuote?Id=' + lookup, { timeout: canceler.promise }).success(function (returnedData) {
             canceler.resolve(returnedData);

@@ -28,6 +28,42 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory, $scope, $window
 
     $scope.AllRooms = [];
 
+    $scope.AllInventories = [];
+
+
+    $scope.InitInventory = function()
+    {
+        $scope.AllInventories = [];
+        for (var i = 0; i < $scope.AllRooms.length; i++) {
+
+            //itemrel.Item.Name
+            //itemrel.Count
+            var added = false;
+            for (var j = 0; j < $scope.AllRooms[i].Items.length; j++) {
+
+                var itemName = $scope.AllRooms[i].Items[j].Item.Name;
+                var count = $scope.AllRooms[i].Items[j].Count;
+
+                for (var k = 0; k < $scope.AllInventories.length; k++) {
+
+                    if ($scope.AllInventories[k].Name === itemName) {
+                        $scope.AllInventories[k].Count = $scope.AllInventories[k].Count + count;
+                        added = true;
+                        break;
+                    }
+                }
+                if (!added) {
+                    var item = new Object();
+                    item.Name = itemName;
+                    item.Count = count;
+                    $scope.AllInventories.push(item);
+                }
+            }
+        }
+
+    };
+
+
     $scope.SetCustomer = function(json, id) {
         $scope.customer = json;
         $scope.DisplayName = $scope.customer.DisplayName;
@@ -46,6 +82,7 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory, $scope, $window
             $scope.AllRooms = $scope.AllRooms.concat($scope.selectedQuote.Stops[i].rooms);
 
         }
+        $scope.InitInventory();
         //$scope.$apply();
 
     };
@@ -55,10 +92,7 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory, $scope, $window
         var param = document.URL.substring(document.URL.indexOf('?') + 1);
        
         var lookup = param.substring(param.indexOf('=') + 1);
-        if (param.indexOf('NewQuote') > -1) {
-            $scope.currentTab = -1;
-            
-        }
+       
         if (lookup.indexOf('#')>-1) {
             lookup = lookup.substring(0, lookup.indexOf('#'));
         }

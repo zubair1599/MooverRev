@@ -45,6 +45,9 @@ quoteApp.config(['$routeProvider', '$locationProvider','cfpLoadingBarProvider',
           }).when('/home', {
               templateUrl: '/AngularViews/Quote/home.html'
 
+          }).when('/overview', {
+              templateUrl: '/AngularViews/Quote/overview.html'
+
           }).otherwise({
               redirectTo:'/'
 

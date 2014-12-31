@@ -751,7 +751,7 @@ namespace Business.Models
                     Schedules = GetSchedules().Select(s => s.ToJsonObject()),
                     IsCompleted = !Schedules.Any(i => i.Postings.Any(p => p.IsComplete)),
                     AccountName = Account.DisplayName,
-                    
+                    Comments = this.PrintedComments,
                     FranchiseLogo = Franchise.GetIconUrl(),
                     FranchiseID = this.Franchise.FranchiseID
                 };
