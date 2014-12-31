@@ -6,7 +6,7 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory,utilityFactory, 
     //var contt = this;
 
     $scope.currentTab = 0;
-
+    $scope.canAddShipper= true;
     $scope.selectedQuote = {};
     $scope.selectedQuote.FranchiseLogo = '/static/img/logos/none.png';
 

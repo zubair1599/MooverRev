@@ -116,14 +116,14 @@ namespace MooversCRM.Controllers
         {
             var repo = new AccountRepository();
 
-            Account account = repo.GetAccountFromQuote(Id.ToString());
+            var accounts = repo.GetAccountFromQuote(Id.ToString());
 
-            if (account == null)
+            if (accounts == null)
             {
                 return HttpNotFound();
             }
 
-            return Json(account.ToJsonObject(), JsonRequestBehavior.AllowGet);
+            return Json(new { primary = accounts[0].ToJsonObject(), secondary = accounts[1].ToJsonObject() }, JsonRequestBehavior.AllowGet);
         }
 
         // POST: /Accounts/Person/Add
@@ -324,5 +324,18 @@ namespace MooversCRM.Controllers
 
             return RedirectToAction("ManageAccounts");
         }
+        
+        [HttpPost]
+        public ActionResult AddShippingAccount(string accountId,string quoteId)
+        {
+            var repo = new QuoteRepository();
+            Guid qId = new Guid(quoteId);
+            var quote = repo.Get(qId);
+            quote.ShippingAccountID = new Guid(accountId);
+            repo.Save();
+
+            return RedirectToAction("ManageAccounts");
+        }
+
     }
 }

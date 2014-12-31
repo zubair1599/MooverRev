@@ -87,6 +87,20 @@ function quoteFactory($rootScope, $http, $q) {
 
         return canceler.promise;
     };
+
+    serviceDefer.SaveShipper = function (accountId,quoteId) {
+
+        canceler = $q.defer();
+        serviceDefer.servicePromise = $q.defer();
+        $http.post(serviceDefer.URL + '/Accounts/AddShippingAccount?accountId=' + accountId+'&quoteId='+quoteId, { timeout: canceler.promise }).success(function (returnedData) {
+            canceler.resolve(returnedData);
+        }).
+        error(function (data, status, headers, config) {
+            canceler.reject();
+        });
+
+        return canceler.promise;
+    };
     
     serviceDefer.AddQuote = function(quoteBasicInfo) {
         var test = $q.defer();

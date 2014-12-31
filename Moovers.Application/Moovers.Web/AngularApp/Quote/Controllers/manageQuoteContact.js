@@ -10,8 +10,9 @@ function manageQuoteContact(quoteFactory, $scope, $element, $window, $timeout) {
    
 
     $scope.GetCustomerFromQuote = function (lookup) {
-        quoteFactory.GetCustomerFromQuote(lookup).then(function (customerData) {           
-            $scope.selectedCustomer = customerData;
+        quoteFactory.GetCustomerFromQuote(lookup).then(function (data) {           
+            $scope.selectedCustomer = data.primary;
+            $scope.selectedShipper = data.secondary;
         });
     }
 
@@ -45,7 +46,10 @@ function manageQuoteContact(quoteFactory, $scope, $element, $window, $timeout) {
 
     };
 
-  
+    $scope.addShipper = function(){
+       // $scope.loca
+    }
+
     $scope.Init = function () {
         if ($scope.$parent.selectedQuote.Lookup !== undefined) {
             $scope.GetCustomerFromQuote($scope.$parent.selectedQuote.Lookup);

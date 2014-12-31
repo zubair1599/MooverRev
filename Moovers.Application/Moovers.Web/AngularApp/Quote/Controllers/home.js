@@ -3,7 +3,7 @@
 function home(homeFactory, $timeout, $scope) {
 
     $scope.Leads = [];
-   
+    $scope.canAddShipper = false;
     $scope.GetLeads = function () {
         homeFactory.GetLeads().then(function (data) {
 

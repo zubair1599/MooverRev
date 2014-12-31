@@ -1,6 +1,6 @@
-﻿quoteApp.controller('manageContact', ['accountFactory','addressFactory','quoteFactory','$scope','$element','$window','$timeout', manageContact]);
+﻿quoteApp.controller('manageContact', ['accountFactory','addressFactory','quoteFactory','$scope','$element','$window','$timeout','$location', manageContact]);
 
-function manageContact(accountFactory,addressFactory, quoteFactory, $scope, $element, $window, $timeout) {
+function manageContact(accountFactory,addressFactory, quoteFactory, $scope, $element, $window, $timeout,$location) {
 
 
     $scope.searchQuery = '';
@@ -30,23 +30,13 @@ function manageContact(accountFactory,addressFactory, quoteFactory, $scope, $ele
             $scope.newAccount = $scope.newBusinessAccount;
         }
         $scope.newAccountType = type;
-        //$scope.newAccount = new Object();
-        //$scope.newAccount.AccountType = type;
-        //$scope.newAccount.Address = new Object();
-        //$scope.newAccount.Address.MailingAddress = new Object();
-        //$scope.newAccount.Address.BillingAddress = new Object();
-        //$scope.newAccount.PrimaryPhone = new Object();
-        //$scope.newAccount.SecondaryPhone = new Object();
-        //$scope.newAccount.Fax = new Object();
-
+       
     };
 
     $scope.SaveAccount = function() {
 
         accountFactory.AddAccount(null, $scope.newAccount, $scope.newAccountType).then(function (data) {
             $scope.selectedCustomer = data;
-            //alert(data);
-
 
         }, function(err) {
 
@@ -128,9 +118,17 @@ function manageContact(accountFactory,addressFactory, quoteFactory, $scope, $ele
 
     };
 
-    $scope.AddNewQuote = function () {
+    $scope.addNewShipper = function (data) {
+        quoteFactory.SaveShipper(data.AccountID, $scope.$parent.selectedQuote.QuoteID).then(
+            function (data) {
+                $location.path('/contacts');
+            },
+            function () {
 
-        alert('Added');
+            }
+            );
+       
+
     }
 
     $scope.StartQuote = function () {
@@ -157,14 +155,17 @@ function manageContact(accountFactory,addressFactory, quoteFactory, $scope, $ele
         
 
     };
+
     $scope.Init = function () {
         //if ($scope.$parent.selectedQuote.Lookup !== undefined) {
         //    $scope.GetCustomerFromQuote($scope.$parent.selectedQuote.Lookup);
         //}
+        $scope.canAddShipper = $scope.$parent.canAddShipper;
         $scope.NewBusiness();
         $scope.defaultSearch = true;
-        $scope.SearchForCustomer('j');
+        $scope.SearchForCustomer('');
         $scope.GetStates();
     }
+
     $scope.Init();
 };

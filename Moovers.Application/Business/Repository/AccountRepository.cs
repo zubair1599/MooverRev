@@ -3,6 +3,7 @@ using System.Data.Objects;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Business.Models;
+using System.Collections.Generic;
 
 namespace Business.Repository
 {
@@ -55,9 +56,10 @@ namespace Business.Repository
         {
             return CompiledGetByLookup(db, lookup);
         }
-        public Account GetAccountFromQuote(string lookup)
+        public List<Account> GetAccountFromQuote(string lookup)
         {
-            return db.Quotes.Where(q=>q.Lookup == lookup).FirstOrDefault().Account;
+            var quote = db.Quotes.Where(q => q.Lookup == lookup).FirstOrDefault();
+            return new List<Account> { quote.Account, quote.ShippingAccount };
         }
         public void RemoveEmail(Account account, EmailAddressType type)
         {
