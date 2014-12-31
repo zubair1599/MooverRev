@@ -24,6 +24,8 @@ namespace MooversCRM.Controllers
     using Moovers.WebModels.Validators;
 
     using MooversCRM.Controllers.BaseControllers;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     //[Authorize]
     public class AccountsController : SecureBaseController
@@ -149,6 +151,53 @@ namespace MooversCRM.Controllers
             return Content(LocalExtensions.SerializeToJson(account.ToJsonObject()), "text/json");
         }
 
+        [HttpPost]
+        public ActionResult CreatePerson2(Guid? accountid, PersonAccountModel model)
+        {
+            var repo = new PersonAccountRepository();
+            PersonAccount account = (accountid.HasValue) ? repo.Get(accountid.Value) : new PersonAccount();
+            var validator = new AccountModelValidator<PersonAccount>();
+
+            if (!accountid.HasValue)
+            {
+                repo.Add(account);
+            }
+
+            //model.UpdateAddresses(account, coll, currentMailing);
+            ValidationResult validation = validator.Validate(model);
+            if (!validation.IsValid)
+            {
+                return Json(new ErrorModel(validation));
+            }
+
+            repo.UpdateFromForm(SessionFranchiseID, account, model);
+            repo.Save();
+            return Content(LocalExtensions.SerializeToJson(account.ToJsonObject()), "text/json");
+        }
+
+        public ActionResult CreateBusiness2(Guid? accountid, BusinessAccountModel model)
+        {
+            var repo = new BusinessAccountRepository();
+            BusinessAccount account = (accountid.HasValue) ? repo.Get(accountid.Value) : new BusinessAccount();
+            //model.Account.Lookup = null;
+            if (!accountid.HasValue)
+            {
+                repo.Add(account);
+            }
+
+            //model.UpdateAddresses(account, coll, false);
+            var validator = new AccountModelValidator<BusinessAccount>();
+            ValidationResult validation = validator.Validate(model);
+            if (!validation.IsValid)
+            {
+                return Json(new ErrorModel(validation));
+            }
+
+            repo.UpdateFromForm(SessionFranchiseID, account, model);
+            repo.Save();
+            return Content(LocalExtensions.SerializeToJson(account.ToJsonObject()), "text/json");
+        }
+
         // POST: /Accounts/Business/Add
         [HttpPost]
         public ActionResult CreateBusiness(Guid? accountid, FormCollection coll, BusinessAccountModel model)
@@ -173,7 +222,74 @@ namespace MooversCRM.Controllers
             repo.Save();
             return Content(LocalExtensions.SerializeToJson(account.ToJsonObject()), "text/json");
         }
+        //[Bind(Exclude = "Salary")]
+      
 
+        [HttpGet]
+        public JsonResult CreateNewBusiness()
+        {
+            var t =  new BusinessAccountModel()
+            {
+                MailingAddress =  new Address(),
+                BillingAddress = new Address(),
+                PrimaryEmail =  new EmailAddress(),
+                SecondaryEmail =  new EmailAddress(),
+                FaxPhone = new PhoneNumber(),
+                PrimaryPhone = new PhoneNumber(),
+                SecondaryPhone =  new PhoneNumber(),
+                Account = new BusinessAccount()
+                
+
+            }.SerializeToJson(2);
+            return Json(t, JsonRequestBehavior.AllowGet);
+
+        }
+        public JsonResult CreateNewPerson()
+        {
+            var t = new PersonAccountModel()
+            {
+                MailingAddress = new Address(),
+                BillingAddress = new Address(),
+                PrimaryEmail = new EmailAddress(),
+                SecondaryEmail = new EmailAddress(),
+                FaxPhone = new PhoneNumber(),
+                PrimaryPhone = new PhoneNumber(),
+                SecondaryPhone = new PhoneNumber(),
+                
+                Account = new PersonAccount()
+
+
+            }.SerializeToJson(2);
+            return Json(t, JsonRequestBehavior.AllowGet);
+
+        }
+
+        [HttpPost]
+        public ActionResult CreateBusinessJson(Guid? accountid, string accountsJson)
+        {
+            var model = new BusinessAccountModel();
+            var addressDetails = (JObject) JsonConvert.DeserializeObject(accountsJson);
+
+            var repo = new BusinessAccountRepository();
+            BusinessAccount account = (accountid.HasValue) ? repo.Get(accountid.Value) : new BusinessAccount();
+
+            if (!accountid.HasValue)
+            {
+                repo.Add(account);
+            }
+
+            model.UpdateAddresses(account, accountsJson, false);
+            var validator = new AccountModelValidator<BusinessAccount>();
+            ValidationResult validation = validator.Validate(model);
+            if (!validation.IsValid)
+            {
+                return Json(new ErrorModel(validation));
+            }
+
+            repo.UpdateFromForm(SessionFranchiseID, account, model);
+            repo.Save();
+            return Content(LocalExtensions.SerializeToJson(account.ToJsonObject()), "text/json");
+        }
         public ActionResult ManageAccounts()
         {
             return View();

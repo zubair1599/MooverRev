@@ -88,7 +88,42 @@ namespace Business.ViewModels
                 throw new AddressParseException(e.Message, e);
             }
         }
+        private static Dictionary<AddressType, Address> GetAddressesFromForms(string addressstr)
+        {
+            try
+            {
+                var ret = new Dictionary<AddressType, Address>();
+                var types = addressstr.Split('~');
+               
 
+                foreach (string t in types)
+                {
+                    var typeName = t.Split('|')[0];
+                    var street1 = t.Split('|')[1];
+                    var street2 = t.Split('|')[2];
+                    var city = t.Split('|')[3];
+                    var states = t.Split('|')[4];
+                    var zip = t.Split('|')[5];
+                    var type = (AddressType)Enum.Parse(typeof(AddressType), typeName);
+                    var address = new Address(street1 , street2 , city , states , zip);
+                    if (type == AddressType.Billing)
+                    {
+                        ret.Add(AddressType.Billing, address);
+                    }
+
+                    if (type == AddressType.Mailing)
+                    {
+                        ret.Add(AddressType.Mailing, address);
+                    }
+                }
+
+                return ret;
+            }
+            catch (Exception e)
+            {
+                throw new AddressParseException(e.Message, e);
+            }
+        }
         public void UpdateAddresses(Account account, FormCollection coll, bool currentMailing)
         {
             try
@@ -119,7 +154,38 @@ namespace Business.ViewModels
                 this.BillingAddress = null;
             }
         }
+        public void UpdateAddresses(Account account, string addressstr, bool currentMailing)
+        {
+            try
+            {
+                var addresses = GetAddressesFromForms(addressstr);
+                if (currentMailing && account != null)
+                {
+                    this.MailingAddress = account.GetAddress(Models.AddressType.Mailing);
+                }
+                else
+                {
+                    this.MailingAddress = addresses[Models.AddressType.Mailing];
+                }
 
+                this.BillingAddress = this.CopyMailing ? this.MailingAddress.Duplicate() : addresses[Models.AddressType.Billing];
+
+                var verifiedAddress = this.GetVerifiedAddress();
+                if (verifiedAddress != null)
+                {
+                    this.MailingAddress.SetVerified(verifiedAddress);
+                    if (this.CopyMailing)
+                    {
+                        this.BillingAddress.SetVerified(verifiedAddress);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                this.MailingAddress = null;
+                this.BillingAddress = null;
+            }
+        }
         public void SetupAccountProperties(T account, RepositoryBase repo)
         {
             var accountRepo = new AccountRepository(repo.db);

@@ -1,7 +1,7 @@
-﻿quoteApp.controller('quoteHome', ['quoteFactory','addressFactory','inventoryFactory', '$scope','$window','$timeout', quoteHome]);
+﻿quoteApp.controller('quoteHome', ['quoteFactory','addressFactory','inventoryFactory', 'utilityFactory','$scope','$window','$timeout', quoteHome]);
 
 
-function quoteHome(quoteFactory,addressFactory,inventoryFactory, $scope, $window, $timeout) {
+function quoteHome(quoteFactory,addressFactory,inventoryFactory,utilityFactory, $scope, $window, $timeout) {
 
     //var contt = this;
 
@@ -129,6 +129,15 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory, $scope, $window
     $scope.UpdateQuicklook = function() {
         quoteFactory.Quicklook($scope.selectedQuote.Lookup).then(function (quickLookdata) {
             $scope.QuoteQuickLook = quickLookdata;
+            $scope.QuoteQuickLook.DriveDuration = utilityFactory.formatHours($scope.QuoteQuickLook.DriveDuration, true);
+            $scope.QuoteQuickLook.TotalDuration = utilityFactory.getEstimateString($scope.QuoteQuickLook.TotalDuration);
+            $scope.QuoteQuickLook.LaborDuration = utilityFactory.formatHours($scope.QuoteQuickLook.LaborDuration, 15, true);
+           // $scope.QuoteQuickLook.DriveDuration = utilityFactory.formatHours($scope.QuoteQuickLook.DriveDuration, true);
+            $scope.QuoteQuickLook.FinalPostedPrice = utilityFactory.formatCurrency($scope.QuoteQuickLook.FinalPostedPrice);
+            $scope.QuoteQuickLook.Balance = utilityFactory.formatCurrency($scope.QuoteQuickLook.Balance);
+            $scope.QuoteQuickLook.FinalPrice = utilityFactory.formatCurrency($scope.QuoteQuickLook.FinalPrice);
+            $scope.QuoteQuickLook.OriginalPrice = utilityFactory.formatCurrency($scope.QuoteQuickLook.OriginalPrice);
+
         });
         //quoteFactory.servicePromise.promise.then(function(quickLookdata) {
         //    $scope.QuoteQuickLook = quickLookdata;

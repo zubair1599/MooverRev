@@ -60,7 +60,7 @@
                 <div><a href="#">Change Domain</a></div>
             </div>*@
             <div class="profile-details">
-                <div><strong>@ViewBag.UserProfile.DisplayName()</strong></div>
+                @*<div><strong>@ViewBag.UserProfile.DisplayName()</strong></div>*@
                 <div class="profile-email">@Membership.GetUser(User.Identity.Name).Email</div>
                 <div class="profile-role">Your current role is <strong>@ViewBag.UserProfile.Title</strong>.</div>
                 <div class="profile-role"> <strong>Franchise</strong>

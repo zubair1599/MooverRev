@@ -123,19 +123,22 @@
     <!--<JavaScriptFiles Include="$(ProjectDir)AngularApp/Template/app.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Template/directives.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Template/controllers.js" />-->
-    	<JavaScriptFiles Include="$(ProjectDir)static/js/site.js" />
-    <JavaScriptFiles Include="$(ProjectDir)static/js/pricing.js" />
-    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/quoteApp.js" />
     
+    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/quoteApp.js" />
+
+    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Services/utilityFactory.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Services/addressFactory.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Services/homeFactory.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Services/quoteFactory.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Services/inventoryFactory.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Services/scheduleFactory.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Services/priceFactory.js" />
+    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Services/accountFactory.js" />
 
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/home.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/manageInventory.js" />
+
+    
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/managePricing.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/manageSchedule.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/manageStops.js" />

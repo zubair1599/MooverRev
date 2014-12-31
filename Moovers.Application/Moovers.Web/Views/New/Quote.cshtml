@@ -194,21 +194,21 @@
                                     <h3>Price</h3>
                                 </div>
                                 <div class="package-content">
-                                    <div class="package-price" ng-if="QuoteQuickLook.FinalPostedPrice!=null">
-                                        {{QuoteQuickLook.FinalPostedPrice | currency}}
+                                    <div class="package-price" ng-show="QuoteQuickLook.FinalPostedPrice!='$0.00'">
+                                        {{QuoteQuickLook.FinalPostedPrice}}
                                     </div>
-                                    <ul class="package-top-features" ng-if="QuoteQuickLook.FinalPostedPrice!=null">
+                                    <ul class="package-top-features" ng-show="QuoteQuickLook.FinalPostedPrice!='$0.00'">
                                         <li>
-                                            Owes :{{ QuoteQuickLook.Balance | currency }}
+                                            Owes :{{ QuoteQuickLook.Balance  }}
                                         </li>
 
                                     </ul>
-                                    <div class="package-price" ng-if="QuoteQuickLook.FinalPostedPrice==null">
-                                        {{QuoteQuickLook.FinalPrice | currency}}
+                                    <div class="package-price" ng-show="QuoteQuickLook.FinalPostedPrice=='$0.00'">
+                                        {{QuoteQuickLook.FinalPrice }}
                                     </div>
-                                    <ul class="package-top-features" ng-if="QuoteQuickLook.FinalPostedPrice==null">
+                                    <ul class="package-top-features" ng-show="QuoteQuickLook.FinalPostedPrice=='$0.00'">
                                         <li>
-                                            Original:{{ QuoteQuickLook.OriginalPrice | currency }} {{ QuoteQuickLook.Discount }}%
+                                            Original:{{ QuoteQuickLook.OriginalPrice }} {{ QuoteQuickLook.Discount }}%
                                         </li>
 
                                     </ul>

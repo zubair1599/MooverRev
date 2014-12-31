@@ -19,7 +19,7 @@
 
                 </header>
 
-                
+
             </div>
         </div>
 
@@ -64,7 +64,7 @@
                     <button type="button" class="btn btn-primary" ng-click="StartQuote()">Start Quote</button>
                 </div>
             </div>
-            
+
         </div>
 
 
@@ -109,7 +109,7 @@
                                         <td ng-bind="person.Type"></td>
                                         <td><button type="button" ng-click="SetSelectedCustomer(person.AccountID)" class="btn btn-primary">Select</button></td>
                                     </tr>
-                                 
+
                                 </tbody>
                             </table><div class="dataTables_paginate paging_simple_numbers" id="table-example_paginate"><ul class="pagination pull-right"><li class="paginate_button previous disabled" aria-controls="table-example" tabindex="0" id="table-example_previous"><a href="#"><i class="fa fa-chevron-left"></i></a></li><li class="paginate_button active" aria-controls="table-example" tabindex="0"><a href="#">1</a></li><li class="paginate_button " aria-controls="table-example" tabindex="0"><a href="#">2</a></li><li class="paginate_button " aria-controls="table-example" tabindex="0"><a href="#">3</a></li><li class="paginate_button " aria-controls="table-example" tabindex="0"><a href="#">4</a></li><li class="paginate_button " aria-controls="table-example" tabindex="0"><a href="#">5</a></li><li class="paginate_button " aria-controls="table-example" tabindex="0"><a href="#">6</a></li><li class="paginate_button next" aria-controls="table-example" tabindex="0" id="table-example_next"><a href="#"><i class="fa fa-chevron-right"></i></a></li></ul></div>
                         </div>
@@ -141,13 +141,13 @@
             <div class="col-lg-12">
                 <ol class="breadcrumb">
                     <li><a href="#">Quote</a></li>
-                    
+
                     <li class="active"><span>Contacts</span></li>
                 </ol>
                 <h1>Primary Contact</h1>
             </div>
         </div>
-       
+
         <div class="row" id="user-profile">
             <div class="col-lg-4 col-md-5 col-sm-6">
                 <div class="main-box clearfix profile-box-stats">
@@ -176,7 +176,7 @@
                     </div>
                 </div>
             </div>
-         
+
             <div class="col-lg-8 col-md-7 col-sm-7">
                 <div class="main-box clearfix">
                     <div id="newsfeed">
@@ -187,13 +187,13 @@
                                 <dt style="text-align:left">Primary Phone</dt>
                                 <dd style="margin-left:0px">{{selectedCustomer.PrimaryPhone.Display}}</dd>
                                 <dt style="text-align:left">Secondary Phone</dt>
-                            
+
                                 <dd style="margin-left:0px">{{selectedCustomer.SecondaryPhone.Display}}</dd>
                                 <dt style="text-align:left">Fax</dt>
                                 <dd style="margin-left:0px">{{selectedCustomer.Fax}}</dd>
                                 <dt style="text-align:left">Billing Address</dt>
                                 <dd style="margin-left:0px">
-                                   {{selectedCustomer.BillingAddress.DisplayAddress}}
+                                    {{selectedCustomer.BillingAddress.DisplayAddress}}
                                 </dd>
                                 <dt style="text-align:left">Mailing Address</dt>
                                 <dd style="margin-left:0px">
@@ -241,11 +241,11 @@
                                         </table>
                                     </div>
                                 </dd>
-                                </dl>
-</div>
+                            </dl>
+                        </div>
                         <div class="story">
                             <dl class="dl-horizontal">
-                                <dt style="text-align:left">Work Orders</dt>
+                                <dt style="text-align:left" onclick="OpenDialogT('newAccount');">Work Orders</dt>
                                 <dd style="margin-left:0px">
                                     <div class="table-responsive clearfix">
                                         <table class="table table-condensed" style="margin-bottom:0px">
@@ -254,8 +254,8 @@
                                                     <th><a href="#"><span>Lookup</span></a></th>
                                                     <th><a href="#" class="desc"><span>Next Payment</span></a></th>
                                                     <th><a href="#" class="asc"><span>Balance</span></a></th>
-                                                 
-                                                    
+
+
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -263,14 +263,14 @@
                                                     <td>
                                                         <a href="#" ng-bind="quote.Lookup"></a>
                                                     </td>
-                                                    
+
                                                     <td>
                                                         <a href="#" ng-bind="quote.NextPayment | date:'MM/dd/yyyy'"></a>
                                                     </td>
                                                     <td class="text-center">
                                                         <span ng-bind="quote.Balance"></span>
                                                     </td>
-                                                    
+
 
                                                 </tr>
 
@@ -285,4 +285,176 @@
             </div>
         </div>
     </div>
+
+    <div id="newAccount" class="md-modal md-effect-14" style="width:900px;max-width: 900px" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+        <div class="md-content">
+            <div class="modal-header">
+                <a type="button" class="close-modal" data-dismiss="modal" aria-hidden="true"></a>
+                <h3 id="myModalLabel1">Account Information</h3>
+            </div>
+            <div id="account-contacts" class="modal-body">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="pull-left col-lg-6">
+                            <table class="table table-responsive">
+
+                                <tr>
+                                    <td>Name</td>
+                                    <td><input type="text" class="form-control" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Type</td>
+                                    <td>
+                                        <select class="form-control">
+                                            <option selected="selected" value="Commercial">Commercial</option>
+                                            <option value="Government">Government</option>
+                                            <option value="Non_Profit">Non Profit</option>
+                                            <option value="Vendor">Vendor</option>
+                                            <option value="Competitor">Competitor</option>
+
+                                        </select>
+                                    </td>
+                                </tr>
+
+                            </table>
+                            <h5>Phone Numbers</h5>
+                            <table class="table table-responsive">
+                                <tr>
+                                    <td>Primary Phone</td>
+                                    <td>
+                                        <div class="form-inline">
+                                            <input type="text" class="form-control" style="width:150px" />
+                                            <input type="text" class="form-control" placeholder="Ext" style="width:100px" />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Secondary Phone</td>
+                                    <td>
+                                        <div class="form-inline">
+                                            <input type="text" class="form-control" style="width:150px" />
+                                            <input type="text" class="form-control" placeholder="Ext" style="width:100px" />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Fax</td>
+                                    <td>
+                                        <div class="form-inline">
+                                            <input type="text" class="form-control" style="width:150px" />
+                                            <input type="text" class="form-control" placeholder="Ext" style="width:100px" />
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+                            </table>
+
+                            <h5>Emails</h5>
+                            <table class="table table-responsive">
+                                <tr>
+                                    <td>Primary Email</td>
+                                    <td>
+                                        <input type="text" class="form-control" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Secondary Email</td>
+                                    <td>
+                                        <input type="text" class="form-control" />
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </div>
+                        <div class="pull-right col-lg-6">
+                            <h5>Mailing Address</h5>
+                            <table class="table table-condensed">
+                                <tr>
+                                    <td>Street</td>
+                                    <td><input name="street1" id="street1" class="form-control" ng-model="selectedStop.street1" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Apt/Ste</td>
+                                    <td><input name="street2" id="street2" class="form-control" ng-model="selectedStop.street2" /></td>
+                                </tr>
+                                <tr>
+                                    <td>City</td>
+                                    <td><input name="city" id="city" class="form-control" ng-model="selectedStop.city" /></td>
+                                </tr>
+                                <tr>
+                                    <td>State</td>
+                                    <td>
+                                        <select name="state" id="state" class="form-control" ng-model="selectedStop.state">
+                                            <option ng-repeat="st in states" value="{{statesCodes[$index]}}">
+                                                {{st}}
+                                            </option>
+
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Zip</td>
+                                    <td><input name="zip" class="form-control" id="zip" ng-model="selectedStop.zip" /></td>
+                                </tr>
+
+
+                            </table>
+                            <div class="pull-right">
+                                Same as mailing <input type="checkbox" name="sameAsmailing" value="true" />
+                            </div>
+                            <h5>Billing Address</h5>
+                            <table class="table table-condensed">
+                                <tr>
+                                    <td>Street</td>
+                                    <td><input name="street1" id="street1" class="form-control" ng-model="selectedStop.street1" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Apt/Ste</td>
+                                    <td><input name="street2" id="street2" class="form-control" ng-model="selectedStop.street2" /></td>
+                                </tr>
+                                <tr>
+                                    <td>City</td>
+                                    <td><input name="city" id="city" class="form-control" ng-model="selectedStop.city" /></td>
+                                </tr>
+                                <tr>
+                                    <td>State</td>
+                                    <td>
+                                        <select name="state" id="state" class="form-control" ng-model="selectedStop.state">
+                                            <option ng-repeat="st in states" value="{{statesCodes[$index]}}">
+                                                {{st}}
+                                            </option>
+
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Zip</td>
+                                    <td><input name="zip" class="form-control" id="zip" ng-model="selectedStop.zip" /></td>
+                                </tr>
+
+
+                            </table>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="SaveItemOptions()" onclick="CloseDialogT('newAccount');">Save changes</button>
+                    <button type="button" class="btn btn-danger" onclick="CloseDialogT('newAccount');">Cancel</button>
+                </div>
+
+            </div>
+
+        </div>
+            
+        </div>
+    <div class="md-overlay"></div>
+
 </div>
+

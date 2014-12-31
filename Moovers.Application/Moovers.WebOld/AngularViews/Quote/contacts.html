@@ -41,3 +41,138 @@
         </div>
     </div>
 </div>
+<div id="newAccount" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+    <div class="modal-header">
+        <a type="button" class="close-modal" data-dismiss="modal" aria-hidden="true"></a>
+        <h3 id="myModalLabel1">Account Information</h3>
+    </div>
+    <div id="account-contacts" class="modal-body">
+        
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="pull-left col-lg-6">
+                    <table class="table table-condensed">
+                        
+                        <tr>
+                            <td>Name</td>
+                            <td><input type="text" class="form-control"/></td>
+                        </tr>
+                        <tr>
+                            <td>Type</td>
+                            <td>
+                                <select class="form-control" >
+                                    <option selected="selected" value="Commercial">Commercial</option><option value="Government">Government</option><option value="Non_Profit">Non Profit</option><option value="Vendor">Vendor</option><option value="Competitor">Competitor</option>
+
+                                </select>
+                            </td>
+                        </tr>
+
+                    </table>
+                    <h5>Phone Numbers</h5>
+                    <table class="table table-responsive">
+                        <tr>
+                            <td>Primary Phone</td>
+                            <td>
+                                <div class="form-inline">
+                                    <input type="text" class="form-control" style="width:200px"/>
+                                    <input type="text" class="form-control" placeholder="Ext" style="width:100px" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Secondary Phone</td>
+                            <td>
+                                <div class="form-inline">
+                                    <input type="text" class="form-control" style="width:200px" />
+                                    <input type="text" class="form-control" placeholder="Ext" style="width:100px" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Fax</td>
+                            <td>
+                                <div class="form-inline">
+                                    <input type="text" class="form-control" style="width:200px" />
+                                    <input type="text" class="form-control" placeholder="Ext" style="width:100px" />
+                                </div>
+                            </td>
+                        </tr>
+
+
+                    </table>
+                    
+                    <h5>Emails</h5>
+                    <table class="table table-responsive">
+                        <tr>
+                            <td>Primary Email</td>
+                            <td>
+                                    <input type="text" class="form-control" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Secondary Email</td>
+                            <td>
+                                <input type="text" class="form-control" />
+                            </td>
+                        </tr>
+
+                    </table>
+                </div>
+                
+
+
+            </div>
+
+        </div>
+
+        <div class="title title7">
+            Select Room :
+        </div>
+        <div class="contact-info">
+            <select ng-model="selectedRoom.Type">
+                <option value="Attic">Attic</option>
+                <option value="Basement">Basement</option>
+                <option value="Bathroom">Bathroom</option>
+                <option value="Bedroom">Bedroom</option>
+                <option value="Dining_Room">Dining Room</option>
+                <option value="Garage">Garage</option>
+                <option value="Kitchen">Kitchen</option>
+                <option value="Living_Room">Living Room</option>
+                <option value="Laundry_Room">Laundry Room</option>
+                <option value="Office">Office</option>
+                <option value="Outdoor">Outdoor</option>
+                <option value="Other">Other ( Please Specify )</option>
+
+
+
+
+            </select>
+
+            <input type="text" ng-show="selectedRoom.Type=='Other'" style="width: 150px" ng-model="selectedRoom.TypeOther" />
+
+        </div>
+        <div class="title title7">
+            Description :
+        </div>
+        <div class="contact-info">
+            <input ng-model="selectedRoom.Description" />
+        </div>
+        <div class="title title7">
+            Stop
+        </div>
+        <div class="contact-info">
+            <select ng-model="selectedRoom.StopID">
+                <option ng-repeat="stop in $parent.selectedQuote.Stops" value="{{stop.id}}">{{stop.address}}</option>
+
+
+            </select>
+        </div>
+        <div class="contact-info">
+            <button class="btn btn-close pull-right" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-primary pull-right" ng-click="UpdateRoom()" data-dismiss="modal">Submit</button>
+
+        </div>
+
+    </div>
+
+</div>

@@ -295,7 +295,7 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
             if ($scope.selectedItem.AdditionalQuestions[i].Options.length>0) {
                 
                 //list 
-                var list = $('<select>').appendTo('#' + questionId);
+                var list = $('<select class="form-control">').appendTo('#' + questionId);
                 for (var j = 0; j < $scope.selectedItem.AdditionalQuestions[i].Options.length; j++) {
                     list.append($("<option>").attr('value', j).text($scope.selectedItem.AdditionalQuestions[i].Options[j].Option));
 

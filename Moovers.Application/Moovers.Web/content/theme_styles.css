@@ -3355,7 +3355,7 @@ input[type="radio"] {
         font-weight: normal; }
       /* line 69, /Applications/MAMP/htdocs/ikoma3/scss/theme/imports/pricing */
       .pricing-package .package-content .package-price .price {
-        font-size: 4em;
+        font-size: 3em;
         font-weight: 400; }
       /* line 73, /Applications/MAMP/htdocs/ikoma3/scss/theme/imports/pricing */
       .pricing-package .package-content .package-price .currency {
@@ -3440,7 +3440,7 @@ input[type="radio"] {
     height: 42px; }
   /* line 163, /Applications/MAMP/htdocs/ikoma3/scss/theme/imports/pricing */
   .pricing-package.simple .package-content .package-price {
-    font-size: 1.8em;
+    font-size: 1.4em;
     height: 60px;
     line-height: 60px;
     background: transparent;

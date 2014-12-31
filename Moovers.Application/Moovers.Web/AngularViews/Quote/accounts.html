@@ -35,9 +35,9 @@
                                     <span class="caret"></span>
                                 </button>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a href="#">Add Person Account</a></li>
+                                        <li><a ng-click="InitNewAccount('person')" onclick="OpenDialogT('newAccount');">Add Person Account</a></li>
                                         <li class="divider"></li>
-                                        <li><a href="#">Add Business Account</a></li>
+                                        <li><a ng-click="InitNewAccount('business')" onclick="OpenDialogT('newAccount');">Add Business Account</a></li>
                                                                                                                     
                                     </ul>
                                 
@@ -313,6 +313,176 @@
             
         </div>
       
+    </div>
+    
+    
+    <div id="newAccount" class="md-modal md-effect-14" style="width:900px;max-width: 900px" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+        <div class="md-content">
+            <div class="modal-header">
+                <a type="button" class="close-modal" data-dismiss="modal" aria-hidden="true"></a>
+                <h3 id="myModalLabel1">Account Information</h3>
+            </div>
+            <div id="account-contacts" class="modal-body">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="pull-left col-lg-6">
+                            <table class="table table-responsive">
+
+                                <tr>
+                                    <td>Name</td>
+                                    <td><input type="text" ng-model="newAccount.Account.Name" class="form-control" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Type</td>
+                                    <td>
+                                        <select ng-model="newAccount.Account.BusinessType" class="form-control">
+                                            <option selected="selected" value="0">Commercial</option>
+                                            <option value="1">Government</option>
+                                            <option value="2">Non Profit</option>
+                                            <option value="3">Vendor</option>
+                                            <option value="4">Competitor</option>
+
+                                        </select>
+                                    </td>
+                                </tr>
+
+                            </table>
+                            <h5>Phone Numbers</h5>
+                            <table class="table table-responsive">
+                                <tr>
+                                    <td>Primary Phone</td>
+                                    <td>
+                                        <div class="form-inline">
+                                            <input type="text" class="form-control" ng-model="newAccount.PrimaryPhone.Number" style="width:150px" />
+                                            <input type="text" class="form-control" ng-model="newAccount.PrimaryPhone.Extension" placeholder="Ext" style="width:100px" />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Secondary Phone</td>
+                                    <td>
+                                        <div class="form-inline">
+                                            <input type="text" class="form-control" ng-model="newAccount.SecondaryPhone.Number" style="width:150px" />
+                                            <input type="text" class="form-control" ng-model="newAccount.SecondaryPhone.Extension" placeholder="Ext" style="width:100px" />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Fax</td>
+                                    <td>
+                                        <div class="form-inline">
+                                            <input type="text" class="form-control" ng-model="newAccount.FaxPhone.Number" style="width:150px" />
+                                            <input type="text" class="form-control" ng-model="newAccount.FaxPhone.Extension" placeholder="Ext" style="width:100px" />
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+                            </table>
+
+                            <h5>Emails</h5>
+                            <table class="table table-responsive">
+                                <tr>
+                                    <td>Primary Email</td>
+                                    <td>
+                                        <input type="text" ng-model="newAccount.PrimaryEmail.Email" class=" form-control" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Secondary Email</td>
+                                    <td>
+                                        <input type="text" ng-model="newAccount.SecondaryEmail.Email" class="form-control" />
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </div>
+                        <div class="pull-right col-lg-6">
+                            <h5>Mailing Address</h5>
+                            <table class="table table-condensed">
+                                <tr>
+                                    <td>Street</td>
+                                    <td><input name="street1" ng-model="newAccount.MailingAddress.Street1" id="street1" class="form-control" ng-model="selectedStop.street1" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Apt/Ste</td>
+                                    <td><input name="street2" id="street2" ng-model="newAccount.MailingAddress.Street2" class="form-control" ng-model="selectedStop.street2" /></td>
+                                </tr>
+                                <tr>
+                                    <td>City</td>
+                                    <td><input name="city" id="city" class="form-control" ng-model="newAccount.MailingAddress.City" ng-model="selectedStop.city" /></td>
+                                </tr>
+                                <tr>
+                                    <td>State</td>
+                                    <td>
+                                        <select name="state" id="state" class="form-control" ng-model="newAccount.MailingAddress.State">
+                                            <option ng-repeat="st in states" value="{{statesCodes[$index]}}">
+                                                {{st}}
+                                            </option>
+
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Zip</td>
+                                    <td><input name="zip" class="form-control" id="zip" ng-model="newAccount.MailingAddress.Zip" /></td>
+                                </tr>
+
+
+                            </table>
+                            <div class="pull-right">
+                                Same as mailing <input type="checkbox" name="sameAsmailing" value="true" />
+                            </div>
+                            <h5>Billing Address</h5>
+                            <table class="table table-condensed">
+                                <tr>
+                                    <td>Street</td>
+                                    <td><input name="street1" ng-model="newAccount.BillingAddress.Street1" id="street1" class="form-control" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Apt/Ste</td>
+                                    <td><input name="street2" id="street2" ng-model="newAccount.BillingAddress.Street2" class="form-control" /></td>
+                                </tr>
+                                <tr>
+                                    <td>City</td>
+                                    <td><input name="city" id="city" class="form-control" ng-model="newAccount.BillingAddress.City" /></td>
+                                </tr>
+                                <tr>
+                                    <td>State</td>
+                                    <td>
+                                        <select name="state" id="state" class="form-control" ng-model="newAccount.BillingAddress.State">
+                                            <option ng-repeat="st in states" value="{{statesCodes[$index]}}">
+                                                {{st}}
+                                            </option>
+
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Zip</td>
+                                    <td><input name="zip" class="form-control" id="zip" ng-model="newAccount.BillingAddress.Zip" /></td>
+                                </tr>
+
+
+                            </table>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="SaveAccount()" onclick="CloseDialogT('newAccount');">Save changes</button>
+                    <button type="button" class="btn btn-danger" onclick="CloseDialogT('newAccount');">Cancel</button>
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
     <div class="md-overlay"></div>
 </div>
