@@ -15,10 +15,13 @@ quoteApp.config(['$routeProvider', '$locationProvider','cfpLoadingBarProvider',
 
       $routeProvider.
           when('/', {
-              templateUrl: '/AngularViews/Quote/contacts.html'
+              templateUrl: '/AngularViews/Quote/dashboard.html'
 
           }).when('/dashboard', {
               templateUrl: '/AngularViews/Quote/dashboard.html'
+
+          }).when('new/quote', {
+              templateUrl: '/AngularViews/Quote/contacts.html'
 
           }).when('/accounts', {
               templateUrl: '/AngularViews/Quote/accounts.html'
@@ -47,6 +50,9 @@ quoteApp.config(['$routeProvider', '$locationProvider','cfpLoadingBarProvider',
 
           }).when('/overview', {
               templateUrl: '/AngularViews/Quote/overview.html'
+
+          }).when('/', {
+              templateUrl: '/AngularViews/Quote/dashboard.html'
 
           }).otherwise({
               redirectTo:'/'

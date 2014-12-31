@@ -63,7 +63,6 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory,utilityFactory, 
 
     };
 
-
     $scope.SetCustomer = function(json, id) {
         $scope.customer = json;
         $scope.DisplayName = $scope.customer.DisplayName;
@@ -92,18 +91,16 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory,utilityFactory, 
         var param = document.URL.substring(document.URL.indexOf('?') + 1);
        
         var lookup = param.substring(param.indexOf('=') + 1);
-        if (param.indexOf('NewQuote') > -1) {
-            $scope.currentTab = -1;
-            
-        }
+       
         if (lookup.indexOf('#')>-1) {
             lookup = lookup.substring(0, lookup.indexOf('#'));
         }
         if (typeof quote == 'undefined' && param.indexOf("lookup=") > -1 && lookup != undefined) {
-
+            $scope.currentTab = 0;
             $scope.selectedQuote.Lookup = lookup;
             $scope.UpdateQuicklook();
             quoteFactory.GetRecentQuote(lookup).then(function (data) {
+         
                 $scope.selectedQuote = data.quote;
                 
                 //$scope.GetFranchise();
@@ -216,11 +213,6 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory,utilityFactory, 
         });
 
     };
-
-
-   
-
-
 
     ////Initial functions
     $scope.Init();

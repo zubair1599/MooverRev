@@ -6,6 +6,7 @@ function quoteFactory($rootScope, $http, $q) {
     serviceDefer.servicePromise = '';
     serviceDefer.searchResults = [];
     serviceDefer.URL = 'http://localhost:50600';
+    var canceler;
 
     serviceDefer.GetPeopleJSON = function (searchQuery) {
 
@@ -41,20 +42,22 @@ function quoteFactory($rootScope, $http, $q) {
 
         var take = 50;
             var i = 0;
-        serviceDefer.customerJson = '';
-        var test  = $q.defer();
-        $http.get( serviceDefer.URL+ '/Accounts/All?q=' + searchQuery + '&page=' + i + '&take=' + take).success(function (customerJson) {
+            serviceDefer.customerJson = '';
+        
+            canceler = $q.defer();
+       
+        $http.get(serviceDefer.URL + '/Accounts/All?q=' + searchQuery + '&page=' + i + '&take=' + take, { timeout: canceler.promise }).success(function (customerJson) {
                     serviceDefer.searchResults = serviceDefer.searchResults.concat(customerJson);
-                    test.resolve(customerJson);
-
-
+                    canceler.resolve(customerJson);
         }).
         error(function (data, status, headers, config) {
-            test.reject();
+            canceler.reject();
         });
-        return test.promise;
+        return canceler.promise;
     };
-
+    serviceDefer.cancelRequest = function () {
+        canceler.resolve("user cancelled");
+    };
     serviceDefer.GetCustomerShortInformation = function(accountId) {
 
         var test = $q.defer();
@@ -70,20 +73,19 @@ function quoteFactory($rootScope, $http, $q) {
 
         return test.promise;
     };
+    
     serviceDefer.GetCustomerFromQuote = function (lookup) {
 
-        var test = $q.defer();
-
+        canceler = $q.defer();
         serviceDefer.servicePromise = $q.defer();
-        $http.get(serviceDefer.URL + '/Accounts/GetFromQuote?Id='+lookup).success(function (returnedData) {
-            test.resolve(returnedData);
-
+        $http.get(serviceDefer.URL + '/Accounts/GetFromQuote?Id=' + lookup, { timeout: canceler.promise }).success(function (returnedData) {
+            canceler.resolve(returnedData);
         }).
         error(function (data, status, headers, config) {
-            test.reject();
+            canceler.reject();
         });
 
-        return test.promise;
+        return canceler.promise;
     };
     
     serviceDefer.AddQuote = function(quoteBasicInfo) {

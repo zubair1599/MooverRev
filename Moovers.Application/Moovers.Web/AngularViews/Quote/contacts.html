@@ -1,199 +1,40 @@
 ﻿
-<div style="display:none">
-    <div class="row">
-        <div class="col-lg-12">
-            <ol class="breadcrumb">
-                <li><a href="#">Home</a></li>
-                <li class="active"><span>Contacts</span></li>
-            </ol>
 
-            <h1>Manage Contacts</h1>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="main-box clearfix">
-                <header class="main-box-header clearfix">
-                    <h2 class="pull-left">Account Details</h2>
-
-
-                </header>
-
-
-            </div>
-        </div>
-
-        <div class="col-lg-6">
-            <div class="main-box clearfix">
-                <header class="main-box-header clearfix">
-                    <h2 class="pull-left">Quote Overview</h2>
-
-
-                </header>
-                <div class="form-group col-lg-12">
-                    <label for="datepickerDate">Estimated Move Date</label>
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                        <input type="date" class="form-control" id="datepickerDate">
-                    </div>
-                    <span class="help-block">format mm-dd-yyyy</span>
-                </div>
-
-                <div class="form-group col-lg-12">
-                    <label>Where Did you hear About Us ?</label>
-                    <select class="form-control">
-                        <option value="">-- Select One --</option>
-                        <option value="ValPak">ValPak</option>
-                        <option value="Billboards">Billboards</option>
-                        <option value="Trucks">Trucks</option>
-                        <option value="Referral">Referral</option>
-                        <option value="Website">Website</option>
-                        <option value="Leads">Leads</option>
-                        <option value="Phone Book">Phone Book</option>
-                        <option value="Facebook">Facebook</option>
-                        <option value="Internet">Internet</option>
-                        <option value="MyMoovers.com">MyMoovers.com</option>
-                        <option value="Moving.com">Moving.com</option>
-                        <option value="Movers.com">Movers.com</option>
-                        <option value="123Movers.com">123Movers.com</option>
-                        <option value="Used before">Used before</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-                <div class="form-group col-lg-12">
-                    <button type="button" class="btn btn-primary" ng-click="StartQuote()">Start Quote</button>
-                </div>
-            </div>
-
-        </div>
-
-
-    </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="main-box clearfix">
-                <header class="main-box-header clearfix">
-                    <h2>Table with JS pagination, search, ordering, export to pdf and lots more.</h2>
-                </header>
-
-                <div class="main-box-body clearfix">
-                    <div class="table-responsive">
-                        <div class="DTTT btn-group">
-
-                        </div>
-                        <div id="table-example_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
-
-                            <div id="table-example_filter" class="dataTables_filter">
-                                <label>Search:<input type="search" class="form-control input-sm" placeholder="" ng-model="searchQuery" ng-change="SearchForCustomer()" aria-controls="table-example"></label>
-                            </div><div class="DTTT btn-group" style="margin-top:0px;">
-                                <div class="DTTT btn-group"><a class="btn btn-primary DTTT_button_collection" id="ToolTables_table-example_0"><span><i class="fa fa-plus"></i>&nbsp;<i class="fa fa-user"></i>&nbsp;&nbsp;&nbsp;<i class="fa fa-caret-down"></i></span></a></div>
-                            </div>
-                            <div class="clearfix"></div>
-                            <table id="table-example" class="table table-hover dataTable no-footer" role="grid">
-                                <thead>
-                                    <tr role="row">
-                                        <th class="sorting_asc" tabindex="0" aria-controls="table-example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column ascending" style="width: 203px;">Lookup</th>
-                                        <th class="sorting" tabindex="0" aria-controls="table-example" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 251px;">Name</th>
-                                        <th class="sorting" tabindex="0" aria-controls="table-example" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 122px;">City</th>
-                                        <th class="sorting" tabindex="0" aria-controls="table-example" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 63px;">State</th>
-                                        <th class="sorting" tabindex="0" aria-controls="table-example" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 135px;">Type</th>
-                                        <th class="sorting" tabindex="0" aria-controls="table-example" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 99px;"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr role="row" class="odd" ng-repeat="person in searchResults">
-                                        <td class="sorting_1" ng-bind="person.Lookup"></td>
-                                        <td ng-bind="person.Name"></td>
-                                        <td ng-bind="person.City"></td>
-                                        <td ng-bind="person.State"></td>
-                                        <td ng-bind="person.Type"></td>
-                                        <td><button type="button" ng-click="SetSelectedCustomer(person.AccountID)" class="btn btn-primary">Select</button></td>
-                                    </tr>
-
-                                </tbody>
-                            </table><div class="dataTables_paginate paging_simple_numbers" id="table-example_paginate"><ul class="pagination pull-right"><li class="paginate_button previous disabled" aria-controls="table-example" tabindex="0" id="table-example_previous"><a href="#"><i class="fa fa-chevron-left"></i></a></li><li class="paginate_button active" aria-controls="table-example" tabindex="0"><a href="#">1</a></li><li class="paginate_button " aria-controls="table-example" tabindex="0"><a href="#">2</a></li><li class="paginate_button " aria-controls="table-example" tabindex="0"><a href="#">3</a></li><li class="paginate_button " aria-controls="table-example" tabindex="0"><a href="#">4</a></li><li class="paginate_button " aria-controls="table-example" tabindex="0"><a href="#">5</a></li><li class="paginate_button " aria-controls="table-example" tabindex="0"><a href="#">6</a></li><li class="paginate_button next" aria-controls="table-example" tabindex="0" id="table-example_next"><a href="#"><i class="fa fa-chevron-right"></i></a></li></ul></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div id="shipper">
-    <div class="title title3" ng-bind="customer.DisplayName"></div>
-    <div id="shipper-address">
-        <div ng-bind="customer.BillingAddress.Street1"></div>
-        <div ng-bind="customer.BillingAddress.Street2"></div>
-        <span ng-bind="customer.BillingAddress.City"></span>
-        <span ng-bind="customer.BillingAddress.State"></span>
-        <span ng-bind="customer.BillingAddress.Zip"></span>
-    </div>
-    <div id="shipper-contact">
-        <div ng-bind="customer.PrimaryEmail"></div>
-        <div ng-bind="customer.PrimaryPhone.Display"></div>
-
-
-    </div>
-</div>
-<div class="row" style="opacity: 1;" ng-controller="manageContact">
+<div class="row" style="opacity: 1;" ng-controller="manageQuoteContact">
     <div class="col-lg-12">
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb">
                     <li><a href="#">Quote</a></li>
-
+                    
                     <li class="active"><span>Contacts</span></li>
                 </ol>
                 <h1>Primary Contact</h1>
             </div>
         </div>
-
+       
         <div class="row" id="user-profile">
-            <div class="col-lg-4 col-md-5 col-sm-6">
-                <div class="main-box clearfix profile-box-stats">
-                    <div class="main-box-body clearfix">
-                        <div class="profile-box-header orange-bg clearfix">
-                            <h2>{{selectedCustomer.DisplayName}}</h2>
-                            <div class="job-position">
-                                {{selectedCustomer.Type}}
-                            </div>
-                            <img src="/static/img/user.jpg" alt="" class="profile-img img-responsive">
-                        </div>
-                        <div class="profile-box-footer clearfix">
-                            <a href="#">
-                                <span class="value">{{selectedCustomer.Opportunities.length}}</span>
-                                <span class="label">Quotes</span>
-                            </a>
-                            <a href="#">
-                                <span class="value">{{selectedCustomer.WorkOrders.length}}</span>
-                                <span class="label">Storages</span>
-                            </a>
-                            <a href="#">
-                                <span class="value">{{selectedCustomer.Leads.length}}</span>
-                                <span class="label">Leads</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-8 col-md-7 col-sm-7">
+           
+            <div class="col-lg-12 col-md-7 col-sm-7">
                 <div class="main-box clearfix">
                     <div id="newsfeed">
-                        <div class="story">
+
+                        <h2 style="font-size:1.5em;font-weight:bold; margin-left:20px; margin-top:20px">{{selectedCustomer.DisplayName}}</h2> <span style="margin-left:20px;">{{selectedCustomer.Type}}</span>
+                        <hr/>
+                        <div class="story" style="padding-top:0px">
                             <dl class="dl-horizontal">
                                 <dt style="text-align:left">Email</dt>
                                 <dd style="margin-left:0px">{{selectedCustomer.PrimaryEmail}} {{selectedCustomer.SecondaryEmail}}</dd>
                                 <dt style="text-align:left">Primary Phone</dt>
                                 <dd style="margin-left:0px">{{selectedCustomer.PrimaryPhone.Display}}</dd>
                                 <dt style="text-align:left">Secondary Phone</dt>
-
+                            
                                 <dd style="margin-left:0px">{{selectedCustomer.SecondaryPhone.Display}}</dd>
                                 <dt style="text-align:left">Fax</dt>
                                 <dd style="margin-left:0px">{{selectedCustomer.Fax}}</dd>
                                 <dt style="text-align:left">Billing Address</dt>
                                 <dd style="margin-left:0px">
-                                    {{selectedCustomer.BillingAddress.DisplayAddress}}
+                                   {{selectedCustomer.BillingAddress.DisplayAddress}}
                                 </dd>
                                 <dt style="text-align:left">Mailing Address</dt>
                                 <dd style="margin-left:0px">
@@ -201,260 +42,67 @@
                                 </dd>
                             </dl>
                         </div>
-                        <div class="story">
-                            <dl class="dl-horizontal">
-                                <dt style="text-align:left">Quotes</dt>
-                                <dd style="margin-left:0px">
-                                    <div class="table-responsive clearfix">
-                                        <table class="table table-condensed" style="margin-bottom:0px">
-                                            <thead>
-                                                <tr>
-                                                    <th><a href="#"><span>Lookup</span></a></th>
-                                                    <th><a href="#" class="desc"><span>Move Date</span></a></th>
-                                                    <th><a href="#" class="asc"><span>Created</span></a></th>
-                                                    <th class="text-center"><span>Status</span></th>
-                                                    <th class="text-right"><span>Price</span></th>
-                                                    <th>&nbsp;</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr ng-repeat="quote in selectedCustomer.Opportunities">
-                                                    <td>
-                                                        <a href="#" ng-bind="quote.Lookup"></a>
-                                                    </td>
-                                                    <td>
-                                                        {{quote.MoveDate}}
-                                                    </td>
-                                                    <td>
-                                                        <a href="#" ng-bind="quote.Created"></a>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <span ng-bind="quote.Stage"></span>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <span ng-bind="quote.Price"></span>
-                                                    </td>
-
-                                                </tr>
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </dd>
-                            </dl>
-                        </div>
-                        <div class="story">
-                            <dl class="dl-horizontal">
-                                <dt style="text-align:left" onclick="OpenDialogT('newAccount');">Work Orders</dt>
-                                <dd style="margin-left:0px">
-                                    <div class="table-responsive clearfix">
-                                        <table class="table table-condensed" style="margin-bottom:0px">
-                                            <thead>
-                                                <tr>
-                                                    <th><a href="#"><span>Lookup</span></a></th>
-                                                    <th><a href="#" class="desc"><span>Next Payment</span></a></th>
-                                                    <th><a href="#" class="asc"><span>Balance</span></a></th>
-
-
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr ng-repeat="quote in selectedCustomer.WorkOrders">
-                                                    <td>
-                                                        <a href="#" ng-bind="quote.Lookup"></a>
-                                                    </td>
-
-                                                    <td>
-                                                        <a href="#" ng-bind="quote.NextPayment | date:'MM/dd/yyyy'"></a>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <span ng-bind="quote.Balance"></span>
-                                                    </td>
-
-
-                                                </tr>
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </dd>
-                            </dl>
-                        </div>
+                      
+                       
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+        
+        <h1>Shipper</h1>
+        <div ng-if="selectedCustomer.AccountId!=selectedCustomer.ShipperId" class="row" id="user-profile">
+            <h1>Shipper</h1>
+            <div class="col-lg-12 col-md-7 col-sm-7">
+                <div class="main-box clearfix">
+                    <div id="newsfeed">
 
-    <div id="newAccount" class="md-modal md-effect-14" style="width:900px;max-width: 900px" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
-        <div class="md-content">
-            <div class="modal-header">
-                <a type="button" class="close-modal" data-dismiss="modal" aria-hidden="true"></a>
-                <h3 id="myModalLabel1">Account Information</h3>
-            </div>
-            <div id="account-contacts" class="modal-body">
+                        <h2 style="font-size:1.5em;font-weight:bold; margin-left:20px; margin-top:20px">{{shipper.DisplayName}}</h2> <span style="margin-left:20px;">{{shipper.Type}}</span>
+                        <hr />
+                        <div class="story" style="padding-top:0px">
+                            <dl class="dl-horizontal">
+                                <dt style="text-align:left">Email</dt>
+                                <dd style="margin-left:0px">{{shipper.PrimaryEmail}} {{shipper.SecondaryEmail}}</dd>
+                                <dt style="text-align:left">Primary Phone</dt>
+                                <dd style="margin-left:0px">{{shipper.PrimaryPhone.Display}}</dd>
+                                <dt style="text-align:left">Secondary Phone</dt>
 
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="pull-left col-lg-6">
-                            <table class="table table-responsive">
-
-                                <tr>
-                                    <td>Name</td>
-                                    <td><input type="text" class="form-control" /></td>
-                                </tr>
-                                <tr>
-                                    <td>Type</td>
-                                    <td>
-                                        <select class="form-control">
-                                            <option selected="selected" value="Commercial">Commercial</option>
-                                            <option value="Government">Government</option>
-                                            <option value="Non_Profit">Non Profit</option>
-                                            <option value="Vendor">Vendor</option>
-                                            <option value="Competitor">Competitor</option>
-
-                                        </select>
-                                    </td>
-                                </tr>
-
-                            </table>
-                            <h5>Phone Numbers</h5>
-                            <table class="table table-responsive">
-                                <tr>
-                                    <td>Primary Phone</td>
-                                    <td>
-                                        <div class="form-inline">
-                                            <input type="text" class="form-control" style="width:150px" />
-                                            <input type="text" class="form-control" placeholder="Ext" style="width:100px" />
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Secondary Phone</td>
-                                    <td>
-                                        <div class="form-inline">
-                                            <input type="text" class="form-control" style="width:150px" />
-                                            <input type="text" class="form-control" placeholder="Ext" style="width:100px" />
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Fax</td>
-                                    <td>
-                                        <div class="form-inline">
-                                            <input type="text" class="form-control" style="width:150px" />
-                                            <input type="text" class="form-control" placeholder="Ext" style="width:100px" />
-                                        </div>
-                                    </td>
-                                </tr>
-
-
-                            </table>
-
-                            <h5>Emails</h5>
-                            <table class="table table-responsive">
-                                <tr>
-                                    <td>Primary Email</td>
-                                    <td>
-                                        <input type="text" class="form-control" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Secondary Email</td>
-                                    <td>
-                                        <input type="text" class="form-control" />
-                                    </td>
-                                </tr>
-
-                            </table>
-                        </div>
-                        <div class="pull-right col-lg-6">
-                            <h5>Mailing Address</h5>
-                            <table class="table table-condensed">
-                                <tr>
-                                    <td>Street</td>
-                                    <td><input name="street1" id="street1" class="form-control" ng-model="selectedStop.street1" /></td>
-                                </tr>
-                                <tr>
-                                    <td>Apt/Ste</td>
-                                    <td><input name="street2" id="street2" class="form-control" ng-model="selectedStop.street2" /></td>
-                                </tr>
-                                <tr>
-                                    <td>City</td>
-                                    <td><input name="city" id="city" class="form-control" ng-model="selectedStop.city" /></td>
-                                </tr>
-                                <tr>
-                                    <td>State</td>
-                                    <td>
-                                        <select name="state" id="state" class="form-control" ng-model="selectedStop.state">
-                                            <option ng-repeat="st in states" value="{{statesCodes[$index]}}">
-                                                {{st}}
-                                            </option>
-
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Zip</td>
-                                    <td><input name="zip" class="form-control" id="zip" ng-model="selectedStop.zip" /></td>
-                                </tr>
-
-
-                            </table>
-                            <div class="pull-right">
-                                Same as mailing <input type="checkbox" name="sameAsmailing" value="true" />
-                            </div>
-                            <h5>Billing Address</h5>
-                            <table class="table table-condensed">
-                                <tr>
-                                    <td>Street</td>
-                                    <td><input name="street1" id="street1" class="form-control" ng-model="selectedStop.street1" /></td>
-                                </tr>
-                                <tr>
-                                    <td>Apt/Ste</td>
-                                    <td><input name="street2" id="street2" class="form-control" ng-model="selectedStop.street2" /></td>
-                                </tr>
-                                <tr>
-                                    <td>City</td>
-                                    <td><input name="city" id="city" class="form-control" ng-model="selectedStop.city" /></td>
-                                </tr>
-                                <tr>
-                                    <td>State</td>
-                                    <td>
-                                        <select name="state" id="state" class="form-control" ng-model="selectedStop.state">
-                                            <option ng-repeat="st in states" value="{{statesCodes[$index]}}">
-                                                {{st}}
-                                            </option>
-
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Zip</td>
-                                    <td><input name="zip" class="form-control" id="zip" ng-model="selectedStop.zip" /></td>
-                                </tr>
-
-
-                            </table>
-
+                                <dd style="margin-left:0px">{{shipper.SecondaryPhone.Display}}</dd>
+                                <dt style="text-align:left">Fax</dt>
+                                <dd style="margin-left:0px">{{shipper.Fax}}</dd>
+                                <dt style="text-align:left">Billing Address</dt>
+                                <dd style="margin-left:0px">
+                                    {{shipper.BillingAddress.DisplayAddress}}
+                                </dd>
+                                <dt style="text-align:left">Mailing Address</dt>
+                                <dd style="margin-left:0px">
+                                    {{shipper.MailingAddress.DisplayAddress}}
+                                </dd>
+                            </dl>
                         </div>
 
 
                     </div>
-
                 </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" ng-click="SaveItemOptions()" onclick="CloseDialogT('newAccount');">Save changes</button>
-                    <button type="button" class="btn btn-danger" onclick="CloseDialogT('newAccount');">Cancel</button>
-                </div>
+            </div>
+        </div>
+        <div  ng-if="selectedCustomer.AccountId==selectedCustomer.ShipperId && selectedQuote.Stage==='Open'" class="row main-box clearfix">
+           
+            <div class="col-lg-7 center-block alert alert-info fade in pull-left" style="margin-left:20px; margin-top:15px;">
+               
+                <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                <strong>Shipper is same as primary account!</strong> Use this button to add new shipper.
+                &nbsp;  &nbsp; <span class="label label-danger"  data-modal="modal-quote" onclick="OpenDialogT('modal-quote');">Add Shipper</span></dt>
 
             </div>
-
         </div>
-            
-        </div>
-    <div class="md-overlay"></div>
+        <div ng-if="selectedCustomer.AccountId==selectedCustomer.ShipperId && selectedQuote.Stage!=='Open'" class="row main-box clearfix">
 
+            <div class="col-lg-7 center-block alert alert-info fade in pull-left" style="margin-left:20px; margin-top:15px;">
+
+                <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                No Shipper for this quote
+               
+            </div>
+        </div>
+         </div>
 </div>
-

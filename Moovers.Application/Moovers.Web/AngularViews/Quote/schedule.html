@@ -70,7 +70,7 @@
                                                         
                                                         <select style="width:100px" ng-model="scheduleForQuote.Crews[$index].Status" class="pull-right">
 
-                                                            <option value="Default">-- status --</option>
+                                                            <option value="Default" class="active">-- status --</option>
                                                             <option value="OutOfTown">Out of Town</option>
                                                             <option value="CleanUp">Clean Up</option>
                                                             <option value="Van">Van</option>
@@ -123,8 +123,9 @@
 
 
                                                         <a href="#" ng-show="scheduleForQuote.Quote.QuoteID!=null" class="btn btn-mini btn-assign noprint no-mobile">Assign Staff</a>
-                                                        
-                                                        <a style="font-style: italic;" ng-click="OpenSchedule($index)" onclick="OpenDialogT('modal-14')">Schedule Job</a>
+                                                        <span class="label label-danger" ng-click="OpenSchedule($index)" onclick="OpenDialogT('modal-14');">Schedule Job</span>
+
+                                                       <!-- <a style="font-style: italic;" ng-click="OpenSchedule($index)" onclick="OpenDialogT('modal-14')">Schedule Job</a>-->
                                                         
                                                     </span>
 
@@ -238,3 +239,6 @@
 
     <div class="md-overlay"></div>
 </div>
+<script type="text/javascript">
+    $('.fc-header-right').css({ 'vertical-align': "middle" });
+</script>

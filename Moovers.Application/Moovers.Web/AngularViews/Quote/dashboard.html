@@ -110,7 +110,7 @@
                             <tbody>
                                 <tr ng-repeat="quote in RecentQuotes">
                                     <td>
-                                        <a href="~/new/quote?lookup={{quote.Lookup}}" ng-bind="quote.Lookup"></a>
+                                        <a href="new/quote?lookup={{quote.Lookup}}#/overview" ng-bind="quote.Lookup"></a>
                                     </td>
                                     <td>
                                         {{quote.MoveDate}}
