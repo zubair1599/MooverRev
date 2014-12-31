@@ -25,7 +25,7 @@
                         <label class="col-lg-1" style="margin-top:15px;">Search:</label>
                         <div id="table-example_filter" class="dataTables_filter col-lg-7" style="margin-left:5px;">
 
-                            <input type="search" placeholder="Search for a Person or Business" autofocus class=" form-control input-sm" ng-model="searchQuery" ng-change="SearchForCustomer(searchQuery)" aria-controls="table-example">
+                            <input type="search" placeholder="Search for a Person or Business" autofocus class=" form-control input-sm" ng-model="searchQuery" ng-change="SearchForCustomer(searchQuery)" ng-model-options="{debounce:300}" aria-controls="table-example">
                         </div>
                         <div class="DTTT btn-group" style="margin-top:0px;">
                             <div class="DTTT btn-group">
@@ -51,7 +51,7 @@
 
 
                             <div>
-                                <div class="slimScrollDiv" style="height:600px">
+                                <div class="slimScrollDiv" style="height:630px">
 
                                     <table id="table-example" class="table table-hover dataTable no-footer slimScrollDiv" role="grid">
 

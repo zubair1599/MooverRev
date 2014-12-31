@@ -10,6 +10,7 @@ function manageContact(quoteFactory, $scope, $element, $window, $timeout) {
     $scope.movedate = new Date();
     $scope.hear = '';
     $scope.estimatedDate = new Date();
+    
 
     $scope.GetCustomerFromQuote = function (lookup) {
         quoteFactory.GetCustomerFromQuote(lookup).then(function (customerData) {
@@ -19,7 +20,7 @@ function manageContact(quoteFactory, $scope, $element, $window, $timeout) {
 
     $scope.SearchForCustomer = function (param) {
         $scope.searchResults = null;
-
+      
         quoteFactory.GetPeopleJSONSearch(param).then(function (json) {
 
             $scope.searchResults = json;
@@ -81,7 +82,7 @@ function manageContact(quoteFactory, $scope, $element, $window, $timeout) {
         //    $scope.GetCustomerFromQuote($scope.$parent.selectedQuote.Lookup);
         //}
         $scope.defaultSearch = true;
-        $scope.SearchForCustomer('j')
+        $scope.SearchForCustomer('')
        
     }
     $scope.Init();
