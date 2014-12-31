@@ -1358,8 +1358,8 @@ h1 small, h2 small, h3 small, h1 .small, h2 .small, h3 .small {
 
 /* line 12, /Applications/MAMP/htdocs/ikoma3/scss/theme/imports/bootstrap_elem_overrides */
 .btn-default, .wizard-cancel, .wizard-back {
-  background-color: #90a4ae;
-  border-color: #607d8b;
+  background-color: #383E44;
+  border-color: #383E44;
   color: #fff; }
 
 /* line 29, /Applications/MAMP/htdocs/ikoma3/scss/theme/imports/bootstrap_elem_overrides */

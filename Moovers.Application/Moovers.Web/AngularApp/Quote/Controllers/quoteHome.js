@@ -99,6 +99,7 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory,utilityFactory, 
             $scope.currentTab = 0;
             $scope.selectedQuote.Lookup = lookup;
             $scope.UpdateQuicklook();
+            $scope.GetFranchise();
             quoteFactory.GetRecentQuote(lookup).then(function (data) {
          
                 $scope.selectedQuote = data.quote;

@@ -401,9 +401,6 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
         
 
     };
-    $timeout(function () {
-        $scope.Init();
-       
-    }, 3000);
+    $scope.Init();
     
 };

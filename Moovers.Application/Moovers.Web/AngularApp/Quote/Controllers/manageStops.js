@@ -7,11 +7,6 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
     $scope.allstates = '';
     $scope.stopDialog = false;
 
-
-
-
-
-
     $scope.statesCodes = [];
     $scope.states = [];
     $scope.SearchAddress = '';
@@ -127,6 +122,7 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
         $scope.stopDialog = false ;
 
     };
+
     $scope.AddStop = function () {
 
         $scope.$parent.selectedQuote.Stops.push($scope.selectedStop);
