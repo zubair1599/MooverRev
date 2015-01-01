@@ -748,7 +748,7 @@ namespace Business.Models
                     Stage = Status.GetDescription(),
                     QuoteID = QuoteID,
                     Stops = Stops.Select(i => i.ToJsonObject(includeItems)),
-                    Schedules = GetSchedules().Select(s => s.ToJsonObject()),
+                    Schedules = GetStatusLogs() ,//GetSchedules().Select(s => s.ToJsonObject()),
                     IsCompleted = !Schedules.Any(i => i.Postings.Any(p => p.IsComplete)),
                     AccountName = Account.DisplayName,
                     Comments = this.PrintedComments,

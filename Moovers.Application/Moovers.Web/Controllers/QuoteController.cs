@@ -620,7 +620,7 @@ namespace MooversCRM.Controllers
 
 
         [HttpGet]
-         [OutputCache(Location = OutputCacheLocation.ServerAndClient, Duration = 600, VaryByParam = "start;end;franchiseid")]
+         //[OutputCache(Location = OutputCacheLocation.ServerAndClient, Duration = 600, VaryByParam = "start;end;franchiseid")]
          public ActionResult GetSchedule1(string start, string end, Guid franchiseid)
         {
             DateTime startTime = Convert.ToDateTime(start);//Date.UnixTimestampToDateTime(start);

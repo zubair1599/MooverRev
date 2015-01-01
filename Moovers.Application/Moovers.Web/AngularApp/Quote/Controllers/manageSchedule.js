@@ -179,16 +179,28 @@ function manageSchedule(scheduleFactory, $scope, $element, $window, $timeout) {
             selectHelper: true,
             select: function(start, end, allDay) {
 
-                $scope.selectedDate = moment(start).date();
-                $scope.selectedMonth = moment(start).month();
-                $scope.selectedYear = moment(start).year();
+                var tmp = moment(start);
+                var date = moment(start).date();
+                var month = moment(start).month();
+                var year = moment(start).year();
+                month = month + 1;
+
+                $scope.selectedDate = date;
+                $scope.selectedMonth = month;
+                $scope.selectedYear = year;
+
+                //tmp.month
+                //$scope.selectedDate = moment(start).add(1, 'M').date();;
+                //$scope.selectedMonth = moment(start).add(1,'M').month();
+                //$scope.selectedYear = moment(start).add(1, 'M').year();
                 $scope.GetAllQuotesForDate();
 
 
                 $element.find('#calendar').fullCalendar('unselect');
             },
             editable: true,
-            droppable: true, // this allows things to be dropped onto the calendar !!!
+            
+            droppable: false, // this allows things to be dropped onto the calendar !!!
             drop: function(date, allDay) { // this function is called when something is dropped
 
                 // retrieve the dropped element's stored Event Object
