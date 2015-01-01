@@ -123,7 +123,8 @@
                             <tr>
                                 <td>
                                     <div style="font-size: 14px" class="form-inline">
-                                        <span>Adjustment %</span><input type="text" ng-model="discountP | number : 2" ng-blur="SetDiscountPriority('percent',discountP)" style="width: 100px" class="form-control" />
+                                        <span>Adjustment %</span>
+                                        <input type="text" value="0" ng-model="discountP" ng-blur="SetDiscountPriority('percent',discountP)" style="width: 100px" class="form-control" />
                                     </div>
                                 </td>
                                 <td>
@@ -216,7 +217,7 @@
                                 <h4>Crew Size</h4>
                                 <select class="form-control" ng-model="PricingDetails.QuotePriceDetails.CrewSize" ng-change="HourlyCrewChange()">
 
-                                    <option ng-repeat="ar in crewArray" ng-selected="(ar==PricingDetails.QuotePriceDetails.CrewSize)" value="{{ar}}">{{ar}}</option>
+                                    <option ng-repeat="ar in crewArray track by $index" ng-selected="(ar==PricingDetails.QuotePriceDetails.CrewSize)" value="{{ar}}">{{ar}}</option>
 
                                 </select>
                                 <div class="pull-left">

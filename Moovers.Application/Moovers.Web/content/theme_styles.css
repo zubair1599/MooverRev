@@ -9,7 +9,7 @@ html, body {
 /* line 9, /Applications/MAMP/htdocs/ikoma3/scss/theme/imports/layouts */
 body {
   color: #212121;
-  background: url("../../img/whitey.jpg") repeat scroll 0 0 #fff;
+  background: url("../static/img/whitey.jpg")  repeat scroll 0 0 #fff;
   background-size: 220px 220px; }
 
 /* line 14, /Applications/MAMP/htdocs/ikoma3/scss/theme/imports/layouts */

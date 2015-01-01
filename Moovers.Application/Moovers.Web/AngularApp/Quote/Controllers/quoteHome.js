@@ -11,7 +11,7 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory,utilityFactory, 
     $scope.selectedQuote.FranchiseLogo = '/static/img/logos/none.png';
 
     $scope.QuoteQuickLook = '';
-    
+    $scope.loadingQuickLook = false;
    
 
     $scope.customerID = '';
@@ -45,7 +45,8 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory,utilityFactory, 
         $scope.Init(json);
     };
 
-    $scope.UpdateQuicklook = function() {
+    $scope.UpdateQuicklook = function () {
+        $scope.loadingQuickLook = true;
         quoteFactory.Quicklook($scope.selectedQuote.Lookup).then(function (quickLookdata) {
             $scope.QuoteQuickLook = quickLookdata;
             $scope.QuoteQuickLook.DriveDuration = utilityFactory.formatHours($scope.QuoteQuickLook.DriveDuration, true);
@@ -56,7 +57,7 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory,utilityFactory, 
             $scope.QuoteQuickLook.Balance = utilityFactory.formatCurrency($scope.QuoteQuickLook.Balance);
             $scope.QuoteQuickLook.FinalPrice = utilityFactory.formatCurrency($scope.QuoteQuickLook.FinalPrice);
             $scope.QuoteQuickLook.OriginalPrice = utilityFactory.formatCurrency($scope.QuoteQuickLook.OriginalPrice);
-
+            $scope.loadingQuickLook = false;
         });
       
     };

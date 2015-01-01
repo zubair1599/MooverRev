@@ -20,7 +20,7 @@
                             <span class="name" style="font-size:2em;">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     {{selectedQuote.Lookup}}
-                                   
+
                                 </a>
 
                             </span>
@@ -28,10 +28,10 @@
                         </div>
                     </div>
                     <span ng-if="selectedQuote.Stage =='Open'" style="margin-left:25px; margin-bottom:5px;" class="label label-success pull-lefta">{{selectedQuote.Stage}}</span>
-                    <span ng-if="selectedQuote.Stage =='Scheduled'"  style="margin-left:25px; margin-bottom:5px;" class="label label-warning pull-lefta">{{selectedQuote.Stage}}</span>
+                    <span ng-if="selectedQuote.Stage =='Scheduled'" style="margin-left:25px; margin-bottom:5px;" class="label label-warning pull-lefta">{{selectedQuote.Stage}}</span>
                     <span ng-if="selectedQuote.Stage =='Lost'" style="margin-left:25px; margin-bottom:5px;" class="label label-danger pull-lefta">{{selectedQuote.Stage}}</span>
                     <br />
-                     <br/>
+                    <br />
                     <span style="margin-left:25px; font-size:1.5em; color:whitesmoke" ng-bind="selectedQuote.AccountName"></span>
                     <div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">
                         <ul class="nav nav-pills nav-stacked">
@@ -176,7 +176,7 @@
                                 <div class="package-header">
                                     <h3>Duration</h3>
                                 </div>
-                                <div class="package-content" >
+                                <div class="package-content">
                                     <div class="package-price">
                                         <span ng-if="QuoteQuickLook.IsHourly===true">{{ QuoteQuickLook.CustomerTimeEstimate }} {{ QuoteQuickLook.CustomerTimeEstimate > 1 ? "Hours" : "Hour" }}</span>
                                         <span ng-if="QuoteQuickLook.IsHourly===false">{{ QuoteQuickLook.TotalDuration }}</span>
@@ -189,7 +189,7 @@
 
                                     </ul>
                                 </div>
-                               
+
                             </div>
 
                         </div>
@@ -200,7 +200,13 @@
                                 </div>
                                 <div class="package-content">
                                     <div class="package-price" ng-show="QuoteQuickLook.FinalPostedPrice!='$0.00'">
-                                        {{QuoteQuickLook.FinalPostedPrice}}
+                                        <span ng-show="loadingQuickLook===false">
+                                            {{QuoteQuickLook.FinalPostedPrice}}
+                                        </span>
+                                        
+                                        <span ng-show="loadingQuickLook===true">
+                                            <img style="width: 30px" src="../../static/img/loading.jpg" alt="" />
+                                        </span>
                                     </div>
                                     <ul class="package-top-features" ng-show="QuoteQuickLook.FinalPostedPrice!='$0.00'">
                                         <li>
@@ -229,71 +235,71 @@
 
                 </div>
             </div>
-          
-            <div ng-include='"views/common/footer.html"'></div>
+
+
         </div>
     </div>
 
 
     @*<div id="config-tool" class="closed">
-        <a id="config-tool-cog">
-            <i class="fa fa-envelope-square"></i>
-        </a>
+            <a id="config-tool-cog">
+                <i class="fa fa-envelope-square"></i>
+            </a>
 
-        <div id="config-tool-options">
-            <h4>Comments</h4>
-           
-            <br />
-            <ul class="notifications-list">
-                <li class="pointer">
-                    <div class="pointer-inner">
-                        <div class="arrow"></div>
-                    </div>
-                </li>
-              
+            <div id="config-tool-options">
+                <h4>Comments</h4>
 
-                <!-- ngRepeat: item in Leads -->
-                <li class="item first-item ng-scope">
-                    <a href="#">
-                        <i class="fa fa-clock-o"></i>
+                <br />
+                <ul class="notifications-list">
+                    <li class="pointer">
+                        <div class="pointer-inner">
+                            <div class="arrow"></div>
+                        </div>
+                    </li>
 
-                        <span class="content">
-                            <span class="content-headline">
-                                <b class="ng-binding">Daniel Bond</b>
+
+                    <!-- ngRepeat: item in Leads -->
+                    <li class="item first-item ng-scope">
+                        <a href="#">
+                            <i class="fa fa-clock-o"></i>
+
+                            <span class="content">
+                                <span class="content-headline">
+                                    <b class="ng-binding">Daniel Bond</b>
+                                </span>
+                                <span class="content-text ng-binding">
+                                    inquire Moving.com on Friday, October 10, 2014
+                                </span>
                             </span>
-                            <span class="content-text ng-binding">
-                                inquire Moving.com on Friday, October 10, 2014
+
+                        </a>
+
+                    </li><!-- end ngRepeat: item in Leads -->
+                    <li class="item first-item ng-scope">
+                        <a href="#">
+                            <i class="fa fa-clock-o"></i>
+
+                            <span class="content">
+                                <span class="content-headline">
+                                    <b class="ng-binding">Christina Millen</b>
+                                </span>
+                                <span class="content-text ng-binding">
+                                    inquire Moving.com on Friday, October 10, 2014
+                                </span>
                             </span>
-                        </span>
 
-                    </a>
+                        </a>
 
-                </li><!-- end ngRepeat: item in Leads -->
-                <li class="item first-item ng-scope">
-                    <a href="#">
-                        <i class="fa fa-clock-o"></i>
+                    </li><!-- end ngRepeat: item in Leads -->
 
-                        <span class="content">
-                            <span class="content-headline">
-                                <b class="ng-binding">Christina Millen</b>
-                            </span>
-                            <span class="content-text ng-binding">
-                                inquire Moving.com on Friday, October 10, 2014
-                            </span>
-                        </span>
-
-                    </a>
-
-                </li><!-- end ngRepeat: item in Leads -->
-               
-                <li class="item-footer">
-                    <a href="#">
-                        View all notifications
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>*@
+                    <li class="item-footer">
+                        <a href="#">
+                            View all notifications
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>*@
 
 
 
@@ -303,7 +309,7 @@
 <script type="text/javascript">
     //$('#config-tool').click(function () {
     //    $('#config-tool').toggleClass("closed");
-        
+
     //});
-   
+
 </script>

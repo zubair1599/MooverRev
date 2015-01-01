@@ -9,7 +9,7 @@ function managePricing(priceFactory,utilityFactory, $scope, $element, $window, $
     $scope.valuationID = '';
     $scope.valuation = '';
 
-    $scope.discountP = 0;
+    $scope.discountP = 0.00;
     $scope.discountV = 0;
     $scope.crewArray = [2, 3];
     $scope.additionalFee = null;

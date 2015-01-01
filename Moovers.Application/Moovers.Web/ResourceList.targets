@@ -33,7 +33,7 @@
 
     <CssFiles Include="$(ProjectDir)content/weather-icons.css" />
     <CssFiles Include="$(ProjectDir)content/timeline.css" />
-    <CssFiles Include="$(ProjectDir)contentdataTables.fixedHeader.css" />
+    <!--<CssFiles Include="$(ProjectDir)contentdataTables.fixedHeader.css" />-->
     <CssFiles Include="$(ProjectDir)content/dataTables.tableTools.css" />
     <CssFiles Include="$(ProjectDir)content/ns-default.css" />
     <CssFiles Include="$(ProjectDir)content/ns-style-growl.css" />
@@ -63,7 +63,7 @@
 	<JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery-ui.custom.min.js" />
 
      <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/bootstrap.js" />
-       <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery.nanoscroller.min.js" />
+       <!--<JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/jquery.nanoscroller.min.js" />-->
        <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/bootstrap-editable.min.js" />
        <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/select2.min.js" />
        <JavaScriptFiles Include="$(ProjectDir)static/js/newTemplate/moment.min.js" />

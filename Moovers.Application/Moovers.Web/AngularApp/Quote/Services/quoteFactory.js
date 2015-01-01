@@ -127,7 +127,9 @@ function quoteFactory($rootScope, $http, $q) {
     serviceDefer.Quicklook = function (lookup) {
         var test = $q.defer();
         serviceDefer.servicePromise = $q.defer();
-        $http.post(serviceDefer.URL + '/Quote/GetQuicklookByLookup/', { lookup: lookup }).
+        $http.post(serviceDefer.URL + '/Quote/GetQuicklookByLookup/', { lookup: lookup }, {
+            ignoreLoadingBar: true
+        }).
               success(function (data, status, headers, config) {
                   test.resolve(data);              
                   serviceDefer.servicePromise.resolve(data);
