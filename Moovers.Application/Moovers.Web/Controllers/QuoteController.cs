@@ -56,6 +56,19 @@ namespace MooversCRM.Controllers
             return Json(repo.GetCumulativeStats(franchiseID, search), JsonRequestBehavior.AllowGet);
         }
 
+
+        public JsonResult SearchbyLookup(string lookup)
+        {
+
+            var repo = new QuoteRepository();
+            var list = repo.SearchQuotes(lookup).OrderByDescending(m=>m.Created).Take(10);
+            var result = list.Select(m => new { CreatedDate = m.Created.ToShortDateString(), Name = m.Account.DisplayName, Lookup = m.Lookup , Franchise = m.Franchise.Icon.Replace(@"~",@"..") , Status = m.Status.GetDescription() }).ToList();
+            return Json(result.SerializeToJson(1), JsonRequestBehavior.AllowGet);
+
+        }
+
+
+
         public ActionResult Index(string search = "", QuoteSort sort = QuoteSort.LastModified, int page = 0, bool desc = true, int take = 25)
         {
             var repo = new QuoteRepository();

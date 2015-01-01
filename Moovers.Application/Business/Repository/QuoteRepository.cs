@@ -92,6 +92,17 @@ namespace Business.Repository
             return quotes;
         }
 
+
+        public List<Quote> SearchQuotes(string lookup)
+        {
+             return (from a in db.Quotes where a.Lookup.StartsWith(lookup) select a).ToList();
+
+
+        }
+
+
+
+
         public QuoteStatList GetCumulativeStats(Guid? franchiseID, string query)
         {
             SearchParser parser = SearchParser.Parse(query);

@@ -29,6 +29,32 @@ function homeFactory($rootScope, $http, $q, $location) {
 
     };
 
+
+    serviceDefer.SearchByLookUp = function (lookup) {
+
+        var test = $q.defer();
+        $http.get(serviceDefer.URL + '/Quote/SearchbyLookup/?lookup=' + lookup, {
+            ignoreLoadingBar: true
+        }).
+              success(function (data, status, headers, config) {
+
+                  //serviceDefer.servicePromise = $q.defer();
+                  test.resolve(data);
+                  //return serviceDefer.servicePromise.promise;
+
+              }).
+              error(function (data, status, headers, config) {
+                  test.reject(data);
+                  //return serviceDefer.servicePromise.promise;
+              });
+        return test.promise;
+
+
+    };
+
+
+
+
     serviceDefer.GetLeadCount = function () {
 
         var test = $q.defer();

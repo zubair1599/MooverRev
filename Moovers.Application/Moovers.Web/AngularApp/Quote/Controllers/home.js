@@ -1,10 +1,12 @@
-﻿quoteApp.controller('home', ['homeFactory', '$timeout', '$scope', home]);
+﻿quoteApp.controller('home', ['homeFactory', '$timeout', '$scope','$element','$window', home]);
 
-function home(homeFactory, $timeout, $scope) {
+function home(homeFactory, $timeout, $scope,$element,$window) {
 
     $scope.Leads = [];
     $scope.canAddShipper = false;
-
+    $scope.quoteLookupQuery = null;
+    $scope.quoteLookupQueryResults = [];
+    
 
     $scope.GetLeads = function () {
         homeFactory.GetLeads().then(function (data) {
@@ -12,6 +14,43 @@ function home(homeFactory, $timeout, $scope) {
             $scope.Leads = data;
 
         }, function (err) { alert("er"); });
+    
+    };
+
+
+    $scope.SearchQuotes = function() {
+        $scope.quoteLookupQueryResults = [];
+        homeFactory.SearchByLookUp($scope.quoteLookupQuery).then(function (data) {
+
+            $element.find('#searchResultsHeader').addClass('open');
+            var arr = JSON.parse(data);
+            //jQuery.each(arr, function (Franchise, value) {
+            //    Franchise = "../"+value.substr(1, value.length);
+            //});
+            $scope.quoteLookupQueryResults = arr;
+            $element.click(function() {
+                $element.find('#searchResultsHeader').removeClass('open');
+            });
+            //$element.find('#searchResultsHeader').mouseout(function() {
+
+            //    $element.find('#searchResultsHeader').removeClass('open');
+
+            //});
+
+        }, function(err) {
+          
+           
+            
+
+        });
+
+
+    };
+
+    $scope.QuoteNavigate = function(lookup) {
+        
+
+        $window.location.assign('/new/quote?lookup=' + lookup);
     };
 
 

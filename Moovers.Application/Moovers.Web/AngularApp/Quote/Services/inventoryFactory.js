@@ -13,7 +13,11 @@ function inventoryFactory($rootScope, $http, $q, $resource) {
     serviceDefer.UpdateInventory = function(quoteId , json) {
 
         var test = $q.defer();
-        $http.post(serviceDefer.URL + '/Quote/Inventory/', { quoteid: quoteId , rooms: json}).
+        $http.post(serviceDefer.URL + '/Quote/Inventory/', { quoteid: quoteId, rooms: json },{       
+            ignoreLoadingBar: true
+            }
+
+            ).
              success(function (data, status, headers, config) {
                  test.resolve(data);
 

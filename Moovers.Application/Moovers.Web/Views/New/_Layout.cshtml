@@ -260,6 +260,7 @@
 
                     <div class="nav-no-collapse pull-right" id="header-nav">
                         <ul class="nav navbar-nav pull-right">
+
                             <li class="mobile-search">
                                 <a class="btn">
                                     <i class="fa fa-search"></i>
@@ -268,12 +269,54 @@
                                 <div class="drowdown-search">
                                     <form role="search">
                                         <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Search...">
+                                            <input type="text" class="form-control" ng-change="SearchQuotes()" ng-model="quoteLookupQuery" ng-model-options="{debounce:300}" placeholder="Search...">
                                             <i class="fa fa-search nav-search-icon"></i>
-                                        </div>
-                                    </form>
-                                </div>
 
+                                        </div>
+
+
+
+                                    </form>
+
+                                </div>
+                            <li class="dropdown hidden-xs" id="searchResultsHeader">
+
+                                <ul style="left:-310px;top:50px;" class="dropdown-menu notifications-list">
+                                    <li class="pointer">
+                                        <div class="pointer-inner">
+                                            <div class="arrow"></div>
+                                        </div>
+                                    </li>
+
+
+                                    <!-- ngRepeat: item in Leads -->
+                                    <li class="item first-item" ng-repeat="item in quoteLookupQueryResults">
+                                        <a href="">
+                                            <i>
+                                                <img src="{{item.Franchise}}" style="width:15px" />
+                                            </i>
+
+                                            <span ng-click="QuoteNavigate(item.Lookup)" class="content" style="margin-left: 10px">
+                                                <span class="content-headline" style="width:100%">
+                                                    
+                                                    <span ng-click="QuoteNavigate(item.Lookup)" class="pull-right">
+                                                        {{item.Status}}
+                                                    </span>
+                                                    <b ng-click="QuoteNavigate(item.Lookup)" class="ng-binding" ng-bind="item.Lookup"> </b>
+                                                     <br />
+                                                </span>
+                                                <span ng-click="QuoteNavigate(item.Lookup)" style="margin-left: 10px" class="content-text ng-binding">
+                                                    {{item.Name}} - {{item.CreatedDate}}
+                                                </span>
+                                            </span>
+
+                                        </a>
+
+                                    </li><!-- end ngRepeat: item in Leads -->
+
+
+                                </ul>
+                            </li>
                             </li>
                             <li class="dropdown profile-dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown">
