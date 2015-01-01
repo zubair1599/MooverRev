@@ -16,6 +16,10 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
     $scope.searchQuantity = 1;
     $scope.searchStore = 1;
    
+    $scope.AllRooms = [];
+
+    $scope.AllInventories = [];
+
 
 
     $scope.ClearRoomBox = function() {
@@ -27,7 +31,55 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
     };
 
 
+    $scope.SetAllRooms = function () {
 
+        $scope.$parent.RefreshStops().then(function () {
+        
+            $scope.AllRooms = [];
+
+            for (var i = 0; i < $scope.$parent.selectedQuote.Stops.length; i++) {
+
+                $scope.AllRooms = $scope.AllRooms.concat($scope.$parent.selectedQuote.Stops[i].rooms);
+
+            }
+            $scope.InitInventory();
+            $scope.GetUnassignedRoom();
+        });
+        
+        //$scope.$apply();
+
+    };
+
+    $scope.InitInventory = function () {
+        $scope.AllInventories = [];
+        for (var i = 0; i < $scope.AllRooms.length; i++) {
+
+            //itemrel.Item.Name
+            //itemrel.Count
+            var added = false;
+            for (var j = 0; j < $scope.AllRooms[i].Items.length; j++) {
+
+                var itemName = $scope.AllRooms[i].Items[j].Item.Name;
+                var count = $scope.AllRooms[i].Items[j].Count;
+
+                for (var k = 0; k < $scope.AllInventories.length; k++) {
+
+                    if ($scope.AllInventories[k].Name === itemName) {
+                        $scope.AllInventories[k].Count = $scope.AllInventories[k].Count + count;
+                        added = true;
+                        break;
+                    }
+                }
+                if (!added) {
+                    var item = new Object();
+                    item.Name = itemName;
+                    item.Count = count;
+                    $scope.AllInventories.push(item);
+                }
+            }
+        }
+
+    };
    
 
 
@@ -55,27 +107,27 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
 
 
         var newRoom = 0;
-        for (var i = 0; i < $scope.$parent.AllRooms.length; i++) {
-            if ($scope.$parent.AllRooms[i].RoomID == $scope.roomToDropItem.RoomID) {
-                $scope.$parent.AllRooms[i] = $scope.roomToDropItem;
+        for (var i = 0; i < $scope.AllRooms.length; i++) {
+            if ($scope.AllRooms[i].RoomID == $scope.roomToDropItem.RoomID) {
+                $scope.AllRooms[i] = $scope.roomToDropItem;
                 newRoom = i;
             }
             //break;
         }
-        for (var j = 0; j < $scope.$parent.AllRooms.length; j++) {
+        for (var j = 0; j < $scope.AllRooms.length; j++) {
            
 
-            for (var k = 0; k < $scope.$parent.AllRooms[j].Items.length; k++) {
+            for (var k = 0; k < $scope.AllRooms[j].Items.length; k++) {
                 
-                    if ($scope.$parent.AllRooms[j].Items[k].RoomInverntoryItemID == item.RoomInverntoryItemID) {
+                    if ($scope.AllRooms[j].Items[k].RoomInverntoryItemID == item.RoomInverntoryItemID) {
                         if (j != newRoom) {
-                        $scope.$parent.AllRooms[j].Items.splice(k, 1);
+                        $scope.AllRooms[j].Items.splice(k, 1);
                         }
                     }
             }
         }
 
-        var roomStr = JSON.stringify($scope.$parent.AllRooms);
+        var roomStr = JSON.stringify($scope.AllRooms);
         var quoteid = $scope.$parent.selectedQuote.QuoteID;
         inventoryFactory.UpdateInventory(quoteid, roomStr).then(function (updatesJson) {
 
@@ -84,7 +136,7 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
             //alert(updatesJson);
             //$scope.ClearRoomBox(); - undo comment to clear dialog
         }, function(e) {
-            $scope.$parent.RefreshStops();
+            //$scope.$parent.RefreshStops();
             alert("Error");
 
         });
@@ -113,13 +165,13 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
         $scope.selectedRoom.Items.push(itemcol);
 
 
-            for (var j = 0; j < $scope.$parent.AllRooms.length; j++) {
+            for (var j = 0; j < $scope.AllRooms.length; j++) {
 
-                if ($scope.$parent.AllRooms[j].RoomID == $scope.selectedRoom.RoomID) {
-                    $scope.$parent.AllRooms[j] = $scope.selectedRoom;
+                if ($scope.AllRooms[j].RoomID == $scope.selectedRoom.RoomID) {
+                    $scope.AllRooms[j] = $scope.selectedRoom;
 
 
-                    var roomStr = JSON.stringify($scope.$parent.AllRooms);
+                    var roomStr = JSON.stringify($scope.AllRooms);
                         var quoteid = $scope.$parent.selectedQuote.QuoteID;
                         inventoryFactory.UpdateInventory(quoteid, roomStr).then(function (updatesJson) {
                             $scope.$parent.UpdateQuicklook();
@@ -168,14 +220,14 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
 
 
         //fucntion takes json of all ROOMS
-        $scope.$parent.AllRooms.push($scope.selectedRoom);
+        $scope.AllRooms.push($scope.selectedRoom);
 
         //$scope.selectedStop.rooms.push($scope.selectedRoom);
-        var roomStr = JSON.stringify($scope.$parent.AllRooms);
+        var roomStr = JSON.stringify($scope.AllRooms);
         var quoteid = $scope.$parent.selectedQuote.QuoteID;
         inventoryFactory.UpdateInventory(quoteid, roomStr).then(function(updatesJson) {
             //$scope.$parent.UpdateQuicklook();
-            $scope.$parent.RefreshStops();
+            $scope.SetAllRooms();
             $scope.Init();
             //alert(updatesJson);
             //$scope.ClearRoomBox(); - undo comment to clear dialog
@@ -195,6 +247,7 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
             source: inventoryFactory.searchItems,
             select: function (originalEvent,val) {
                 for (var i = 0; i < inventoryFactory.searchItems.length; i++) {
+
                     if (val.item.value == inventoryFactory.InventoryList[i].Name) {
                         $scope.selectedItem = inventoryFactory.InventoryList[i];
                         $scope.searchQuery = val.item.value;
@@ -204,13 +257,13 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
 
                         });
 
-                        //$element.find('#additionalQuestions-modal').modal('show');
+                       
                         return false;
                         
                     }
                 }
 
-               
+                return false;
             }
            
         });
@@ -226,26 +279,23 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
 
        var found = false;
           
-       for (var i = 0; i < $scope.$parent.AllRooms.length; i++) {
+            for (var i = 0; i < $scope.AllRooms.length; i++) {
                 
-           if ($scope.$parent.AllRooms[i].Sort == 9999) {
-                found = true;
+               if ($scope.AllRooms[i].Sort == 9999) {
+                    found = true;
 
-                $scope.selectedRoom = $scope.$parent.AllRooms[i];
-                for (var j = 0; j < $scope.$parent.selectedQuote.Stops.length; j++) {
+                    $scope.selectedRoom = $scope.AllRooms[i];
+                    for (var j = 0; j < $scope.$parent.selectedQuote.Stops.length; j++) {
 
-                    if ($scope.$parent.selectedQuote.Stops[j].id == $scope.$parent.AllRooms[i].StopID) {
-                        $scope.selectedStop = $scope.$parent.selectedQuote.Stops[j];
+                        if ($scope.$parent.selectedQuote.Stops[j].id == $scope.AllRooms[i].StopID) {
+                            $scope.selectedStop = $scope.$parent.selectedQuote.Stops[j];
+                        }
                     }
-                }
                     
-                break;
-            }
-        }   
+                    break;
+                }
+            }   
                 
-           
-
-
                if (!found) {
                    var unassigned = new Object();
                    unassigned.Type = "Unassigned";
@@ -258,15 +308,10 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
 
                    $scope.selectedRoom = unassigned;
                    $scope.selectedStop = $scope.$parent.selectedQuote.Stops[0];
-                   $scope.$parent.AllRooms.push(unassigned);
+                   $scope.AllRooms.push(unassigned);
 
                }
            
-        
-
-
-
-
     };
 
 
@@ -299,22 +344,19 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
             var newLine= $('<br/>');
             newLine.appendTo($element.find('#options'));
            
-        }
-        
-        //$element.find('#additionalQuestions-modal').removeClass('hide');
-            //$element.find('#additionalQuestions-modal').addClass('in');
+            }
+
                 $window.OpenDialogT('additionalQuestions-modal');
-        }
+            }
         
-        //$('#additionalQuestions-modal').modal('show');
+
 
 
     };
 
     $scope.SaveItemOptions = function () {
 
-        //$element.find('#additionalQuestions-modal').removeClass('in');
-        //$element.find('#additionalQuestions-modal').addClass('hide');
+       
         $window.CloseDialogT('additionalQuestions-modal');
 
         for (var i = 0; i < $scope.selectedItem.AdditionalQuestions.length; i++) {
@@ -331,11 +373,7 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
 
 
     $scope.ChangeOption = function (option) {
-        //alert(option);
 
-        //var a = $scope.chk0;
-
-        //$('#additionalQuestions-modal').modal('hide');
 
         for (var i = 0; i < $scope.selectedItem.AdditionalQuestions.length; i++) {
             for (var j = 0; j < $scope.selectedItem.AdditionalQuestions[i].Options.length; j++) {
@@ -364,21 +402,17 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
             }
         }
 
-        for (var j = 0; j < $scope.$parent.AllRooms.length; j++) {
+        for (var j = 0; j < $scope.AllRooms.length; j++) {
 
-            if ($scope.$parent.AllRooms[j].RoomID == $scope.selectedRoom.RoomID) {
-                $scope.$parent.AllRooms[j] = $scope.selectedRoom;
+            if ($scope.AllRooms[j].RoomID == $scope.selectedRoom.RoomID) {
+                $scope.AllRooms[j] = $scope.selectedRoom;
 
 
-                var roomStr = JSON.stringify($scope.$parent.AllRooms);
+                var roomStr = JSON.stringify($scope.AllRooms);
                 var quoteid = $scope.$parent.selectedQuote.QuoteID;
                 inventoryFactory.UpdateInventory(quoteid, roomStr).then(function (updatesJson) {
-                    //$scope.$parent.RefreshStops();
                     $scope.$parent.UpdateQuicklook();
-                    //$scope.$parent.RefreshStops();
-                   // $scope.Init();
-                    //alert(updatesJson);
-                    //$scope.ClearRoomBox(); - undo comment to clear dialog
+                   
                 }, function (e) {
                    
                     alert("Error");
@@ -399,8 +433,9 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
 
     $scope.Init = function () {
 
+        $scope.SetAllRooms();
         $scope.ClearRoomBox();
-        $scope.GetUnassignedRoom();
+       
         $scope.searchQuery = '';
         $scope.searchQuantity = '';
         $scope.searchStore = '';

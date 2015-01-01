@@ -15,8 +15,88 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
     $scope.Buildings = [];
     $scope.BuildingsCodes = [];
     $scope.loadFirstTime = true;
+
+
+
+    $scope.RefreshStops = function () {
+
+        $scope.$parent.UpdateQuicklook();
+        quoteFactory.GetAllStops($scope.selectedQuote.Lookup).then(function (data) {
+            $scope.$parent.selectedQuote.Stops = (data);
+            $scope.SetDistanceTimes();
+
+            //$scope.SetAllRooms();
+        });
+
+
+    };
+
+
+
+
+
+
+
+    $scope.franchiseAddress = '';
+    $scope.franchiseID = '';
+    $scope.GetFranchise = function () {
+
+        if ($scope.$parent.selectedQuote.Lookup != '') {
+            quoteFactory.GetQuoteFranchise($scope.$parent.selectedQuote.Lookup).then(function (data) {
+                $scope.franchiseAddress = data.franchiseAddress;
+                $scope.franchiseID = data.franchiseID;
+                $scope.SetDistanceTimes();
+            });
+
+        };
+
+    };
     
-    
+    $scope.SetDistanceTimes = function () {
+        if (typeof $scope.selectedQuote.Stops != 'undefined') {
+
+            if ($scope.selectedQuote.Stops.length > 0) {
+
+                for (var i = 0; i < $scope.selectedQuote.Stops.length; i++) {
+
+
+                    (function (current) {
+
+                        var backId = '';
+                        var addressid = '';
+                        if (current == 0) {
+                            backId = $scope.franchiseID;
+                            addressid = $scope.selectedQuote.Stops[current].addressid;
+                        } else {
+                            backId = $scope.selectedQuote.Stops[current - 1].addressid;
+                            addressid = $scope.selectedQuote.Stops[current].addressid;
+                        }
+                        $scope.SetDistanceTimesForStop(current, backId, addressid);
+
+                    })(i);
+                }
+
+
+                addressFactory.GetDistanceTime($scope.selectedQuote.Stops[$scope.selectedQuote.Stops.length - 1].addressid, $scope.franchiseID).then(function (data) {
+
+                    $scope.DistanceFromLastStop = data.distance;
+                    $scope.TimeFromLastStop = data.time;
+                });
+
+
+            }
+        }
+
+    };
+
+    $scope.SetDistanceTimesForStop = function (index, backId, currentId) {
+
+        addressFactory.GetDistanceTime(backId, currentId).then(function (data) {
+            $scope.selectedQuote.Stops[index].distanceFromPrevious = data.distance;
+            $scope.selectedQuote.Stops[index].timeFromPrevious = data.time;
+        });
+
+    };
     
 
     $scope.ScopeDialogInitialize = function(id) {
@@ -128,7 +208,7 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
         $scope.$parent.selectedQuote.Stops.push($scope.selectedStop);
         quoteFactory.UpdateStops($scope.$parent.selectedQuote.QuoteID, $scope.$parent.selectedQuote.Stops);
         quoteFactory.servicePromise.promise.then(function (stopsIdjson) {
-            $scope.$parent.RefreshStops();//Init();
+            $scope.RefreshStops();//Init();
         });
     };
 
@@ -139,7 +219,7 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
         quoteFactory.servicePromise.promise.then(function (data) {
             //alert(data);
             if (data=='OK') {
-                $scope.$parent.RefreshStops();
+                $scope.RefreshStops();
                
             }
         });
@@ -426,7 +506,15 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
     };
 
 
+    $scope.Init = function() {
 
+        $scope.GetFranchise();
+        $scope.RefreshStops();
+
+
+    };
+
+        $scope.Init();
 
 
     //No init functions getting data from parent in init.
