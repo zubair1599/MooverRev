@@ -28,16 +28,7 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
 
 
 
-    $scope.Init = function() {
-       
-        $scope.ClearRoomBox();
-        $scope.GetUnassignedRoom();
-        $scope.searchQuery = '';
-        $scope.searchQuantity = '';
-        $scope.searchStore = '';
-        $scope.InventoryItems();
-    };
-
+   
 
 
     $scope.InventoryItems = function () {
@@ -401,6 +392,24 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
         
 
     };
+
+
+
+
+
+    $scope.Init = function () {
+
+        $scope.ClearRoomBox();
+        $scope.GetUnassignedRoom();
+        $scope.searchQuery = '';
+        $scope.searchQuantity = '';
+        $scope.searchStore = '';
+        $scope.InventoryItems();
+    };
+
+
+
+
     $scope.Init();
     
 };

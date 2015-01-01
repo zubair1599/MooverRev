@@ -426,4 +426,10 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
     };
 
 
+
+
+
+    //No init functions getting data from parent in init.
+
+
 };

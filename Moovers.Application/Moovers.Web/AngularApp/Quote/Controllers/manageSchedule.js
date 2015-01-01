@@ -72,18 +72,7 @@ function manageSchedule(scheduleFactory, $scope, $element, $window, $timeout) {
 
     };
 
-    $scope.GetSchedule = function () {
-
-        scheduleFactory.GetScheduleForQuote($scope.$parent.selectedQuote.Lookup).then(function (data) {
-
-            $scope.scheduleForQuote = data;
-
-
-        }, function (err) {
-            alert("manageSchedule - scheduleFactory.GetScheduleForQuote");
-        });
-
-    };
+   
 
 
     $scope.getEventMonth = function (start, end, franchiseId) {
@@ -157,10 +146,21 @@ function manageSchedule(scheduleFactory, $scope, $element, $window, $timeout) {
     };
 
 
-    $scope.Init = function () {
+    $scope.GetSchedule = function () {
+
+        scheduleFactory.GetScheduleForQuote($scope.$parent.selectedQuote.Lookup).then(function (data) {
+
+            $scope.scheduleForQuote = data;
 
 
-        $scope.GetSchedule();
+        }, function (err) {
+            alert("manageSchedule - scheduleFactory.GetScheduleForQuote");
+        });
+
+    };
+
+    $scope.InitCalendar = function() {
+        
 
 
         var date = new Date();
@@ -177,7 +177,7 @@ function manageSchedule(scheduleFactory, $scope, $element, $window, $timeout) {
             //isRTL: $('body').hasClass('rtl'), //rtl support for calendar
             selectable: true,
             selectHelper: true,
-            select: function(start, end, allDay) {
+            select: function (start, end, allDay) {
 
                 var tmp = moment(start);
                 var date = moment(start).date();
@@ -199,9 +199,9 @@ function manageSchedule(scheduleFactory, $scope, $element, $window, $timeout) {
                 $element.find('#calendar').fullCalendar('unselect');
             },
             editable: true,
-            
+
             droppable: false, // this allows things to be dropped onto the calendar !!!
-            drop: function(date, allDay) { // this function is called when something is dropped
+            drop: function (date, allDay) { // this function is called when something is dropped
 
                 // retrieve the dropped element's stored Event Object
                 var originalEventObject = $(this).data('eventObject');
@@ -231,9 +231,9 @@ function manageSchedule(scheduleFactory, $scope, $element, $window, $timeout) {
                 }
 
             },
-            
 
-            events: function(start, end, timezone, callback) {
+
+            events: function (start, end, timezone, callback) {
                 //alert(start);
                 var start1 = moment(start).format("MM/DD/YYYY");;
                 var end1 = moment(end).format("MM/DD/YYYY");;
@@ -243,107 +243,17 @@ function manageSchedule(scheduleFactory, $scope, $element, $window, $timeout) {
             }
         });
 
-        
 
 
-        //$element.find('#calendar').fullCalendar({
+
+    };
 
 
-        //    eventLimit: true, // allow "more" link when too many events
-        //    //events: $scope.Array,
-        //    cache: false,
-        //    dayClick: function (date, jsEvent, view) {
+    $scope.Init = function () {
 
-        //        $scope.selectedDate = date.date();
-        //        $scope.selectedMonth = date.month();
-        //        $scope.selectedYear = date.year();
-        //        $scope.GetAllQuotesForDate();
+        $scope.InitCalendar();
+        $scope.GetSchedule();
 
-        //    },
-        //    eventSources: {
-
-        //        url: '/Quote/GetSchedule1',
-        //        type: 'GET',
-        //        data: {
-        //            //start1: '123',
-        //            //end1: 'end',
-        //            franchiseid: 'da5605a7-ce5c-4253-934e-7f7fa72ce12d'//$scope.$parent.franchiseID
-        //        },
-        //        success: function (json) {
-
-        //            // $element.find('#calendar').fullCalendar('removeEvents', event.id);
-        //            $element.find('.fc-event').remove();
-        //            var done = [];
-        //            for (var i = 0; i < json.length; i++) {
-        //                var list = {};
-        //                var survey = {};
-
-        //                var otherEvent = {};
-
-        //                list = {};
-        //                list.total = 0;
-        //                survey = {};
-        //                survey.total = 0;
-
-        //                var tmpdate = moment.unix(json[i].start).date();
-        //                var tmpmonth = moment.unix(json[i].start).month();
-
-        //                var a = tmpdate + " " + tmpmonth;
-
-        //                if (done.indexOf(a) == -1) {
-
-        //                    done.push(a);
-        //                    for (var j = 0; j < json.length; j++) {
-        //                        if (moment.unix(json[j].start).date() == tmpdate && moment.unix(json[j].start).month() == tmpmonth) {
-
-
-        //                            if (json[j].title.indexOf("Quote") > -1) {
-        //                                list.total = list.total + 1;
-        //                                list.start = moment.unix(json[j].start);
-        //                            } else if (json[j].title.indexOf("Home") > -1) {
-        //                                survey.total = survey.total + 1;
-        //                                survey.start = moment.unix(json[j].start);
-        //                            } else {
-        //                                otherEvent.start = moment.unix(json[j].start);
-        //                                otherEvent.title = json[j].title;
-        //                                $element.find('#calendar').fullCalendar('renderEvent', otherEvent, false);
-        //                            }
-
-
-//                        }
-
-        //                    }
-        //                    if (list.total > 0) {
-        //                        list.title = list.total + " Quotes...";
-        //                        $element.find('#calendar').fullCalendar('renderEvent', list, false);
-
-        //                    }
-        //                    if (survey.total > 0) {
-        //                        survey.title = survey.total + " Surveys";
-
-
-        //                        $element.find('#calendar').fullCalendar('renderEvent', survey, false);
-        //                        //$('#calendar').fullCalendar('removeEvents', event.id);
-        //                    }
-        //                    //$('#calendar').fullCalendar('removeEvents', event.id);
-
-
-        //                }
-
-
-//            }
-        //            //$('#calendar').fullCalendar('removeEvents', event.id);
-        //            //alert(data);
-
-
-        //        },
-        //        error: function () {
-        //            alert('there was an error while fetching events!');
-        //        },
-        //        //color: 'yellow',   // a non-ajax option
-        //        //textColor: 'black' // a non-ajax option
-        //    }
-        //});
 
 
     };

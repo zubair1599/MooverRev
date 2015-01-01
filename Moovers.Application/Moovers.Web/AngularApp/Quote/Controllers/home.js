@@ -4,6 +4,8 @@ function home(homeFactory, $timeout, $scope) {
 
     $scope.Leads = [];
     $scope.canAddShipper = false;
+
+
     $scope.GetLeads = function () {
         homeFactory.GetLeads().then(function (data) {
 
@@ -11,6 +13,8 @@ function home(homeFactory, $timeout, $scope) {
 
         }, function (err) { alert("er"); });
     };
+
+
     $scope.GetStats = function() {
         homeFactory.GetQuoteStats('').then(function (data) {
             $scope.QuotesStats.Open = [];

@@ -46,9 +46,6 @@ function manageQuoteContact(quoteFactory, $scope, $element, $window, $timeout) {
 
     };
 
-    $scope.addShipper = function(){
-       // $scope.loca
-    }
 
     $scope.Init = function () {
         if ($scope.$parent.selectedQuote.Lookup !== undefined) {
