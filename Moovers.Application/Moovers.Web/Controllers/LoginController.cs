@@ -21,7 +21,7 @@ namespace MooversCRM.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "New");
             }
 
             return View();

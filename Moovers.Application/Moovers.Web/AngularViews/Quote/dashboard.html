@@ -110,7 +110,7 @@
                             <tbody>
                                 <tr ng-repeat="quote in RecentQuotes">
                                     <td>
-                                        <a href="#/quote?lookup={{quote.Lookup}}#/contacts" ng-bind="quote.Lookup"></a>
+                                        <a href="new/quote?lookup={{quote.Lookup}}#/contacts" ng-bind="quote.Lookup"></a>
                                     </td>
                                     <td>
                                         {{quote.MoveDate}}
@@ -155,7 +155,7 @@
                             <tbody>
                                 <tr ng-repeat="quote in MovingToday">
                                     <td>
-                                        <a href="#quote?lookup={{quote.Lookup}}#/contacts" ng-bind="quote.Lookup"></a>
+                                        <a href="/new/quote?lookup={{quote.Lookup}}#/contacts" ng-bind="quote.Lookup"></a>
                                     </td>
                                     <td>
                                         <a href="#" ng-bind="quote.AccountName"></a>

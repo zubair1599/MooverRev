@@ -1358,8 +1358,8 @@ h1 small, h2 small, h3 small, h1 .small, h2 .small, h3 .small {
 
 /* line 12, /Applications/MAMP/htdocs/ikoma3/scss/theme/imports/bootstrap_elem_overrides */
 .btn-default, .wizard-cancel, .wizard-back {
-  background-color: #383E44;
-  border-color: #383E44;
+  background-color: #66717C;
+  border-color: #66717C;
   color: #fff; }
 
 /* line 29, /Applications/MAMP/htdocs/ikoma3/scss/theme/imports/bootstrap_elem_overrides */
@@ -5769,38 +5769,30 @@ svg {
   position: fixed;
   right: 0;
   top: 120px;
-  width: 200px;
+  width: 300px;
   z-index: 1000;
-  transition: all 0.2s ease-in-out 0s; }
+  transition: all 0.2s ease-in-out 0s; 
+}
 
 /* line 10, /Applications/MAMP/htdocs/ikoma3/scss/theme/imports/demo */
 #config-tool #config-tool-cog {
   background: #fff;
-  border-radius: 3px 0 0 3px;
+  
   background-clip: padding-box;
   /* stops bg color from leaking outside the border: */
   box-shadow: -3px 3px 3px -2px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
+  cursor:pointer;
   left: -50px;
   padding: 10px;
   position: absolute;
   text-align: center;
   width: 50px;
-  transition: all 0.1s ease-in-out 0s;
+  
   top: 0; }
 
 /* line 23, /Applications/MAMP/htdocs/ikoma3/scss/theme/imports/demo */
 #config-tool.closed #config-tool-cog i {
-  /* -webkit-transform: rotate(-135deg);
-	-moz-transform: rotate(-135deg);
-	-o-transform: rotate(-135deg);
-	-ms-transform: rotate(-135deg);
-	transform: rotate(-135deg); */
-  -webkit-animation: rotating 3s linear infinite;
-  -moz-animation: rotating 3s linear infinite;
-  -ms-animation: rotating 3s linear infinite;
-  -o-animation: rotating 3s linear infinite;
-  animation: rotating 3s linear infinite; }
+ }
 
 /* line 31, /Applications/MAMP/htdocs/ikoma3/scss/theme/imports/demo */
 #config-tool.closed #config-tool-cog:hover {
@@ -6781,8 +6773,8 @@ svg {
   color: #fff; }
 /* line 162, /Applications/MAMP/htdocs/ikoma3/scss/theme/imports/skins/red */
 .theme-red .btn-primary {
-  background-color: #e84e40;
-  border-color: #dd191d; }
+  background-color: #F7941C;
+  border-color: #F7941C; }
 /* line 170, /Applications/MAMP/htdocs/ikoma3/scss/theme/imports/skins/red */
 .theme-red .btn-primary:hover, .theme-red .btn-primary:focus, .theme-red .btn-primary:active, .theme-red .btn-primary.active, .theme-red .open .dropdown-toggle.btn-primary {
   background-color: #dd191d;
