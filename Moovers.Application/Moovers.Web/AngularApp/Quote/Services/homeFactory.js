@@ -1,6 +1,6 @@
-﻿quoteApp.factory('homeFactory', ['$rootScope', '$http', '$q','$location', homeFactory]);
+﻿quoteApp.factory('homeFactory', ['$rootScope', '$http', '$q', '$location', '$location', homeFactory]);
 
-function homeFactory($rootScope, $http, $q, $location) {
+function homeFactory($rootScope, $http, $q, $location,$location) {
 
     var serviceDefer = new Object();
    

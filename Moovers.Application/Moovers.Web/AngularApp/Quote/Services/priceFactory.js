@@ -1,8 +1,16 @@
-﻿quoteApp.factory('priceFactory', ['$rootScope', '$http', '$q', '$resource', priceFactory]);
-function priceFactory($rootScope, $http, $q, $resource) {
+﻿quoteApp.factory('priceFactory', ['$rootScope', '$http', '$q', '$resource', '$location', priceFactory]);
+function priceFactory($rootScope, $http, $q, $resource,$location) {
 
     var serviceDefer = new Object();
-    serviceDefer.URL = 'http://localhost:50600';
+    var protpcol = $location.$$protocol + '://';
+    var host = $location.host();
+    var port = ':' + $location.port();
+
+
+    var url = protpcol + host + port;
+
+
+    serviceDefer.URL = url;
 
 
     serviceDefer.GetPriceDetails = function (lookup) {

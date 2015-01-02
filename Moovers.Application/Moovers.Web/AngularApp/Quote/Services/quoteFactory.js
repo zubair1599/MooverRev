@@ -1,11 +1,17 @@
-﻿quoteApp.factory('quoteFactory', ['$rootScope', '$http', '$q', quoteFactory]);
+﻿quoteApp.factory('quoteFactory', ['$rootScope', '$http', '$q', '$location', quoteFactory]);
 
-function quoteFactory($rootScope, $http, $q) {
+function quoteFactory($rootScope, $http, $q,$location) {
 
     var serviceDefer = new Object();
-    serviceDefer.servicePromise = '';
-    serviceDefer.searchResults = [];
-    serviceDefer.URL = 'http://localhost:50600';
+    var protpcol = $location.$$protocol + '://';
+    var host = $location.host();
+    var port = ':' + $location.port();
+
+
+    var url = protpcol + host + port;
+
+
+    serviceDefer.URL = url;
     var canceler;
 
     serviceDefer.GetPeopleJSON = function (searchQuery) {

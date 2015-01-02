@@ -61,7 +61,7 @@ namespace MooversCRM.Controllers
         {
 
             var repo = new QuoteRepository();
-            var list = repo.SearchQuotes(lookup).OrderByDescending(m=>m.Created).Take(10);
+            var list = repo.SearchQuotes(lookup).Where(m => (m.Status != QuoteStatus.Lost && m.Status != QuoteStatus.Completed)).OrderByDescending(m => m.Created).Take(10);
             var result = list.Select(m => new { CreatedDate = m.Created.ToShortDateString(), Name = m.Account.DisplayName, Lookup = m.Lookup , Franchise = m.Franchise.Icon.Replace(@"~",@"..") , Status = m.Status.GetDescription() }).ToList();
             return Json(result.SerializeToJson(1), JsonRequestBehavior.AllowGet);
 

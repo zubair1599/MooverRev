@@ -1,9 +1,18 @@
-﻿quoteApp.factory('addressFactory', ['$rootScope', '$http', '$q', '$resource',addressFactory]);
+﻿quoteApp.factory('addressFactory', ['$rootScope', '$http', '$q', '$resource', '$location', addressFactory]);
  
-function addressFactory($rootScope, $http, $q, $resource) {
+function addressFactory($rootScope, $http, $q, $resource,$location) {
     
     var serviceDefer = new Object();
-    serviceDefer.URL = 'http://localhost:50600';
+    var serviceDefer = new Object();
+    var protpcol = $location.$$protocol + '://';
+    var host = $location.host();
+    var port = ':' + $location.port();
+
+
+    var url = protpcol + host + port;
+
+
+    serviceDefer.URL = url;
 
 
     serviceDefer.GetStates = function () {

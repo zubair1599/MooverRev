@@ -123,11 +123,16 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
                 $scope.states = $scope.states.concat(index);
             });
 
+            if (!jQuery.isEmptyObject($scope.selectedStop)) {
 
-
-            var uri = encodeURI($scope.selectedStop.address.replace(/[#?$+,\/:&;=@%{}|\\\[\]\^~]/g, ""));
-            var url = "http://maps.googleapis.com/maps/api/streetview?size=400x300&location=" + uri + "&sensor=false";
-            $element.find('#mapImg').attr("src", url);
+                var uri = encodeURI($scope.selectedStop.address.replace(/[#?$+,\/:&;=@%{}|\\\[\]\^~]/g, ""));
+                var url = "http://maps.googleapis.com/maps/api/streetview?size=400x300&location=" + uri + "&sensor=false";
+                $element.find('#mapImg').attr("src", url);
+            }
+            else {
+                $element.find('#mapImg').attr("src", "");
+            }
+            
 
 
             $timeout(function () {
@@ -207,7 +212,9 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
         quoteFactory.UpdateStops($scope.$parent.selectedQuote.QuoteID, $scope.$parent.selectedQuote.Stops);
         quoteFactory.servicePromise.promise.then(function (stopsIdjson) {
             $scope.RefreshStops();
+            $scope.selectedStop = {};
         });
+
     };
 
     $scope.DeleteStop = function() {

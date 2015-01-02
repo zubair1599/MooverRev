@@ -177,7 +177,7 @@
                                         <td>State</td>
                                         <td>
                                             <select name="state" id="state" class="form-control" ng-model="selectedStop.state">
-                                                <option ng-repeat="st in states" value="{{statesCodes[$index]}}">
+                                                <option ng-repeat="st in states track by $index" value="{{statesCodes[$index]}}">
                                                     {{st}}
                                                 </option>
 

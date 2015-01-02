@@ -1,10 +1,18 @@
-﻿quoteApp.factory('scheduleFactory', ['$rootScope', '$http', '$q', '$resource', scheduleFactory]);
+﻿quoteApp.factory('scheduleFactory', ['$rootScope', '$http', '$q', '$resource', '$location', scheduleFactory]);
 
-function scheduleFactory($rootScope , $http , $q , $resource) {
+function scheduleFactory($rootScope , $http , $q , $resource,$location) {
   
     
     var serviceDefer = new Object();
-    serviceDefer.URL = 'http://localhost:50600';
+    var protpcol = $location.$$protocol + '://';
+    var host = $location.host();
+    var port = ':' + $location.port();
+
+
+    var url = protpcol + host + port;
+
+
+    serviceDefer.URL = url;
 
     serviceDefer.GetScheduleForQuote = function (id) {
         //serviceDefer.servicePromise = $q.defer();

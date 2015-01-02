@@ -2226,6 +2226,9 @@
     <Content Include="static\js\newTemplate\flot\excanvas.js" />
     <Content Include="static\js\newTemplate\flot\excanvas.min.js" />
     <Content Include="static\js\newTemplate\flot\jquery.flot.axislabels.js" />
+    <Content Include="static\js\newTemplate\flot\jquery.flot.axislabels.min.js">
+      <DependentUpon>jquery.flot.axislabels.js</DependentUpon>
+    </Content>
     <Content Include="static\js\newTemplate\flot\jquery.flot.canvas.js" />
     <Content Include="static\js\newTemplate\flot\jquery.flot.canvas.min.js" />
     <Content Include="static\js\newTemplate\flot\jquery.flot.categories.js" />
@@ -2243,6 +2246,9 @@
     <Content Include="static\js\newTemplate\flot\jquery.flot.navigate.js" />
     <Content Include="static\js\newTemplate\flot\jquery.flot.navigate.min.js" />
     <Content Include="static\js\newTemplate\flot\jquery.flot.orderBars.js" />
+    <Content Include="static\js\newTemplate\flot\jquery.flot.orderBars.min.js">
+      <DependentUpon>jquery.flot.orderBars.js</DependentUpon>
+    </Content>
     <Content Include="static\js\newTemplate\flot\jquery.flot.pie.js" />
     <Content Include="static\js\newTemplate\flot\jquery.flot.pie.min.js" />
     <Content Include="static\js\newTemplate\flot\jquery.flot.resize.js" />
@@ -2258,10 +2264,20 @@
     <Content Include="static\js\newTemplate\flot\jquery.flot.time.js" />
     <Content Include="static\js\newTemplate\flot\jquery.flot.time.min.js" />
     <Content Include="static\js\newTemplate\fullcalendar.js" />
+    <Content Include="static\js\newTemplate\gdp-data.js" />
+    <Content Include="static\js\newTemplate\gdp-data.min.js" />
+    <Content Include="static\js\newTemplate\hogan.js" />
+    <Content Include="static\js\newTemplate\hogan.min.js" />
     <Content Include="static\js\newTemplate\hopscotch.js" />
     <Content Include="static\js\newTemplate\hopscotch.min.js" />
+    <Content Include="static\js\newTemplate\jquery-jvectormap-1.1.1.min.js" />
+    <Content Include="static\js\newTemplate\jquery-jvectormap-1.2.2.min.js" />
+    <Content Include="static\js\newTemplate\jquery-jvectormap-world-merc-en.js" />
+    <Content Include="static\js\newTemplate\jquery-jvectormap-world-merc-en.min.js" />
     <Content Include="static\js\newTemplate\jquery-ui.custom.js" />
     <Content Include="static\js\newTemplate\jquery-ui.custom.min.js" />
+    <Content Include="static\js\newTemplate\jquery.dataTables.bootstrap.js" />
+    <Content Include="static\js\newTemplate\jquery.dataTables.bootstrap.min.js" />
     <Content Include="static\js\newTemplate\jquery.dataTables.js" />
     <Content Include="static\js\newTemplate\jquery.dataTables.min.js" />
     <Content Include="static\js\newTemplate\jquery.easypiechart.js" />
@@ -4248,8 +4264,8 @@
     <Content Include="static\js\template\jquery.nanoscroller.js" />
     <Content Include="static\js\template\jquery.nanoscroller.min.js" />
     <Content Include="static\js\template\jquery.nouislider.min.js" />
-    <Content Include="static\js\template\jquery.slimscroll.js" />
-    <Content Include="static\js\template\jquery.slimscroll.min.js" />
+    <Content Include="static\js\newTemplate\jquery.slimscroll.js" />
+    <Content Include="static\js\newTemplate\jquery.slimscroll.min.js" />
     <Content Include="static\js\template\jquery.sparkline.js" />
     <Content Include="static\js\template\jquery.sparkline.min.js" />
     <Content Include="static\js\template\locales\bootstrap-datepicker.ar.js" />
@@ -6910,6 +6926,16 @@
     </Content>
     <Content Include="static\js\newTemplate\ckeditor\plugins\docprops\dialogs\docprops.min.js.map">
       <DependentUpon>docprops.min.js</DependentUpon>
+    </Content>
+    <Content Include="static\js\newTemplate\hogan.min.js.map" />
+    <Content Include="static\js\newTemplate\gdp-data.min.js.map" />
+    <Content Include="static\js\newTemplate\jquery-jvectormap-world-merc-en.min.js.map" />
+    <Content Include="static\js\newTemplate\jquery.dataTables.bootstrap.min.js.map" />
+    <Content Include="static\js\newTemplate\flot\jquery.flot.axislabels.min.js.map">
+      <DependentUpon>jquery.flot.axislabels.min.js</DependentUpon>
+    </Content>
+    <Content Include="static\js\newTemplate\flot\jquery.flot.orderBars.min.js.map">
+      <DependentUpon>jquery.flot.orderBars.min.js</DependentUpon>
     </Content>
     <None Include="Web.Beta.config">
       <DependentUpon>Web.config</DependentUpon>
