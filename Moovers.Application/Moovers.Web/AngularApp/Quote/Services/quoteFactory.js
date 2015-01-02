@@ -25,9 +25,11 @@ function quoteFactory($rootScope, $http, $q,$location) {
                 serviceDefer.customerJson = '';
 
                 serviceDefer.servicePromise = $q.defer();
-
+                
                 $http.get(serviceDefer.URL + '/Accounts/All?q=' + searchQuery + '&page=' + i + '&take=' + take).success(function (customerJson) {
-                    serviceDefer.searchResults = serviceDefer.searchResults.concat(customerJson);
+
+                    serviceDefer.searchResults = [];
+                    serviceDefer.searchResults = customerJson;
                     //serviceDefer.servicePromise.resolve(customerJson);
                     
 

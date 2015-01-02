@@ -141,7 +141,7 @@
     
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/managePricing.min.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/manageSchedule.min.js" />
-    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/manageStops.js" />
+    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/manageStops.min.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/quoteHome.min.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/manageContact.min.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Controllers/manageQuoteContact.min.js" />
@@ -150,10 +150,10 @@
     
 	
     
-    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Directives/addQuoteDialog.js" />
+    <!--<JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Directives/addQuoteDialog.js" />
     <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Directives/addressStopDialog.js" />
-    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Directives/customerSearchDialog.js" />
-    <JavaScriptFiles Include="$(ProjectDir)/Scripts/draganddrop.js" />
+    <JavaScriptFiles Include="$(ProjectDir)AngularApp/Quote/Directives/customerSearchDialog.js" />-->
+    <JavaScriptFiles Include="$(ProjectDir)/Scripts/draganddrop.min.js" />
     
 	
 

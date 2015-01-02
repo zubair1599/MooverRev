@@ -935,7 +935,7 @@ be a descendant of the grid when it is being dragged.
 .fc-time-grid-event.fc-short .fc-title {
 	/* put the time and title on the same line */
 	display: inline-block;
-	vertical-align: top;
+	vertical-align: middle;
 }
 
 .fc-time-grid-event.fc-short .fc-time span {
