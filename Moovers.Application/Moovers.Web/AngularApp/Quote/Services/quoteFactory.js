@@ -55,7 +55,7 @@ function quoteFactory($rootScope, $http, $q,$location) {
             canceler = $q.defer();
        
         $http.get(serviceDefer.URL + '/Accounts/All?q=' + searchQuery + '&page=' + i + '&take=' + take, { timeout: canceler.promise }).success(function (customerJson) {
-                    serviceDefer.searchResults = serviceDefer.searchResults.concat(customerJson);
+            serviceDefer.searchResults = customerJson;
                     canceler.resolve(customerJson);
         }).
         error(function (data, status, headers, config) {
