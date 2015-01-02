@@ -77,7 +77,7 @@
     <div id="theme-wrapper" ng-controller="home">
         <header class="navbar" id="header-navbar">
             <div class="container">
-                <a href="#/dasboard" id="logo" class="navbar-brand">
+                <a href="~/new/index#/dasboard" id="logo" class="navbar-brand">
 
                     <img src="~/static/img/Logo2.png" style="width: 150px;height:25px" alt="" class="normal-logo logo-white" />
 
@@ -293,7 +293,7 @@
                                     <li class="item first-item" ng-repeat="item in quoteLookupQueryResults">
                                         <a href="">
                                             <i>
-                                                <img src="{{item.Franchise}}" style="width:15px" />
+                                                <img ng-src="{{item.Franchise}}" style="width:15px" />
                                             </i>
 
                                             <span ng-click="QuoteNavigate(item.Lookup)" class="content" style="margin-left: 10px">

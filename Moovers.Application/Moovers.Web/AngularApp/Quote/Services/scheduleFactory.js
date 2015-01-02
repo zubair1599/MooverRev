@@ -11,7 +11,7 @@ function scheduleFactory($rootScope , $http , $q , $resource) {
         var test = $q.defer();
         $http.get(serviceDefer.URL + '/Quote/ScheduleJson/?id=' + id).
               success(function (data, status, headers, config) {
-
+                   
                   //serviceDefer.servicePromise = $q.defer();
                   test.resolve(data);
                   //return serviceDefer.servicePromise.promise;

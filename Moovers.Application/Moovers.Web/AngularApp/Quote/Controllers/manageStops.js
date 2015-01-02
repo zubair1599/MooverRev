@@ -25,7 +25,6 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
             $scope.$parent.selectedQuote.Stops = (data);
             $scope.SetDistanceTimes();
 
-            //$scope.SetAllRooms();
         });
 
 
@@ -180,7 +179,6 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
 
                 });
             });
-            //$scope.$apply();
         });
 
 
@@ -208,7 +206,7 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
         $scope.$parent.selectedQuote.Stops.push($scope.selectedStop);
         quoteFactory.UpdateStops($scope.$parent.selectedQuote.QuoteID, $scope.$parent.selectedQuote.Stops);
         quoteFactory.servicePromise.promise.then(function (stopsIdjson) {
-            $scope.RefreshStops();//Init();
+            $scope.RefreshStops();
         });
     };
 
@@ -217,7 +215,6 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
         var id = $scope.selectedStop.id;
         quoteFactory.DeleteStop(id);
         quoteFactory.servicePromise.promise.then(function (data) {
-            //alert(data);
             if (data=='OK') {
                 $scope.RefreshStops();
                
@@ -263,10 +260,6 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
                 $scope.selectedStop.state = vals.state;
                 $scope.selectedStop.zip = vals.zip;
 
-                //element.find('#street1').val(vals.street1);
-                //element.find('#city').val(vals.city);
-                //element.find('#state').val(vals.state);
-                //element.find('#zip').val(vals.zip);
                 var address = new Object();
                 address.street1 = vals.street1;
                 address.street2 = '';
@@ -295,7 +288,6 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
                     if (verifiedAddress.length > 0) {
 
                         $scope.verifiedAddress = verifiedAddress;
-                        // alert();
 
                         $element.find('#unverifiedAddressResult').empty();
                         $element.find('#verifiedAddressResult').empty();
@@ -317,7 +309,6 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
                                 $scope.selectedStop.city = $scope.verifiedAddress[t].json.components.city_name;
                                 $scope.selectedStop.state = $scope.verifiedAddress[t].json.components.state_abbreviation;
                                 $scope.$apply();
-                                //alert($scope.verifiedAddress[t].json.delivery_line_1);
                             });
 
                             radioBtn.appendTo($element.find(mainDiv));
@@ -355,13 +346,10 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
 
 
 
-                //Utility.objectToForm(vals, Stops.elements.stopModal.find("form.addr-search"));
                 if (vals.zip) {
-                    // Stops.elements.stopModal.find("form.addr-search").find("[type=submit]").click();
                 }
             } else if (place.name) {
                 $element.find('#street1').val(place.name).focus();
-                //Stops.elements.stopModal.find("form.addr-search [name=street1]").val(place.name).focus();
 
             }
         });
@@ -402,7 +390,6 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
                 $scope.loadFirstTime = false;
 
                 $scope.verifiedAddress = verifiedAddress;
-                // alert();
 
                 $element.find('#unverifiedAddressResult').empty();
                 $element.find('#verifiedAddressResult').empty();
@@ -424,7 +411,6 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
                         $scope.selectedStop.city = $scope.verifiedAddress[t].json.components.city_name;
                         $scope.selectedStop.state = $scope.verifiedAddress[t].json.components.state_abbreviation;
                         $scope.$apply();
-                        //alert($scope.verifiedAddress[t].json.delivery_line_1);
                     });
 
                     radioBtn.appendTo($element.find(mainDiv));
@@ -517,7 +503,6 @@ function manageStops(quoteFactory, addressFactory, $timeout, $scope, $element, $
         $scope.Init();
 
 
-    //No init functions getting data from parent in init.
 
 
 };

@@ -3,8 +3,6 @@
 
 function quoteHome(quoteFactory,addressFactory,inventoryFactory,utilityFactory, $scope, $window, $timeout,$q) {
 
-    //var contt = this;
-
     $scope.currentTab = 0;
     $scope.canAddShipper= true;
     $scope.selectedQuote = {};
@@ -52,7 +50,6 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory,utilityFactory, 
             $scope.QuoteQuickLook.DriveDuration = utilityFactory.formatHours($scope.QuoteQuickLook.DriveDuration, true);
             $scope.QuoteQuickLook.TotalDuration = utilityFactory.getEstimateString($scope.QuoteQuickLook.TotalDuration);
             $scope.QuoteQuickLook.LaborDuration = utilityFactory.formatHours($scope.QuoteQuickLook.LaborDuration, 15, true);
-           // $scope.QuoteQuickLook.DriveDuration = utilityFactory.formatHours($scope.QuoteQuickLook.DriveDuration, true);
             $scope.QuoteQuickLook.FinalPostedPrice = utilityFactory.formatCurrency($scope.QuoteQuickLook.FinalPostedPrice);
             $scope.QuoteQuickLook.Balance = utilityFactory.formatCurrency($scope.QuoteQuickLook.Balance);
             $scope.QuoteQuickLook.FinalPrice = utilityFactory.formatCurrency($scope.QuoteQuickLook.FinalPrice);
@@ -93,30 +90,20 @@ function quoteHome(quoteFactory,addressFactory,inventoryFactory,utilityFactory, 
             $scope.currentTab = 0;
             $scope.selectedQuote.Lookup = lookup;
             $scope.UpdateQuicklook();
-            //$scope.GetFranchise();
             quoteFactory.GetRecentQuote(lookup).then(function (data) {
 
                 $scope.selectedQuote = data.quote;
-
-                //$scope.GetFranchise();
-                //$scope.SetAllRooms();
 
 
             });
         } else if (typeof quote !== 'undefined') {
             $scope.selectedQuote = quote;
             $scope.UpdateQuicklook();
-            //$scope.GetFranchise();
             $scope.SetAllRooms();
-
-            //$scope.SetDistanceTimes();
         }
     };
 
 
-
-
-    ////Initial functions
     $scope.Init();
 };
     

@@ -1,5 +1,5 @@
 ﻿quoteApp.factory('accountFactory', ['$location', '$http', '$q', utilityFactory]);
-
+ 
 function utilityFactory($location,$http,$q) {
     
     var serviceDefer = new Object();

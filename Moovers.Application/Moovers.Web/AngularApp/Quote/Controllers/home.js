@@ -24,18 +24,12 @@ function home(homeFactory, $timeout, $scope,$element,$window) {
 
             $element.find('#searchResultsHeader').addClass('open');
             var arr = JSON.parse(data);
-            //jQuery.each(arr, function (Franchise, value) {
-            //    Franchise = "../"+value.substr(1, value.length);
-            //});
+           
             $scope.quoteLookupQueryResults = arr;
             $element.click(function() {
                 $element.find('#searchResultsHeader').removeClass('open');
             });
-            //$element.find('#searchResultsHeader').mouseout(function() {
-
-            //    $element.find('#searchResultsHeader').removeClass('open');
-
-            //});
+           
 
         }, function(err) {
           
@@ -50,7 +44,7 @@ function home(homeFactory, $timeout, $scope,$element,$window) {
     $scope.QuoteNavigate = function(lookup) {
         
 
-        $window.location.assign('/new/quote?lookup=' + lookup);
+        $window.location.assign('/new/quote?lookup=' + lookup+ '#/contacts');
     };
 
 

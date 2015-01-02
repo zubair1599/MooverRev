@@ -46,7 +46,6 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
             $scope.GetUnassignedRoom();
         });
         
-        //$scope.$apply();
 
     };
 
@@ -54,8 +53,6 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
         $scope.AllInventories = [];
         for (var i = 0; i < $scope.AllRooms.length; i++) {
 
-            //itemrel.Item.Name
-            //itemrel.Count
             var added = false;
             for (var j = 0; j < $scope.AllRooms[i].Items.length; j++) {
 
@@ -92,7 +89,6 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
 
     $scope.onDrop = function($event, $data,room) {
 
-        // alert($data.RoomID);
         $scope.ChangeInventoryRoom($data, room);
 
     }
@@ -102,7 +98,6 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
 
         $scope.roomToDropItem = room;
         $scope.inventoryItemstoDrag = item;
-        //$scope.inventoryItemstoDrag.RoomInverntoryItemID = null;
         $scope.roomToDropItem.Items.push($scope.inventoryItemstoDrag);
 
 
@@ -112,7 +107,6 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
                 $scope.AllRooms[i] = $scope.roomToDropItem;
                 newRoom = i;
             }
-            //break;
         }
         for (var j = 0; j < $scope.AllRooms.length; j++) {
            
@@ -131,17 +125,11 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
         var quoteid = $scope.$parent.selectedQuote.QuoteID;
         inventoryFactory.UpdateInventory(quoteid, roomStr).then(function (updatesJson) {
 
-            //$scope.$parent.RefreshStops();
-            //$scope.Init();
-            //alert(updatesJson);
-            //$scope.ClearRoomBox(); - undo comment to clear dialog
         }, function(e) {
-            //$scope.$parent.RefreshStops();
             alert("Error");
 
         });
 
-        //alert();
         
     };
   
@@ -175,10 +163,6 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
                         var quoteid = $scope.$parent.selectedQuote.QuoteID;
                         inventoryFactory.UpdateInventory(quoteid, roomStr).then(function (updatesJson) {
                             $scope.$parent.UpdateQuicklook();
-                            //$scope.$parent.RefreshStops();
-                            //$scope.Init();
-                            //alert(updatesJson);
-                            //$scope.ClearRoomBox(); - undo comment to clear dialog
                         }, function (e) {
                             $scope.$parent.RefreshStops();
                             alert("Error");
@@ -193,7 +177,6 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
     };
 
     $scope.SetSelectedRoom = function(room) {
-        //alert(room.Type);
         $scope.selectedRoom = room;
 
 
@@ -203,7 +186,6 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
     $scope.UpdateRoom = function () {
 
 
-        //for edit rooms , check stop id  here
         if ($scope.selectedRoom.Type == 'Other') {
             $scope.selectedRoom.Type = $scope.selectedRoom.TypeOther;
         }
@@ -219,18 +201,13 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
         }
 
 
-        //fucntion takes json of all ROOMS
         $scope.AllRooms.push($scope.selectedRoom);
 
-        //$scope.selectedStop.rooms.push($scope.selectedRoom);
         var roomStr = JSON.stringify($scope.AllRooms);
         var quoteid = $scope.$parent.selectedQuote.QuoteID;
         inventoryFactory.UpdateInventory(quoteid, roomStr).then(function(updatesJson) {
-            //$scope.$parent.UpdateQuicklook();
             $scope.SetAllRooms();
             $scope.Init();
-            //alert(updatesJson);
-            //$scope.ClearRoomBox(); - undo comment to clear dialog
         });
 
 
@@ -330,14 +307,12 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
             questionName.appendTo($element.find('#' + questionId));
             if ($scope.selectedItem.AdditionalQuestions[i].Options.length>0) {
                 
-                //list 
                 var list = $('<select class="form-control">').appendTo('#' + questionId);
                 for (var j = 0; j < $scope.selectedItem.AdditionalQuestions[i].Options.length; j++) {
                     list.append($("<option>").attr('value', j).text($scope.selectedItem.AdditionalQuestions[i].Options[j].Option));
 
                 }
             } else {
-                //check box
                 var radioBtn = $('<input type="checkbox" name="check' + i + '" id="check' + i + '" />');
                 radioBtn.appendTo($element.find('#' + questionId));
             }

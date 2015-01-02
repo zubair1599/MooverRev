@@ -10,7 +10,7 @@ function quoteFactory($rootScope, $http, $q) {
 
     serviceDefer.GetPeopleJSON = function (searchQuery) {
 
-        var take = 50;
+        var take = 50; 
 
         if (searchQuery=='') {
             var i = 0;

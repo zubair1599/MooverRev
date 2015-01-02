@@ -12,7 +12,7 @@ function priceFactory($rootScope, $http, $q, $resource) {
         $http.get(serviceDefer.URL + '/Quote/PricingJson/?id='+lookup).success(function (priceData) {
             // serviceDefer.servicePromise.resolve(returnedData);
             test.resolve(priceData);
-
+             
         }).
        error(function (data, status, headers, config) {
            //serviceDefer.servicePromise.reject();

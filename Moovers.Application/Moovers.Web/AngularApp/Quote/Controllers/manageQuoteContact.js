@@ -51,8 +51,6 @@ function manageQuoteContact(quoteFactory, $scope, $element, $window, $timeout) {
         if ($scope.$parent.selectedQuote.Lookup !== undefined) {
             $scope.GetCustomerFromQuote($scope.$parent.selectedQuote.Lookup);
         }
-        //$scope.defaultSearch = true;
-        //$scope.SearchForCustomer('j')       
     }
     $scope.Init();
 };

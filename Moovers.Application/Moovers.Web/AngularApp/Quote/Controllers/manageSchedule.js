@@ -24,13 +24,11 @@ function manageSchedule(scheduleFactory, $scope, $element, $window, $timeout) {
     $scope.ScheduleQuote = function () {
 
 
-        //var model = new Object();
         $scope.model.rangestart = $scope.rangestart;
         $scope.model.rangeend = $scope.rangeend;
         $scope.model.movers = $scope.movers;
         $scope.model.paymentType = 'NO_CARD';
         $scope.model.quoteid = $scope.$parent.selectedQuote.QuoteID;
-        //$scope.model.crew = crew;
 
 
         scheduleFactory.ScheduleJob($scope.$parent.selectedQuote.QuoteID, $scope.model).then(function (data) {
@@ -67,7 +65,6 @@ function manageSchedule(scheduleFactory, $scope, $element, $window, $timeout) {
 
     $scope.OpenSchedule = function (index) {
 
-        //$scope.scheduleForQuote.CrewSize[index]
         $scope.model.crew = index + 1;
 
     };
@@ -79,8 +76,6 @@ function manageSchedule(scheduleFactory, $scope, $element, $window, $timeout) {
 
         scheduleFactory.GetScheduleForMonth(start, end, franchiseId).then(function (json) {
 
-            //$element.find('#calendar').fullCalendar('removeEvents', event.id);
-            // $element.find('.fc-event').remove();
             var done = [];
             for (var i = 0; i < json.length; i++) {
                 var list = {};
@@ -132,9 +127,7 @@ function manageSchedule(scheduleFactory, $scope, $element, $window, $timeout) {
 
 
                         $element.find('#calendar').fullCalendar('renderEvent', survey, false);
-                        //$('#calendar').fullCalendar('removeEvents', event.id);
                     }
-                    //$('#calendar').fullCalendar('removeEvents', event.id);
 
 
                 }
@@ -174,7 +167,6 @@ function manageSchedule(scheduleFactory, $scope, $element, $window, $timeout) {
                 center: 'title',
                 right: 'month,agendaWeek,agendaDay'
             },
-            //isRTL: $('body').hasClass('rtl'), //rtl support for calendar
             selectable: true,
             selectHelper: true,
             select: function (start, end, allDay) {
@@ -189,10 +181,6 @@ function manageSchedule(scheduleFactory, $scope, $element, $window, $timeout) {
                 $scope.selectedMonth = month;
                 $scope.selectedYear = year;
 
-                //tmp.month
-                //$scope.selectedDate = moment(start).add(1, 'M').date();;
-                //$scope.selectedMonth = moment(start).add(1,'M').month();
-                //$scope.selectedYear = moment(start).add(1, 'M').year();
                 $scope.GetAllQuotesForDate();
 
 
@@ -200,33 +188,25 @@ function manageSchedule(scheduleFactory, $scope, $element, $window, $timeout) {
             },
             editable: true,
 
-            droppable: false, // this allows things to be dropped onto the calendar !!!
-            drop: function (date, allDay) { // this function is called when something is dropped
+            droppable: false, 
+            drop: function (date, allDay) { 
 
-                // retrieve the dropped element's stored Event Object
                 var originalEventObject = $(this).data('eventObject');
 
-                // we need to copy it, so that multiple events don't have a reference to the same object
                 var copiedEventObject = $.extend({}, originalEventObject);
 
-                // assign it the date that was reported
                 copiedEventObject.start = date;
                 copiedEventObject.allDay = allDay;
 
-                // copy label class from the event object
                 var labelClass = $(this).data('eventclass');
 
                 if (labelClass) {
                     copiedEventObject.className = labelClass;
                 }
 
-                // render the event on the calendar
-                // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
                 $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
 
-                // is the "remove after drop" checkbox checked?
                 if ($('#drop-remove').is(':checked')) {
-                    // if so, remove the element from the "Draggable Events" list
                     $(this).remove();
                 }
 
@@ -234,7 +214,6 @@ function manageSchedule(scheduleFactory, $scope, $element, $window, $timeout) {
 
 
             events: function (start, end, timezone, callback) {
-                //alert(start);
                 var start1 = moment(start).format("MM/DD/YYYY");;
                 var end1 = moment(end).format("MM/DD/YYYY");;
                 $scope.getEventMonth(start1, end1, $scope.$parent.selectedQuote.FranchiseID);

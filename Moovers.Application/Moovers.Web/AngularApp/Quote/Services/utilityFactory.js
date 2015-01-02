@@ -71,7 +71,7 @@ function utilityFactory($location) {
         // > 12 hours = 4 hour range
         return Math.ceil(hours) + " - " + Math.ceil(hours + 4) + " Hours";
     };
-
+     
 
 
 

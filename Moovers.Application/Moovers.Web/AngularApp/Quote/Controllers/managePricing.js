@@ -29,15 +29,6 @@ function managePricing(priceFactory,utilityFactory, $scope, $element, $window, $
         $scope.truckPriceDestination = $scope.PricingDetails.QuotePriceDetails.TRUCK_DESTINATION_MULTIPLIER;
         $scope.currentHour = $scope.PricingDetails.QuotePriceDetails.CURRENT_HOUR;
 
-        
-
-        //$scope.PricingDetails.QuotePriceDetails.Trucks
-        //$scope.PricingDetails.QuotePriceDetails.CrewSize
-        //$scope.PricingDetails.QuotePriceDetails.HourlyData.CustomerTimeEstimate
-
-
-        
-
         var perHour = ($scope.personPrice * $scope.PricingDetails.QuotePriceDetails.CrewSize) + ($scope.truckPrice * $scope.PricingDetails.QuotePriceDetails.Trucks);
         var firstHour = ($scope.personPriceDestination * $scope.PricingDetails.QuotePriceDetails.CrewSize) + ($scope.PricingDetails.QuotePriceDetails.Trucks * $scope.truckPriceDestination) + perHour;
 
@@ -46,7 +37,6 @@ function managePricing(priceFactory,utilityFactory, $scope, $element, $window, $
             firstHour += additionalDestination;
         }
 
-        //var valuation = parseFloat($("[name=valuationTypeHourly] :selected").data("cost"));
 
         var cost = (($scope.PricingDetails.QuotePriceDetails.HourlyData.CustomerTimeEstimate - 1) * perHour) + firstHour + 0;
 
@@ -61,8 +51,6 @@ function managePricing(priceFactory,utilityFactory, $scope, $element, $window, $
 
         $scope.hourlyLinePrice = utilityFactory.formatCurrency(perHour) + " /hour";
         $scope.$parent.UpdateQuicklook();
-        // $("#hourly-pricing-summary").show();
-        // $("#guaranteed-pricing-summary").hide();
 
 
     };
@@ -81,7 +69,6 @@ function managePricing(priceFactory,utilityFactory, $scope, $element, $window, $
 
     $scope.ChangeValuation = function() {
 
-        //alert($scope.valuationID);
         for (var i = 0; i < $scope.PricingDetails.ReplacementValuationOptionsGuaranteed.length; i++) {
             if ($scope.PricingDetails.ReplacementValuationOptionsGuaranteed[i].ValuationTypeID == $scope.valuationID) {
                 $scope.valuation = $scope.PricingDetails.ReplacementValuationOptionsGuaranteed[i];
@@ -140,7 +127,6 @@ function managePricing(priceFactory,utilityFactory, $scope, $element, $window, $
 
        
         var tquoteID = $scope.$parent.selectedQuote.QuoteID;
-        // var adjustment = parseInt(-$scope.discountAmount);
         var adjustment = parseInt($scope.finaldiscountAmount);
         var trucks = $scope.PricingDetails.QuotePriceDetails.PricingTrucks;
         var packingMaterials = null;
@@ -224,7 +210,6 @@ function managePricing(priceFactory,utilityFactory, $scope, $element, $window, $
 
         priceFactory.GetPriceDetails($scope.$parent.selectedQuote.Lookup).then(function (json) {
 
-            //$scope.$parent.SetCustomer(json, id);
 
             var price = json;
             $scope.PricingDetails = price;
@@ -246,7 +231,6 @@ function managePricing(priceFactory,utilityFactory, $scope, $element, $window, $
                 $scope.SetDiscountPriority('percent', $scope.PricingDetails.AdjustmentPercentage);
 
             }
-            //$scope.valuation = $scope.PricingDetails.ReplacementValuationOptionsGuaranteed[1];
             if ($scope.PricingDetails.QuotePriceDetails.HourlyData) {
 
                 if (!$scope.PricingDetails.QuotePriceDetails.HourlyData.CustomerTimeEstimate) {

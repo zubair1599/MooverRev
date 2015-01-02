@@ -52,7 +52,6 @@ function manageContact(accountFactory,addressFactory, quoteFactory, $scope, $ele
 
             $scope.newBusinessAccount = JSON.parse(data);
             delete $scope.newBusinessAccount.Account.Lookup;
-            //$scope.newAccount = $scope.newBusinessAccount; // remove this and bind type on Initnew account by type
         }, function (err) {
 
 
@@ -68,7 +67,6 @@ function manageContact(accountFactory,addressFactory, quoteFactory, $scope, $ele
 
             $scope.newPersonAccount = JSON.parse(data);
             delete $scope.newPersonAccount.Account.Lookup;
-            //$scope.newAccount = $scope.newBusinessAccount; // remove this and bind type on Initnew account by type
         }, function (err) {
 
 
@@ -145,9 +143,7 @@ function manageContact(accountFactory,addressFactory, quoteFactory, $scope, $ele
             };
             quoteFactory.AddQuote(para).then(function (json) {
 
-               // $scope.$parent.SetQuote(json.quote);
                 window.location.assign('/new/quote?lookup=' + json.lookup);
-               // $location.path('/quote');
 
 
             });
@@ -157,9 +153,6 @@ function manageContact(accountFactory,addressFactory, quoteFactory, $scope, $ele
     };
 
     $scope.Init = function () {
-        //if ($scope.$parent.selectedQuote.Lookup !== undefined) {
-        //    $scope.GetCustomerFromQuote($scope.$parent.selectedQuote.Lookup);
-        //}
         $scope.canAddShipper = $scope.$parent.canAddShipper;
         $scope.NewBusiness();
         $scope.defaultSearch = true;

@@ -1,10 +1,9 @@
-﻿/// <reference path="E:\ASP.NET\Moovers\Moovers\Moovers.Application\Moovers.Web\AngularViews/Quote/contacts.html" />
-/// <reference path="E:\ASP.NET\Moovers\Moovers\Moovers.Application\Moovers.Web\AngularViews/Quote/contacts.html" />
+﻿
 var quoteApp = angular.module('quoteApp', ['ngRoute', 'ngResource', 'ngAnimate', 'angular-loading-bar', 'ngDragDrop', 'easypiechart']);
 
 
 
-quoteApp.config(['$routeProvider', '$locationProvider','cfpLoadingBarProvider',
+quoteApp.config(['$routeProvider', '$locationProvider', 'cfpLoadingBarProvider',
   function ($routeProvider, $locationProvider, cfpLoadingBarProvider) {
       //$locationProvider.html5Mode(true);
 
@@ -31,14 +30,14 @@ quoteApp.config(['$routeProvider', '$locationProvider','cfpLoadingBarProvider',
 
           }).when('/stops', {
               templateUrl: '/AngularViews/Quote/stops.html',
-              
+
               name: 'stop view'
           }).when('/inventory', {
               templateUrl: '/AngularViews/Quote/inventory.html',
               name: 'inventory view'
           }).when('/contacts', {
               templateUrl: '/AngularViews/Quote/contacts.html'
-              
+
           }).when('/pricing', {
               templateUrl: '/AngularViews/Quote/pricing.html'
 
@@ -55,7 +54,7 @@ quoteApp.config(['$routeProvider', '$locationProvider','cfpLoadingBarProvider',
               templateUrl: '/AngularViews/Quote/dashboard.html'
 
           }).otherwise({
-              redirectTo:'/'
+              redirectTo: '/'
 
           });
       //$locationProvider.html5Mode(true).hashPrefix('!');

@@ -134,15 +134,10 @@ function dashboard(homeFactory, $timeout, $scope) {
     
     $scope.Init = function() {
         
-        //$scope.GetLeads();
         $scope.GetDashboardData();
-       // $scope.MovingToday();
         $scope.GetStats();
-        //$scope.SetLeadCount();
         $scope.GetStorageCount();
         $scope.GetJobsForUser();
-        //$scope.GetSurveys();
-        //$scope.GetMessages();
     };
 
     $scope.Init();
