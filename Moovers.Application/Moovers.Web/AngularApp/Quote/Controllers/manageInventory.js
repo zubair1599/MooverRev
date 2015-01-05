@@ -258,7 +258,7 @@ function manageInventory(inventoryFactory, $scope, $element, $window,$timeout) {
           
             for (var i = 0; i < $scope.AllRooms.length; i++) {
                 
-               if ($scope.AllRooms[i].Sort == 9999) {
+                if ($scope.AllRooms[i].IsUnassigned=== true) {
                     found = true;
 
                     $scope.selectedRoom = $scope.AllRooms[i];
