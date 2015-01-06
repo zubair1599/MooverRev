@@ -54,7 +54,7 @@ namespace MooversCRM.Controllers
             var quotes = quoteRepo.GetLastAccessed(AspUserID).Select(m=>m.ToJsonObject()).ToList();
 
             var scheduled = new ScheduleRepository();
-            var todays = scheduled.GetForDay(SessionFranchiseID, DateTime.Today.AddMonths(-2)).Select(i => i.Quote).Distinct().Select(m => m.ToJsonObject());
+            var todays = scheduled.GetForDay(SessionFranchiseID, DateTime.Today.AddMonths(-3)).Select(i => i.Quote).Distinct().Select(m => m.ToJsonObject());
            
             var surveyRepo = new QuoteSurveyRepository();
             var surveys = surveyRepo.GetForDay(SessionFranchiseID, DateTime.Today).Select(s => new { quote = s.Quote.Lookup, account = s.Quote.Account.DisplayName, time = s.DisplayTime(), text = s.Notes });
